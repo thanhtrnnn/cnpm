@@ -1,3 +1,3 @@
 [submodule "visual-paradigm-mcp-plugin"]
 	path = visual-paradigm-mcp-plugin
-	url = ./visual-paradigm-mcp-plugin
+	url = https://github.com/thanhtrnnn/vp-mcp.git
