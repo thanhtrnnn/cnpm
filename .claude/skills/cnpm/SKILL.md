@@ -207,9 +207,16 @@ skinparam packageStyle rectangle
 ### Biểu đồ lớp (Class Diagram)
 
 **Quy tắc chung:**
-- Lớp xếp theo chiều ngang, chia rõ 3 zone: Boundary | DAO | Entity
+- Lớp xếp theo chiều ngang, chia rõ 3 zone: Boundary | DAO/Control | Entity
 - Đường nối thẳng, gấp khúc (`linetype ortho`)
 - Package dọc theo chiều ngang (trái → phải)
+- **KHÔNG xếp dọc** — classes trong mỗi package phải dàn ngang, không chồng chất
+
+**Cách tránh xếp dọc (BẮT BUỘC):**
+- Dùng `together { }` để nhóm classes nằm ngang trong cùng package
+- Nếu nhiều classes, chia thành nhiều package nhỏ thay vì 1 package lớn
+- Dùng hidden links `hidden` để kéo classes ra xa nhau theo chiều ngang
+- `skinparam packageMaxWidth 800` nếu cần mở rộng package
 
 **Boundary classes — Theo lựa chọn công nghệ:**
 
@@ -259,14 +266,20 @@ skinparam packageStyle rectangle
 left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
+skinparam packageMaxWidth 800
 title Biểu đồ lớp – Module [Tên] (JFrame)
 
 package "Boundary" #DDEEFF {
-  class SomeFrm extends JFrame implements ActionListener {
-    -inField : JTextField
-    -btnAction : JButton
-    -outTable : JTable
-    +actionPerformed(e : ActionEvent) : void
+  together {
+    class FrmA extends JFrame implements ActionListener {
+      -inField : JTextField
+      -btnAction : JButton
+      +actionPerformed(e : ActionEvent) : void
+    }
+    class FrmB extends JFrame implements ActionListener {
+      -outTable : JTable
+      +actionPerformed(e : ActionEvent) : void
+    }
   }
 }
 
@@ -275,22 +288,37 @@ package "DAO" #FFE0B2 {
     #conn : Connection
     +DAO()
   }
-  class SomeDAO extends DAO {
-    +findByName(name : String) : List<SomeEntity>
-    +save(entity : SomeEntity) : boolean
+  together {
+    class ADao extends DAO {
+      +findByName(name : String) : List<A>
+      +save(entity : A) : boolean
+    }
+    class BDao extends DAO {
+      +findAll() : List<B>
+      +delete(id : int) : boolean
+    }
   }
 }
 
 package "Entity" #FFF3CD {
-  class SomeEntity {
-    -id : int
-    -name : String
-    +getter/setter
+  together {
+    class A {
+      -id : int
+      -name : String
+      +getter/setter
+    }
+    class B {
+      -id : int
+      -value : String
+      +getter/setter
+    }
   }
 }
 
-SomeFrm --> SomeDAO
-SomeDAO --> SomeEntity
+FrmA --> ADao
+FrmB --> BDao
+ADao --> A
+BDao --> B
 @enduml
 ```
 
@@ -301,15 +329,20 @@ SomeDAO --> SomeEntity
 left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
+skinparam packageMaxWidth 800
 title Biểu đồ lớp – Module [Tên] (React)
 
 package "Boundary" #DDEEFF {
-  class SomePage <<Component>> {
-    -formData : State
-    -tableData : State
-    +handleSubmit() : void
-    +handleChange(e) : void
-    +render() : JSX
+  together {
+    class PageA <<Component>> {
+      -formData : State
+      +handleSubmit() : void
+      +render() : JSX
+    }
+    class PageB <<Component>> {
+      -tableData : State
+      +render() : JSX
+    }
   }
 }
 
@@ -318,22 +351,37 @@ package "DAO" #FFE0B2 {
     #conn : Connection
     +DAO()
   }
-  class SomeDAO extends DAO {
-    +findByName(name : String) : List<SomeEntity>
-    +save(entity : SomeEntity) : boolean
+  together {
+    class ADao extends DAO {
+      +findByName(name : String) : List<A>
+      +save(entity : A) : boolean
+    }
+    class BDao extends DAO {
+      +findAll() : List<B>
+      +delete(id : int) : boolean
+    }
   }
 }
 
 package "Entity" #FFF3CD {
-  class SomeEntity {
-    -id : int
-    -name : String
-    +getter/setter
+  together {
+    class A {
+      -id : int
+      -name : String
+      +getter/setter
+    }
+    class B {
+      -id : int
+      -value : String
+      +getter/setter
+    }
   }
 }
 
-SomePage --> SomeDAO
-SomeDAO --> SomeEntity
+PageA --> ADao
+PageB --> BDao
+ADao --> A
+BDao --> B
 @enduml
 ```
 
