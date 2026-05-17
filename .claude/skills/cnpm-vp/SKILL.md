@@ -69,7 +69,7 @@ Sau đó restart Claude Code để nhận MCP config mới.
 | `createUseCaseDiagram` | Tạo diagram mới | `diagramName` |
 | `addActor` | Thêm actor | `actorName`, `diagramName` |
 | `addUseCase` | Thêm use case | `useCaseName`, `diagramName` |
-| `addRelationship` | Thêm Include/Extend | `sourceName`, `targetName`, `relationshipType` |
+| `addRelationship` | Thêm Include/Extend/Generalization | `sourceName`, `targetName`, `relationshipType` |
 | `generateUseCaseReport` | Sinh báo cáo phân tích | `diagramName` |
 
 ### Class Diagram
@@ -122,11 +122,18 @@ Sau đó restart Claude Code để nhận MCP config mới.
 ```
 1. createUseCaseDiagram(diagramName)
 2. addActor(actorName, diagramName)        — cho mỗi actor
-3. addUseCase(useCaseName, diagramName)    — cho mỗi UC
-4. addRelationship(source, target, type)   — Include hoặc Extend
-5. autoLayoutDiagram(diagramName)
+3. addUseCase(useCaseName, diagramName)    — cho mỗi UC (bao gồm UC con generalization)
+4. addRelationship(source, target, type)   — Include, Extend, hoặc Generalization
+5. autoLayoutDiagram(diagramName)          — LUÔN chạy cuối cùng
 6. generateUseCaseReport(diagramName)      — optional, kiểm tra kết quả
 ```
+
+**Thứ tự thêm relationships:**
+1. Include (UC chính → UC phụ bắt buộc)
+2. Extend (UC mở rộng → UC chính)
+3. Generalization (UC con → UC cha, mũi tên tam giác rỗng)
+
+**Layout:** UC chính ở giữa, UC include tỏa phải, UC extend tỏa dưới phải, UC generalization tỏa dưới. Tránh xếp dọc — luôn dàn ngang.
 
 **Ví dụ: Module Quản lý Khách hàng**
 ```
@@ -135,7 +142,11 @@ addActor("NhanVien", "UC - QuanLyKhachHang")
 addUseCase("Tim kiem khach hang", "UC - QuanLyKhachHang")
 addUseCase("Them moi khach hang", "UC - QuanLyKhachHang")
 addUseCase("Xac minh CCCD", "UC - QuanLyKhachHang")
+addUseCase("Tim theo ten", "UC - QuanLyKhachHang")
+addUseCase("Tim theo ma", "UC - QuanLyKhachHang")
 addRelationship("Tim kiem khach hang", "Xac minh CCCD", "Include")
+addRelationship("Tim theo ten", "Tim kiem khach hang", "Generalization")
+addRelationship("Tim theo ma", "Tim kiem khach hang", "Generalization")
 autoLayoutDiagram("UC - QuanLyKhachHang")
 ```
 

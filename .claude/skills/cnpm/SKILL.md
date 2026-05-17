@@ -349,3 +349,51 @@ SomeDAO --> SomeEntity
 - `left to right direction`
 - Actors bên trái, use cases bên phải trong package
 - `<<include>>` và `<<extend>>` dùng mũi tên đứt nét
+- **Generalization:** UC con kế thừa UC cha — mũi tên tam giác rỗng hướng lên UC cha. VD: "Tìm sách" là cha, "Tìm theo tên sách" và "Tìm theo mã sách" là con
+- **Extension points:** Hiển thị trong UC cha, ghi rõ UC extend nào mở rộng tại điểm nào
+- **Layout ngang:** Sắp xếp UC theo chiều rộng, tránh chồng chất theo chiều dọc. UC chính ở giữa, các UC include/extend/generalization tỏa ra hai bên
+
+**Cấu trúc UC phân rã chuẩn:**
+```
+Actor (trái) → UC chính (giữa) → UC include (phải)
+                                  ↘ UC extend (dưới phải)
+UC cha (trên) ← UC con generalization (dưới)
+```
+
+**Ví dụ PlantUML UC với generalization:**
+```plantuml
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+title Biểu đồ Use Case – Quản lý mượn sách
+
+left to right direction
+
+rectangle "Quản lý mượn sách" {
+  usecase "Mượn sách" as UC1
+  usecase "Đăng nhập" as UC2
+  usecase "Lập phiếu mượn" as UC3
+  usecase "Tìm sách" as UC4
+  usecase "Tìm thông tin độc giả" as UC5
+  usecase "Thêm độc giả" as UC6
+  usecase "Tìm theo mã độc giả" as UC7
+  usecase "Tìm theo tên độc giả" as UC8
+  usecase "Tìm theo mã sách" as UC9
+  usecase "Tìm theo tên sách" as UC10
+}
+
+actor "Thư thư" as A1
+
+A1 --> UC1
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+UC6 ..> UC5 : <<Extend>>
+UC4 <|-- UC9
+UC4 <|-- UC10
+UC5 <|-- UC7
+UC5 <|-- UC8
+@enduml
+```
