@@ -51,6 +51,27 @@ Sau đó restart Claude Code để nhận MCP config mới.
 
 ---
 
+## Nguyên tắc cấu trúc (khi vẽ trong VP)
+
+Khi tạo biểu đồ trong VP, PHẢI tuân thủ các quy tắc cấu trúc sau:
+
+1. **BCE:** Class diagram PHẢI phân rõ 3 package: Boundary | DAO/Control | Entity
+2. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
+   - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên (VD: `"kiểm tra thông tin"`)
+   - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ (VD: `"checkLogin(user: String): Boolean"`)
+3. **UC Decomposition:** Include → Extend → Generalization. UC chính ở giữa, UC con tỏa ra.
+4. **Horizontal layout:** Classes trong cùng package phải dàn ngang, KHÔNG xếp dọc.
+5. **Sequence participant order:** Actor → Boundary → [Control] → DAO → Entity
+6. **Công nghệ giao diện:** Phải thống nhất JFrame (Java Swing) hoặc HTML (React) từ đầu. Ảnh hưởng đến Boundary class attributes.
+
+### Chọn công nghệ giao diện
+
+Hỏi người dùng ngay từ đầu:
+- **JFrame (Java Swing):** Boundary = JFrame, attributes = JTextField/JButton/JTable, event = `actionPerformed(e: ActionEvent)`
+- **HTML (React):** Boundary = Component, attributes = State/JSX, event = `handleSubmit/onClick`
+
+---
+
 ## Danh sách MCP Tools (35 tools)
 
 ### Diagram Management
@@ -152,35 +173,75 @@ autoLayoutDiagram("UC - QuanLyKhachHang")
 
 ### Class Diagram
 
+**Quy tắc BCE (BẮT BUỘC):** Class diagram PHẢI phân rõ 3 nhóm class:
+- **Boundary** (trái): Giao diện — JFrame (Swing) hoặc Component (React)
+- **DAO/Control** (giữa): Abstract DAO + DAO con kế thừa
+- **Entity** (phải): Lớp thực thể từ phân tích
+
+**Thứ tự tạo class diagram:**
 ```
 1. createClassDiagram(diagramName)
-2. addClass(diagramName, className)                    — cho mỗi class
-3. addAttribute(className, name, type, visibility)     — cho mỗi thuộc tính
-4. addOperation(className, name, returnType, params)   — cho mỗi phương thức
-5. addXxxRelationship(...)                             — association/aggregation/composition/generalization
-6. addInterface(diagramName, interfaceName)             — nếu có interface
-7. addRealization(diagramName, fromClass, toClass)      — implements
-8. autoLayoutDiagram(diagramName)
+2. addClass — Boundary classes (mỗi giao diện = 1 class)
+3. addClass — Abstract DAO class
+4. addClass — DAO classes (kế thừa Abstract DAO)
+5. addClass — Entity classes (từ phân tích thực thể)
+6. addAttribute — cho mỗi class (Boundary: UI components; Entity: private fields; DAO: methods)
+7. addOperation — cho mỗi class (Boundary: event handlers; DAO: CRUD methods)
+8. addRelationships — theo thứ tự:
+   a. addGeneralization — DAO extends Abstract DAO
+   b. addComposition — Entity lifetime-dependent (TheBanDoc◆BanDoc, CTPhieuMuon◆PhieuMuon)
+   c. addAggregation — Entity independent (DauSach◇CTPhieuMuon)
+   d. addDependency — Boundary --> DAO
+   e. addAssociation — Entity ↔ Entity (structural links)
+9. autoLayoutDiagram(diagramName)
 ```
 
-**Thứ tự thêm relationships:** Generalization → Composition → Aggregation → Association → Dependency → Realization
+**Bảng hướng dẫn chọn relationship:**
 
-**Ví dụ: Biểu đồ lớp thiết kế Module KH**
+| Quan hệ | Ký hiệu | Khi nào dùng |
+|---------|---------|---------------|
+| Generalization | Tam giác rỗng | DAO kế thừa AbstractDAO; UC con kế thừa UC cha |
+| Composition (◆) | Hình thoi đặc | Lifetime dependent — TheBanDoc-BanDoc, CTPhieuMuon-PhieuMuon |
+| Aggregation (◇) | Hình thoi rỗng | Independent, shared — DauSach-CTPhieuMuon |
+| Association | Đường liền | General structural link giữa entities |
+| Dependency | Đường chấm | Boundary "sử dụng" DAO |
+
+**Ví dụ: Biểu đồ lớp Module Mượn Sách (JFrame)**
 ```
-createClassDiagram("Class - QuanLyKhachHang")
-addClass("Class - QuanLyKhachHang", "GDTimKHFrm")
-addClass("Class - QuanLyKhachHang", "KhachHangDAO")
-addClass("Class - QuanLyKhachHang", "KhachHang")
-addClass("Class - QuanLyKhachHang", "DAO")
-addAttribute("GDTimKHFrm", "inTen", "JTextField", "private")
-addAttribute("GDTimKHFrm", "subTim", "JButton", "private")
-addOperation("GDTimKHFrm", "actionPerformed", "void", "e:ActionEvent")
-addAttribute("KhachHang", "ma", "int", "private")
-addAttribute("KhachHang", "ten", "String", "private")
-addOperation("KhachHangDAO", "timKH", "List<KhachHang>", "ten:String")
-addGeneralization("Class - QuanLyKhachHang", "KhachHangDAO", "DAO")
-addDependency("Class - QuanLyKhachHang", "GDTimKHFrm", "KhachHangDAO")
-autoLayoutDiagram("Class - QuanLyKhachHang")
+createClassDiagram("Class - MuonSach")
+// Boundary
+addClass("Class - MuonSach", "FrmMuonSach")
+addAttribute("FrmMuonSach", "inMaBanDoc", "JTextField", "private")
+addAttribute("FrmMuonSach", "btnTimKiem", "JButton", "private")
+addAttribute("FrmMuonSach", "tblKetQua", "JTable", "private")
+addOperation("FrmMuonSach", "actionPerformed", "void", "e:ActionEvent")
+// Abstract DAO
+addClass("Class - MuonSach", "DAO")
+addAttribute("DAO", "conn", "Connection", "protected")
+// DAO
+addClass("Class - MuonSach", "BanDocDAO")
+addClass("Class - MuonSach", "PhieuMuonDAO")
+addOperation("BanDocDAO", "timTheoMa", "BanDoc", "ma:String")
+addOperation("PhieuMuonDAO", "taoPhieu", "boolean", "pm:PhieuMuon")
+// Entity
+addClass("Class - MuonSach", "BanDoc")
+addClass("Class - MuonSach", "TheBanDoc")
+addClass("Class - MuonSach", "PhieuMuon")
+addClass("Class - MuonSach", "CTPhieuMuon")
+addClass("Class - MuonSach", "DauSach")
+addAttribute("BanDoc", "ma", "String", "private")
+addAttribute("BanDoc", "ten", "String", "private")
+addAttribute("PhieuMuon", "ngayMuon", "Date", "private")
+// Relationships
+addGeneralization("Class - MuonSach", "BanDocDAO", "DAO")
+addGeneralization("Class - MuonSach", "PhieuMuonDAO", "DAO")
+addComposition("Class - MuonSach", "BanDoc", "TheBanDoc", "1", "1")
+addComposition("Class - MuonSach", "BanDoc", "PhieuMuon", "1", "n")
+addComposition("Class - MuonSach", "PhieuMuon", "CTPhieuMuon", "1", "n")
+addAggregation("Class - MuonSach", "DauSach", "CTPhieuMuon", "1", "n")
+addDependency("Class - MuonSach", "FrmMuonSach", "BanDocDAO")
+addDependency("Class - MuonSach", "FrmMuonSach", "PhieuMuonDAO")
+autoLayoutDiagram("Class - MuonSach")
 ```
 
 ### ERD
@@ -213,24 +274,45 @@ generateDdl("ERD - QuanLyKhachHang")
 
 ### Sequence Diagram
 
+**Thứ tự participant (BẮT BUỘC):**
+```
+Actor → FrmX (Boundary) → [CtrlX (Control)] → XDao (DAO) → X (Entity)
+```
+
+**Ngôn ngữ theo pha:**
+- **Phân tích:** Thông điệp = tiếng Việt: `"nhập thông tin()"`, `"kiểm tra điều kiện()"`
+- **Thiết kế:** Thông điệp = tên hàm English: `login(user: String): Boolean`, `findById(id: int): List`
+
 ```
 1. createSequenceDiagram(diagramName)
-2. addLifeline(diagramName, lifelineName, className)   — cho mỗi participant
-3. addActivation(diagramName, lifelineName)             — trước mỗi group message
-4. addMessage(diagramName, from, to, name, seq, type)  — sync message
-5. addReturnMessage(diagramName, from, to, name, seq)  — return
-6. addCombinedFragment(diagramName, operator, guard, lifelines)  — alt/opt/loop
+2. addLifeline — theo thứ tự: Actor, Boundary, [Control], DAO, Entity
+3. addActivation — trước mỗi group message
+4. addMessage — sync message (thứ tự tăng dần)
+5. addReturnMessage — return (mỗi sync cần 1 return)
+6. addCombinedFragment — alt cho ngoại lệ, opt cho tùy chọn, loop cho lặp
 7. autoLayoutDiagram(diagramName)
 ```
 
-**Ví dụ:**
+**Hướng dẫn Combined Fragment:**
+- `alt` + guard = ngoại lệ (VD: `"timKH() tra ve rong"`)
+- `opt` = bước tùy chọn
+- `loop` = lặp lại
+
+**Ví dụ: Sequence Diagram "Mượn sách" (Phân tích)**
 ```
-createSequenceDiagram("SD - TimKH")
-addLifeline("SD - TimKH", "Actor", "NhanVien")
-addLifeline("SD - TimKH", "GDTimKHFrm", "GDTimKHFrm")
-addLifeline("SD - TimKH", "KhachHangDAO", "KhachHangDAO")
-addActivation("SD - TimKH", "GDTimKHFrm")
-addMessage("SD - TimKH", "Actor", "GDTimKHFrm", "nhap tu khoa + nhan Tim", "1", "sync")
+createSequenceDiagram("SD - MuonSach_PhanTich")
+addLifeline("SD - MuonSach_PhanTich", "Actor", "ThuThu")
+addLifeline("SD - MuonSach_PhanTich", "FrmMuonSach", "FrmMuonSach")
+addLifeline("SD - MuonSach_PhanTich", "BanDocDAO", "BanDocDAO")
+addLifeline("SD - MuonSach_PhanTich", "BanDoc", "BanDoc")
+addActivation("SD - MuonSach_PhanTich", "FrmMuonSach")
+addMessage("SD - MuonSach_PhanTich", "Actor", "FrmMuonSach", "nhap ma ban doc + nhan Tim", "1", "sync")
+addMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "BanDocDAO", "timBanDoc(ma:String)", "2", "sync")
+addReturnMessage("SD - MuonSach_PhanTich", "BanDocDAO", "FrmMuonSach", "BanDoc", "3")
+addReturnMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "Actor", "hien thi thong tin ban doc", "4")
+addCombinedFragment("SD - MuonSach_PhanTich", "alt", "khong tim thay ban doc", "FrmMuonSach,Actor")
+autoLayoutDiagram("SD - MuonSach_PhanTich")
+```
 addMessage("SD - TimKH", "GDTimKHFrm", "KhachHangDAO", "timKH(ten:String)", "2", "sync")
 addReturnMessage("SD - TimKH", "KhachHangDAO", "GDTimKHFrm", "List<KhachHang>", "3")
 addReturnMessage("SD - TimKH", "GDTimKHFrm", "Actor", "hien thi danh sach", "4")
@@ -299,6 +381,48 @@ Khi người dùng muốn tài liệu UP với biểu đồ VP:
 - Chỉ cần text-based documentation
 - Không có VP MCP server đang chạy
 - Người dùng không yêu cầu VP
+
+---
+
+## Kiểm tra cấu trúc sau khi vẽ (Verification)
+
+Sau khi tạo xong diagram, **BẮT BUỘC** chạy verification trước khi export:
+
+### Class Diagram verification
+```
+1. getDiagramElements(diagramName) → kiểm tra:
+   - Có đủ 3 nhóm: Boundary classes, DAO classes, Entity classes
+   - Mỗi Boundary class có attributes (JTextField/JButton hoặc State/JSX)
+   - Mỗi Entity class có private attributes với kiểu dữ liệu
+   - Mỗi DAO class extends abstract DAO
+   - Relationships: >= 1 Generalization (DAO→DAO), N Dependencies (Boundary→DAO), N Associations (DAO→Entity)
+2. autoLayoutDiagram(diagramName) → layout lại, kiểm tra không chồng chất
+3. getDiagramElements(diagramName) → xác nhận elements spread theo chiều ngang (x positions khác nhau)
+```
+
+### Sequence Diagram verification
+```
+1. getDiagramElements(diagramName) → kiểm tra:
+   - Lifelines theo đúng thứ tự: Actor → Boundary → [Control] → DAO → Entity
+   - Mỗi sync message có ít nhất 1 return message
+   - Có combined fragments (alt) cho các ngoại lệ
+2. autoLayoutDiagram(diagramName)
+```
+
+### UC Diagram verification
+```
+1. getDiagramElements(diagramName) → kiểm tra:
+   - Số actor đúng dự kiến
+   - Số UC đúng dự kiến (bao gồm UC con generalization)
+   - Có đủ relationship types: Include, Extend, Generalization
+2. autoLayoutDiagram(diagramName)
+```
+
+### Report verification
+```
+generateUseCaseReport / generateClassReport / generateSequenceReport / generateErdReport
+→ trả về element counts — so sánh với expected counts từ plan
+```
 
 ---
 

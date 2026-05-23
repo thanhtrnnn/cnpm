@@ -1,153 +1,158 @@
-# CNPM-HRM
+# CNPM Skills
 
-Hệ thống **Quản lý Nhân sự Khách sạn (HRM)** — dự án môn Nhập môn Công nghệ Phần mềm. Bao gồm tài liệu UP (Unified Process) đầy đủ, công cụ tạo biểu đồ UML qua Visual Paradigm, và tích hợp Notion.
+Bộ skill Claude Code tự động tạo tài liệu phần mềm chuẩn **Unified Process (UP)** theo giáo trình **Nhập môn Công nghệ Phần mềm**. Hỗ trợ JFrame (Java Swing) và HTML (React).
 
 ---
 
-## Cấu trúc dự án
-
-| Thư mục | Mô tả | Link |
-|---------|-------|------|
-| `.claude/skills/cnpm/` | Skill tạo tài liệu UP (10 mục, JFrame/React) | [SKILL.md](.claude/skills/cnpm/SKILL.md) |
-| `.claude/skills/cnpm-vp/` | Skill tích hợp Visual Paradigm (35 tools) | [SKILL.md](.claude/skills/cnpm-vp/SKILL.md) |
-| `.claude/skills/notion-format/` | Skill format markdown cho Notion | [SKILL.md](.claude/skills/notion-format/SKILL.md) |
-| `visual-paradigm-mcp-plugin/` | VP MCP Server (Java, Undertow, SSE) | [GitHub](https://github.com/thanhtrnnn/vp-mcp) |
-| `docs/` | Hướng dẫn UP, Deployment, QA, SQL | [huong-dan-up-cnpm.md](docs/huong-dan-up-cnpm.md) |
-| `src/` | Source code hệ thống HRM | |
+## Cấu trúc
 
 ```
-cnpm-hrm/
-├── .claude/skills/
-│   ├── cnpm/                  → SKILL.md + references/
-│   ├── cnpm-vp/               → SKILL.md + scripts/
-│   ├── notion-format/         → SKILL.md
-│   └── frontend-design/       → SKILL.md
-├── docs/                      → UP guide, DEPLOYMENT, QA, SQL
-├── visual-paradigm-mcp-plugin → submodule → github.com/thanhtrnnn/vp-mcp
-├── src/                       → Java source
-└── README.md
+.claude/skills/
+├── cnpm/                  → Tạo tài liệu UP (text + PlantUML)
+│   ├── SKILL.md           → Skill chính (448 dòng)
+│   ├── cnpm.skill         → Phiên bản nén (.zip)
+│   └── references/        → 11 file tham khảo theo 4 pha UP
+├── cnpm-vp/               → Vẽ biểu đồ trong Visual Paradigm
+│   ├── SKILL.md           → Skill chính (420+ dòng)
+│   ├── cnpm-vp.skill      → Phiên bản nén (.zip)
+│   └── scripts/           → Setup & verify VP MCP server
+└── notion-format/         → Format markdown cho Notion
 ```
 
 ---
 
-## Các Skills
+## 2 Version: `cnpm` vs `cnpm-vp`
 
-### 1. `cnpm` — Tạo tài liệu UP
+| | `cnpm` | `cnpm-vp` |
+|---|---|---|
+| **Mục đích** | Sinh nội dung tài liệu UP | Vẽ biểu đồ UML trong Visual Paradigm |
+| **Đầu ra** | Text + bảng Markdown + PlantUML code block | Diagram trong VP → export PNG/SVG |
+| **Output format** | Markdown, Notion, DOCX | VP diagram image |
+| **Công nghệ** | Không cần cài thêm | Cần VP MCP server (Docker) |
+| **Khi nào dùng** | Luôn dùng khi viết tài liệu UP | Khi muốn diagram chuyên nghiệp thay vì PlantUML |
 
-Tự động sinh tài liệu 10 mục theo quy trình Unified Process:
-
-| Pha | Mục | Nội dung |
-|-----|-----|----------|
-| Requirements | 1–2 | UC chi tiết, Kịch bản chuẩn/ngoại lệ |
-| Analysis | 3–5 | Thực thể, Lớp BCE, Tuần tự phân tích |
-| Design | 6–9 | Lớp TK, ERD, Wireframe + Lớp TK, Tuần tự TK |
-| Test | 10 | Test Plan + Test Case |
-
-**Tùy chọn công nghệ giao diện** (chọn ở BƯỚC 0 PLAN):
-- **JFrame (Java Swing)** — Desktop app, Boundary extends JFrame
-- **HTML (React)** — Web app, Boundary là React component
-
-### 2. `cnpm-vp` — Visual Paradigm Integration
-
-Tạo biểu đồ UML trực tiếp trong Visual Paradigm qua MCP server ([35 tools](https://github.com/thanhtrnnn/vp-mcp)):
-- Use Case, Class, ERD, Sequence diagrams
-- Auto layout, generate reports, export DDL
-- Scripts kiểm tra và setup kết nối
-- [Source code](https://github.com/thanhtrnnn/vp-mcp) · [PR #1](https://github.com/orgatex/visual-paradigm-mcp-plugin/pull/1)
-
-### 3. `notion-format` — Format cho Notion
-
-Định dạng markdown chuẩn để import vào Notion qua API:
-- Callout, columns, toggle, table
-- PlantUML image embedding
-- Rules cho bố cục 2–4 columns
+**Workflow chuẩn:** Dùng `cnpm` sinh nội dung → Dùng `cnpm-vp` vẽ diagram → Nhúng ảnh vào tài liệu.
 
 ---
 
-## Quick Start
+## cài đặt
 
 ### Yêu cầu
 
-- Node.js / Python 3
-- Docker (cho VP MCP server)
-- Visual Paradigm (optional, cho standalone mode)
 - Claude Code CLI
+- Node.js (cho generate DOCX)
+- Docker (cho VP MCP server — chỉ cần khi dùng `cnpm-vp`)
+- Visual Paradigm (optional, cho standalone mode)
 
-### Bước 1 — Khởi động VP MCP Server
+### Bước 1 — Copy skills vào project
 
 ```bash
+# Clone repo hoặc copy thư mục .claude/skills/ vào project của bạn
+cp -r .claude/skills/ /path/to/your-project/.claude/skills/
+```
+
+### Bước 2 — Cài dependencies (nếu cần generate DOCX)
+
+```bash
+cd output
+npm install docx
+```
+
+### Bước 3 — Setup VP MCP Server (nếu dùng `cnpm-vp`)
+
+```bash
+# Khởi động server
 cd visual-paradigm-mcp-plugin
 ./run docker-up
-```
 
-Server chạy trên `http://localhost:2026/sse`.
-
-### Bước 2 — Đăng ký MCP với Claude Code
-
-```bash
+# Đăng ký MCP với Claude Code
 .claude/skills/cnpm-vp/scripts/vp-mcp-setup.sh
+
+# Kiểm tra kết nối
+.claude/skills/cnpm-vp/scripts/vp-mcp-verify.sh
+
+# Restart Claude Code để nhận MCP config mới
 ```
 
-### Bước 3 — Kiểm tra kết nối
+---
+
+## Hướng dẫn sử dụng
+
+### Skill `cnpm` — Tạo tài liệu UP
+
+Mở Claude Code, yêu cầu:
+
+```
+"Viết tài liệu UP cho module Quản lý Mượn Sách"
+"Làm phần requirements cho hệ thống"
+"Viết analysis cho module Đặt phòng"
+"Viết test case cho chức năng đăng nhập"
+```
+
+Skill sẽ tự động:
+1. **BƯỚC 0 PLAN** — Sinh plan, hỏi công nghệ giao diện (JFrame/React), chờ xác nhận
+2. **Giai đoạn 1** — Requirements toàn hệ thống (UC, thuật ngữ, mô hình nghiệp vụ)
+3. **Giai đoạn 2** — Đề xuất phân module → chờ xác nhận
+4. **Giai đoạn 3** — Triển khai từng module theo 4 pha:
+   - Pha I: Requirements (UC chi tiết, kịch bản)
+   - Pha II: Analysis (thực thể, lớp BCE, tuần tự)
+   - Pha III: Design (lớp TT, ERD, wireframe, tuần tự TK)
+   - Pha IV: Test (test plan, test case)
+
+### Skill `cnpm-vp` — Vẽ biểu đồ trong VP
+
+```
+"Vẽ biểu đồ lớp trong VP cho module Mượn sách"
+"Tạo UC diagram trong Visual Paradigm"
+"Vẽ sequence diagram cho chức năng đăng nhập"
+```
+
+Skill sẽ tự động:
+1. Tạo diagram trong VP qua MCP tools
+2. Thêm elements theo đúng cấu trúc BCE (Boundary | DAO | Entity)
+3. Auto layout
+4. Export ảnh PNG/SVG
+
+### Tạo DOCX
 
 ```bash
-.claude/skills/cnpm-vp/scripts/vp-mcp-verify.sh
+cd output
+node generate_docx.js
+# → De01_QuanLyMuonSach.docx
 ```
-
-### Bước 4 — Sử dụng
-
-Mở Claude Code và yêu cầu:
-- *"Viết tài liệu UP cho module Đặt phòng"* → dùng skill `cnpm`
-- *"Vẽ biểu đồ lớp trong VP"* → dùng skill `cnpm-vp`
-- *"Format tài liệu này cho Notion"* → dùng skill `notion-format`
 
 ---
 
 ## VP MCP Server
 
-> **Source:** [thanhtrnnn/vp-mcp](https://github.com/thanhtrnnn/vp-mcp) · **PR:** [orgatex#1](https://github.com/orgatex/visual-paradigm-mcp-plugin/pull/1)
+> **Source:** [thanhtrnnn/vp-mcp](https://github.com/thanhtrnnn/vp-mcp)
 
-### Tools (35 total)
+### 35 Tools
 
-| Nhóm | Tools | Mô tả |
-|------|-------|-------|
-| Management | `listDiagrams`, `getDiagramElements`, `autoLayoutDiagram`, `removeDiagramElement` | Quản lý diagram |
-| Use Case | `createUseCaseDiagram`, `addActor`, `addUseCase`, `addRelationship`, `generateUseCaseReport` | UC diagrams |
-| Class | `createClassDiagram`, `addClass`, `addAttribute`, `addOperation`, `addAssociation`, `addGeneralization`, `addAggregation`, `addComposition`, `addDependency`, `addRealization`, `addInterface`, `generateClassReport` | Class diagrams |
-| ERD | `createErd`, `addTable`, `addColumn`, `addForeignKey`, `addTableRelationship`, `generateDdl`, `generateErdReport` | ER diagrams |
-| Sequence | `createSequenceDiagram`, `addLifeline`, `addActivation`, `addMessage`, `addReturnMessage`, `addCombinedFragment`, `generateSequenceReport` | Sequence diagrams |
+| Nhóm | Tools |
+|------|-------|
+| Management | `listDiagrams`, `getDiagramElements`, `autoLayoutDiagram`, `removeDiagramElement` |
+| Use Case | `createUseCaseDiagram`, `addActor`, `addUseCase`, `addRelationship`, `generateUseCaseReport` |
+| Class | `createClassDiagram`, `addClass`, `addAttribute`, `addOperation`, `addAssociation`, `addGeneralization`, `addAggregation`, `addComposition`, `addDependency`, `addRealization`, `addInterface`, `generateClassReport` |
+| ERD | `createErd`, `addTable`, `addColumn`, `addForeignKey`, `addTableRelationship`, `generateDdl`, `generateErdReport` |
+| Sequence | `createSequenceDiagram`, `addLifeline`, `addActivation`, `addMessage`, `addReturnMessage`, `addCombinedFragment`, `generateSequenceReport` |
 
 ### Commands
 
 ```bash
 cd visual-paradigm-mcp-plugin
-
 ./run build          # Build plugin
 ./run test           # Run tests
-./run package        # Package JAR
-./run install        # Install to VP
-./run docker-build   # Build Docker image
-./run docker-up      # Start MCP server (Docker)
+./run docker-up      # Start MCP server
 ./run docker-down    # Stop MCP server
-./run docker-logs    # View logs
 ```
 
 ---
 
-## Tài liệu UP
+## Files mẫu
 
-File [docs/huong-dan-up-cnpm.md](docs/huong-dan-up-cnpm.md) chứa hướng dẫn đầy đủ 10 mục theo UP, với ví dụ cụ thể cho hệ thống HRM module Đặt phòng. File đã được format theo chuẩn Notion Enhanced Markdown (callout, columns, toggle) và có 9 biểu đồ PlantUML embedded.
-
----
-
-## Hệ thống HRM
-
-**Phạm vi:** Hệ thống quản lý nhân sự khách sạn, ứng dụng desktop dùng nội bộ.
-
-**Actors:**
-- Nhân viên lễ tân: Đặt/hủy phòng, check-in, check-out
-- Nhân viên bán hàng: Đặt phòng qua điện thoại
-- Người quản lý: Cập nhật KS/phòng, xem báo cáo
-- Quản trị hệ thống: Quản lý tài khoản
-
-**Đối tượng chính:** Khách sạn, Phòng, Khách hàng, Đặt phòng, Hóa đơn, Nhân viên, Tài khoản
+| File | Mô tả |
+|------|-------|
+| [DE01.md](DE01.md) | Đề bài Quản lý Mượn Sách |
+| [output/De01_QuanLyMuonSach.docx](output/De01_QuanLyMuonSach.docx) | Word document mẫu (UC + Kịch bản + Thực thể) |
+| [docs/huong-dan-up-cnpm.md](docs/huong-dan-up-cnpm.md) | Hướng dẫn UP đầy đủ với PlantUML |

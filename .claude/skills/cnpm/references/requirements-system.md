@@ -130,3 +130,11 @@ A1 --> UC01
 A2 --> UC02
 @enduml
 ```
+
+---
+
+## Ánh xạ sang tài liệu module
+
+Sau khi hoàn thành requirements toàn hệ thống, tài liệu từng module sẽ dùng kết quả từ đây:
+- **Mục 3.3** (Biểu đồ UC tổng quan) → dùng làm input cho **I.1. Mô hình nghiệp vụ bằng UML** (copy UC + actor vào phạm vi module)
+- **Mục 2.4** (Chức năng hoạt động) → dùng làm input cho **II.1. Mô hình hóa chức năng** (viết kịch bản chi tiết)

@@ -57,10 +57,17 @@ GIAI ĐOẠN 1 – Requirements TOÀN HỆ THỐNG
 GIAI ĐOẠN 2 – Đề xuất phân chia MODULE → chờ xác nhận
      ↓
 GIAI ĐOẠN 3 – Với mỗi module (theo yêu cầu người dùng):
-     Pha 1 – Requirements module:  [1] UC chi tiết  [2] Kịch bản
-     Pha 2 – Analysis:             [3] Thực thể     [4] Lớp BCE   [5] Tuần tự PT
-     Pha 3 – Design:               [6] Lớp TT TK   [7] ERD       [8] UI + Lớp TK   [9] Tuần tự TK
-     Pha 4 – Test:                 [10] Test Plan + Test Case
+     Pha I – Requirements:   I.1  Mô hình nghiệp vụ bằng UML
+     Pha II – Analysis:      II.1 Mô hình hóa chức năng
+                              II.2 Mô hình hóa lớp
+                              II.3 Sơ đồ lớp phân tích
+                              II.4 Biểu đồ tuần tự phân tích
+     Pha III – Design:       III.1  Thiết kế lớp thực thể
+                              III.2  Thiết kế CSDL
+                              III.3.1 Thiết kế giao diện
+                              III.3.2 Sơ đồ lớp thiết kế
+                              III.4  Biểu đồ tuần tự thiết kế
+     Pha IV – Test:          IV   Cài đặt & Kiểm thử
 ```
 
 ---
@@ -95,19 +102,32 @@ Plan phải:
 
 ## Danh sách mục sẽ viết
 
-### [Tên giai đoạn / pha]
+### Pha I – Requirements
 | Mục | Tên | Nội dung chính sẽ có |
 |-----|-----|----------------------|
-| 1 | Biểu đồ UC chi tiết | Actor: [A, B]; UC chính: [X]; UC con include: [a, b]; UC extend: [c] |
-| 2 | Kịch bản chuẩn | UC [X]: [N] bước, ngoại lệ tại bước [3, 10, 24] |
-| 3 | Thực thể phân tích | Lớp dự kiến: [A, B, C, D]; quan hệ n-n: [A–B] |
-| 4 | Lớp BCE | Boundary: [Frm1, Frm2]; Entity: [A, B, C] |
-| 5 | Tuần tự PT | [N] biểu đồ cho [N] UC |
-| 6 | Lớp thực thể TK | Bổ sung kiểu dữ liệu Java; PK/FK; composition/aggregation |
-| 7 | ERD | [N] bảng; bảng trung gian: [...] |
-| 8 | Wireframe + Lớp TK | [N] màn hình; DAO cho: [A, B, C] |
-| 9 | Tuần tự TK | [N] biểu đồ |
-| 10 | Test Case | [N] TC; CSDL mẫu: [N] bảng |
+| I.1 | Mô hình nghiệp vụ bằng UML | Actor: [A, B]; UC chính: [X]; UC con include: [a, b]; UC extend: [c] |
+
+### Pha II – Analysis
+| Mục | Tên | Nội dung chính sẽ có |
+|-----|-----|----------------------|
+| II.1 | Mô hình hóa chức năng | UC [X]: [N] bước, ngoại lệ tại bước [3, 10, 24] |
+| II.2 | Mô hình hóa lớp | Lớp dự kiến: [A, B, C, D]; quan hệ n-n: [A–B] |
+| II.3 | Sơ đồ lớp phân tích | Boundary: [Frm1, Frm2]; Entity: [A, B, C] |
+| II.4 | Biểu đồ tuần tự phân tích | [N] biểu đồ cho [N] UC |
+
+### Pha III – Design
+| Mục | Tên | Nội dung chính sẽ có |
+|-----|-----|----------------------|
+| III.1 | Thiết kế lớp thực thể | Bổ sung kiểu dữ liệu Java; PK/FK; composition/aggregation |
+| III.2 | Thiết kế CSDL | [N] bảng; bảng trung gian: [...] |
+| III.3.1 | Thiết kế giao diện | [N] màn hình wireframe |
+| III.3.2 | Sơ đồ lớp thiết kế | DAO cho: [A, B, C]; Boundary + Entity |
+| III.4 | Biểu đồ tuần tự thiết kế | [N] biểu đồ |
+
+### Pha IV – Test
+| Mục | Tên | Nội dung chính sẽ có |
+|-----|-----|----------------------|
+| IV | Cài đặt & Kiểm thử | [N] TC; CSDL mẫu: [N] bảng |
 ```
 
 Sau khi sinh plan, **chờ user xác nhận hoặc điều chỉnh** trước khi viết bất kỳ nội dung thật nào. Nếu user chỉ muốn làm một vài mục, chỉ giữ lại những mục đó trong plan rồi xác nhận lại.
@@ -134,14 +154,20 @@ Chỉ tiếp tục khi người dùng xác nhận.
 
 ### Giai đoạn 3 – Triển khai từng module
 Hỏi người dùng muốn bắt đầu với module nào.
-Đọc `references/module-phases.md` và thực hiện đúng các mục đã được xác nhận trong plan.
+Đọc `references/table_of_contents.md` để biết danh sách 11 mục theo 4 pha, sau đó đọc từng file tương ứng:
+- **Pha I:** `references/i.1_mohinh_nghiepvu.md`
+- **Pha II:** `references/ii.1_mohinh_hoa_chucnang.md`, `ii.2_mohinh_hoa_lop.md`, `ii.3_sodo_lop_phantich.md`, `ii.4_tuantu_phantich.md`
+- **Pha III:** `references/iii.1_thietke_lop_thucthe.md`, `iii.2_thietke_coso_dulieu.md`, `iii.3.1_thietke_giaodien.md`, `iii.3.2_sodo_lop_thietke.md`, `iii.4_tuantu_thietke.md`
+- **Pha IV:** `references/iv_kiemthu.md`
+
+Thực hiện đúng các mục đã được xác nhận trong plan.
 Sau mỗi pha, hỏi: *"Pha [X] đã hoàn thành. Bạn có muốn điều chỉnh gì không trước khi sang pha tiếp theo?"*
 
 ---
 
 ## Định dạng đầu ra chung
 
-- Tiêu đề mỗi mục: `## [Số]. [Tên mục] – Module: [Tên module]`
+- Tiêu đề mỗi mục: `## [Pha].[Số]. [Tên mục]` (VD: `## II.3. Sơ đồ lớp phân tích`)
 - Bảng Markdown chuẩn, có header rõ ràng.
 - PlantUML đặt trong code block plantuml.
 - Wireframe dùng ASCII box diagram (xem ví dụ trong `references/module-phases.md`).
