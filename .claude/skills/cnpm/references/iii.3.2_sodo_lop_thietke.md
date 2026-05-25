@@ -82,17 +82,19 @@ GDThemXFrm --> TenEntityDAO
 
 **Variant React:**
 
+**Quy ước đặt tên:** Tên class React dùng tiếng Anh + hậu tố loại component (`Page`, `Card`, `Panel`, `Modal`, `Form`, `Table`). Xem bảng quy ước chi tiết ở II.3.
+
 ```plantuml
 @startuml
 title Biểu đồ lớp thiết kế – Module [Tên] (React)
 
-class PageChinh <<Component>> {
+class EntityPage <<Component>> {
   -nv : NhanVien
   +btnChucNang : JSX.Element
   +handleClick() : void
 }
 
-class PageTimX <<Component>> {
+class SearchEntityForm <<Component>> {
   -inTen : string (state)
   -tableData : Array (state)
   +handleSubmit() : void
@@ -100,7 +102,7 @@ class PageTimX <<Component>> {
   +render() : JSX
 }
 
-class PageThemX <<Component>> {
+class AddEntityForm <<Component>> {
   -formData : State
   +handleSubmit() : void
   +handleChange(e) : void
@@ -127,8 +129,8 @@ class TenEntity {
 
 DAO <|-- TenEntityDAO
 TenEntityDAO --> TenEntity
-PageChinh --> PageTimX
-PageTimX --> TenEntityDAO
-PageThemX --> TenEntityDAO
+EntityPage --> SearchEntityForm
+SearchEntityForm --> TenEntityDAO
+AddEntityForm --> TenEntityDAO
 @enduml
 ```

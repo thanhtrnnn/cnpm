@@ -28,6 +28,9 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến ở pha Thiết kế).
 5. **UML:** PlantUML trong code block plantuml.
 6. **Công nghệ giao diện:** Hỏi người dùng chọn JFrame (Java Swing) hoặc HTML (React) ngay từ BƯỚC 0 PLAN. Toàn bộ Boundary classes, wireframe, và sequence diagram phải thống nhất theo lựa chọn này.
+7. **Diễn giải tuần tự (BẮT BUỘC cho II.4 và III.4):** Bên cạnh biểu đồ sequence diagram, PHẢI viết block diễn giải tuần tự dạng danh sách đánh số trong callout:
+   - **II.4 (Phân tích):** Kịch bản phiên bản 2 — tiếng Việt tự nhiên, mô tả Actor ↔ Boundary ↔ Entity. Xem `references/ii.4_tuantu_phantich.md`.
+   - **III.4 (Thiết kế):** Kịch bản phiên bản 3 — có tên hàm Java + kiểu dữ liệu, mô tả Actor ↔ Boundary ↔ DAO ↔ Entity. Xem `references/iii.4_tuantu_thietke.md`.
 
 ---
 
@@ -275,6 +278,16 @@ skinparam packageStyle rectangle
 
 - Mỗi Boundary class là React functional component
 - Event handler: `handleSubmit`, `onClick`, `onChange` (không cần interface)
+- **Tên class:** dùng tiếng Anh + hậu tố loại component (xem bảng dưới). KHÔNG dùng `Page[Name]` cho tất cả.
+
+| Hậu tố | Loại component | Ví dụ |
+|--------|---------------|-------|
+| `Page` | Trang gắn URL/Router | `RoomPage`, `OrderPage` |
+| `Card` | Ô thông tin nhỏ trong danh sách | `RoomCard`, `ProductCard` |
+| `Panel` | Vùng nội dung lớn trên trang | `SessionDetailPanel` |
+| `Modal` | Hộp thoại bật lên | `ExtendTimeModal` |
+| `Form` | Vùng nhập liệu | `OrderForm`, `AddClientForm` |
+| `Table` | Bảng dữ liệu | `RoomListTable` |
 
 **DAO classes:**
 - Abstract class `DAO` có `#conn: Connection` + `+DAO()`
@@ -360,12 +373,12 @@ title Biểu đồ lớp – Module [Tên] (React)
 
 package "Boundary" #DDEEFF {
   together {
-    class PageA <<Component>> {
+    class EntityPage <<Component>> {
       -formData : State
       +handleSubmit() : void
       +render() : JSX
     }
-    class PageB <<Component>> {
+    class SearchEntityForm <<Component>> {
       -tableData : State
       +render() : JSX
     }
@@ -404,8 +417,9 @@ package "Entity" #FFF3CD {
   }
 }
 
-PageA --> ADao
-PageB --> BDao
+EntityPage --> SearchEntityForm
+SearchEntityForm --> ADao
+EntityPage --> BDao
 ADao --> A
 BDao --> B
 @enduml

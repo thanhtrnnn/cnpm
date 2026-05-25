@@ -4,7 +4,23 @@
 
 **Quy trình 4 bước (BẮT BUỘC trình bày):**
 
-- **Bước 1:** Mỗi giao diện chính trong module (trừ thông báo, hộp thoại xác nhận) → đề xuất thành 1 **lớp Boundary** (đặt tên dạng GD[TênMànHình]).
+- **Bước 1:** Mỗi giao diện chính trong module → đề xuất thành 1 **lớp Boundary**.
+  - **JFrame:** đặt tên dạng `GD[TênMànHình]` (VD: `GDTimPhong`, `GDThemKH`).
+  - **React:** đặt tên theo hậu tố loại component (xem bảng quy ước dưới). Ngoài ra, các thành phần con quan trọng (Modal, Form, Panel...) cũng có thể là lớp Boundary riêng nếu có tương tác phức tạp.
+  - **Loại trừ:** Thông báo đơn giản (`alert`), hộp thoại xác nhận (`confirm`) không cần tách riêng.
+
+  **Quy ước đặt tên Boundary class — React:**
+
+  | Hậu tố | Loại component | Khi nào dùng | Ví dụ |
+  |--------|---------------|---------------|-------|
+  | `Page` | Trang gắn URL/Router | Màn hình hoàn chỉnh, điều hướng chính | `RoomPage`, `OrderPage`, `DashboardPage` |
+  | `Card` | Ô thông tin nhỏ | Hiển thị trạng thái nhanh trong danh sách | `RoomCard`, `ProductCard`, `BookingCard` |
+  | `Panel` | Vùng nội dung lớn | Gom nhóm thông tin liên quan trên trang | `SessionDetailPanel`, `ServiceSummaryPanel` |
+  | `Modal` | Hộp thoại bật lên | Tương tác đè lên trang khi nhấn nút | `ExtendTimeModal`, `DamageReportModal` |
+  | `Form` | Vùng nhập liệu | Chứa input để điền dữ liệu | `OrderForm`, `ImportStockForm`, `AddClientForm` |
+  | `Table` | Bảng dữ liệu | Hiển thị danh sách dạng bảng | `RoomListTable`, `OrderHistoryTable` |
+
+  **Lưu ý:** Tên class React dùng tiếng Anh (không phải tiếng Việt). Thuộc tính bên trong vẫn dùng tiền tố `in/out/sub/outsub/inout` + tiếng Việt.
 - **Bước 2:** Xem xét các thành phần trong mỗi giao diện, đặt tên với tiền tố loại:
   - `in`: thành phần nhập liệu (ô nhập văn bản, ngày tháng...)
   - `out`: thành phần hiển thị (bảng, nội dung...)
@@ -80,16 +96,16 @@ GDThemX --> TenThucThe
 title Biểu đồ lớp phân tích BCE – Module [Tên] (React)
 
 package "Boundary" #DDEEFF {
-  class PageChinh <<Component>> {
+  class EntityPage <<Component>> {
     -subChucNangA
   }
-  class PageTimX <<Component>> {
+  class SearchEntityForm <<Component>> {
     -inTen
     -subTim
     -subThemMoi
     -outsubDSX
   }
-  class PageThemX <<Component>> {
+  class AddEntityForm <<Component>> {
     -inTen
     -inThuocTinhKhac
     -outinThuocTinh
@@ -108,9 +124,9 @@ package "Entity" #FFF3CD {
   }
 }
 
-PageChinh --> PageTimX
-PageTimX --> PageThemX
-PageTimX --> TenThucThe
-PageThemX --> TenThucThe
+EntityPage --> SearchEntityForm
+SearchEntityForm --> AddEntityForm
+SearchEntityForm --> TenThucThe
+AddEntityForm --> TenThucThe
 @enduml
 ```

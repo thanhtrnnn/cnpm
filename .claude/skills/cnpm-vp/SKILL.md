@@ -67,8 +67,17 @@ Khi tạo biểu đồ trong VP, PHẢI tuân thủ các quy tắc cấu trúc s
 ### Chọn công nghệ giao diện
 
 Hỏi người dùng ngay từ đầu:
-- **JFrame (Java Swing):** Boundary = JFrame, attributes = JTextField/JButton/JTable, event = `actionPerformed(e: ActionEvent)`
-- **HTML (React):** Boundary = Component, attributes = State/JSX, event = `handleSubmit/onClick`
+- **JFrame (Java Swing):** Boundary = JFrame, attributes = JTextField/JButton/JTable, event = `actionPerformed(e: ActionEvent)`. Tên class: `GD[TênMànHình]Frm`.
+- **HTML (React):** Boundary = Component, attributes = State/JSX, event = `handleSubmit/onClick`. Tên class: tiếng Anh + hậu tố loại component:
+
+| Hậu tố | Loại component | Ví dụ |
+|--------|---------------|-------|
+| `Page` | Trang gắn URL/Router | `RoomPage`, `OrderPage` |
+| `Card` | Ô thông tin nhỏ trong danh sách | `RoomCard`, `ProductCard` |
+| `Panel` | Vùng nội dung lớn trên trang | `SessionDetailPanel` |
+| `Modal` | Hộp thoại bật lên | `ExtendTimeModal` |
+| `Form` | Vùng nhập liệu | `OrderForm`, `AddClientForm` |
+| `Table` | Bảng dữ liệu | `RoomListTable` |
 
 ---
 
@@ -175,6 +184,8 @@ autoLayoutDiagram("UC - QuanLyKhachHang")
 
 **Quy tắc BCE (BẮT BUỘC):** Class diagram PHẢI phân rõ 3 nhóm class:
 - **Boundary** (trái): Giao diện — JFrame (Swing) hoặc Component (React)
+  - **JFrame:** tên class = `GD[TênMànHình]Frm`
+  - **React:** tên class = tiếng Anh + hậu tố (`Page`, `Card`, `Panel`, `Modal`, `Form`, `Table`) — xem bảng ở mục "Chọn công nghệ giao diện"
 - **DAO/Control** (giữa): Abstract DAO + DAO con kế thừa
 - **Entity** (phải): Lớp thực thể từ phân tích
 
@@ -282,6 +293,14 @@ Actor → FrmX (Boundary) → [CtrlX (Control)] → XDao (DAO) → X (Entity)
 **Ngôn ngữ theo pha:**
 - **Phân tích:** Thông điệp = tiếng Việt: `"nhập thông tin()"`, `"kiểm tra điều kiện()"`
 - **Thiết kế:** Thông điệp = tên hàm English: `login(user: String): Boolean`, `findById(id: int): List`
+
+**Diễn giải tuần tự (BẮT BUỘC alongside diagram):**
+
+Bên cạnh biểu đồ sequence diagram, PHẢI viết thêm block diễn giải tuần tự dưới dạng danh sách đánh số:
+- **Phân tích → Kịch bản phiên bản 2:** Danh sách bước bằng tiếng Việt tự nhiên, mô tả Actor ↔ Boundary ↔ Entity. Xem `cnpm/references/ii.4_tuantu_phantich.md` để biết format chi tiết.
+- **Thiết kế → Kịch bản phiên bản 3:** Danh sách bước có tên hàm Java + kiểu dữ liệu, mô tả Actor ↔ Boundary ↔ DAO ↔ Entity. Xem `cnpm/references/iii.4_tuantu_thietke.md` để biết format chi tiết.
+
+Block diễn giải giúp người đọc hiểu luồng xử lý mà không cần đọc biểu đồ UML. Luôn đặt ngay sau biểu đồ, trong callout `📖` màu green.
 
 ```
 1. createSequenceDiagram(diagramName)
