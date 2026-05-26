@@ -23,8 +23,8 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 1. **Hướng Use-case:** Mọi phân tích, thiết kế đều xuất phát từ Use-case.
 2. **BCE:** Luôn phân rã theo Boundary – Control – Entity.
 3. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
-   - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên (VD: `kiểm tra thông tin()`)
-   - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ (VD: `checkLogin(user: String): Boolean`)
+   - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản (VD: `"Lớp Room gọi phương thức searchFreeRoom()"`, `"nhập ngày + nhấn Tìm"`)
+   - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (VD: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`)
 4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến ở pha Thiết kế).
 5. **UML:** PlantUML trong code block plantuml.
 6. **Công nghệ giao diện:** Hỏi người dùng chọn JFrame (Java Swing) hoặc HTML (React) ngay từ BƯỚC 0 PLAN. Toàn bộ Boundary classes, wireframe, và sequence diagram phải thống nhất theo lựa chọn này.
