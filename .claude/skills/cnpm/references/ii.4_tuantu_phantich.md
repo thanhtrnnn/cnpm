@@ -51,17 +51,17 @@ participant "GDChinh\n<<Boundary>>" as B0
 participant "GDTimX\n<<Boundary>>" as B1
 participant "TenThucThe\n<<Entity>>" as E
 
-Actor -> B0 : 1: sử dụng dịch vụ
+Actor -> B0 : 1: sử dụng dịch vụ()
 activate B0
-B0 -> B1 : 2: ký hợp đồng
+B0 -> B1 : 2: ký hợp đồng()
 activate B1
-Actor -> B1 : 3: nhập từ khóa + tìm
-B1 -> E : 4: gọi
+Actor -> B1 : 3: nhập từ khóa + nhấn Tìm
+B1 -> E : 4: gọi xử lý()
 activate E
 E -> E : 5: timX()
 E --> B1 : 6: trả về danh sách
 deactivate E
-B1 --> Actor : 7: hiển thị
+B1 --> Actor : 7: hiển thị kết quả
 Actor -> B1 : 8: chọn kết quả
 deactivate B1
 

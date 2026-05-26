@@ -79,7 +79,7 @@ Dùng `addPackage` để tạo container, hoặc `addClass` với tham số `pac
 Dùng `addClass` với tham số `stereotype`. VP hiển thị stereotype dạng `<<tên>>` phía trên tên class.
 
 4. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
-   - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên (VD: `"kiểm tra thông tin"`)
+   - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên (VD: `"kiểm tra thông tin()"`, `"tìm bạn đọc()"`)
    - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ (VD: `"checkLogin(user: String): Boolean"`)
 5. **UC Decomposition:** Include → Extend → Generalization. UC chính ở giữa, UC con tỏa ra.
 6. **Horizontal layout:** Classes trong cùng package phải dàn ngang, KHÔNG xếp dọc.
@@ -428,7 +428,7 @@ addLifeline("SD - MuonSach_PhanTich", "BanDocDAO", "BanDocDAO", "control", "DAO1
 addLifeline("SD - MuonSach_PhanTich", "BanDoc", "BanDoc", "entity", "E1")
 addActivation("SD - MuonSach_PhanTich", "FrmMuonSach")
 addMessage("SD - MuonSach_PhanTich", "Actor", "FrmMuonSach", "nhap ma ban doc + nhan Tim", "1", "sync")
-addMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "BanDocDAO", "timBanDoc(ma:String)", "2", "sync")
+addMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "BanDocDAO", "tìm bạn đọc()", "2", "sync")
 addReturnMessage("SD - MuonSach_PhanTich", "BanDocDAO", "FrmMuonSach", "BanDoc", "3")
 addReturnMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "Actor", "hien thi thong tin ban doc", "4")
 addCombinedFragment("SD - MuonSach_PhanTich", "alt", "khong tim thay ban doc", "FrmMuonSach,Actor")
