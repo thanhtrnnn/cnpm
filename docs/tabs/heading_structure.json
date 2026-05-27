@@ -1,0 +1,244 @@
+{
+  "tab_title": "Dịch vụ & Sản phẩm",
+  "tab_id": "t.67b8yduyz40",
+  "headings": [
+    {
+      "level": 1,
+      "namedStyle": "HEADING_1",
+      "startIndex": 1,
+      "endIndex": 25,
+      "text": "I. PHA XÁC ĐỊNH YÊU CẦU"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 25,
+      "endIndex": 55,
+      "text": "3. Mô hình nghiệp vụ bằng UML"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 55,
+      "endIndex": 91,
+      "text": "3.1. Danh sách các Actor cho module"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 314,
+      "endIndex": 347,
+      "text": "3.2. Các Use Case cho từng Actor"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 516,
+      "endIndex": 553,
+      "text": "3.3. Biểu đồ UC tổng quan của module"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 556,
+      "endIndex": 601,
+      "text": "3.4. Các biểu đồ Use Case phân rã của module"
+    },
+    {
+      "level": 1,
+      "namedStyle": "HEADING_1",
+      "startIndex": 701,
+      "endIndex": 719,
+      "text": "II. PHA PHÂN TÍCH"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 719,
+      "endIndex": 744,
+      "text": "1. Mô hình hóa chức năng"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 744,
+      "endIndex": 770,
+      "text": "1.1. Kịch bản “Tạo order”"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 2044,
+      "endIndex": 2084,
+      "text": "1.2. Kịch bản “Báo cáo tình trạng hàng”"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 3139,
+      "endIndex": 3168,
+      "text": "1.3. Kịch bản “Quản lý menu”"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 4222,
+      "endIndex": 4250,
+      "text": "1.4. Kịch bản “Quản lý kho”"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 5200,
+      "endIndex": 5219,
+      "text": "2. Mô hình hóa lớp"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 8942,
+      "endIndex": 8992,
+      "text": "3. Mô hình hóa động - Biểu đồ phân tích chức năng"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 8992,
+      "endIndex": 9017,
+      "text": "3.1. Chức năng Tạo order"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 10403,
+      "endIndex": 10446,
+      "text": "3.2. Chức năng Báo cáo tình trạng hàng hóa"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 11710,
+      "endIndex": 11738,
+      "text": "3.3. Chức năng Quản lý menu"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 12732,
+      "endIndex": 12759,
+      "text": "3.4. Chức năng Quản lý kho"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 13887,
+      "endIndex": 13925,
+      "text": "4. Mô hình hóa động - Biểu đồ tuần tự"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 13925,
+      "endIndex": 13950,
+      "text": "4.1. Chức năng Tạo order"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 15568,
+      "endIndex": 15607,
+      "text": "4.2. Chức năng Báo cáo tình trạng hàng"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 17049,
+      "endIndex": 17077,
+      "text": "4.3. Chức năng Quản lý menu"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 18154,
+      "endIndex": 18181,
+      "text": "4.4. Chức năng Quản lý kho"
+    },
+    {
+      "level": 1,
+      "namedStyle": "HEADING_1",
+      "startIndex": 19583,
+      "endIndex": 19601,
+      "text": "III. PHA THIẾT KẾ"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 19601,
+      "endIndex": 19626,
+      "text": "1. Thiết kế lớp thực thể"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 19628,
+      "endIndex": 19645,
+      "text": "2. Thiết kế CSDL"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 19648,
+      "endIndex": 19666,
+      "text": "3.  Thiết kế tĩnh"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 19666,
+      "endIndex": 19690,
+      "text": "3.1. Thiết kế giao diện"
+    },
+    {
+      "level": 3,
+      "namedStyle": "HEADING_3",
+      "startIndex": 20277,
+      "endIndex": 20303,
+      "text": "3.2. Thiết kế mô hình MVC"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 20418,
+      "endIndex": 20435,
+      "text": "4. Thiết kế động"
+    },
+    {
+      "level": 1,
+      "namedStyle": "HEADING_1",
+      "startIndex": 20436,
+      "endIndex": 20464,
+      "text": "IV. PHA CÀI ĐẶT VÀ KIỂM THỬ"
+    },
+    {
+      "level": 2,
+      "namedStyle": "HEADING_2",
+      "startIndex": 20464,
+      "endIndex": 20486,
+      "text": "1. Kiểm thử chức năng"
+    }
+  ],
+  "section_3_2": {
+    "level": 3,
+    "namedStyle": "HEADING_3",
+    "startIndex": 20277,
+    "endIndex": 20303,
+    "text": "3.2. Thiết kế mô hình MVC"
+  },
+  "next_section": {
+    "level": 2,
+    "namedStyle": "HEADING_2",
+    "startIndex": 20418,
+    "endIndex": 20435,
+    "text": "4. Thiết kế động"
+  }
+}
