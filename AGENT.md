@@ -162,3 +162,29 @@ Chiến lược cập nhật Google Docs (áp dụng cho mọi tab):
 - `tabId` cần thiết cho mọi location objects trong requests (cả read và write)
 - Heading style inheritance: phải explicit reset `namedStyleType: 'NORMAL_TEXT'` cho mọi paragraph
 - Inline formatting offsets: phải track offset mapping giữa original và cleaned text
+
+### Insert markdown vào Google Docs (đã verify)
+
+**Chiến lược 2 phase (đã hoạt động):**
+1. **Phase 1:** Parse markdown → convert sang text sạch (bỏ `###`, `|`, `**`, `` ` ``) → insert 1 lần
+2. **Phase 2:** Re-read document → tìm elements theo nội dung → classify → apply formatting
+
+**Markdown conversion rules:**
+- `### text` → text sạch + HEADING_3 (classify theo pattern: `a) ` → HEADING_3, `1. ` → HEADING_4)
+- `| col1 | col2 |` → `col1 | col2` (bỏ outer pipes, bỏ separator rows)
+- `**bold**` → text sạch + bold style
+- `` `code` `` → text sạch + Courier New font
+- `- item` → text sạch + bullet style
+- `---` → skip
+- PlantUML blocks → skip (insert ảnh sau)
+
+**Rate limiting:**
+- Google Docs API: 60 write requests/minute/user
+- Dùng batch requests (20 operations/batch) + delay 3s giữa mỗi batch
+- Retry 3 lần với exponential backoff khi gặp 429
+
+**PlantUML images (bypass Drive upload):**
+- Service accounts không có storage quota → không upload được lên personal Drive
+- Giải pháp: dùng `insertInlineImage` với `uri` = PlantUML public server URL
+- URL format: `https://www.plantuml.com/plantuml/png/{encoded}`
+- Encode: UTF-8 → zlib compress → custom base64
