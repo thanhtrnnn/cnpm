@@ -50,7 +50,15 @@ def cmd_read(args):
     try:
         client = GDocsClient()
 
-        if args.format == 'text':
+        if args.tab:
+            # Read specific tab content
+            if args.format == 'json':
+                result = client.get_tab_structure(args.document_id, args.tab)
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+            else:
+                text = client.read_tab_content(args.document_id, args.tab)
+                print(text)
+        elif args.format == 'text':
             text = client.read_as_text(args.document_id)
             print(text)
         else:
@@ -59,6 +67,62 @@ def cmd_read(args):
 
     except Exception as e:
         print(f"Error reading document: {e}")
+        sys.exit(1)
+
+
+def cmd_tabs(args):
+    """Handle tabs subcommand - list all tabs in document."""
+    try:
+        client = GDocsClient()
+        tabs = client.get_all_tabs(args.document_id)
+        client._print_tabs_recursive(tabs)
+    except Exception as e:
+        print(f"Error listing tabs: {e}")
+        sys.exit(1)
+
+
+def cmd_tab_read(args):
+    """Handle tab-read subcommand - read tab content with images."""
+    try:
+        import os
+        client = GDocsClient()
+        result = client.get_tab_structure(args.document_id, args.tab)
+
+        # Create output directory
+        output_dir = args.output or os.path.join(os.getcwd(), 'docs', 'tabs')
+        os.makedirs(output_dir, exist_ok=True)
+        os.makedirs(os.path.join(output_dir, 'screenshots'), exist_ok=True)
+
+        # Save text
+        md_path = os.path.join(output_dir, f"{args.tab.lower().replace(' ', '-').replace('&', 'va')}.md")
+        with open(md_path, 'w', encoding='utf-8') as f:
+            f.write(f'# {result["title"]}\n\n')
+            f.write(result['text'])
+        print(f'Text saved: {md_path}')
+
+        # Download images
+        if result['images']:
+            import urllib.request
+            downloaded = 0
+            for i, img in enumerate(result['images']):
+                uri = img.get('contentUri', '')
+                if not uri:
+                    continue
+                filename = f'image_{i+1:02d}.png'
+                filepath = os.path.join(output_dir, 'screenshots', filename)
+                try:
+                    req = urllib.request.Request(uri, headers={'User-Agent': 'Mozilla/5.0'})
+                    with urllib.request.urlopen(req, timeout=30) as resp:
+                        data = resp.read()
+                        with open(filepath, 'wb') as f:
+                            f.write(data)
+                    downloaded += 1
+                except Exception as e:
+                    print(f'  Warning: Failed to download image {i+1}: {e}')
+            print(f'Images: {downloaded} downloaded to {os.path.join(output_dir, "screenshots")}')
+
+    except Exception as e:
+        print(f"Error reading tab: {e}")
         sys.exit(1)
 
 
@@ -181,6 +245,17 @@ def main():
     read_parser.add_argument('document_id', help='Google Docs document ID')
     read_parser.add_argument('--format', choices=['json', 'text'], default='text',
                            help='Output format (default: text)')
+    read_parser.add_argument('--tab', help='Read specific tab by title (case-insensitive)')
+
+    # Tabs command
+    tabs_parser = subparsers.add_parser('tabs', help='List all tabs in document')
+    tabs_parser.add_argument('document_id', help='Google Docs document ID')
+
+    # Tab-read command
+    tab_read_parser = subparsers.add_parser('tab-read', help='Read tab content with images')
+    tab_read_parser.add_argument('document_id', help='Google Docs document ID')
+    tab_read_parser.add_argument('tab', help='Tab title (case-insensitive)')
+    tab_read_parser.add_argument('--output', help='Output directory (default: ./docs/tabs)')
 
     # Write command
     write_parser = subparsers.add_parser('write', help='Write content to document')
@@ -207,6 +282,8 @@ def main():
     commands = {
         'auth': cmd_auth,
         'read': cmd_read,
+        'tabs': cmd_tabs,
+        'tab-read': cmd_tab_read,
         'write': cmd_write,
         'sections': cmd_sections,
         'render': cmd_render,
