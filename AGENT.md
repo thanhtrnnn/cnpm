@@ -74,6 +74,61 @@
 - **docx:** Tạo file Word document (nếu cần export)
 - **gdocs:** Đọc/ghi Google Docs qua API (đẩy nội dung UP lên Google Docs)
 
+## Karaoke Codebase (`../karaoke`)
+
+### Kiến trúc tổng quát
+- **Frontend:** React 19 + TypeScript + Vite → `frontend/src/pages/`
+- **Backend:** Java 17 + Spring Boot 4.0 → `backend/src/main/java/com/karaoke/backend/`
+- **Kiến trúc:** React SPA → REST API → JPA Repository (không có Service layer riêng)
+
+### Key Entities (tab Dịch vụ & Sản phẩm)
+| Entity | Table | Mô tả |
+|--------|-------|-------|
+| `MenuItem` | `tblProduct` | id, name, category(String), price, stock, image, active |
+| `ServiceOrder` | `tblOrder` | id, room(ManyToOne→Room), items(OneToMany), orderedAt, status(OrderStatus) |
+| `ServiceOrderItem` | `tblOrderItem` | id, order(ManyToOne→ServiceOrder), menuItem(ManyToOne→MenuItem), quantity, unitPrice |
+| `OrderStatus` | enum | PENDING, PREPARING, SERVED, CANCELLED |
+| `Invoice` | `tblInvoice` | id, booking, roomTotal, serviceTotal, discount, grandTotal, paidAt |
+
+### Controllers
+| Controller | Route | Chức năng |
+|-----------|-------|-----------|
+| `MenuItemController` | `/api/menu-items` | CRUD menu (filter by category) |
+| `OrderController` | `/api/orders` | create, list(filter status), updateStatus |
+| `InvoiceController` | `/api/invoices` | generate (tính tổng từ ServiceOrderItems) |
+
+### Frontend Pages (tab Dịch vụ & Sản phẩm)
+| Component | File | API |
+|-----------|------|-----|
+| `MenuManagement` | `frontend/src/pages/MenuManagement.tsx` | `/api/menu-items` |
+| `OrderPage` | `frontend/src/pages/OrderPage.tsx` | `/api/menu-items`, `/api/orders` |
+| `OrderManagement` | `frontend/src/pages/OrderManagement.tsx` | `/api/orders` |
+| `InventoryPage` | `frontend/src/pages/InventoryPage.tsx` | `/api/menu-items` (PUT) |
+
+### Mối quan hệ chính
+```
+Room ──(1:N)──> ServiceOrder ──(1:N)──> ServiceOrderItem ──(N:1)──> MenuItem
+Invoice ──(N:1)──> Booking
+Invoice.serviceTotal = SUM(ServiceOrderItem.unitPrice × quantity)
+```
+
+## Google Docs Document
+
+- **Document ID:** `1H0pFNhmbX9yDMObxERGsZ0RqKjpX9Je6N60n4tYrB6s`
+- **Document tabs:** Dùng `includeTabsContent=true` để lấy tất cả tabs
+- **Tab tree:**
+  - [Test 3 - Software Process]
+  - GUIDELINE BỐ CỤC
+  - MÔ TẢ HỆ THỐNG
+  - XÁC ĐỊNH YÊU CẦU
+  - MODULES (5 children)
+    - Tài khoản & Thành viên
+    - Quản lý đặt và trả phòng
+    - **Dịch vụ & Sản phẩm** ← tab chính đang làm
+    - Quản trị cốt lõi
+    - Nhân sự và báo cáo thống kê
+  - THIẾT KẾ
+
 ## Quy trình phân tích yêu cầu
 
 Khi nhận yêu cầu từ user:

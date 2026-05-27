@@ -39,17 +39,18 @@ class MarkdownConverter:
         self.requests = []
         self.current_index = 1  # Start after document body start
 
-    def convert(self, markdown_text: str) -> List[Dict[str, Any]]:
+    def convert(self, markdown_text: str, start_index: int = 1) -> List[Dict[str, Any]]:
         """Convert markdown text to list of Google Docs batchUpdate requests.
 
         Args:
             markdown_text: Markdown formatted text (from cnpm skill output)
+            start_index: Starting index in the document (default: 1 for document body start)
 
         Returns:
             List of batchUpdate request dicts
         """
         self.requests = []
-        self.current_index = 1
+        self.current_index = start_index
 
         lines = markdown_text.split('\n')
         i = 0
@@ -173,6 +174,21 @@ class MarkdownConverter:
             }
         })
 
+        # Explicitly reset to NORMAL_TEXT to prevent style inheritance from previous paragraph
+        if len(clean_text) > 1:
+            self.requests.append({
+                'updateParagraphStyle': {
+                    'range': {
+                        'startIndex': self.current_index,
+                        'endIndex': self.current_index + len(clean_text) - 1
+                    },
+                    'paragraphStyle': {
+                        'namedStyleType': 'NORMAL_TEXT'
+                    },
+                    'fields': 'namedStyleType'
+                }
+            })
+
         self._apply_inline_formatting(text, self.current_index)
         self.current_index += len(clean_text)
 
@@ -211,37 +227,13 @@ class MarkdownConverter:
         })
 
         # Calculate table structure indices
-        # Table starts at current_index, each cell has start/end indices
-        # We need to insert text into each cell after the table is created
-        # The table structure in Google Docs is:
-        # - Table start (current_index)
-        # - Row 1: Cell 1 content, Cell 2 content, ...
-        # - Row 2: Cell 1 content, Cell 2 content, ...
-        # Each cell content starts at specific indices
-
-        # After inserting the table, we need to fill cells
-        # The table occupies a certain number of indices
-        # We'll calculate offsets based on the table structure
-
-        # For now, insert text into cells using replaceAllText after table creation
-        # This is a simpler approach that works with the API
-
-        # Actually, we need to use the table cell structure
-        # Let's add the table first, then we'll need to fill cells in a separate batch
-
-        # Store table data for post-processing
-        self._pending_table = {
-            'rows': rows,
-            'start_index': self.current_index,
-            'num_rows': num_rows,
-            'num_cols': num_cols
-        }
-
-        # Update current index to account for table
-        # Each cell takes at least 1 character, plus table/row/cell structure
-        # Approximate: each cell = 2 chars (content + newline), plus structure overhead
-        table_chars = num_rows * num_cols * 2 + num_rows + 2
-        self.current_index += table_chars
+        # In Google Docs, each cell contains a paragraph with 1 char (newline)
+        # Table structure: each cell = 2 indices (content + newline)
+        # Plus table/row/cell structure markers
+        # Total indices per row = num_cols * 2 (cells) + 1 (row marker)
+        # Total indices for table = num_rows * (num_cols * 2 + 1) + 1 (table marker)
+        table_indices = num_rows * (num_cols * 2 + 1) + 1
+        self.current_index += table_indices
 
     def _add_plantuml(self, code: str):
         """Add PlantUML diagram (rendered as image if renderer available)."""
@@ -275,6 +267,20 @@ class MarkdownConverter:
             }
         })
 
+        # Reset paragraph style to prevent inheritance
+        self.requests.append({
+            'updateParagraphStyle': {
+                'range': {
+                    'startIndex': self.current_index,
+                    'endIndex': self.current_index + len(text) - 1
+                },
+                'paragraphStyle': {
+                    'namedStyleType': 'NORMAL_TEXT'
+                },
+                'fields': 'namedStyleType'
+            }
+        })
+
         # Apply monospace font
         self.requests.append({
             'updateTextStyle': {
@@ -303,6 +309,20 @@ class MarkdownConverter:
             }
         })
 
+        # Reset paragraph style to prevent inheritance
+        self.requests.append({
+            'updateParagraphStyle': {
+                'range': {
+                    'startIndex': self.current_index,
+                    'endIndex': self.current_index + len(text) - 1
+                },
+                'paragraphStyle': {
+                    'namedStyleType': 'NORMAL_TEXT'
+                },
+                'fields': 'namedStyleType'
+            }
+        })
+
         # Apply bullet formatting
         self.requests.append({
             'createParagraphBullets': {
@@ -325,6 +345,20 @@ class MarkdownConverter:
             'insertText': {
                 'location': {'index': self.current_index},
                 'text': text
+            }
+        })
+
+        # Reset paragraph style to prevent inheritance
+        self.requests.append({
+            'updateParagraphStyle': {
+                'range': {
+                    'startIndex': self.current_index,
+                    'endIndex': self.current_index + len(text) - 1
+                },
+                'paragraphStyle': {
+                    'namedStyleType': 'NORMAL_TEXT'
+                },
+                'fields': 'namedStyleType'
             }
         })
 
@@ -397,18 +431,19 @@ class MarkdownConverter:
             })
 
 
-def convert_markdown_to_requests(markdown_text: str, plantuml_renderer=None) -> List[Dict[str, Any]]:
+def convert_markdown_to_requests(markdown_text: str, plantuml_renderer=None, start_index: int = 1) -> List[Dict[str, Any]]:
     """Convenience function to convert markdown to Google Docs requests.
 
     Args:
         markdown_text: Markdown formatted text
         plantuml_renderer: Optional callable for PlantUML rendering
+        start_index: Starting index in the document (default: 1 for document body start)
 
     Returns:
         List of batchUpdate request dicts
     """
     converter = MarkdownConverter(plantuml_renderer)
-    return converter.convert(markdown_text)
+    return converter.convert(markdown_text, start_index)
 
 
 def extract_plantuml_blocks(markdown_text: str) -> List[str]:
