@@ -50,6 +50,15 @@
 4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến ở pha Thiết kế)
 5. **UML:** PlantUML trong code block `plantuml`
 
+## Quy tắc formatting Notion
+
+1. **Backtick:** Luôn dùng backtick cho tên biến, tên hàm, tên lớp, tên công nghệ
+   - VD: `DAO`, `Entity`, `Boundary`, `CSDL`, `findById()`, `RoomDAO`
+   - KHÔNG dùng backtick cho từ tiếng Việt thông thường
+2. **Columns:** Tối đa 4 cột. Nếu bước nào chứa bảng → tối đa 2 cột
+3. **Callout pairs:** "Mục tiêu" + "Đầu vào" luôn đặt trong 2 columns
+4. **PlantUML:** Dùng code block `plantuml`, KHÔNG dùng `javascript`
+
 ## Actors dự kiến
 
 | Actor | Vai trò |
@@ -136,3 +145,20 @@ Khi nhận yêu cầu từ user:
 2. Sinh plan → chờ user xác nhận
 3. Thực hiện theo đúng scope đã xác nhận
 4. Hỏi sau mỗi pha: "Bạn có muốn điều chỉnh gì không?"
+
+## Google Docs Update Strategy
+
+Chiến lược cập nhật Google Docs (áp dụng cho mọi tab):
+
+### Quy trình 5 bước
+1. **Map** — Đọc và dump toàn bộ heading structure (HEADING_1/2/3 + indices)
+2. **Identify** — Xác định vị trí update chính xác (start/end indices)
+3. **Test** — Insert thử nội dung nhỏ, verify formatting TRƯỚC KHI insert toàn bộ
+4. **Execute** — Update theo batch nhỏ (mỗi chức năng 1 batch), verify sau mỗi batch
+5. **Commit** — Git commit khi hoàn thành
+
+### Lưu ý kỹ thuật
+- Google Docs indices thay đổi SAU MỖI batchUpdate → phải re-read trước mỗi operation
+- `tabId` cần thiết cho mọi location objects trong requests (cả read và write)
+- Heading style inheritance: phải explicit reset `namedStyleType: 'NORMAL_TEXT'` cho mọi paragraph
+- Inline formatting offsets: phải track offset mapping giữa original và cleaned text
