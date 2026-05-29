@@ -55,9 +55,12 @@
 1. **Backtick:** Luôn dùng backtick cho tên biến, tên hàm, tên lớp, tên công nghệ
    - VD: `DAO`, `Entity`, `Boundary`, `CSDL`, `findById()`, `RoomDAO`
    - KHÔNG dùng backtick cho từ tiếng Việt thông thường
-2. **Columns:** Tối đa 4 cột. Nếu bước nào chứa bảng → tối đa 2 cột
-3. **Callout pairs:** "Mục tiêu" + "Đầu vào" luôn đặt trong 2 columns
-4. **PlantUML:** Dùng code block `plantuml`, KHÔNG dùng `javascript`
+2. **Bold:** Dùng `**text**` cho tiêu đề con, tên class, tên chức năng
+   - VD: `**OrderController**`, `**1. Tầng giao diện (Boundary)**`
+3. **Bảng:** Tối đa 4 cột. Nếu bước chứa bảng → tối đa 2 cột
+4. **Callout pairs:** "Mục tiêu" + "Đầu vào" luôn đặt trong 2 columns
+5. **PlantUML:** Dùng code block `plantuml`, KHÔNG dùng `javascript`
+   - Class diagram: 1 sơ đồ đồng nhất cho toàn module (không tách theo chức năng)
 
 ## Actors dự kiến
 

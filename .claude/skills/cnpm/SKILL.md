@@ -215,6 +215,37 @@ Nội dung đầu vào...
 
 ---
 
+## Markdown Formatting Rules (BẮT BUỘC)
+
+### Bold
+Dùng `**text**` cho:
+- Tên class (Boundary, Control, Entity): `**OrderController**`, `**MenuItem**`
+- Tên hàm trong phân tích chữ ký: `createOrder()` in backtick
+- Tiêu đề con: `**1. Tầng giao diện (Boundary)**`
+
+### Backtick
+Dùng `` `text` `` cho:
+- Tên biến, tên tham số, tên type: `roomId`, `String`, `OrderStatus`
+- Giá trị enum: `PENDING`, `PREPARING`
+- Tên hàm: `createOrder()`, `getAll()`
+
+### Bảng
+- Luôn có header row + separator row (`|------|`)
+- Tối đa 4 cột
+- Nếu bước chứa bảng → tối đa 2 cột trong Notion
+
+### Heading hierarchy
+- `##` = section chính (II.3, III.2)
+- `###` = sub-section (a, b, c, d)
+- `**bold paragraph**` = tiêu đề con (1. Tầng giao diện)
+
+### PlantUML
+- Luôn dùng code block `plantuml`, KHÔNG dùng `javascript`
+- Class diagram: 3 cột Boundary | Control | Entity
+- **Đồng nhất 1 sơ đồ cho toàn module** (không tách theo chức năng)
+
+---
+
 ## PlantUML Style Rules (BẮT BUỘC)
 
 ### Tổng quan layout

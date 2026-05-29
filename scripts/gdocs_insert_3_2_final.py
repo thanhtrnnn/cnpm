@@ -106,18 +106,45 @@ def parse_md(md_content):
     return blocks
 
 
+def strip_bold(text):
+    """Remove ** markers and return clean text."""
+    return re.sub(r'\*\*(.+?)\*\*', r'\1', text)
+
+
+def extract_bold_ranges(text):
+    """Find positions of bold text within a line.
+    Returns list of (start, end) offsets in the CLEAN text."""
+    ranges = []
+    clean = ''
+    i = 0
+    while i < len(text):
+        if text[i:i+2] == '**':
+            # Find closing **
+            j = text.find('**', i + 2)
+            if j != -1:
+                bold_start = len(clean)
+                bold_content = text[i+2:j]
+                clean += bold_content
+                ranges.append((bold_start, len(clean)))
+                i = j + 2
+                continue
+        clean += text[i]
+        i += 1
+    return clean, ranges
+
+
 def build_text(blocks):
     lines = []
     for b in blocks:
         if b['type'] == 'heading':
-            lines.append(b['text'])
+            lines.append(strip_bold(b['text']))
         elif b['type'] == 'table_row':
-            lines.append(b['text'])
+            lines.append(strip_bold(b['text']))
         elif b['type'] == 'list_item':
             prefix = '  ' if b.get('indent', 0) > 0 else ''
-            lines.append(prefix + '- ' + b['text'])
+            lines.append(prefix + '- ' + strip_bold(b['text']))
         elif b['type'] == 'paragraph':
-            lines.append(b['text'])
+            lines.append(strip_bold(b['text']))
     return '\n'.join(lines)
 
 
@@ -146,16 +173,16 @@ def get_elements(client, doc_id, tab_title):
             text = ''.join(e.get('textRun', {}).get('content', '') for e in element['paragraph'].get('elements', []))
             if '3.2. Thiết kế mô hình MVC' in text:
                 found = True
+                continue
             if found:
+                # Stop at next major section
+                if '4. Thiết kế động' in text:
+                    break
                 elements.append({
                     'startIndex': element['startIndex'],
                     'endIndex': element['endIndex'],
                     'text': text.rstrip()
                 })
-            if found and len(elements) > 1 and ('4. Thiết kế động' in text or element['paragraph'].get('paragraphStyle', {}).get('namedStyleType', '').startswith('HEADING_1')):
-                if '3.2' not in text:
-                    elements.pop()
-                    break
     return elements, tab_id
 
 
@@ -284,6 +311,51 @@ def main():
     apply_batch(heading_reqs, "headings")
     apply_batch(normal_reqs, "normal")
     apply_batch(bullet_reqs, "bullets")
+
+    # Step 5.5: Apply bold formatting
+    print("\n" + "=" * 60)
+    print("STEP 5.5: Apply bold formatting")
+    print("=" * 60)
+
+    # Re-read to get fresh elements with clean text
+    elements_bold, tab_id_bold = get_elements(client, DOC_ID, TAB_TITLE)
+
+    # Re-parse markdown to get original bold ranges
+    with open(MD_FILE, 'r', encoding='utf-8') as f:
+        md_bold = f.read()
+    blocks_bold = parse_md(md_bold)
+
+    bold_reqs = []
+    bold_idx = 0
+    for elem in elements_bold:
+        text = elem['text']
+        if not text.strip():
+            continue
+        # Find corresponding block in original markdown
+        while bold_idx < len(blocks_bold):
+            block = blocks_bold[bold_idx]
+            clean_text = strip_bold(block['text'])
+            if clean_text.strip() and clean_text.strip() in text.strip():
+                # Extract bold ranges from original text
+                _, bold_ranges = extract_bold_ranges(block['text'])
+                for (b_start, b_end) in bold_ranges:
+                    # Map to document position
+                    doc_start = elem['startIndex'] + text.find(clean_text[b_start:b_end])
+                    doc_end = doc_start + (b_end - b_start)
+                    if doc_start >= elem['startIndex'] and doc_end <= elem['endIndex']:
+                        bold_reqs.append({
+                            'updateTextStyle': {
+                                'range': {'startIndex': doc_start, 'endIndex': doc_end, 'tabId': tab_id_bold},
+                                'textStyle': {'bold': True},
+                                'fields': 'bold'
+                            }
+                        })
+                bold_idx += 1
+                break
+            bold_idx += 1
+
+    print(f"  Bold ranges: {len(bold_reqs)}")
+    apply_batch(bold_reqs, "bold")
 
     # Step 6: Verify
     print("\n" + "=" * 60)
