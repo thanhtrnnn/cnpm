@@ -1,11 +1,13 @@
 """Insert section 3.2 content into Google Docs.
 
-Two-phase approach (proven reliable):
-1. Parse markdown → convert to clean text → insert as single block
-2. Re-read document → classify paragraphs → apply formatting (heading, bold, bullet, inline code)
+Three-phase approach (proven reliable):
+1. Insert clean text (table rows as pipe-separated placeholders)
+2. Apply formatting (headings, bold, bullets, inline code)
+3. Replace table text with native Google Docs tables (bottom-to-top)
+4. Insert PlantUML image via public URL
 
-Tables are inserted as pipe-separated text with monospace formatting.
-PlantUML images are inserted via public URL if possible.
+Bold in table cells: after inserting cell text, strip inherited bold,
+then re-apply bold only to ranges that were **bold** in the markdown.
 """
 import sys
 import os
@@ -130,8 +132,9 @@ def strip_plantuml_block(md_content):
 def parse_tables(md_content):
     """Extract all tables from markdown.
 
-    Returns list of tables, each a list of rows (each row is a list of cell strings).
-    Separator rows are excluded. Cell content has bold markers stripped.
+    Returns list of tables, each a list of rows (each row is a list of cell dicts).
+    Each cell dict has 'clean' (bold markers stripped) and 'original' (raw markdown).
+    Separator rows are excluded.
     """
     md_content, _ = strip_plantuml_block(md_content)
     tables = []
@@ -143,8 +146,11 @@ def parse_tables(md_content):
         if stripped.startswith('|') and '|' in stripped[1:]:
             if re.match(r'^\|[\s\-:|]+\|$', stripped):
                 continue  # skip separator
-            cells = [clean_inline(c.strip()) for c in stripped.split('|')[1:-1]]
-            current_table.append(cells)
+            raw_cells = [c.strip() for c in stripped.split('|')[1:-1]]
+            row = []
+            for c in raw_cells:
+                row.append({'clean': clean_inline(c), 'original': c})
+            current_table.append(row)
             in_table = True
         else:
             if in_table and current_table:
@@ -821,24 +827,55 @@ def main():
                             'end': para_elem['endIndex']
                         })
 
-        # Populate cells
+        # Populate cells in REVERSE order to avoid index shifting
+        # Build list of (row, col, clean_text, original_text, cell_para) tuples
+        cell_inserts = []
         cell_idx = 0
         for row_idx, row in enumerate(table_data):
-            for col_idx, cell_text in enumerate(row):
-                if cell_idx < len(cell_paragraphs) and cell_text.strip():
-                    cell_para = cell_paragraphs[cell_idx]
-                    text = cell_text + '\n'
-                    try:
-                        api_call(client, DOC_ID, [{
-                            'insertText': {
-                                'location': {'index': cell_para['start'], 'tabId': tab_id_t},
-                                'text': text
-                            }
-                        }], f"cell [{row_idx},{col_idx}]")
-                        time.sleep(1)
-                    except Exception as e:
-                        print(f"  WARNING: Failed to insert cell [{row_idx},{col_idx}]: {e}")
+            for col_idx, cell_dict in enumerate(row):
+                if cell_idx < len(cell_paragraphs) and cell_dict['clean'].strip():
+                    cell_inserts.append((row_idx, col_idx, cell_dict['clean'], cell_dict['original'], cell_paragraphs[cell_idx]))
                 cell_idx += 1
+
+        # Insert in reverse order (last cell first)
+        for row_idx, col_idx, clean_text, original_text, cell_para in reversed(cell_inserts):
+            try:
+                # Insert clean text
+                api_call(client, DOC_ID, [{
+                    'insertText': {
+                        'location': {'index': cell_para['start'], 'tabId': tab_id_t},
+                        'text': clean_text
+                    }
+                }], f"cell [{row_idx},{col_idx}]")
+                time.sleep(1)
+
+                # Strip inherited bold formatting from entire cell
+                cell_end = cell_para['start'] + len(clean_text)
+                api_call(client, DOC_ID, [{
+                    'updateTextStyle': {
+                        'range': {'startIndex': cell_para['start'], 'endIndex': cell_end, 'tabId': tab_id_t},
+                        'textStyle': {'bold': False},
+                        'fields': 'bold'
+                    }
+                }], f"unbold cell [{row_idx},{col_idx}]")
+                time.sleep(1)
+
+                # Re-apply bold only for ranges that should be bold
+                bold_ranges = extract_bold_ranges(original_text)
+                for (b_start, b_end) in bold_ranges:
+                    bold_doc_start = cell_para['start'] + b_start
+                    bold_doc_end = cell_para['start'] + b_end
+                    api_call(client, DOC_ID, [{
+                        'updateTextStyle': {
+                            'range': {'startIndex': bold_doc_start, 'endIndex': bold_doc_end, 'tabId': tab_id_t},
+                            'textStyle': {'bold': True},
+                            'fields': 'bold'
+                        }
+                    }], f"bold cell [{row_idx},{col_idx}] range [{b_start}:{b_end}]")
+                    time.sleep(1)
+
+            except Exception as e:
+                print(f"  WARNING: Failed to insert cell [{row_idx},{col_idx}]: {e}")
 
         print(f"  Populated {min(cell_idx, len(cell_paragraphs))} cells")
 

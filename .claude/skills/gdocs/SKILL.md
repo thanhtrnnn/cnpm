@@ -114,12 +114,42 @@ Trích xuất `<DOCUMENT_ID>` từ URL.
 
 ---
 
+## Markdown Insertion Strategy (đã verify)
+
+### 3-Phase Approach
+
+1. **Phase 1 — Insert text:** Parse markdown → insert clean text (table rows as pipe-separated placeholders)
+2. **Phase 2 — Apply formatting:** Re-read → classify paragraphs → apply heading, bold, bullets, inline code
+3. **Phase 3 — Replace tables:** Re-read → find table regions → delete text → `insertTable` → populate cells (bottom-to-top)
+4. **Phase 4 — PlantUML image:** `insertInlineImage` with public URL (đã hoạt động)
+
+### Native Table Insertion
+
+- `parse_tables()` returns `[{'clean': text, 'original': markdown}]` per cell
+- Find table regions: consecutive paragraphs with ` | ` separators
+- Process **bottom-to-top** to avoid index shifting
+- Cell paragraphs: `table.tableRows[i].tableCells[j].content`
+- Insert cells in **reverse order** (last cell first)
+
+### Bold in Table Cells (critical)
+
+`insertText` inherits formatting from adjacent text runs → causes unwanted bold.
+Fix: after inserting cell text, strip inherited bold, then re-apply only where needed:
+1. `updateTextStyle:bold=False` on full cell range
+2. `updateTextStyle:bold=True` only on ranges from `**bold**` markers
+
+### Rate Limiting
+
+- 60 write requests/minute/user
+- Batch 20 requests + 3s delay between batches
+- Retry 3 times with exponential backoff on 429
+
 ## Hạn chế
 
-- **PlantUML:** Phải render thành PNG trước khi insert (Google Docs không hỗ trợ native)
-- **Tables:** Google Docs API tạo table đơn giản, không merge cells phức tạp
-- **Formatting:** Hỗ trợ cơ bản (bold, italic, heading, bullets). Không hỗ trợ callout/columns như Notion
-- **Index arithmetic:** Google Docs dùng character index, cần đọc document trước khi update
+- **PlantUML:** `insertInlineImage` with public URL đã hoạt động. Fallback: render PNG thủ công
+- **Tables:** Native tables hỗ trợ tốt. Không merge cells phức tạp
+- **Formatting:** Hỗ trợ bold, italic, heading, bullets, inline code (Courier New), native tables
+- **Index arithmetic:** Google Docs dùng character index, phải re-read sau mỗi batchUpdate
 
 ---
 

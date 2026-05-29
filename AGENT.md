@@ -185,11 +185,19 @@ Chiến lược cập nhật Google Docs (áp dụng cho mọi tab):
 
 **Native table insertion (bottom-to-top):**
 - Parse markdown → extract table data (rows × cols, cell content)
+- `parse_tables()` returns `[{'clean': text, 'original': markdown_text}]` per cell
 - Insert all text first, apply formatting
 - Find table regions: consecutive paragraphs with ` | ` separators
 - Process bottom-to-top: delete text → `insertTable` → re-read → populate cells
 - Cell paragraphs nested trong `table.tableRows[i].tableCells[j].content`
 - Bottom-to-top tránh index shifting (content above giữ nguyên)
+
+**Cell bold formatting (critical):**
+- `insertText` inherits formatting from adjacent text runs → causes unwanted bold in cells
+- Fix: sau khi insert text, apply `updateTextStyle:bold=False` để strip inherited bold
+- Sau đó apply `updateTextStyle:bold=True` chỉ cho range cần bold (từ markdown `**bold**`)
+- `extract_bold_ranges(original_text)` trả về `[(clean_start, clean_end)]`
+- Insert cells in REVERSE order (last cell first) để tránh index shifting
 
 **Rate limiting:**
 - Google Docs API: 60 write requests/minute/user
