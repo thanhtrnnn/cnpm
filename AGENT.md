@@ -183,8 +183,10 @@ Chiến lược cập nhật Google Docs (áp dụng cho mọi tab):
 - Dùng batch requests (20 operations/batch) + delay 3s giữa mỗi batch
 - Retry 3 lần với exponential backoff khi gặp 429
 
-**PlantUML images (bypass Drive upload):**
+**PlantUML images (LIMITATION):**
 - Service accounts không có storage quota → không upload được lên personal Drive
-- Giải pháp: dùng `insertInlineImage` với `uri` = PlantUML public server URL
-- URL format: `https://www.plantuml.com/plantuml/png/{encoded}`
-- Encode: UTF-8 → zlib compress → custom base64
+- `insertInlineImage` với public URL → Google không fetch được (0 inline objects)
+- `insertInlineImage` với data URI → quá lớn (2K limit, ảnh 100KB+)
+- **Giải pháp hiện tại:** Insert text trước, ảnh cần insert thủ công từ file PNG đã render
+- Render PNG: dùng MCP plantuml tool hoặc `plantuml_renderer.py`
+- Ảnh render được lưu tại `output/diagrams/`
