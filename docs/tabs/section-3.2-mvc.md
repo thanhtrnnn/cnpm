@@ -209,45 +209,30 @@ skinparam packageFontSize 13
 hide empty members
 
 package "<<Boundary>>" #E3F2FD {
-  package "Nhân viên" #BBDEFB {
-    class LoginView {
-      +render()
-    }
-    class StaffHomeView {
-      +render()
-    }
-    class CreateOrderView {
-      +render()
-    }
-    class ConfirmOrderView {
-      +render()
-    }
-    class DamageReportView {
-      +render()
-    }
-    class ConfirmReportView {
-      +render()
-    }
+  together {
+    class OrderPage { +render() }
+    class RoomSelector { +render() }
+    class ProductSearchForm { +render() }
+    class ProductTable { +render() }
+    class OrderCartPanel { +render() }
+    class ConfirmOrderModal { +render() }
   }
-  package "Quản lý" #BBDEFB {
-    class ManagerHomeView {
-      +render()
-    }
-    class MenuView {
-      +render()
-    }
-    class EditMenuView {
-      +render()
-    }
-    class WarehouseManageView {
-      +render()
-    }
-    class SearchProviderView {
-      +render()
-    }
-    class ImportReceiptView {
-      +render()
-    }
+  together {
+    class OrderManagement { +render() }
+    class StatusFilterTabs { +render() }
+    class OrderCard { +render() }
+    class StatusUpdateModal { +render() }
+  }
+  together {
+    class MenuManagement { +render() }
+    class CategoryFilter { +render() }
+    class MenuItemTable { +render() }
+    class MenuItemForm { +render() }
+  }
+  together {
+    class InventoryPage { +render() }
+    class StockTable { +render() }
+    class StockUpdateForm { +render() }
   }
 }
 
@@ -270,15 +255,6 @@ package "<<Control>>" #E8F5E9 {
 }
 
 package "<<Entity>>" #FFF3E0 {
-  class MenuItem {
-    -id: String
-    -name: String
-    -category: String
-    -price: double
-    -stock: int
-    -image: String
-    -active: boolean
-  }
   class ServiceOrder {
     -id: String
     -orderedAt: DateTime
@@ -287,6 +263,15 @@ package "<<Entity>>" #FFF3E0 {
   class ServiceOrderItem {
     -quantity: int
     -unitPrice: double
+  }
+  class MenuItem {
+    -id: String
+    -name: String
+    -category: String
+    -price: double
+    -stock: int
+    -image: String
+    -active: boolean
   }
   enum OrderStatus {
     PENDING
@@ -309,25 +294,36 @@ package "<<Entity>>" #FFF3E0 {
   }
 }
 
-' Boundary -> Control
-StaffHomeView --> OrderController
-CreateOrderView --> OrderController
-ConfirmOrderView --> OrderController
-DamageReportView --> OrderController
-ConfirmReportView --> OrderController
-ManagerHomeView --> MenuItemController
-MenuView --> MenuItemController
-EditMenuView --> MenuItemController
-WarehouseManageView --> MenuItemController
-SearchProviderView --> MenuItemController
-ImportReceiptView --> MenuItemController
+' Boundary -> Control (Tạo order)
+OrderPage --> OrderController
+RoomSelector --> OrderController
+ProductSearchForm --> OrderController
+ProductTable --> OrderController
+OrderCartPanel --> OrderController
+ConfirmOrderModal --> OrderController
+
+' Boundary -> Control (Báo cáo)
+OrderManagement --> OrderController
+StatusFilterTabs --> OrderController
+OrderCard --> OrderController
+StatusUpdateModal --> OrderController
+
+' Boundary -> Control (Quản lý menu)
+MenuManagement --> MenuItemController
+CategoryFilter --> MenuItemController
+MenuItemTable --> MenuItemController
+MenuItemForm --> MenuItemController
+
+' Boundary -> Control (Quản lý kho)
+InventoryPage --> MenuItemController
+StockTable --> MenuItemController
+StockUpdateForm --> MenuItemController
 
 ' Control -> Entity
 OrderController --> ServiceOrder
 OrderController --> MenuItem
 MenuItemController --> MenuItem
 InvoiceController --> Invoice
-InvoiceController --> ServiceOrder
 
 ' Entity relationships
 ServiceOrder "1" --> "*" ServiceOrderItem
