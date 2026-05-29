@@ -221,13 +221,25 @@ Mỗi biểu đồ UML **PHẢI** bắt đầu bằng theme để đảm bảo s
 
 ```plantuml
 @startuml
-' === VP Base Theme ===
+' === VP Base Theme v2 ===
 skinparam linetype ortho
 skinparam defaultFontName "Segoe UI"
 skinparam defaultFontSize 12
 skinparam shadowing false
 skinparam arrowColor #000000
 skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
 
 skinparam class {
   BackgroundColor #FFFFFF
@@ -261,6 +273,40 @@ skinparam sequence {
   EntityBackgroundColor #7ACFF5
   MessageFontSize 11
 }
+
+<style>
+sequenceDiagram {
+  actor {
+    Padding 2
+    Margin 2
+    FontName "Segoe UI"
+    FontSize 12
+  }
+  participant {
+    Padding 2
+    Margin 2
+    FontName "Segoe UI"
+    FontSize 11
+  }
+  lifeLine {
+    LineThickness 1
+    Padding 4
+  }
+  message {
+    FontName "Segoe UI"
+    FontSize 11
+    Padding 1
+  }
+  divider {
+    FontName "Segoe UI"
+    FontSize 10
+  }
+  group {
+    FontName "Segoe UI"
+    FontSize 10
+  }
+}
+</style>
 
 hide empty members
 
@@ -309,11 +355,15 @@ skinparam packageStyle rectangle
 - Package dọc theo chiều ngang (trái → phải)
 - **KHÔNG xếp dọc** — classes trong mỗi package phải dàn ngang, không chồng chất
 
-**Cách tránh xếp dọc (BẮT BUỘC):**
-- Dùng `together { }` để nhóm classes nằm ngang trong cùng package
-- Nếu nhiều classes, chia thành nhiều package nhỏ thay vì 1 package lớn
-- Dùng hidden links `hidden` để kéo classes ra xa nhau theo chiều ngang
-- `skinparam packageMaxWidth 800` nếu cần mở rộng package
+**Quy tắc bố cục class diagram (BẮT BUỘC):**
+
+1. **Luôn `left to right direction`** — layout ngang, KHÔNG xếp dọc
+2. **Packages xếp theo chiều ngang:** Boundary (trái) → DAO (giữa) → Entity (phải)
+3. **Classes trong package PHẢI dàn ngang** — dùng `together { }` để buộc cùng hàng
+4. **Cùng loại class phải cùng hàng:** 2 Boundary class → 1 dòng, 2 Entity class → 1 dòng
+5. **Dùng hidden links** `hidden` để kéo classes ra xa nếu bị chồng
+6. **`skinparam packageMaxWidth 800`** nếu package quá hẹp
+7. **Nếu layout bị dọc** → thêm `together` hoặc chia package nhỏ hơn
 
 **Boundary classes — Theo lựa chọn công nghệ:**
 
@@ -502,6 +552,7 @@ BDao --> B
 
 ### Biểu đồ UC (Use Case)
 
+- **Luôn dùng VP Base Theme v2** khi viết PlantUML UC (xem mục "PlantUML Theme" ở trên)
 - `left to right direction`
 - Actors bên trái, use cases bên phải trong package
 - `<<include>>` và `<<extend>>` dùng mũi tên đứt nét
@@ -519,12 +570,29 @@ UC cha (trên) ← UC con generalization (dưới)
 **Ví dụ PlantUML UC với generalization:**
 ```plantuml
 @startuml
-left to right direction
+' === VP Base Theme v2 ===
 skinparam linetype ortho
-skinparam packageStyle rectangle
-title Biểu đồ Use Case – Quản lý mượn sách
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
 
 left to right direction
+skinparam packageStyle rectangle
+title Biểu đồ Use Case – Quản lý mượn sách
 
 rectangle "Quản lý mượn sách" {
   usecase "Mượn sách" as UC1

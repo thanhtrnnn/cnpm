@@ -1,6 +1,7 @@
-' VP Base Theme — matches Visual Paradigm default styling
-' Class diagrams: white boxes, sharp corners, no shadows
-' Sequence diagrams: #7ACFF5 blue for all elements
+' VP Base Theme v2 — matches Visual Paradigm default styling
+' Font: JVM SansSerif (Segoe UI on Win, Helvetica on Mac)
+' Class: ~12pt name, ~10pt attributes, no C/A icons
+' Sequence: #7ACFF5 blue, tight padding via <style>
 ' Usage: paste at top of @startuml block
 
 skinparam linetype ortho
@@ -9,6 +10,18 @@ skinparam defaultFontSize 12
 skinparam shadowing false
 skinparam arrowColor #000000
 skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
 
 skinparam class {
   BackgroundColor #FFFFFF
@@ -42,5 +55,39 @@ skinparam sequence {
   EntityBackgroundColor #7ACFF5
   MessageFontSize 11
 }
+
+<style>
+sequenceDiagram {
+  actor {
+    Padding 2
+    Margin 2
+    FontName "Segoe UI"
+    FontSize 12
+  }
+  participant {
+    Padding 2
+    Margin 2
+    FontName "Segoe UI"
+    FontSize 11
+  }
+  lifeLine {
+    LineThickness 1
+    Padding 4
+  }
+  message {
+    FontName "Segoe UI"
+    FontSize 11
+    Padding 1
+  }
+  divider {
+    FontName "Segoe UI"
+    FontSize 10
+  }
+  group {
+    FontName "Segoe UI"
+    FontSize 10
+  }
+}
+</style>
 
 hide empty members

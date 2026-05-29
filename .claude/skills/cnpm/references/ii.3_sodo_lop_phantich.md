@@ -5,7 +5,7 @@
 **Quy trình 4 bước (BẮT BUỘC trình bày):**
 
 - **Bước 1:** Mỗi giao diện chính trong module → đề xuất thành 1 **lớp Boundary**.
-  - **JFrame:** đặt tên dạng `GD[TênMànHình]` (VD: `GDTimPhong`, `GDThemKH`).
+  - **JFrame:** đặt tên tiếng Anh theo chức năng màn hình (VD: `SearchRoomView`, `EditRoomView`, `LoginView`).
   - **React:** đặt tên theo hậu tố loại component (xem bảng quy ước dưới). Ngoài ra, các thành phần con quan trọng (Modal, Form, Panel...) cũng có thể là lớp Boundary riêng nếu có tương tác phức tạp.
   - **Loại trừ:** Thông báo đơn giản (`alert`), hộp thoại xác nhận (`confirm`) không cần tách riêng.
 
@@ -21,31 +21,39 @@
   | `Table` | Bảng dữ liệu | Hiển thị danh sách dạng bảng | `RoomListTable`, `OrderHistoryTable` |
 
   **Lưu ý:** Tên class React dùng tiếng Anh (không phải tiếng Việt). Thuộc tính bên trong vẫn dùng tiền tố `in/out/sub/outsub/inout` + tiếng Việt.
-- **Bước 2:** Xem xét các thành phần trong mỗi giao diện, đặt tên với tiền tố loại:
-  - `in`: thành phần nhập liệu (ô nhập văn bản, ngày tháng...)
-  - `out`: thành phần hiển thị (bảng, nội dung...)
-  - `sub`: thành phần gửi dữ liệu (nút bấm, liên kết...)
-  - Kết hợp: `outsub` = bảng có thể nhấn chọn; `inout` = ô vừa hiển thị vừa sửa
+
+- **Bước 2:** Xem xét các thành phần cần thiết trong mỗi giao diện, đặt tên thành phần với tiền tố tương ứng loại:
+
+  | Tiền tố | Ý nghĩa | Ví dụ |
+  |---------|---------|-------|
+  | `in` | Thành phần nhập liệu — ô nhập văn bản, ô nhập ngày tháng... | `inKey`, `inCheckin`, `inUsername` |
+  | `out` | Thành phần hiển thị — bảng, nội dung... | `outId`, `outBooking` |
+  | `sub` | Thành phần gửi dữ liệu — nút bấm, liên kết... | `subSearch`, `subSave`, `subConfirm` |
+  | `outsub` | Kết hợp: hiển thị + có thể nhấn chọn | `outsubListRoom`, `outsubListClient` |
+  | `inout` | Kết hợp: vừa hiển thị vừa sửa được | `inoutName`, `inoutType` |
+
 - **Bước 3:** Với mỗi chức năng cần thực hiện dưới lớp giao diện, trả lời 4 câu hỏi:
-  1. **Tên phương thức?** — đặt theo quy ước mã nguồn
-  2. **Tham số đầu vào?**
-  3. **Tham số đầu ra?**
-  4. **Gán cho lớp nào?**
-     - Nếu đầu ra là một lớp thực thể → gán cho lớp đó
-     - Nếu không, xét đầu vào: nếu chỉ gồm 1 lớp thực thể → gán cho lớp đó
-     - Nếu đầu vào gồm nhiều lớp thực thể → gán cho lớp nào có thể chứa tất cả tham số
+
+  1. **Tên phù hợp của phương thức là gì?** — đặt tên theo quy ước mã nguồn (VD: `searchRoom`, `updateRoom`, `addBooking`)
+  2. **Các tham số đầu vào là gì?**
+  3. **Tham số đầu ra là gì?**
+  4. **Phương thức nên được gán vào lớp nào?** — Xem xét theo nguyên tắc:
+     - Nếu **đầu ra** là một loại lớp thực thể → gán phương thức cho lớp thực thể đó
+     - Nếu không phải, xét **đầu vào**: nếu chỉ gồm 1 lớp thực thể → gán cho lớp thực thể đó
+     - Nếu đầu vào gồm nhiều loại lớp thực thể → xem trong số đó lớp thực thể nào có thể chứa tất cả tham số đầu vào → gán phương thức cho lớp đó
+
 - **Bước 4:** Xây dựng sơ đồ lớp BCE cho module.
 
 Với mỗi lớp Boundary, trình bày:
 ```
-[Số]. Giao diện [tên] → lớp [GDTênLớp]
-Phương thức: [tênHàm()]   ← tên tiếng Việt, ngôn ngữ tự nhiên
-Input: [liệt kê]
-Output: [liệt kê]
+[Số]. Giao diện [tên] → lớp [TênLớpBoundary]
+Phương thức: [methodName()]   ← tên tiếng Anh
+Input: [liệt kê các thành phần in/outsub]
+Output: [liệt kê các thành phần out]
 Lớp chủ thể: [TênEntityLớpLiênQuan]
 ```
 
-**Lưu ý:** Ở pha phân tích, tên phương thức vẫn dùng tiếng Việt (VD: `timKH()`, `luuHopDong()`).
+**Lưu ý:** Ở pha phân tích, tên class và phương thức dùng tiếng Anh (VD: `searchRoom()`, `updateRoom()`, `addBooking()`). Thuộc tính bên trong vẫn dùng tiền tố `in/out/sub/outsub/inout` + tiếng Việt (VD: `inKey`, `subSearch`, `outsubListRoom`).
 
 **Variant JFrame:**
 
@@ -54,38 +62,39 @@ Lớp chủ thể: [TênEntityLớpLiênQuan]
 title Biểu đồ lớp phân tích BCE – Module [Tên] (JFrame)
 
 package "Boundary" #DDEEFF {
-  class GDChinh {
-    -subChucNangA
+  class MainView {
+    -subManageRoom
   }
-  class GDTimX {
-    -inTen
-    -subTim
-    -subThemMoi
-    -outsubDSX
+  class SearchRoomView {
+    -inKey
+    -subSearch
+    -subAddNew
+    -outsubListRoom
   }
-  class GDThemX {
-    -inTen
-    -inThuocTinhKhac
-    -outinThuocTinh
-    -subHuyNhap
-    +timX()
-    +themX()
+  class EditRoomView {
+    -inName
+    -inType
+    -outId
+    -inoutName
+    -subSave
+    +searchRoom()
+    +updateRoom()
   }
 }
 
 package "Entity" #FFF3CD {
-  class TenThucThe {
-    -thuocTinh1
-    -thuocTinh2
-    +timX()
-    +themX()
+  class Room {
+    -id : int
+    -name : String
+    +searchRoom()
+    +updateRoom()
   }
 }
 
-GDChinh --> GDTimX
-GDTimX --> GDThemX
-GDTimX --> TenThucThe
-GDThemX --> TenThucThe
+MainView --> SearchRoomView
+SearchRoomView --> EditRoomView
+SearchRoomView --> Room
+EditRoomView --> Room
 @enduml
 ```
 
@@ -96,37 +105,38 @@ GDThemX --> TenThucThe
 title Biểu đồ lớp phân tích BCE – Module [Tên] (React)
 
 package "Boundary" #DDEEFF {
-  class EntityPage <<Component>> {
-    -subChucNangA
+  class RoomPage <<Component>> {
+    -subManageRoom
   }
-  class SearchEntityForm <<Component>> {
-    -inTen
-    -subTim
-    -subThemMoi
-    -outsubDSX
+  class SearchRoomForm <<Component>> {
+    -inKey
+    -subSearch
+    -subAddNew
+    -outsubListRoom
   }
-  class AddEntityForm <<Component>> {
-    -inTen
-    -inThuocTinhKhac
-    -outinThuocTinh
-    -subHuyNhap
-    +timX()
-    +themX()
+  class EditRoomForm <<Component>> {
+    -inName
+    -inType
+    -outId
+    -inoutName
+    -subSave
+    +searchRoom()
+    +updateRoom()
   }
 }
 
 package "Entity" #FFF3CD {
-  class TenThucThe {
-    -thuocTinh1
-    -thuocTinh2
-    +timX()
-    +themX()
+  class Room {
+    -id : int
+    -name : String
+    +searchRoom()
+    +updateRoom()
   }
 }
 
-EntityPage --> SearchEntityForm
-SearchEntityForm --> AddEntityForm
-SearchEntityForm --> TenThucThe
-AddEntityForm --> TenThucThe
+RoomPage --> SearchRoomForm
+SearchRoomForm --> EditRoomForm
+SearchRoomForm --> Room
+EditRoomForm --> Room
 @enduml
 ```

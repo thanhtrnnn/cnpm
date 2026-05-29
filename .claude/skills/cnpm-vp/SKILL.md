@@ -503,7 +503,109 @@ Khi người dùng muốn tài liệu UP với biểu đồ VP:
 - Không có VP MCP server đang chạy
 - Người dùng không yêu cầu VP
 
-**PlantUML theme khi không dùng VP:** Khi vẽ PlantUML thay vì VP, PHẢI dùng theme từ `assets/vp-base.puml` + `assets/bce-colors.puml` (inline, vì MCP server không hỗ trợ `!include`). Xem chi tiết trong skill `cnpm` — mục "PlantUML Theme".
+**PlantUML theme khi không dùng VP:** Khi vẽ PlantUML thay vì VP, PHẢI dùng VP Base Theme v2 inline (MCP server không hỗ trợ `!include`):
+
+```plantuml
+@startuml
+' === VP Base Theme v2 ===
+skinparam linetype ortho
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+  FontSize 11
+  AttributeFontSize 10
+  AttributeIconSize 0
+  BorderThickness 1
+}
+
+skinparam package {
+  Style rectangle
+  FontSize 13
+  MaxWidth 800
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+}
+
+skinparam sequence {
+  ArrowColor Black
+  ActorBorderColor Black
+  ActorBackgroundColor #7ACFF5
+  ParticipantBorderColor Black
+  ParticipantBackgroundColor #7ACFF5
+  LifeLineBorderColor Black
+  LifeLineBackgroundColor #7ACFF5
+  BoundaryBorderColor Black
+  BoundaryBackgroundColor #7ACFF5
+  EntityBorderColor Black
+  EntityBackgroundColor #7ACFF5
+  MessageFontSize 11
+}
+
+<style>
+sequenceDiagram {
+  actor {
+    Padding 2
+    Margin 2
+    FontName "Segoe UI"
+    FontSize 12
+  }
+  participant {
+    Padding 2
+    Margin 2
+    FontName "Segoe UI"
+    FontSize 11
+  }
+  lifeLine {
+    LineThickness 1
+    Padding 4
+  }
+  message {
+    FontName "Segoe UI"
+    FontSize 11
+    Padding 1
+  }
+  divider {
+    FontName "Segoe UI"
+    FontSize 10
+  }
+  group {
+    FontName "Segoe UI"
+    FontSize 10
+  }
+}
+</style>
+
+hide empty members
+
+' === BCE Color Overlay ===
+skinparam class {
+  BackgroundColor<<Boundary>> #DDEEFF
+  BackgroundColor<<Component>> #DDEEFF
+  BackgroundColor<<DAO>> #FFE0B2
+  BackgroundColor<<Control>> #FFE0B2
+  BackgroundColor<<Entity>> #FFF3CD
+}
+@enduml
+```
 
 ---
 
