@@ -127,6 +127,69 @@ def strip_plantuml_block(md_content):
     return clean, blocks
 
 
+def parse_tables(md_content):
+    """Extract all tables from markdown.
+
+    Returns list of tables, each a list of rows (each row is a list of cell strings).
+    Separator rows are excluded. Cell content has bold markers stripped.
+    """
+    md_content, _ = strip_plantuml_block(md_content)
+    tables = []
+    current_table = []
+    in_table = False
+
+    for line in md_content.split('\n'):
+        stripped = line.strip()
+        if stripped.startswith('|') and '|' in stripped[1:]:
+            if re.match(r'^\|[\s\-:|]+\|$', stripped):
+                continue  # skip separator
+            cells = [clean_inline(c.strip()) for c in stripped.split('|')[1:-1]]
+            current_table.append(cells)
+            in_table = True
+        else:
+            if in_table and current_table:
+                tables.append(current_table)
+                current_table = []
+                in_table = False
+
+    if current_table:
+        tables.append(current_table)
+
+    return tables
+
+
+def find_table_regions(elements):
+    """Find consecutive paragraph elements that form table regions.
+
+    Returns list of regions, each with start_idx, end_idx (character offsets),
+    and the element indices that belong to the region.
+    """
+    regions = []
+    current_region = []
+
+    for i, elem in enumerate(elements):
+        text = elem['text']
+        if ' | ' in text and text.count('|') >= 2:
+            current_region.append(i)
+        else:
+            if len(current_region) >= 1:
+                regions.append({
+                    'elements': list(current_region),
+                    'start_elem_idx': current_region[0],
+                    'end_elem_idx': current_region[-1],
+                })
+            current_region = []
+
+    if len(current_region) >= 1:
+        regions.append({
+            'elements': list(current_region),
+            'start_elem_idx': current_region[0],
+            'end_elem_idx': current_region[-1],
+        })
+
+    return regions
+
+
 def build_text(md_content):
     """Convert markdown to clean text for insertion.
 
@@ -154,7 +217,7 @@ def build_text(md_content):
         if re.match(r'^\|[\s\-:|]+\|$', line.strip()):
             continue
 
-        # Table row — convert to pipe-separated text
+        # Table row — keep as pipe-separated text (will be replaced with native table)
         if line.strip().startswith('|') and '|' in line[1:]:
             cells = [c.strip() for c in line.strip().split('|')[1:-1]]
             clean_cells = [clean_inline(c) for c in cells]
@@ -343,7 +406,11 @@ def main():
     with open(MD_FILE, 'r', encoding='utf-8') as f:
         md_content = f.read()
 
-    # Build clean text and line info
+    # Parse tables separately
+    parsed_tables = parse_tables(md_content)
+    print(f"Parsed {len(parsed_tables)} tables")
+
+    # Build clean text (table rows are skipped)
     clean_text, line_info = build_text(md_content)
     print(f"Clean text: {len(clean_text)} chars, {clean_text.count(chr(10))} lines")
     print(f"Line info: {len(line_info)} entries")
@@ -374,9 +441,9 @@ def main():
     tab_id, insert_start, _ = get_section_range(client, DOC_ID, TAB_TITLE)
     print(f"Fresh index: {insert_start}")
 
-    # Step 3: Insert clean text
+    # Step 3: Insert non-table text
     print("\n" + "=" * 60)
-    print("STEP 3: Insert clean text")
+    print("STEP 3: Insert non-table text")
     print("=" * 60)
 
     # Check if "3.2." heading already exists
@@ -417,7 +484,7 @@ def main():
     }], "insert text")
     time.sleep(RATE_LIMIT_DELAY)
 
-    # Step 4: Re-read and classify elements
+    # Step 4: Re-read and classify elements (skip table rows — they'll be native tables)
     print("\n" + "=" * 60)
     print("STEP 4: Classify elements")
     print("=" * 60)
@@ -428,7 +495,6 @@ def main():
     heading_reqs = []
     bullet_reqs = []
     normal_reqs = []
-    table_code_reqs = []
     bold_paragraph_reqs = []
 
     # Skip the first element (section heading 3.2.) — set to HEADING_3
@@ -441,11 +507,9 @@ def main():
             }
         })
 
-    # Track the last matched line_info index for sequential matching
     last_matched_idx = 0
 
     for idx, elem in enumerate(elements):
-        # Skip first element (already handled as section heading)
         if idx == 0:
             continue
 
@@ -453,7 +517,10 @@ def main():
         if not text.strip():
             continue
 
-        # Text-based classification: find matching line_info entry
+        # Skip table rows — will be replaced with native tables
+        if ' | ' in text and text.count('|') >= 2:
+            continue
+
         etype, last_matched_idx = classify(text, line_info, last_matched_idx)
 
         if etype.startswith('heading'):
@@ -467,8 +534,8 @@ def main():
                     'fields': 'namedStyleType'
                 }
             })
-        elif etype == 'bold_paragraph':
-            # Bold paragraph — set to NORMAL_TEXT and apply bold
+        elif etype == 'table_row':
+            # Table rows get NORMAL_TEXT (will be replaced with native table)
             normal_reqs.append({
                 'updateParagraphStyle': {
                     'range': {'startIndex': elem['startIndex'], 'endIndex': elem['endIndex'], 'tabId': tab_id},
@@ -476,7 +543,14 @@ def main():
                     'fields': 'namedStyleType'
                 }
             })
-            # Apply bold to entire paragraph text
+        elif etype == 'bold_paragraph':
+            normal_reqs.append({
+                'updateParagraphStyle': {
+                    'range': {'startIndex': elem['startIndex'], 'endIndex': elem['endIndex'], 'tabId': tab_id},
+                    'paragraphStyle': {'namedStyleType': 'NORMAL_TEXT'},
+                    'fields': 'namedStyleType'
+                }
+            })
             bold_paragraph_reqs.append({
                 'updateTextStyle': {
                     'range': {'startIndex': elem['startIndex'], 'endIndex': elem['endIndex'], 'tabId': tab_id},
@@ -498,24 +572,6 @@ def main():
                     'bulletPreset': 'BULLET_DISC_CIRCLE_SQUARE'
                 }
             })
-        elif etype == 'table_row':
-            # Tables as monospace text
-            normal_reqs.append({
-                'updateParagraphStyle': {
-                    'range': {'startIndex': elem['startIndex'], 'endIndex': elem['endIndex'], 'tabId': tab_id},
-                    'paragraphStyle': {'namedStyleType': 'NORMAL_TEXT'},
-                    'fields': 'namedStyleType'
-                }
-            })
-            table_code_reqs.append({
-                'updateTextStyle': {
-                    'range': {'startIndex': elem['startIndex'], 'endIndex': elem['endIndex'], 'tabId': tab_id},
-                    'textStyle': {
-                        'weightedFontFamily': {'fontFamily': 'Courier New'}
-                    },
-                    'fields': 'weightedFontFamily'
-                }
-            })
         else:
             normal_reqs.append({
                 'updateParagraphStyle': {
@@ -528,7 +584,6 @@ def main():
     print(f"  Headings: {len(heading_reqs)}")
     print(f"  Normal: {len(normal_reqs)}")
     print(f"  Bullets: {len(bullet_reqs)}")
-    print(f"  Table code: {len(table_code_reqs)}")
     print(f"  Bold paragraphs: {len(bold_paragraph_reqs)}")
 
     # Step 5: Apply formatting
@@ -550,53 +605,46 @@ def main():
     apply_batch(heading_reqs, "headings")
     apply_batch(normal_reqs, "normal")
     apply_batch(bullet_reqs, "bullets")
-    apply_batch(table_code_reqs, "table code")
     apply_batch(bold_paragraph_reqs, "bold paragraphs")
 
-    # Step 6: Apply bold formatting
+    # Step 6: Apply bold formatting (on non-table content)
     print("\n" + "=" * 60)
     print("STEP 6: Apply bold formatting")
     print("=" * 60)
 
-    # Re-read to get fresh elements with correct indices
     elements_bold, tab_id_bold = get_elements(client, DOC_ID, TAB_TITLE)
 
-    # Re-parse markdown to get original bold ranges
     md_bold, _ = strip_plantuml_block(md_content)
     md_lines = md_bold.split('\n')
 
-    # Skip the first ## heading line to align with elements_bold
     md_content_start = 0
     for i, line in enumerate(md_lines):
         if line.startswith('## '):
             md_content_start = i + 1
             break
 
-    # Build a mapping: for each clean line, what are the bold ranges in the original?
     bold_reqs = []
-    elem_search_start = 0  # search forward through elements_bold
+    elem_search_start = 0
 
     for md_line in md_lines[md_content_start:]:
         if not md_line.strip():
             continue
-        # Skip separator rows
         if re.match(r'^\|[\s\-:|]+\|$', md_line.strip()):
             continue
-        # Skip PlantUML (already stripped)
         if md_line.strip().startswith('```'):
             continue
+        # Skip table rows
+        if md_line.strip().startswith('|') and '|' in md_line.strip()[1:]:
+            continue
 
-        # Find bold ranges in this line
         bold_ranges = extract_bold_ranges(md_line)
         if not bold_ranges:
             continue
 
-        # Skip bold on heading-like lines (already styled as heading)
         clean_md_check = clean_inline(md_line.strip())
         if re.match(r'^#{2,4}\s', md_line) or re.match(r'^[a-d]\)\s', clean_md_check) or re.match(r'^\d+\.\s', clean_md_check):
             continue
 
-        # Find matching element by text
         clean_md = clean_inline(md_line.strip())
         matched_elem = None
         for ei in range(elem_search_start, len(elements_bold)):
@@ -645,12 +693,13 @@ def main():
             continue
         if md_line.strip().startswith('```'):
             continue
+        if md_line.strip().startswith('|') and '|' in md_line.strip()[1:]:
+            continue
 
         code_ranges = extract_inline_code_ranges(md_line)
         if not code_ranges:
             continue
 
-        # Find matching element by text
         clean_md = clean_inline(md_line.strip())
         matched_elem = None
         for ei in range(elem_search_start, len(elements_code)):
@@ -684,22 +733,188 @@ def main():
     print(f"  Inline code ranges: {len(code_reqs)}")
     apply_batch(code_reqs, "inline code")
 
-    # Step 8: Verify
+    # Step 8: Replace table text regions with native Google Docs tables
     print("\n" + "=" * 60)
-    print("STEP 8: Verify")
+    print("STEP 8: Replace tables with native tables")
     print("=" * 60)
 
-    # Re-read with full paragraph data to check styles
+    elements_tables, tab_id_t = get_elements(client, DOC_ID, TAB_TITLE)
+    table_regions = find_table_regions(elements_tables)
+    print(f"Found {len(table_regions)} table regions")
+
+    # Process tables from bottom to top (avoids index shifting)
+    for region_idx in reversed(range(len(table_regions))):
+        region = table_regions[region_idx]
+        elem_indices = region['elements']
+
+        # Get the text range for this region
+        start_elem = elements_tables[elem_indices[0]]
+        end_elem = elements_tables[elem_indices[-1]]
+        region_start = start_elem['startIndex']
+        region_end = end_elem['endIndex']
+
+        # Match this region to parsed table data
+        if region_idx < len(parsed_tables):
+            table_data = parsed_tables[region_idx]
+        else:
+            print(f"  WARNING: No parsed data for region {region_idx}, skipping")
+            continue
+
+        num_rows = len(table_data)
+        num_cols = max(len(row) for row in table_data)
+
+        # Pad rows
+        for row in table_data:
+            while len(row) < num_cols:
+                row.append('')
+
+        print(f"  Region {region_idx}: [{region_start}-{region_end}] {num_rows}x{num_cols}")
+
+        # Delete the text region
+        api_call(client, DOC_ID, [{
+            'deleteContentRange': {
+                'range': {'startIndex': region_start, 'endIndex': region_end, 'tabId': tab_id_t}
+            }
+        }], f"delete table {region_idx} text")
+        time.sleep(RATE_LIMIT_DELAY)
+
+        # Insert native table
+        ok = api_call(client, DOC_ID, [{
+            'insertTable': {
+                'location': {'index': region_start, 'tabId': tab_id_t},
+                'rows': num_rows,
+                'columns': num_cols
+            }
+        }], f"insert table {region_idx}")
+        time.sleep(RATE_LIMIT_DELAY)
+
+        if not ok:
+            print(f"  FAILED to insert table {region_idx}")
+            continue
+
+        # Re-read to find the table element and populate cells
+        tab = client.find_tab_by_title(DOC_ID, TAB_TITLE)
+        tab_id_t = tab['tabProperties']['tabId']
+        content = tab.get('documentTab', {}).get('body', {}).get('content', [])
+
+        # Find the table element near the insertion point
+        table_element = None
+        for elem in content:
+            if 'table' in elem:
+                if elem['startIndex'] >= region_start - 5:
+                    table_element = elem
+                    break
+
+        if not table_element:
+            print(f"  WARNING: Could not find table at index {region_start}")
+            continue
+
+        # Extract cell paragraphs from nested table structure
+        cell_paragraphs = []
+        table_rows = table_element['table'].get('tableRows', [])
+        for row in table_rows:
+            for cell in row.get('tableCells', []):
+                for para_elem in cell.get('content', []):
+                    if 'paragraph' in para_elem:
+                        cell_paragraphs.append({
+                            'start': para_elem['startIndex'],
+                            'end': para_elem['endIndex']
+                        })
+
+        # Populate cells
+        cell_idx = 0
+        for row_idx, row in enumerate(table_data):
+            for col_idx, cell_text in enumerate(row):
+                if cell_idx < len(cell_paragraphs) and cell_text.strip():
+                    cell_para = cell_paragraphs[cell_idx]
+                    text = cell_text + '\n'
+                    try:
+                        api_call(client, DOC_ID, [{
+                            'insertText': {
+                                'location': {'index': cell_para['start'], 'tabId': tab_id_t},
+                                'text': text
+                            }
+                        }], f"cell [{row_idx},{col_idx}]")
+                        time.sleep(1)
+                    except Exception as e:
+                        print(f"  WARNING: Failed to insert cell [{row_idx},{col_idx}]: {e}")
+                cell_idx += 1
+
+        print(f"  Populated {min(cell_idx, len(cell_paragraphs))} cells")
+
+    # Step 9: Try PlantUML image insertion
+    print("\n" + "=" * 60)
+    print("STEP 9: PlantUML image")
+    print("=" * 60)
+
+    # Find where the PlantUML block should go (after "4. Sơ đồ lớp thiết kế" heading)
+    _, plantuml_blocks = strip_plantuml_block(md_content)
+    if plantuml_blocks:
+        plantuml_code = plantuml_blocks[0]
+        plantuml_url = get_plantuml_url(plantuml_code)
+        print(f"  PlantUML URL: {plantuml_url[:80]}...")
+
+        # Find the "4. Sơ đồ lớp thiết kế" heading in the document
+        tab = client.find_tab_by_title(DOC_ID, TAB_TITLE)
+        tab_id_p = tab['tabProperties']['tabId']
+        content = tab.get('documentTab', {}).get('body', {}).get('content', [])
+
+        found_heading = False
+        insert_index = None
+        for elem in content:
+            if 'paragraph' in elem:
+                text = ''.join(e.get('textRun', {}).get('content', '') for e in elem['paragraph'].get('elements', []))
+                if 'Thiết kế mô hình MVC' in text and ('3.2' in text or 'III.2' in text):
+                    found_heading = True
+                    continue
+                if found_heading:
+                    if 'Sơ đồ lớp thiết kế' in text:
+                        insert_index = elem['endIndex']
+                        break
+                    if 'IV. PHA CÀI' in text:
+                        break
+
+        if insert_index:
+            print(f"  Inserting image at index {insert_index}")
+            try:
+                result = client.insert_image_by_url(
+                    DOC_ID, tab_id_p, insert_index,
+                    plantuml_url, width=600, height=400
+                )
+                # Check if image was actually inserted
+                inline_objects = result.get('replies', [{}])[0].get('insertInlineImage', {})
+                if inline_objects:
+                    print("  Image inserted successfully!")
+                else:
+                    print("  WARNING: Image insertion returned no inline objects")
+                    print(f"  Rendered PNG available at: output/diagrams/sodo_lop_thiet_ke.png")
+            except Exception as e:
+                print(f"  WARNING: Image insertion failed: {e}")
+                print(f"  Rendered PNG available at: output/diagrams/sodo_lop_thiet_ke.png")
+        else:
+            print("  Could not find insertion point for image")
+    else:
+        print("  No PlantUML blocks found in markdown")
+
+    # Step 10: Verify
+    print("\n" + "=" * 60)
+    print("STEP 10: Verify")
+    print("=" * 60)
+
     tab = client.find_tab_by_title(DOC_ID, TAB_TITLE)
     tab_id_v = tab['tabProperties']['tabId']
     content = tab.get('documentTab', {}).get('body', {}).get('content', [])
 
     found = False
-    stats = {'HEADING_1': 0, 'HEADING_3': 0, 'HEADING_4': 0, 'NORMAL_TEXT': 0}
+    stats = {'HEADING_1': 0, 'HEADING_3': 0, 'HEADING_4': 0, 'NORMAL_TEXT': 0, 'TABLE': 0}
     bold_count = 0
     code_count = 0
     total = 0
     for elem in content:
+        if 'table' in elem:
+            if found:
+                stats['TABLE'] += 1
+            continue
         if 'paragraph' in elem:
             text = ''.join(e.get('textRun', {}).get('content', '') for e in elem['paragraph'].get('elements', []))
             style = elem['paragraph'].get('paragraphStyle', {}).get('namedStyleType', 'NORMAL_TEXT')

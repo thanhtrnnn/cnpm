@@ -168,28 +168,36 @@ Chiến lược cập nhật Google Docs (áp dụng cho mọi tab):
 
 ### Insert markdown vào Google Docs (đã verify)
 
-**Chiến lược 2 phase (đã hoạt động):**
-1. **Phase 1:** Parse markdown → convert sang text sạch (bỏ `###`, `|`, `**`, `` ` ``) → insert 1 lần
-2. **Phase 2:** Re-read document → tìm elements theo nội dung → classify → apply formatting
+**Chiến lược 3 phase (đã hoạt động):**
+1. **Phase 1:** Parse markdown → insert text (bao gồm table rows dưới dạng pipe-separated)
+2. **Phase 2:** Re-read → classify → apply formatting (heading, bold, bullet, inline code)
+3. **Phase 3:** Re-read → find table regions → replace bottom-to-top với native tables
+4. **Phase 4:** Insert PlantUML image qua public URL
 
 **Markdown conversion rules:**
-- `### text` → text sạch + HEADING_3 (classify theo pattern: `a) ` → HEADING_3, `1. ` → HEADING_4)
-- `| col1 | col2 |` → `col1 | col2` (bỏ outer pipes, bỏ separator rows)
+- `### text` → text sạch + HEADING_3 (classify: `a) ` → HEADING_3, `1. ` → HEADING_4)
+- `| col1 | col2 |` → pipe-separated text → sau đó replace bằng native table
 - `**bold**` → text sạch + bold style
 - `` `code` `` → text sạch + Courier New font
 - `- item` → text sạch + bullet style
 - `---` → skip
-- PlantUML blocks → skip (insert ảnh sau)
+- PlantUML blocks → insert image qua public URL
+
+**Native table insertion (bottom-to-top):**
+- Parse markdown → extract table data (rows × cols, cell content)
+- Insert all text first, apply formatting
+- Find table regions: consecutive paragraphs with ` | ` separators
+- Process bottom-to-top: delete text → `insertTable` → re-read → populate cells
+- Cell paragraphs nested trong `table.tableRows[i].tableCells[j].content`
+- Bottom-to-top tránh index shifting (content above giữ nguyên)
 
 **Rate limiting:**
 - Google Docs API: 60 write requests/minute/user
 - Dùng batch requests (20 operations/batch) + delay 3s giữa mỗi batch
 - Retry 3 lần với exponential backoff khi gặp 429
 
-**PlantUML images (LIMITATION):**
-- Service accounts không có storage quota → không upload được lên personal Drive
-- `insertInlineImage` với public URL → Google không fetch được (0 inline objects)
-- `insertInlineImage` với data URI → quá lớn (2K limit, ảnh 100KB+)
-- **Giải pháp hiện tại:** Insert text trước, ảnh cần insert thủ công từ file PNG đã render
-- Render PNG: dùng MCP plantuml tool hoặc `plantuml_renderer.py`
-- Ảnh render được lưu tại `output/diagrams/`
+**PlantUML images:**
+- `insertInlineImage` với public PlantUML URL → **đã hoạt động** (test với service account)
+- URL format: `https://www.plantuml.com/plantuml/png/{encoded}`
+- Encode: custom deflate + base64 alphabet (xem `encode_plantuml()`)
+- Nếu URL fails → fallback: render PNG thủ công từ `plantuml_renderer.py`
