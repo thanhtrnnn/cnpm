@@ -29,15 +29,31 @@ HEADING_NAMED_STYLES = {
 class MarkdownConverter:
     """Convert markdown text to Google Docs API requests."""
 
-    def __init__(self, plantuml_renderer=None):
+    def __init__(self, plantuml_renderer=None, tab_id=None):
         """
         Args:
             plantuml_renderer: Callable that takes PlantUML code and returns image path.
                              If None, PlantUML blocks are inserted as code text.
+            tab_id: Google Docs tab ID for tab-aware operations.
         """
         self.plantuml_renderer = plantuml_renderer
+        self.tab_id = tab_id
         self.requests = []
         self.current_index = 1  # Start after document body start
+
+    def _loc(self, index):
+        """Create a location dict with optional tabId."""
+        loc = {'index': index}
+        if self.tab_id:
+            loc['tabId'] = self.tab_id
+        return loc
+
+    def _range(self, start, end):
+        """Create a range dict with optional tabId."""
+        r = {'startIndex': start, 'endIndex': end}
+        if self.tab_id:
+            r['tabId'] = self.tab_id
+        return r
 
     def convert(self, markdown_text: str, start_index: int = 1) -> List[Dict[str, Any]]:
         """Convert markdown text to list of Google Docs batchUpdate requests.
@@ -107,8 +123,8 @@ class MarkdownConverter:
                 i = j + 1
                 continue
 
-            # Bullet list
-            if re.match(r'^[\s]*[-*]\s+', line):
+            # Bullet list (use \s to avoid matching **bold** markers)
+            if re.match(r'^[\s]*-\s+', line) or re.match(r'^[\s]*\*\s+', line):
                 self._add_bullet(line)
                 i += 1
                 continue
@@ -139,7 +155,7 @@ class MarkdownConverter:
         # Insert text
         self.requests.append({
             'insertText': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'text': clean_text
             }
         })
@@ -147,10 +163,7 @@ class MarkdownConverter:
         # Apply heading style
         self.requests.append({
             'updateParagraphStyle': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(clean_text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(clean_text) - 1),
                 'paragraphStyle': {
                     'namedStyleType': named_style
                 },
@@ -169,7 +182,7 @@ class MarkdownConverter:
 
         self.requests.append({
             'insertText': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'text': clean_text
             }
         })
@@ -178,10 +191,7 @@ class MarkdownConverter:
         if len(clean_text) > 1:
             self.requests.append({
                 'updateParagraphStyle': {
-                    'range': {
-                        'startIndex': self.current_index,
-                        'endIndex': self.current_index + len(clean_text) - 1
-                    },
+                    'range': self._range(self.current_index, self.current_index + len(clean_text) - 1),
                     'paragraphStyle': {
                         'namedStyleType': 'NORMAL_TEXT'
                     },
@@ -220,18 +230,23 @@ class MarkdownConverter:
         # Insert table
         self.requests.append({
             'insertTable': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'rows': num_rows,
                 'columns': num_cols
             }
         })
 
+        # Emit marker for caller to populate cells (resolved after re-read)
+        self.requests.append({
+            '_populateTable': {
+                'rows': num_rows,
+                'columns': num_cols,
+                'cells': rows,
+                'tableIndex': self.current_index
+            }
+        })
+
         # Calculate table structure indices
-        # In Google Docs, each cell contains a paragraph with 1 char (newline)
-        # Table structure: each cell = 2 indices (content + newline)
-        # Plus table/row/cell structure markers
-        # Total indices per row = num_cols * 2 (cells) + 1 (row marker)
-        # Total indices for table = num_rows * (num_cols * 2 + 1) + 1 (table marker)
         table_indices = num_rows * (num_cols * 2 + 1) + 1
         self.current_index += table_indices
 
@@ -240,16 +255,16 @@ class MarkdownConverter:
         if self.plantuml_renderer:
             try:
                 image_path = self.plantuml_renderer(code)
-                # Note: Image insertion needs to be handled by the client
-                # Store the image path for the caller
-                self.requests.append({
-                    'insertImage': {
-                        'location': {'index': self.current_index},
-                        'imagePath': image_path
-                    }
-                })
-                self.current_index += 1  # Image takes 1 character
-                return
+                if image_path:
+                    # Store the image path for the caller to resolve
+                    self.requests.append({
+                        'insertImage': {
+                            'location': self._loc(self.current_index),
+                            'imagePath': image_path
+                        }
+                    })
+                    self.current_index += 1  # Image takes 1 character
+                    return
             except Exception:
                 pass  # Fall back to code block
 
@@ -262,7 +277,7 @@ class MarkdownConverter:
 
         self.requests.append({
             'insertText': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'text': text
             }
         })
@@ -270,10 +285,7 @@ class MarkdownConverter:
         # Reset paragraph style to prevent inheritance
         self.requests.append({
             'updateParagraphStyle': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(text) - 1),
                 'paragraphStyle': {
                     'namedStyleType': 'NORMAL_TEXT'
                 },
@@ -284,10 +296,7 @@ class MarkdownConverter:
         # Apply monospace font
         self.requests.append({
             'updateTextStyle': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(text) - 1),
                 'textStyle': {
                     'weightedFontFamily': {'fontFamily': 'Courier New'}
                 },
@@ -299,12 +308,12 @@ class MarkdownConverter:
 
     def _add_bullet(self, line: str):
         """Add a bullet list item."""
-        # Extract text after bullet marker
-        text = re.sub(r'^[\s]*[-*]\s+', '', line) + '\n'
+        # Extract text after bullet marker (- or * followed by space)
+        text = re.sub(r'^[\s]*[-]\s+|^\s*\*\s+', '', line) + '\n'
 
         self.requests.append({
             'insertText': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'text': text
             }
         })
@@ -312,10 +321,7 @@ class MarkdownConverter:
         # Reset paragraph style to prevent inheritance
         self.requests.append({
             'updateParagraphStyle': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(text) - 1),
                 'paragraphStyle': {
                     'namedStyleType': 'NORMAL_TEXT'
                 },
@@ -326,10 +332,7 @@ class MarkdownConverter:
         # Apply bullet formatting
         self.requests.append({
             'createParagraphBullets': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(text) - 1),
                 'bulletPreset': 'BULLET_DISC_CIRCLE_SQUARE'
             }
         })
@@ -343,7 +346,7 @@ class MarkdownConverter:
 
         self.requests.append({
             'insertText': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'text': text
             }
         })
@@ -351,10 +354,7 @@ class MarkdownConverter:
         # Reset paragraph style to prevent inheritance
         self.requests.append({
             'updateParagraphStyle': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(text) - 1),
                 'paragraphStyle': {
                     'namedStyleType': 'NORMAL_TEXT'
                 },
@@ -364,10 +364,7 @@ class MarkdownConverter:
 
         self.requests.append({
             'createParagraphBullets': {
-                'range': {
-                    'startIndex': self.current_index,
-                    'endIndex': self.current_index + len(text) - 1
-                },
+                'range': self._range(self.current_index, self.current_index + len(text) - 1),
                 'bulletPreset': 'NUMBERED_DECIMAL_ALPHA_ROMAN'
             }
         })
@@ -380,7 +377,7 @@ class MarkdownConverter:
         text = '─' * 50 + '\n'
         self.requests.append({
             'insertText': {
-                'location': {'index': self.current_index},
+                'location': self._loc(self.current_index),
                 'text': text
             }
         })
@@ -399,17 +396,20 @@ class MarkdownConverter:
         return text
 
     def _apply_inline_formatting(self, original_text: str, base_index: int):
-        """Apply bold, italic, etc. formatting to inserted text."""
+        """Apply bold, italic, inline code formatting to inserted text.
+
+        Uses clean-offset calculation: for each match in the original text,
+        compute the offset in the clean (markers-stripped) text to get the
+        correct document position.
+        """
         # Find bold markers
         for match in re.finditer(r'\*\*(.+?)\*\*', original_text):
-            start = base_index + match.start()
-            end = base_index + match.start() + len(match.group(1))
+            clean_offset = len(self._clean_inline_formatting(original_text[:match.start()]))
+            start = base_index + clean_offset
+            end = start + len(match.group(1))
             self.requests.append({
                 'updateTextStyle': {
-                    'range': {
-                        'startIndex': start,
-                        'endIndex': end
-                    },
+                    'range': self._range(start, end),
                     'textStyle': {'bold': True},
                     'fields': 'bold'
                 }
@@ -417,32 +417,46 @@ class MarkdownConverter:
 
         # Find italic markers (single *)
         for match in re.finditer(r'(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)', original_text):
-            start = base_index + match.start()
-            end = base_index + match.start() + len(match.group(1))
+            clean_offset = len(self._clean_inline_formatting(original_text[:match.start()]))
+            start = base_index + clean_offset
+            end = start + len(match.group(1))
             self.requests.append({
                 'updateTextStyle': {
-                    'range': {
-                        'startIndex': start,
-                        'endIndex': end
-                    },
+                    'range': self._range(start, end),
                     'textStyle': {'italic': True},
                     'fields': 'italic'
                 }
             })
 
+        # Find inline code markers
+        for match in re.finditer(r'`(.+?)`', original_text):
+            clean_offset = len(self._clean_inline_formatting(original_text[:match.start()]))
+            start = base_index + clean_offset
+            end = start + len(match.group(1))
+            self.requests.append({
+                'updateTextStyle': {
+                    'range': self._range(start, end),
+                    'textStyle': {
+                        'weightedFontFamily': {'fontFamily': 'Courier New'}
+                    },
+                    'fields': 'weightedFontFamily'
+                }
+            })
 
-def convert_markdown_to_requests(markdown_text: str, plantuml_renderer=None, start_index: int = 1) -> List[Dict[str, Any]]:
+
+def convert_markdown_to_requests(markdown_text: str, plantuml_renderer=None, start_index: int = 1, tab_id=None) -> List[Dict[str, Any]]:
     """Convenience function to convert markdown to Google Docs requests.
 
     Args:
         markdown_text: Markdown formatted text
         plantuml_renderer: Optional callable for PlantUML rendering
         start_index: Starting index in the document (default: 1 for document body start)
+        tab_id: Google Docs tab ID for tab-aware operations
 
     Returns:
         List of batchUpdate request dicts
     """
-    converter = MarkdownConverter(plantuml_renderer)
+    converter = MarkdownConverter(plantuml_renderer, tab_id=tab_id)
     return converter.convert(markdown_text, start_index)
 
 

@@ -301,6 +301,30 @@ class GDocsClient:
             documentId=document_id, body=body
         ).execute()
 
+    def insert_image_by_url(self, doc_id: str, tab_id: str, index: int,
+                            url: str, width: int = 600, height: int = 400) -> dict:
+        """Insert inline image from public URL (no Drive upload needed).
+
+        Args:
+            doc_id: Google Docs document ID
+            tab_id: Tab ID for the target tab
+            index: Character index to insert at
+            url: Public URL of the image (must be fetchable by Google)
+            width: Image width in PT (points)
+            height: Image height in PT (points)
+        """
+        request = {
+            'insertInlineImage': {
+                'location': {'index': index, 'tabId': tab_id},
+                'uri': url,
+                'objectSize': {
+                    'width': {'magnitude': width, 'unit': 'PT'},
+                    'height': {'magnitude': height, 'unit': 'PT'}
+                }
+            }
+        }
+        return self.batch_update(doc_id, [request])
+
     def _create_media(self, file_path: str):
         """Create media upload object for Drive API."""
         from googleapiclient.http import MediaFileUpload
