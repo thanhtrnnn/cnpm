@@ -115,20 +115,32 @@ Mọi diagram PlantUML **PHẢI** bắt đầu bằng VP base theme (inline, vì
 
 ```plantuml
 @startuml
-' === VP Base Theme ===
+' === VP Base Theme v2 ===
 skinparam linetype ortho
-skinparam defaultFontName "Segoe UI"
-skinparam defaultFontSize 12
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
 skinparam shadowing false
 skinparam arrowColor #000000
 skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
 
 skinparam class {
   BackgroundColor #FFFFFF
   BorderColor #000000
   FontColor #000000
   FontSize 11
-  AttributeFontSize 10
+  AttributeFontSize 9
   AttributeIconSize 0
   BorderThickness 1
 }
@@ -153,8 +165,42 @@ skinparam sequence {
   BoundaryBackgroundColor #7ACFF5
   EntityBorderColor Black
   EntityBackgroundColor #7ACFF5
-  MessageFontSize 11
+  MessageFontSize 10
 }
+
+<style>
+sequenceDiagram {
+  actor {
+    Padding 2
+    Margin 2
+    FontName "Arial"
+    FontSize 10
+  }
+  participant {
+    Padding 2
+    Margin 2
+    FontName "Arial"
+    FontSize 10
+  }
+  lifeLine {
+    LineThickness 1
+    Padding 4
+  }
+  message {
+    FontName "Arial"
+    FontSize 10
+    Padding 1
+  }
+  divider {
+    FontName "Arial"
+    FontSize 10
+  }
+  group {
+    FontName "Arial"
+    FontSize 10
+  }
+}
+</style>
 
 hide empty members
 

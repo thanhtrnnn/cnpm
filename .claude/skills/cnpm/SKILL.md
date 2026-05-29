@@ -174,6 +174,7 @@ Sau mỗi pha, hỏi: *"Pha [X] đã hoàn thành. Bạn có muốn điều ch�
 - Bảng Markdown chuẩn, có header rõ ràng.
 - PlantUML đặt trong code block plantuml.
 - Wireframe dùng ASCII box diagram (xem ví dụ trong `references/module-phases.md`).
+- **Header bảng wireframe PHẢI dùng thuộc tính thật của Entity** — tên cột = tên attribute (VD: `ma`, `ten`, `ngayMuon`), KHÔNG phải tên hiển thị giao diện.
 
 ### Quy tắc Columns (BẮT BUỘC cho Notion output)
 
@@ -221,20 +222,32 @@ Mỗi biểu đồ UML **PHẢI** bắt đầu bằng theme để đảm bảo s
 
 ```plantuml
 @startuml
-' === VP Base Theme ===
+' === VP Base Theme v2 ===
 skinparam linetype ortho
-skinparam defaultFontName "Segoe UI"
-skinparam defaultFontSize 12
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
 skinparam shadowing false
 skinparam arrowColor #000000
 skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
 
 skinparam class {
   BackgroundColor #FFFFFF
   BorderColor #000000
   FontColor #000000
   FontSize 11
-  AttributeFontSize 10
+  AttributeFontSize 9
   AttributeIconSize 0
   BorderThickness 1
 }
@@ -259,8 +272,42 @@ skinparam sequence {
   BoundaryBackgroundColor #7ACFF5
   EntityBorderColor Black
   EntityBackgroundColor #7ACFF5
-  MessageFontSize 11
+  MessageFontSize 10
 }
+
+<style>
+sequenceDiagram {
+  actor {
+    Padding 2
+    Margin 2
+    FontName "Arial"
+    FontSize 10
+  }
+  participant {
+    Padding 2
+    Margin 2
+    FontName "Arial"
+    FontSize 10
+  }
+  lifeLine {
+    LineThickness 1
+    Padding 4
+  }
+  message {
+    FontName "Arial"
+    FontSize 10
+    Padding 1
+  }
+  divider {
+    FontName "Arial"
+    FontSize 10
+  }
+  group {
+    FontName "Arial"
+    FontSize 10
+  }
+}
+</style>
 
 hide empty members
 
@@ -309,11 +356,15 @@ skinparam packageStyle rectangle
 - Package dọc theo chiều ngang (trái → phải)
 - **KHÔNG xếp dọc** — classes trong mỗi package phải dàn ngang, không chồng chất
 
-**Cách tránh xếp dọc (BẮT BUỘC):**
-- Dùng `together { }` để nhóm classes nằm ngang trong cùng package
-- Nếu nhiều classes, chia thành nhiều package nhỏ thay vì 1 package lớn
-- Dùng hidden links `hidden` để kéo classes ra xa nhau theo chiều ngang
-- `skinparam packageMaxWidth 800` nếu cần mở rộng package
+**Quy tắc bố cục class diagram (BẮT BUỘC):**
+
+1. **Luôn `left to right direction`** — layout ngang, KHÔNG xếp dọc
+2. **Packages xếp theo chiều ngang:** Boundary (trái) → DAO (giữa) → Entity (phải)
+3. **Classes trong package PHẢI dàn ngang** — dùng `together { }` để buộc cùng hàng
+4. **Cùng loại class phải cùng hàng:** 2 Boundary class → 1 dòng, 2 Entity class → 1 dòng
+5. **Dùng hidden links** `hidden` để kéo classes ra xa nếu bị chồng
+6. **`skinparam packageMaxWidth 800`** nếu package quá hẹp
+7. **Nếu layout bị dọc** → thêm `together` hoặc chia package nhỏ hơn
 
 **Boundary classes — Theo lựa chọn công nghệ:**
 
@@ -429,7 +480,9 @@ BDao --> B
 @enduml
 ```
 
-### Ví dụ template — HTML (React)
+### Ví dụ template — HTML (React + Spring Boot MVC)
+
+Xem chi tiết class names, attributes, methods trong `references/iii.3.2_sodo_lop_thietke.md`.
 
 ```plantuml
 @startuml
@@ -437,61 +490,146 @@ left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
-title Biểu đồ lớp – Module [Tên] (React)
+title Biểu đồ lớp thiết kế – Module Dịch vụ & Sản phẩm (React MVC)
 
-package "Boundary" #DDEEFF {
+package "<<Boundary>>" #E3F2FD {
   together {
-    class EntityPage <<Component>> {
-      -formData : State
-      +handleSubmit() : void
-      +render() : JSX
+    class LoginPage {
+      -txtUsername : TextBox
+      -txtPassword : TextBox
+      -btnLogin : Button
+      +btnLoginClick() : void
+      +showMessage(msg : String) : void
     }
-    class SearchEntityForm <<Component>> {
-      -tableData : State
-      +render() : JSX
+    class StaffHomePage {
+      -btnManageOrder : Button
+      +btnManageOrderClick() : void
+    }
+    class SearchRoomPage {
+      -tblActiveRooms : Table
+      -txtRoomName : TextBox
+      -btnSearchRoom : Button
+      -btnCreateOrder : Button
+      +formLoad() : void
+      +btnSearchRoomClick() : void
+      +displayActiveRooms(rooms : List<Room>) : void
+      +tblEmptyRoomsClick(selectedRow : int) : void
+    }
+    class CreateOrderPage {
+      -lblRoomName : Label
+      -txtProductName : TextBox
+      -btnSearchProduct : Button
+      -tblProducts : Table
+      -btnSave : Button
+      +formLoad() : void
+      +btnSearchProductClick() : void
+      +btnSaveClick() : void
+    }
+    class ConfirmOrderPage {
+      -lblMessage : Label
+      -btnConfirm : Button
+      +btnConfirmClick() : void
     }
   }
 }
 
-package "DAO" #FFE0B2 {
-  abstract class DAO {
-    #conn : Connection
-    +DAO()
+package "<<Control>>" #E8F5E9 {
+  class LoginController {
+    +checkLogin(username : String, password : String) : boolean
   }
-  together {
-    class ADao extends DAO {
-      +findByName(name : String) : List<A>
-      +save(entity : A) : boolean
-    }
-    class BDao extends DAO {
-      +findAll() : List<B>
-      +delete(id : int) : boolean
-    }
+  class RoomController {
+    +getActiveRooms() : List<Room>
+    +searchRoomByName(roomName : String) : List<Room>
   }
-}
-
-package "Entity" #FFF3CD {
-  together {
-    class A {
-      -id : int
-      -name : String
-      +getter/setter
-    }
-    class B {
-      -id : int
-      -value : String
-      +getter/setter
-    }
+  class ProductController {
+    +getAllProducts() : List<Product>
+    +searchProductByName(productName : String) : List<Product>
+  }
+  class OrderController {
+    +saveOrder(order : Order) : boolean
   }
 }
 
-EntityPage --> SearchEntityForm
-SearchEntityForm --> ADao
-EntityPage --> BDao
-ADao --> A
-BDao --> B
+package "<<Entity>>" #FFF3E0 {
+  class Employee {
+    -id : int
+    -fullName : String
+    -dob : Date
+    -tel : String
+    -role : String
+    -username : String
+    -password : String
+    -status : String
+  }
+  class Room {
+    -id : int
+    -name : String
+    -type : String
+    -price : double
+    -capacity : int
+    -status : String
+  }
+  class Order {
+    -id : int
+    -orderTime : DateTime
+    -totalAmount : double
+    -status : String
+  }
+  class Product {
+    -id : int
+    -name : String
+    -category : String
+    -unit : String
+    -price : double
+    -currentStock : int
+    -safetyStock : int
+  }
+  class Room_receipt {
+    -id : int
+    -checkinTime : DateTime
+    -checkoutTime : DateTime
+    -roomFee : double
+    -serviceFee : double
+    -damageFee : double
+    -totalAmount : double
+    -status : String
+  }
+  class Order_detail {
+    -quantity : int
+    -unitPrice : double
+    -lineTotal : double
+  }
+}
+
+' Boundary -> Control
+LoginPage --> LoginController
+SearchRoomPage --> RoomController
+CreateOrderPage --> ProductController
+CreateOrderPage --> OrderController
+
+' Control -> Entity
+LoginController --> Employee
+RoomController --> Room
+ProductController --> Product
+OrderController --> Order
+OrderController --> Room_receipt
+
+' Entity relationships
+Room_receipt "1" --> "*" Order
+Order "1" --> "*" Order_detail
+Order_detail "*" --> "1" Product
+Room_receipt "*" --> "1" Room
+Room_receipt "*" --> "1" Employee
+Order "*" --> "1" Employee
 @enduml
 ```
+
+**Quy tắc React MVC (BẮT BUỘC):**
+- **Boundary:** React components, hậu tố `Page`. Thuộc tính UI: `-txtTên : TextBox`, `-btnTên : Button`, `-tblTên : Table`, `-lblTên : Label`. Phương thức: `+formLoad()`, `+btnTênClick()`, `+displayDữLiệu(data)`, `+showMessage(msg)`.
+- **Control:** Spring Boot Controllers, hậu tố `Controller`. Methods: `+getAll()`, `+getById(id)`, `+search(keyword)`, `+save(entity)`, `+update(entity)`, `+delete(id)`.
+- **Entity:** JPA Entities, attributes private (`-`) với kiểu Java cụ thể. Relationships: `ManyToOne`, `OneToMany`, bảng trung gian cho n-n.
+- **Package colors:** Boundary `#E3F2FD`, Control `#E8F5E9`, Entity `#FFF3E0`.
+- **Entity naming:** Tên entity tiếng Anh, bảng DB dùng `tbl` + tên (VD: `tblOrder`, `tblProduct`, `tblRoom`). Quan hệ n-n qua bảng trung gian (VD: `Order_detail`, `Damage_detail`).
 
 ### Biểu đồ Tuần tự (Sequence Diagram)
 
@@ -499,57 +637,107 @@ BDao --> B
 - Thông điệp đánh số liên tục
 - Dùng `alt` cho ngoại lệ
 - Phân tích: tiếng Việt · Thiết kế: tên hàm tiếng Anh
+- **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation), KHÔNG dùng khung (rectangle). KHÔNG dùng `skinparam sequence { ParticipantStyle rectangle }` — để PlantUML hiển thị circle mặc định cho lifeline.
 
 ### Biểu đồ UC (Use Case)
 
+- **Luôn dùng VP Base Theme v2** khi viết PlantUML UC (xem mục "PlantUML Theme" ở trên)
 - `left to right direction`
 - Actors bên trái, use cases bên phải trong package
 - `<<include>>` và `<<extend>>` dùng mũi tên đứt nét
 - **Generalization:** UC con kế thừa UC cha — mũi tên tam giác rỗng hướng lên UC cha. VD: "Tìm sách" là cha, "Tìm theo tên sách" và "Tìm theo mã sách" là con
 - **Extension points:** Hiển thị trong UC cha, ghi rõ UC extend nào mở rộng tại điểm nào
 - **Layout ngang:** Sắp xếp UC theo chiều rộng, tránh chồng chất theo chiều dọc. UC chính ở giữa, các UC include/extend/generalization tỏa ra hai bên
+- **Actor nối trực tiếp vào UC:** Actor PHẢI nối thẳng (`-->`) vào UC mà actor đó tương tác. KHÔNG vòng vèo qua UC khác, KHÔNG nối gián tiếp.
 
-**Cấu trúc UC phân rã chuẩn:**
-```
-Actor (trái) → UC chính (giữa) → UC include (phải)
-                                  ↘ UC extend (dưới phải)
-UC cha (trên) ← UC con generalization (dưới)
-```
+**Quy trình xác định UC con (BẮT BUỘC):**
+Trước khi xác định các UC nhỏ, PHẢI dựa vào **phần 2.4 "Mỗi chức năng hoạt động như thế nào?"** để làm các business process mô tả chi tiết hoạt động của từng UC trong module. Từ business process, tách ra các UC con tương ứng từng bước bắt buộc / tùy chọn.
 
-**Ví dụ PlantUML UC với generalization:**
+**Hai loại biểu đồ UC (BẮT BUỘC vẽ cả hai):**
+1. **UC Tổng quan:** Chỉ có các UC lớn, mỗi UC nối thẳng với đúng actor. KHÔNG vẽ UC con, KHÔNG include/extend.
+2. **UC Chi tiết (cho từng UC lớn):** Đã có chi tiết các UC nhỏ từ business process ở trên. Actor nối trực tiếp vào UC lớn, UC con hiển thị bên trong bằng include/extend/generalization.
+
+**Ví dụ 1 — UC Tổng quan (module Mượn sách):**
+Chỉ các UC lớn, actor nối trực tiếp vào từng UC.
 ```plantuml
 @startuml
-left to right direction
+' === VP Base Theme v2 ===
 skinparam linetype ortho
-skinparam packageStyle rectangle
-title Biểu đồ Use Case – Quản lý mượn sách
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
 
 left to right direction
+title UC Tổng quan – Module Mượn sách
 
-rectangle "Quản lý mượn sách" {
-  usecase "Mượn sách" as UC1
-  usecase "Đăng nhập" as UC2
-  usecase "Lập phiếu mượn" as UC3
-  usecase "Tìm sách" as UC4
-  usecase "Tìm thông tin độc giả" as UC5
-  usecase "Thêm độc giả" as UC6
-  usecase "Tìm theo mã độc giả" as UC7
-  usecase "Tìm theo tên độc giả" as UC8
-  usecase "Tìm theo mã sách" as UC9
-  usecase "Tìm theo tên sách" as UC10
+rectangle "Module Mượn sách" {
+  usecase "Đăng nhập" as UC1
+  usecase "Mượn sách" as UC2
+  usecase "Tìm sách" as UC3
+  usecase "Quản lý độc giả" as UC4
 }
 
 actor "Thư thư" as A1
 
 A1 --> UC1
-UC1 ..> UC2 : <<include>>
-UC1 ..> UC3 : <<include>>
-UC1 ..> UC4 : <<include>>
-UC1 ..> UC5 : <<include>>
-UC6 ..> UC5 : <<Extend>>
-UC4 <|-- UC9
-UC4 <|-- UC10
-UC5 <|-- UC7
-UC5 <|-- UC8
+A1 --> UC2
+A1 --> UC3
+A1 --> UC4
+@enduml
+```
+
+**Ví dụ 2 — UC Chi tiết (UC "Tìm sách"):**
+Dựa vào business process từ mục 2.4, tách UC con. Actor nối trực tiếp vào UC lớn.
+```plantuml
+@startuml
+' === VP Base Theme v2 ===
+skinparam linetype ortho
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+hide circle
+
+skinparam usecase {
+  BackgroundColor #7ACFF5
+  BorderColor Black
+  FontColor Black
+}
+
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor Black
+}
+
+left to right direction
+title UC Chi tiết – Tìm sách
+
+rectangle "Tìm sách" {
+  usecase "Tìm theo mã sách" as UC3a
+  usecase "Tìm theo tên sách" as UC3b
+  usecase "Hiển thị kết quả" as UC3c
+}
+
+actor "Thư thư" as A1
+
+A1 --> UC3a
+A1 --> UC3b
+UC3a ..> UC3c : <<include>>
+UC3b ..> UC3c : <<include>>
 @enduml
 ```
