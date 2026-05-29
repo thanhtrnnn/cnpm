@@ -503,6 +503,8 @@ Khi người dùng muốn tài liệu UP với biểu đồ VP:
 - Không có VP MCP server đang chạy
 - Người dùng không yêu cầu VP
 
+**PlantUML theme khi không dùng VP:** Khi vẽ PlantUML thay vì VP, PHẢI dùng theme từ `assets/vp-base.puml` + `assets/bce-colors.puml` (inline, vì MCP server không hỗ trợ `!include`). Xem chi tiết trong skill `cnpm` — mục "PlantUML Theme".
+
 ---
 
 ## Kiểm tra cấu trúc sau khi vẽ (Verification)

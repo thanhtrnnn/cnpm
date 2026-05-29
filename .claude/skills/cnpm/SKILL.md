@@ -215,6 +215,74 @@ Nội dung đầu vào...
 
 ---
 
+## PlantUML Theme
+
+Mỗi biểu đồ UML **PHẢI** bắt đầu bằng theme để đảm bảo style đồng nhất:
+
+```plantuml
+@startuml
+' === VP Base Theme ===
+skinparam linetype ortho
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+  FontSize 11
+  AttributeFontSize 10
+  AttributeIconSize 0
+  BorderThickness 1
+}
+
+skinparam package {
+  Style rectangle
+  FontSize 13
+  MaxWidth 800
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+}
+
+skinparam sequence {
+  ArrowColor Black
+  ActorBorderColor Black
+  ActorBackgroundColor #7ACFF5
+  ParticipantBorderColor Black
+  ParticipantBackgroundColor #7ACFF5
+  LifeLineBorderColor Black
+  LifeLineBackgroundColor #7ACFF5
+  BoundaryBorderColor Black
+  BoundaryBackgroundColor #7ACFF5
+  EntityBorderColor Black
+  EntityBackgroundColor #7ACFF5
+  MessageFontSize 11
+}
+
+hide empty members
+
+' === BCE Color Overlay (optional — cho class diagram có màu packages) ===
+skinparam class {
+  BackgroundColor<<Boundary>> #DDEEFF
+  BackgroundColor<<Component>> #DDEEFF
+  BackgroundColor<<DAO>> #FFE0B2
+  BackgroundColor<<Control>> #FFE0B2
+  BackgroundColor<<Entity>> #FFF3CD
+}
+@enduml
+```
+
+**Lưu ý:** MCP PlantUML server không hỗ trợ `!include` — PHẢI inline toàn bộ skinparam.
+
+Theme files tham khảo:
+- `assets/vp-base.puml` — base theme (class + sequence)
+- `assets/bce-colors.puml` — BCE color overlay
+
+---
+
 ## PlantUML Style Rules (BẮT BUỘC)
 
 ### Tổng quan layout
