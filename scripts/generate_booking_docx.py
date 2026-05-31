@@ -43,6 +43,17 @@ FILES = [
 
 # Diagram files mapped to their placeholder comments in markdown
 DIAGRAM_MAP = {
+    # Phase II - Analysis BCE diagrams
+    'booking_bce_datphong': 'output/diagrams/booking_bce_datphong.png',
+    'booking_bce_huyphong': 'output/diagrams/booking_bce_huyphong.png',
+    'booking_bce_checkin': 'output/diagrams/booking_bce_checkin.png',
+    'booking_bce_checkout': 'output/diagrams/booking_bce_checkout.png',
+    # Phase II - Analysis sequence diagrams
+    'booking_aseq_datphong': 'output/diagrams/booking_aseq_datphong.png',
+    'booking_aseq_huyphong': 'output/diagrams/booking_aseq_huyphong.png',
+    'booking_aseq_checkin': 'output/diagrams/booking_aseq_checkin.png',
+    'booking_aseq_checkout': 'output/diagrams/booking_aseq_checkout.png',
+    # Phase III - Design diagrams
     'booking_entity_class': 'output/diagrams/booking_entity_class.png',
     'booking_erd': 'output/diagrams/booking_erd.png',
     'booking_mvc_class': 'output/diagrams/booking_mvc_class.png',
@@ -310,11 +321,51 @@ def process_file(doc, md_file):
     with open(md_file, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # Strip PlantUML code blocks but remember their positions
-    plantuml_blocks = []
-    for m in re.finditer(r'```plantuml\s*\n(.*?)```', content, re.DOTALL):
-        plantuml_blocks.append(m.group(1).strip())
-    content = re.sub(r'```plantuml\s*\n.*?```', '<!-- PLANTUML_PLACEHOLDER -->', content, flags=re.DOTALL)
+    # Strip PlantUML code blocks, replacing with named diagram placeholders
+    def replace_plantuml(match):
+        block_content = match.group(1).strip()
+        # Determine diagram name based on file and content
+        base = os.path.basename(md_file)
+        if 'ii.3-2.4' in base:
+            # Phase II analysis diagrams - use content to identify
+            if 'ReceptionistHomeView' in block_content and 'SearchFreeRoomView' in block_content and 'SearchClientView' in block_content:
+                if 'class ' in block_content:
+                    return '<!-- DIAGRAM: booking_bce_datphong -->'
+                else:
+                    return '<!-- DIAGRAM: booking_aseq_datphong -->'
+            elif 'SearchBookingView' in block_content:
+                if 'class ' in block_content:
+                    return '<!-- DIAGRAM: booking_bce_huyphong -->'
+                else:
+                    return '<!-- DIAGRAM: booking_aseq_huyphong -->'
+            elif 'CheckInView' in block_content:
+                if 'class ' in block_content:
+                    return '<!-- DIAGRAM: booking_bce_checkin -->'
+                else:
+                    return '<!-- DIAGRAM: booking_aseq_checkin -->'
+            elif 'CheckOutView' in block_content:
+                if 'class ' in block_content:
+                    return '<!-- DIAGRAM: booking_bce_checkout -->'
+                else:
+                    return '<!-- DIAGRAM: booking_aseq_checkout -->'
+        elif 'iii.1' in base:
+            return '<!-- DIAGRAM: booking_entity_class -->'
+        elif 'iii.2' in base:
+            return '<!-- DIAGRAM: booking_erd -->'
+        elif 'iii.3.2' in base:
+            return '<!-- DIAGRAM: booking_mvc_class -->'
+        elif 'iii.4' in base:
+            if 'Dat phong' in block_content or 'SearchFreeRoomView' in block_content:
+                return '<!-- DIAGRAM: booking_seq_datphong -->'
+            elif 'Check-in' in block_content or 'CheckInView' in block_content:
+                return '<!-- DIAGRAM: booking_seq_checkin -->'
+            elif 'Check-out' in block_content or 'CheckOutView' in block_content:
+                return '<!-- DIAGRAM: booking_seq_checkout -->'
+            elif 'Huy phong' in block_content or 'SearchBookingView' in block_content:
+                return '<!-- DIAGRAM: booking_seq_huyphong -->'
+        return '<!-- DIAGRAM: unknown -->'
+
+    content = re.sub(r'```plantuml\s*\n(.*?)```', replace_plantuml, content, flags=re.DOTALL)
 
     lines = content.split('\n')
     i = 0
@@ -325,30 +376,16 @@ def process_file(doc, md_file):
     code_lines = []
     in_wireframe = False
     wireframe_lines = []
-    plantuml_idx = 0
 
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
 
-        # PlantUML placeholder — insert diagram image
-        if stripped == '<!-- PLANTUML_PLACEHOLDER -->':
-            if plantuml_idx < len(plantuml_blocks):
-                base = os.path.basename(md_file)
-                if 'iii.1' in base:
-                    img = 'output/diagrams/booking_entity_class.png'
-                elif 'iii.2' in base:
-                    img = 'output/diagrams/booking_erd.png'
-                elif 'iii.3.2' in base:
-                    img = 'output/diagrams/booking_mvc_class.png'
-                elif 'iii.4' in base:
-                    seq_map = {0: 'booking_seq_1', 1: 'booking_seq_2', 2: 'booking_seq_3', 3: 'booking_seq_4'}
-                    img = f'output/diagrams/{seq_map.get(plantuml_idx, "booking_seq_1")}.png'
-                else:
-                    img = None
-                if img:
-                    add_diagram_image(doc, img)
-                plantuml_idx += 1
+        # Named diagram placeholder — insert diagram image
+        if stripped.startswith('<!-- DIAGRAM:') and stripped.endswith('-->'):
+            diagram_name = stripped.replace('<!-- DIAGRAM:', '').replace('-->', '').strip()
+            if diagram_name in DIAGRAM_MAP:
+                add_diagram_image(doc, DIAGRAM_MAP[diagram_name])
             i += 1
             continue
 
