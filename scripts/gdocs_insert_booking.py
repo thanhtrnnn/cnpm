@@ -22,15 +22,16 @@ BATCH_SIZE = 20
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DOCS_DIR = os.path.join(SCRIPT_DIR, '..', 'docs', 'tabs')
 
-# Bottom-to-top order so earlier indices stay valid
+# REVERSE order: first in list = inserted first = appears at TOP of tab.
+# Files are inserted at END of tab, so first file stays on top.
 INSERT_ORDER = [
-    'section-booking-iv.md',
-    'section-booking-iii.4.md',
-    'section-booking-iii.3.2.md',
-    'section-booking-iii.3.1.md',
-    'section-booking-iii.2.md',
-    'section-booking-iii.1.md',
-    'section-booking-ii.1-fix.md',
+    'section-booking-ii.1-fix.md',   # Phase II scenarios (top)
+    'section-booking-iii.1.md',      # Entity class design
+    'section-booking-iii.2.md',      # ERD + CSDL
+    'section-booking-iii.3.1.md',    # Wireframes
+    'section-booking-iii.3.2.md',    # MVC
+    'section-booking-iii.4.md',      # Sequence diagrams
+    'section-booking-iv.md',         # Test plan (bottom)
 ]
 
 
@@ -81,7 +82,6 @@ def strip_code_blocks(md_content):
 def parse_tables(md_content):
     """Extract all tables from markdown. Returns list of tables, each a list of rows."""
     md_content, _ = strip_plantuml_block(md_content)
-    md_content = strip_code_blocks(md_content)
     tables = []
     current_table = []
     in_table = False
@@ -113,7 +113,6 @@ def parse_tables(md_content):
 def build_text(md_content):
     """Convert markdown to clean text. Returns (text, line_info)."""
     md_content, _ = strip_plantuml_block(md_content)
-    md_content = strip_code_blocks(md_content)
 
     lines = md_content.split('\n')
     text_lines = []
@@ -301,7 +300,15 @@ def get_elements_all(client, doc_id, tab_title):
 
 
 def classify(text, line_info, last_matched_idx):
-    """Classify a document element based on its content."""
+    """Classify a document element based on its content.
+
+    Heading hierarchy (matches "Quản lý đặt & trả phòng" tab):
+      H1: Phase headers (PHA XÁC ĐỊNH, II. PHA PHÂN TÍCH, III. PHA THIẾT KẾ, IV. PHA CÀI ĐẶT)
+      H2: Section headers (Thiết kế lớp thực thể, Mô hình hóa chức năng, etc.)
+      H2: Numbered sections (1.1., 2.1., 3.1., etc.)
+      H3: Sub-sections (a) Tạo order, Bước 1, etc.)
+      H4: Details (1. Tầng giao diện, Use case đặt phòng, etc.)
+    """
     if not text.strip():
         return 'empty', last_matched_idx
 
@@ -309,6 +316,8 @@ def classify(text, line_info, last_matched_idx):
         return 'table_row', last_matched_idx
 
     clean_elem = text.strip()
+
+    # Match against line_info first
     for i in range(last_matched_idx, len(line_info)):
         info = line_info[i]
         info_clean = info.get('clean_text', '')
@@ -317,7 +326,9 @@ def classify(text, line_info, last_matched_idx):
         if clean_elem == info_clean or clean_elem.startswith(info_clean) or info_clean.startswith(clean_elem):
             etype = info['type']
             if etype.startswith('heading'):
-                return etype, i + 1
+                # Remap heading level based on content
+                level = _determine_heading_level(clean_elem)
+                return f'heading_{level}', i + 1
             if etype == 'bold_paragraph':
                 return 'bold_paragraph', i + 1
             if etype == 'bullet':
@@ -326,14 +337,66 @@ def classify(text, line_info, last_matched_idx):
                 return 'table_row', i + 1
             return 'paragraph', i + 1
 
-    if re.match(r'^[a-d]\) .+', text):
-        return 'heading_3', last_matched_idx
-    if re.match(r'^\d+\. .+', text):
-        return 'heading_4', last_matched_idx
+    # Fallback classification
+    level = _determine_heading_level(clean_elem)
+    if level:
+        return f'heading_{level}', last_matched_idx
     if text.startswith('- '):
         return 'bullet', last_matched_idx
-
     return 'paragraph', last_matched_idx
+
+
+def _determine_heading_level(text):
+    """Determine heading level based on content patterns.
+
+    Returns 1-4 or None (not a heading).
+    """
+    t = text.strip()
+
+    # H1: Phase headers
+    if re.match(r'^[IVX]+\.\s+PHA\s', t) or t.startswith('PHA '):
+        return 1
+    if t in ('II. PHA PHÂN TÍCH', 'III. PHA THIẾT KẾ', 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ',
+             'PHA XÁC ĐỊNH YÊU CẦU'):
+        return 1
+
+    # H2: Section headers with numbers (1.1., 2.1., 3.1., etc.)
+    if re.match(r'^\d+\.\d+\.\s', t):
+        return 2
+
+    # H2: Major section names
+    section_names = [
+        'Bảng thuật ngữ', 'Mô hình hóa chức năng', 'Mô hình hóa lớp',
+        'Mô hình hóa tĩnh', 'Mô hình hóa động', 'Thiết kế lớp thực thể',
+        'Thiết kế CSDL', 'Thiết kế tĩnh', 'Thiết kế giao diện',
+        'Thiết kế mô hình MVC', 'Kiểm thử chức năng',
+        'Mô hình nghiệp vụ bằng ngôn ngữ tự nhiên',
+        'Mô hình nghiệp vụ bằng UML',
+    ]
+    for name in section_names:
+        if t.startswith(name):
+            return 2
+
+    # H2: Numbered sections without sub-number (e.g., "1.1. Lập kế hoạch test")
+    if re.match(r'^\d+\.\d+\.\s', t):
+        return 2
+
+    # H3: Bold paragraph headers like "a) Tạo order", "Bước 1"
+    if re.match(r'^[a-e]\)\s', t):
+        return 3
+    if re.match(r'^Bước\s\d', t):
+        return 3
+
+    # H4: Numbered details like "1. Tầng giao diện", "Use case đặt phòng"
+    if re.match(r'^\d+\.\s+Tầng\s', t):
+        return 4
+    if t.startswith('Use case '):
+        return 4
+    if re.match(r'^\d+\.\s+Tầng', t):
+        return 4
+
+    # Not a heading
+    return None
 
 
 def process_file(client, doc_id, md_file, batch_num, total_batches):
@@ -466,8 +529,8 @@ def process_file(client, doc_id, md_file, batch_num, total_batches):
 
     # Step 4: Apply bold sub-ranges
     elements_bold, tab_id_bold = get_elements_all(client, doc_id, TAB_TITLE)
-    _, md_clean = strip_plantuml_block(md_content)
-    md_lines = strip_code_blocks(md_content).split('\n')
+    md_clean, _ = strip_plantuml_block(md_content)
+    md_lines = md_clean.split('\n')
 
     bold_reqs = []
     elem_search_start = 0
