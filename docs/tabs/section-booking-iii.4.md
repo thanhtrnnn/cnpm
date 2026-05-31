@@ -9,11 +9,11 @@
 @startuml
 left to right direction
 actor "Nhân viên lễ tân" as NV
-participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "SearchFreeRoomView\n<<Boundary>>" as SearchRoom
+participant "ReceptionistHomePage\n<<Boundary>>" as Home
+participant "SearchFreeRoomForm\n<<Boundary>>" as SearchRoom
 participant "BookingController\n<<Control>>" as Ctrl
-participant "SearchClientView\n<<Boundary>>" as SearchClient
-participant "ConfirmBookingView\n<<Boundary>>" as Confirm
+participant "SearchClientForm\n<<Boundary>>" as SearchClient
+participant "ConfirmBookingModal\n<<Boundary>>" as Confirm
 entity "Phong\n<<Entity>>" as Phong
 entity "KhachHang\n<<Entity>>" as KH
 entity "Phong\n<<Entity>>" as PhongDB
@@ -22,7 +22,7 @@ NV -> Home: click "Đặt phòng"
 activate Home
 Home -> SearchRoom: navigate()
 activate SearchRoom
-Home -> NV: hiển thị SearchFreeRoomView
+Home -> NV: hiển thị SearchFreeRoomForm
 
 NV -> SearchRoom: nhập startTime, endTime, branchId
 NV -> SearchRoom: click [Tìm phòng trống]
@@ -39,7 +39,7 @@ SearchRoom --> NV: hiển thị danh sách phòng trống
 NV -> SearchRoom: chọn phòng (roomId)
 SearchRoom -> SearchClient: navigate(roomId)
 activate SearchClient
-SearchRoom -> NV: hiển thị SearchClientView
+SearchRoom -> NV: hiển thị SearchClientForm
 
 NV -> SearchClient: nhập keyword (tên/SĐT)
 NV -> SearchClient: click [Tìm kiếm]
@@ -56,7 +56,7 @@ SearchClient --> NV: hiển thị danh sách khách hàng
 NV -> SearchClient: chọn khách hàng (clientId)
 SearchClient -> Confirm: navigate(roomId, clientId, timeRange)
 activate Confirm
-SearchClient -> NV: hiển thị ConfirmBookingView
+SearchClient -> NV: hiển thị ConfirmBookingModal
 
 NV -> Confirm: click [Xác nhận đặt phòng]
 Confirm -> Ctrl: createBooking(clientId, roomId, startTime, endTime, staffId)
@@ -82,30 +82,30 @@ deactivate SearchClient
 
 **Kịch bản phiên bản 3 - Đặt phòng**
 
-1. Nhân viên lễ tân click chức năng "Đặt phòng" trên giao diện ReceptionistHomeView.
-2. Phương thức navigate() của lớp SearchFreeRoomView được gọi, hiển thị form tìm phòng trống.
+1. Nhân viên lễ tân click chức năng "Đặt phòng" trên giao diện ReceptionistHomePage.
+2. Phương thức navigate() của lớp SearchFreeRoomForm được gọi, hiển thị form tìm phòng trống.
 3. Nhân viên nhập thời gian bắt đầu, thời gian kết thúc và chọn chi nhánh.
 4. Nhân viên click nút [Tìm phòng trống].
 5. Phương thức searchFreeRoom(startTime: Date, endTime: Date, branchId: int) của lớp BookingController được gọi.
 6. BookingController truy vấn danh sách phòng trống từ Entity Phong.
-7. SearchFreeRoomView hiển thị danh sách phòng trống cho nhân viên.
+7. SearchFreeRoomForm hiển thị danh sách phòng trống cho nhân viên.
 8. Nhân viên chọn phòng mong muốn.
-9. SearchFreeRoomView chuyển sang SearchClientView với roomId đã chọn.
+9. SearchFreeRoomForm chuyển sang SearchClientForm với roomId đã chọn.
 10. Nhân viên nhập thông tin khách hàng (tên hoặc SĐT) và click [Tìm kiếm].
 11. Phương thức searchClient(keyword: String) của lớp BookingController được gọi.
 12. BookingController truy vấn danh sách khách hàng từ Entity KhachHang.
-13. SearchClientView hiển thị danh sách khách hàng khớp.
+13. SearchClientForm hiển thị danh sách khách hàng khớp.
 14. Nhân viên chọn khách hàng tương ứng.
-15. SearchClientView chuyển sang ConfirmBookingView với đầy đủ thông tin.
+15. SearchClientForm chuyển sang ConfirmBookingModal với đầy đủ thông tin.
 16. Nhân viên click [Xác nhận đặt phòng].
 17. Phương thức createBooking(clientId: int, roomId: int, startTime: Date, endTime: Date, staffId: int) của lớp BookingController được gọi.
 18. BookingController cập nhật trạng thái phòng thành "Chờ nhận" và lưu booking vào CSDL.
-19. ConfirmBookingView hiển thị thông báo "Đặt phòng thành công!".
-20. Nhân viên click [OK], hệ thống quay về ReceptionistHomeView.
+19. ConfirmBookingModal hiển thị thông báo "Đặt phòng thành công!".
+20. Nhân viên click [OK], hệ thống quay về ReceptionistHomePage.
 
 **Ngoại lệ:**
-- **Phòng trống không tìm thấy:** BookingController trả về danh sách rỗng. SearchFreeRoomView hiển thị "Không có phòng trống trong khung giờ này."
-- **Khách hàng chưa có trong CSDL:** SearchClientView hiển thị nút [Đăng ký nhanh]. Nhân viên nhập thông tin mới, hệ thống tạo khách hàng mới trước khi tiếp tục.
+- **Phòng trống không tìm thấy:** BookingController trả về danh sách rỗng. SearchFreeRoomForm hiển thị "Không có phòng trống trong khung giờ này."
+- **Khách hàng chưa có trong CSDL:** SearchClientForm hiển thị nút [Đăng ký nhanh]. Nhân viên nhập thông tin mới, hệ thống tạo khách hàng mới trước khi tiếp tục.
 
 ---
 
@@ -119,7 +119,7 @@ deactivate SearchClient
 ```plantuml
 @startuml
 actor "Nhân viên lễ tân" as NV
-participant "CheckInView\n<<Boundary>>" as CheckIn
+participant "CheckInPage\n<<Boundary>>" as CheckIn
 participant "BookingController\n<<Control>>" as Ctrl
 entity "Phong\n<<Entity>>" as Phong
 
@@ -155,15 +155,15 @@ deactivate CheckIn
 1. Nhân viên lễ tân click chức năng "Check-in" trên giao diện chính.
 2. Phương thức getPendingBookings(branchId: int, date: Date) của lớp BookingController được gọi.
 3. BookingController truy vấn danh sách booking có trạng thái "Chờ nhận" hôm nay.
-4. CheckInView hiển thị danh sách booking chờ nhận phòng.
+4. CheckInPage hiển thị danh sách booking chờ nhận phòng.
 5. Nhân viên chọn booking cần check-in.
 6. Nhân viên click [Xác nhận Check-in].
 7. Phương thức checkIn(bookingId: int) của lớp BookingController được gọi.
 8. BookingController cập nhật trạng thái phòng từ "Chờ nhận" sang "Đang hoạt động" và ghi nhận thời gian bắt đầu.
-9. CheckInView hiển thị "Check-in thành công! Phòng [tên phòng] đã sẵn sàng."
+9. CheckInPage hiển thị "Check-in thành công! Phòng [tên phòng] đã sẵn sàng."
 
 **Ngoại lệ:**
-- **Phòng đang dọn dẹp:** BookingController kiểm tra trạng thái phòng, trả về lỗi. CheckInView hiển thị "Phòng đang dọn dẹp, vui lòng chờ."
+- **Phòng đang dọn dẹp:** BookingController kiểm tra trạng thái phòng, trả về lỗi. CheckInPage hiển thị "Phòng đang dọn dẹp, vui lòng chờ."
 - **Khách hàng không đến:** Nhân viên chọn hủy booking thay vì check-in. BookingController chuyển trạng thái booking sang "Đã hủy".
 
 ---
@@ -178,7 +178,7 @@ deactivate CheckIn
 ```plantuml
 @startuml
 actor "Nhân viên lễ tân" as NV
-participant "CheckOutView\n<<Boundary>>" as CheckOut
+participant "CheckOutPage\n<<Boundary>>" as CheckOut
 participant "InvoicePanel\n<<Boundary>>" as Invoice
 participant "BookingController\n<<Control>>" as Ctrl
 entity "HoaDon\n<<Entity>>" as HD
@@ -237,9 +237,9 @@ deactivate CheckOut
 1. Nhân viên lễ tân click chức năng "Check-out" trên giao diện chính.
 2. Phương thức getActiveRooms(branchId: int) của lớp BookingController được gọi.
 3. BookingController truy vấn danh sách phòng trạng thái "Đang hoạt động".
-4. CheckOutView hiển thị danh sách phòng đang sử dụng.
+4. CheckOutPage hiển thị danh sách phòng đang sử dụng.
 5. Nhân viên chọn phòng cần check-out.
-6. CheckOutView chuyển sang InvoicePanel với bookingId đã chọn.
+6. CheckOutPage chuyển sang InvoicePanel với bookingId đã chọn.
 7. Phương thức calculateInvoice(bookingId: int) của lớp BookingController được gọi.
 8. BookingController tính tiền phòng (thời gian × đơn giá) + tổng tiền dịch vụ từ ChiTietHoaDon.
 9. InvoicePanel hiển thị chi tiết hóa đơn với tổng tiền.
@@ -266,7 +266,7 @@ deactivate CheckOut
 ```plantuml
 @startuml
 actor "Nhân viên lễ tân" as NV
-participant "CancelBookingView\n<<Boundary>>" as Cancel
+participant "CancelBookingPage\n<<Boundary>>" as Cancel
 participant "BookingController\n<<Control>>" as Ctrl
 entity "Phong\n<<Entity>>" as Phong
 
@@ -305,15 +305,15 @@ deactivate Cancel
 2. Nhân viên nhập thông tin tìm kiếm (tên khách, SĐT, hoặc mã booking).
 3. Phương thức searchBooking(keyword: String) của lớp BookingController được gọi.
 4. BookingController truy vấn danh sách booking khớp từ CSDL.
-5. CancelBookingView hiển thị danh sách booking tìm thấy.
+5. CancelBookingPage hiển thị danh sách booking tìm thấy.
 6. Nhân viên chọn booking cần hủy.
 7. Nhân viên click [Hủy đặt phòng].
-8. CancelBookingView hiển thị xác nhận "Bạn có chắc chắn muốn hủy booking này?".
+8. CancelBookingPage hiển thị xác nhận "Bạn có chắc chắn muốn hủy booking này?".
 9. Nhân viên click [Đồng ý].
 10. Phương thức cancelBooking(bookingId: int) của lớp BookingController được gọi.
 11. BookingController cập nhật trạng thái booking sang "Đã hủy" và chuyển phòng về "Trống".
-12. CancelBookingView hiển thị "Hủy đặt phòng thành công."
+12. CancelBookingPage hiển thị "Hủy đặt phòng thành công."
 
 **Ngoại lệ:**
-- **Không tìm thấy booking:** BookingController trả về danh sách rỗng. CancelBookingView hiển thị "Không tìm thấy booking phù hợp."
-- **Booking đã quá thời gian hủy:** BookingController kiểm tra thời gian, trả về lỗi. CancelBookingView hiển thị "Booking đã quá thời gian hủy."
+- **Không tìm thấy booking:** BookingController trả về danh sách rỗng. CancelBookingPage hiển thị "Không tìm thấy booking phù hợp."
+- **Booking đã quá thời gian hủy:** BookingController kiểm tra thời gian, trả về lỗi. CancelBookingPage hiển thị "Booking đã quá thời gian hủy."
