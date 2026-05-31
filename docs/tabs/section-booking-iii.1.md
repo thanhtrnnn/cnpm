@@ -51,8 +51,25 @@ Chuyển tất cả thuộc tính sang kiểu ngôn ngữ lập trình (Java):
 
 ```plantuml
 @startuml
-skinparam classAttributeIconSize 0
-skinparam classFontSize 11
+' === VP Base Theme v2 ===
+skinparam linetype ortho
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+hide circle
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+  FontSize 11
+  AttributeFontSize 9
+  AttributeIconSize 0
+  BorderThickness 1
+}
+
 hide empty members
 
 title Thiết kế lớp thực thể - Module Đặt & trả phòng

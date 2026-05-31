@@ -176,77 +176,151 @@ b) Hủy booking => `cancelBooking()`
 
 ```plantuml
 @startuml
+' === VP Base Theme v2 ===
 left to right direction
 skinparam linetype ortho
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
+hide circle
+
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+  FontColor #000000
+  FontSize 11
+  AttributeFontSize 9
+  AttributeIconSize 0
+  BorderThickness 1
+}
+
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #000000
+}
+
 skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
-skinparam classAttributeIconSize 0
-skinparam classFontSize 11
-skinparam packageFontSize 13
 hide empty members
 
 package "<<Boundary>>" #E3F2FD {
-  class ReceptionistHomePage {
-    +render()
+  together {
+    class ReceptionistHomePage {
+      -btnDatPhong : Button
+      -btnCheckIn : Button
+      -btnCheckOut : Button
+      -tblBookings : Table
+      +formLoad() : void
+      +btnDatPhongClick() : void
+      +btnCheckInClick() : void
+      +btnCheckOutClick() : void
+      +displayBookings(bookings : List) : void
+    }
+    class SearchFreeRoomForm {
+      -txtStartTime : TextBox
+      -txtEndTime : TextBox
+      -cmbBranch : Select
+      -cmbRoomType : Select
+      -btnSearch : Button
+      -tblRooms : Table
+      +formLoad() : void
+      +btnSearchClick() : void
+      +displayRooms(rooms : List) : void
+      +tblRoomsClick(selectedRow : int) : void
+    }
+    class SearchClientForm {
+      -txtHoTen : TextBox
+      -txtSDT : TextBox
+      -btnSearch : Button
+      -tblClients : Table
+      +formLoad(roomId : int) : void
+      +btnSearchClick() : void
+      +displayClients(clients : List) : void
+      +tblClientsClick(selectedRow : int) : void
+    }
+    class ConfirmBookingModal {
+      -lblKhachHang : Label
+      -lblPhong : Label
+      -lblThoiGian : Label
+      -lblTongTien : Label
+      -btnConfirm : Button
+      -btnCancel : Button
+      +formLoad(booking : BookingResponse) : void
+      +btnConfirmClick() : void
+      +btnCancelClick() : void
+      +showMessage(msg : String) : void
+    }
   }
-  class SearchFreeRoomForm {
-    -startTime: Date
-    -endTime: Date
-    -branchId: int
-    -roomType: String
-    -results: List<Phong>
-    +render()
-  }
-  class SearchClientForm {
-    -keyword: String
-    -selectedRoom: Phong
-    -results: List<KhachHang>
-    +render()
-  }
-  class ConfirmBookingModal {
-    -booking: BookingResponse
-    -room: Phong
-    -customer: KhachHang
-    -total: double
-    +render()
-  }
-  class CheckInPage {
-    -pendingBookings: List<BookingResponse>
-    -selectedBooking: BookingResponse
-    +render()
-  }
-  class CheckOutPage {
-    -activeRooms: List<Phong>
-    -invoice: HoaDon
-    -paymentMethod: String
-    +render()
-  }
-  class InvoicePanel {
-    -invoice: HoaDon
-    -discount: double
-    -voucherCode: String
-    +render()
-  }
-  class CancelBookingPage {
-    -keyword: String
-    -bookingList: List<BookingResponse>
-    +render()
+  together {
+    class CheckInPage {
+      -tblPendingBookings : Table
+      -btnCheckIn : Button
+      +formLoad() : void
+      +btnCheckInClick() : void
+      +displayPendingBookings(bookings : List) : void
+      +showMessage(msg : String) : void
+    }
+    class CheckOutPage {
+      -tblActiveRooms : Table
+      -btnCheckOut : Button
+      +formLoad() : void
+      +btnCheckOutClick() : void
+      +displayActiveRooms(rooms : List) : void
+    }
+    class InvoicePanel {
+      -lblTienPhong : Label
+      -lblTienDichVu : Label
+      -lblGiamGia : Label
+      -lblTongTien : Label
+      -txtVoucher : TextBox
+      -cmbPhuongThuc : Select
+      -btnThanhToan : Button
+      -btnInHoaDon : Button
+      +formLoad(invoice : HoaDon) : void
+      +btnThanhToanClick() : void
+      +btnInHoaDonClick() : void
+      +showMessage(msg : String) : void
+    }
+    class CancelBookingPage {
+      -txtKeyword : TextBox
+      -btnSearch : Button
+      -tblBookings : Table
+      -btnCancel : Button
+      +formLoad() : void
+      +btnSearchClick() : void
+      +btnCancelClick() : void
+      +displayBookings(bookings : List) : void
+      +showMessage(msg : String) : void
+    }
   }
 }
 
 package "<<Control>>" #E8F5E9 {
+  class RoomController {
+    +getAll() : List<Phong>
+    +getById(id : int) : Phong
+    +searchFreeRoom(startTime : Date, endTime : Date, branchId : int) : List<Phong>
+    +updateStatus(roomId : int, status : String) : Phong
+    +getActiveRooms(branchId : int) : List<Phong>
+    +getPendingBookings(branchId : int, date : Date) : List<BookingResponse>
+  }
+  class ClientController {
+    +getAll() : List<KhachHang>
+    +getById(id : int) : KhachHang
+    +search(keyword : String) : List<KhachHang>
+  }
   class BookingController {
-    +searchFreeRoom(startTime, endTime, branchId): List<Phong>
-    +searchClient(keyword): List<KhachHang>
-    +createBooking(clientId, roomId, startTime, endTime, staffId): BookingResponse
-    +updateRoomStatus(roomId, status): Phong
-    +getPendingBookings(branchId, date): List<BookingResponse>
-    +checkIn(bookingId): BookingResponse
-    +getActiveRooms(branchId): List<Phong>
-    +calculateInvoice(bookingId): HoaDon
-    +confirmPayment(invoiceId, paymentMethod, voucherCode): HoaDon
-    +searchBooking(keyword): List<BookingResponse>
-    +cancelBooking(bookingId): BookingResponse
+    +createBooking(clientId : int, roomId : int, startTime : Date, endTime : Date, staffId : int) : BookingResponse
+    +checkIn(bookingId : int) : BookingResponse
+    +cancelBooking(bookingId : int) : BookingResponse
+    +searchBooking(keyword : String) : List<BookingResponse>
+  }
+  class InvoiceController {
+    +calculateInvoice(bookingId : int) : HoaDon
+    +confirmPayment(invoiceId : int, paymentMethod : String, voucherCode : String) : HoaDon
+    +getById(id : int) : HoaDon
   }
 }
 
@@ -302,22 +376,22 @@ package "<<Entity>>" #FFF3E0 {
 }
 
 ' Boundary -> Control
-ReceptionistHomePage --> BookingController
-SearchFreeRoomForm --> BookingController
-SearchClientForm --> BookingController
+ReceptionistHomePage --> RoomController
+SearchFreeRoomForm --> RoomController
+SearchClientForm --> ClientController
 ConfirmBookingModal --> BookingController
 CheckInPage --> BookingController
-CheckOutPage --> BookingController
-InvoicePanel --> BookingController
+CheckOutPage --> RoomController
+InvoicePanel --> InvoiceController
 CancelBookingPage --> BookingController
 
 ' Control -> Entity
-BookingController --> Phong
-BookingController --> KhachHang
+RoomController --> Phong
+ClientController --> KhachHang
 BookingController --> HoaDon
-BookingController --> ChiTietHoaDon
-BookingController --> KhuyenMai
-BookingController --> ChiNhanh
+BookingController --> Phong
+InvoiceController --> HoaDon
+InvoiceController --> ChiTietHoaDon
 
 ' Entity relationships
 ChiNhanh *-- "n" Phong

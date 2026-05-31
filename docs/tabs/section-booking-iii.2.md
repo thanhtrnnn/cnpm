@@ -50,7 +50,13 @@
 
 ```plantuml
 @startuml
+' === VP Base Theme v2 ===
 skinparam linetype ortho
+skinparam defaultFontName "Arial"
+skinparam defaultFontSize 10
+skinparam shadowing false
+skinparam arrowColor #000000
+skinparam lineColor #000000
 hide circle
 
 entity "tblChiNhanh" {
