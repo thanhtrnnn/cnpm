@@ -107,3 +107,112 @@ tblNhanVien
 |----|-------|--------|-----------|
 | 1 | Trần Thị B | Lễ tân | Đang làm |
 | 2 | **Lê Văn C** | **Phục vụ** | **Đang làm** |
+
+---
+
+#### TC02: Tài khoản không tồn tại
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai |
+|----|-------|-------------|
+| 1 | Nguyễn Văn A | 0912345678 |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Mở màn hình Đăng nhập | Hiển thị form |
+| 2. Nhập: 0999999999 / Abc@1234 | SĐT không tồn tại trong CSDL |
+| 3. Nhấn [Đăng nhập] | Kiểm tra CSDL, không tìm thấy |
+| 4. Hiển thị lỗi | "Tài khoản không tồn tại. Vui lòng kiểm tra lại." |
+
+**Trạng thái CSDL sau:** Không thay đổi.
+
+---
+
+#### TC04: Đăng ký thành công với OTP
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai |
+|----|-------|-------------|
+| 1 | Nguyễn Văn A | 0912345678 |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Nhấn "Đăng ký" từ màn hình đăng nhập | Hiển thị form đăng ký |
+| 2. Nhập: Họ tên = "Lê Thị D", SĐT = "0911111111", Email = "d.lt@email.com", MK = "Pass@2025" | Form đầy đủ |
+| 3. Nhấn [Tiếp tục] | Kiểm tra SĐT, email chưa tồn tại |
+| 4. Hệ thống gửi OTP đến 0911111111 | Hiển thị form OTP |
+| 5. Nhập OTP = "123456" | OTP hợp lệ |
+| 6. Nhấn [Xác nhận] | Tạo tài khoản, hạng "Thương", điểm = 0 |
+| 7. Đăng nhập tự động | "Đăng ký thành công! Chào mừng Lê Thị D." |
+
+**Trạng thái CSDL sau:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai | diemTichLuy | tblHangHoiVienMa |
+|----|-------|-------------|-------------|-------------------|
+| 1 | Nguyễn Văn A | 0912345678 | 1250 | 2 |
+| 2 | **Lê Thị D** | **0911111111** | **0** | **1** |
+
+---
+
+#### TC07: Đổi mật khẩu thành công
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | matKhau |
+|----|-------|---------|
+| 1 | Nguyễn Văn A | $2a$10$hashAbc@1234 |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Truy cập "Bảo mật" | Hiển thị form đổi MK |
+| 2. Nhập: MK hiện tại = "Abc@1234", MK mới = "NewPass@2025", xác nhận = "NewPass@2025" | Form đầy đủ |
+| 3. Nhấn [Lưu thay đổi] | Xác minh MK hiện tại khớp |
+| 4. Kiểm tra MK mới đủ mạnh | Đạt yêu cầu |
+| 5. Cập nhật CSDL (bcrypt) | Thu hồi tất cả session |
+| 6. Hiển thị thông báo | "Đổi mật khẩu thành công. Vui lòng đăng nhập lại." |
+
+**Trạng thái CSDL sau:**
+
+tblNguoiDung
+| ma | hoTen | matKhau |
+|----|-------|---------|
+| 1 | Nguyễn Văn A | **$2a$10$hashNewPass@2025** |
+
+tblPhienDangNhap
+| ma | trangThai |
+|----|-----------|
+| 1 | **Đã thu hồi** |
+
+---
+
+#### TC08: Mật khẩu hiện tại sai
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | matKhau |
+|----|-------|---------|
+| 1 | Nguyễn Văn A | $2a$10$hashAbc@1234 |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Truy cập "Bảo mật" | Hiển thị form đổi MK |
+| 2. Nhập: MK hiện tại = "SaiPass@123", MK mới = "NewPass@2025" | Form đầy đủ |
+| 3. Nhấn [Lưu thay đổi] | Xác minh MK hiện tại SAI |
+| 4. Hiển thị lỗi | "Mật khẩu hiện tại không chính xác." |
+
+**Trạng thái CSDL sau:** Không thay đổi.
