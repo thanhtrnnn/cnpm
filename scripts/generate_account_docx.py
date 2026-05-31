@@ -37,8 +37,10 @@ FILES = [
 DIAGRAM_MAP = {
     'account_entity_class': 'output/diagrams/account_entity_class.png',
     'account_erd': 'output/diagrams/account_erd.png',
-    'account_mvc_class': 'output/diagrams/account_dao_class.png',
-    'account_dao_class': 'output/diagrams/account_dao_class.png',
+    'account_entity_analysis': 'output/diagrams/account_entity_analysis.png',
+    'account_bce_analysis': 'output/diagrams/account_bce_analysis.png',
+    'account_dao_class': 'output/diagrams/account_mvc_class.png',
+    'account_mvc_class': 'output/diagrams/account_mvc_class.png',
     'account_seq_login': 'output/diagrams/account_seq_login.png',
     'account_seq_register': 'output/diagrams/account_seq_register.png',
     'account_seq_changepw': 'output/diagrams/account_seq_changepw.png',

@@ -171,15 +171,98 @@
 └──────────────────────────────────────────────┘
 ```
 
-### 4. DAO class diagram
+### 4. MVC class diagram
 
-Mô hình thiết kế theo kiến trúc DAO (BCE):
+Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 
 **Boundary:** LoginPage, RegisterPage, OTPVerifyPage, ChangePasswordPage, ProfilePage, StaffManagePage
 
-**DAO:** NguoiDungDAO (extends DAO), NhanVienDAO (extends DAO)
+**Control:** AuthController, ProfileController, StaffController
 
 **Entity:** NguoiDung, HangHoiVien, OTP, PhienDangNhap, NhanVien
+
+**Quy trình xác định chữ ký hàm Controller:**
+
+a) Đăng nhập => `login()`
+- Input: sdt, matKhau
+- Output: NguoiDung + Session
+- Ứng viên tham số vào:
+  - `login(sdt: String, matKhau: String)` → chọn (gom nhóm tham số)
+- Ứng viên tham số ra:
+  - `login(): void` → loại (cần trả về thông tin đăng nhập)
+  - `login(): NguoiDung` → chọn (trả về thông tin người dùng)
+
+b) Đăng ký => `register()`
+- Input: hoTen, sdt, email, matKhau
+- Output: NguoiDung (vừa tạo)
+- Ứng viên tham số vào:
+  - `register(hoTen: String, sdt: String, email: String, matKhau: String)` → chọn
+- Ứng viên tham số ra:
+  - `register(): NguoiDung` → chọn
+
+c) Xác minh OTP => `verifyOTP()`
+- Input: otp
+- Output: boolean
+- Ứng viên tham số vào:
+  - `verifyOTP(otp: String)` → chọn
+- Ứng viên tham số ra:
+  - `verifyOTP(): boolean` → chọn (cần biết đúng/sai)
+
+d) Đổi mật khẩu => `changePassword()`
+- Input: mkHienTai, mkMoi
+- Output: boolean
+- Ứng viên tham số vào:
+  - `changePassword(mkHienTai: String, mkMoi: String)` → chọn
+- Ứng viên tham số ra:
+  - `changePassword(): boolean` → chọn
+
+e) Xem hồ sơ => `getProfile()`
+- Input: userId
+- Output: NguoiDung
+- Ứng viên tham số vào:
+  - `getProfile(userId: int)` → chọn
+- Ứng viên tham số ra:
+  - `getProfile(): NguoiDung` → chọn
+
+f) Cập nhật hồ sơ => `updateProfile()`
+- Input: userId, hoTen, email
+- Output: NguoiDung
+- Ứng viên tham số vào:
+  - `updateProfile(userId: int, hoTen: String, email: String)` → chọn
+- Ứng viên tham số ra:
+  - `updateProfile(): NguoiDung` → chọn
+
+g) Xem danh sách NV => `getStaffList()`
+- Input: (không có)
+- Output: List\<NhanVien\>
+- Ứng viên tham số vào:
+  - `getStaffList()` → chọn
+- Ứng viên tham số ra:
+  - `getStaffList(): List<NhanVien>` → chọn
+
+h) Thêm NV => `addStaff()`
+- Input: hoTen, vaiTro
+- Output: NhanVien
+- Ứng viên tham số vào:
+  - `addStaff(hoTen: String, vaiTro: String)` → chọn
+- Ứng viên tham số ra:
+  - `addStaff(): NhanVien` → chọn
+
+i) Sửa NV => `updateStaff()`
+- Input: id, hoTen, vaiTro
+- Output: NhanVien
+- Ứng viên tham số vào:
+  - `updateStaff(id: int, hoTen: String, vaiTro: String)` → chọn
+- Ứng viên tham số ra:
+  - `updateStaff(): NhanVien` → chọn
+
+j) Xóa NV => `deleteStaff()`
+- Input: id
+- Output: boolean
+- Ứng viên tham số vào:
+  - `deleteStaff(id: int)` → chọn
+- Ứng viên tham số ra:
+  - `deleteStaff(): boolean` → chọn (cần biết thành công/thất bại)
 
 <!-- PLACEHOLDER: account_dao_class -->
 <!-- File: output/diagrams/account_mvc_class.png -->
