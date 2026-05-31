@@ -330,18 +330,6 @@ def process_file(doc, md_file):
         # PlantUML placeholder — insert diagram image
         if stripped == '<!-- PLANTUML_PLACEHOLDER -->':
             if plantuml_idx < len(plantuml_blocks):
-                # Find the corresponding diagram file
-                # Map by order: first block in iii.1 = entity, iii.2 = erd, etc.
-                diagram_files = [
-                    'output/diagrams/booking_entity_class.png',
-                    'output/diagrams/booking_erd.png',
-                    'output/diagrams/booking_mvc_class.png',
-                    'output/diagrams/booking_seq_1.png',
-                    'output/diagrams/booking_seq_2.png',
-                    'output/diagrams/booking_seq_3.png',
-                    'output/diagrams/booking_seq_4.png',
-                ]
-                # Find which file this is from
                 base = os.path.basename(md_file)
                 if 'iii.1' in base:
                     img = 'output/diagrams/booking_entity_class.png'
