@@ -11,10 +11,10 @@ Mô hình MVC được thiết kế theo kiến trúc BCE (Boundary – Control 
 
 | Lớp | Component | Mô tả |
 |------|-----------|-------|
-| **ReceptionistHomeView** | Page | Trang chính lễ tân, hiển thị danh sách booking hôm nay |
-| **SearchFreeRoomView** | Form | Tìm phòng trống theo thời gian và chi nhánh |
-| **SearchClientView** | Form | Tìm thông tin khách hàng theo tên/SĐT |
-| **ConfirmBookingView** | Modal | Xác nhận thông tin đặt phòng |
+| **ReceptionistHomePage** | Page | Trang chính lễ tân, hiển thị danh sách booking hôm nay |
+| **SearchFreeRoomForm** | Form | Tìm phòng trống theo thời gian và chi nhánh |
+| **SearchClientForm** | Form | Tìm thông tin khách hàng theo tên/SĐT |
+| **ConfirmBookingModal** | Modal | Xác nhận thông tin đặt phòng |
 
 **2. Tầng điều khiển (Control/DAO)**
 
@@ -66,7 +66,7 @@ d) Thay đổi trạng thái phòng => `updateRoomStatus()`
 
 | Lớp | Component | Mô tả |
 |------|-----------|-------|
-| **CheckInView** | Page | Hiển thị danh sách booking "Chờ nhận", nút xác nhận check-in |
+| **CheckInPage** | Page | Hiển thị danh sách booking "Chờ nhận", nút xác nhận check-in |
 
 **2. Tầng điều khiển (Control/DAO)**
 
@@ -99,7 +99,7 @@ b) Xác nhận check-in => `checkIn()`
 
 | Lớp | Component | Mô tả |
 |------|-----------|-------|
-| **CheckOutView** | Page | Hiển thị danh sách phòng đang hoạt động, tổng hợp hóa đơn |
+| **CheckOutPage** | Page | Hiển thị danh sách phòng đang hoạt động, tổng hợp hóa đơn |
 | **InvoicePanel** | Panel | Hiển thị chi tiết hóa đơn, áp dụng voucher, chọn thanh toán |
 
 **2. Tầng điều khiển (Control/DAO)**
@@ -142,7 +142,7 @@ c) Xác nhận thanh toán => `confirmPayment()`
 
 | Lớp | Component | Mô tả |
 |------|-----------|-------|
-| **CancelBookingView** | Page | Tìm và hủy booking trạng thái "Chờ nhận" |
+| **CancelBookingPage** | Page | Tìm và hủy booking trạng thái "Chờ nhận" |
 
 **2. Tầng điều khiển (Control/DAO)**
 
@@ -185,21 +185,51 @@ skinparam packageFontSize 13
 hide empty members
 
 package "<<Boundary>>" #E3F2FD {
-  together {
-    class ReceptionistHomeView { +render() }
-    class SearchFreeRoomView { +render() }
-    class SearchClientView { +render() }
-    class ConfirmBookingView { +render() }
+  class ReceptionistHomePage {
+    +render()
   }
-  together {
-    class CheckInView { +render() }
+  class SearchFreeRoomForm {
+    -startTime: Date
+    -endTime: Date
+    -branchId: int
+    -roomType: String
+    -results: List<Phong>
+    +render()
   }
-  together {
-    class CheckOutView { +render() }
-    class InvoicePanel { +render() }
+  class SearchClientForm {
+    -keyword: String
+    -selectedRoom: Phong
+    -results: List<KhachHang>
+    +render()
   }
-  together {
-    class CancelBookingView { +render() }
+  class ConfirmBookingModal {
+    -booking: BookingResponse
+    -room: Phong
+    -customer: KhachHang
+    -total: double
+    +render()
+  }
+  class CheckInPage {
+    -pendingBookings: List<BookingResponse>
+    -selectedBooking: BookingResponse
+    +render()
+  }
+  class CheckOutPage {
+    -activeRooms: List<Phong>
+    -invoice: HoaDon
+    -paymentMethod: String
+    +render()
+  }
+  class InvoicePanel {
+    -invoice: HoaDon
+    -discount: double
+    -voucherCode: String
+    +render()
+  }
+  class CancelBookingPage {
+    -keyword: String
+    -bookingList: List<BookingResponse>
+    +render()
   }
 }
 
@@ -271,14 +301,14 @@ package "<<Entity>>" #FFF3E0 {
 }
 
 ' Boundary -> Control
-ReceptionistHomeView --> BookingController
-SearchFreeRoomView --> BookingController
-SearchClientView --> BookingController
-ConfirmBookingView --> BookingController
-CheckInView --> BookingController
-CheckOutView --> BookingController
+ReceptionistHomePage --> BookingController
+SearchFreeRoomForm --> BookingController
+SearchClientForm --> BookingController
+ConfirmBookingModal --> BookingController
+CheckInPage --> BookingController
+CheckOutPage --> BookingController
 InvoicePanel --> BookingController
-CancelBookingView --> BookingController
+CancelBookingPage --> BookingController
 
 ' Control -> Entity
 BookingController --> Phong
