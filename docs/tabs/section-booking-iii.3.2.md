@@ -16,7 +16,7 @@ Mô hình MVC được thiết kế theo kiến trúc BCE (Boundary – Control 
 | **SearchClientForm** | Form | Tìm thông tin khách hàng theo tên/SĐT |
 | **ConfirmBookingModal** | Modal | Xác nhận thông tin đặt phòng |
 
-**2. Tầng điều khiển (Control/DAO)**
+**2. Tầng điều khiển (Control)**
 
 a) Tìm phòng trống => `searchFreeRoom()`
 - Input: thời gian bắt đầu, thời gian kết thúc, mã chi nhánh
@@ -68,7 +68,7 @@ d) Thay đổi trạng thái phòng => `updateRoomStatus()`
 |------|-----------|-------|
 | **CheckInPage** | Page | Hiển thị danh sách booking "Chờ nhận", nút xác nhận check-in |
 
-**2. Tầng điều khiển (Control/DAO)**
+**2. Tầng điều khiển (Control)**
 
 a) Lấy danh sách booking chờ => `getPendingBookings()`
 - Input: mã chi nhánh, ngày
@@ -102,7 +102,7 @@ b) Xác nhận check-in => `checkIn()`
 | **CheckOutPage** | Page | Hiển thị danh sách phòng đang hoạt động, tổng hợp hóa đơn |
 | **InvoicePanel** | Panel | Hiển thị chi tiết hóa đơn, áp dụng voucher, chọn thanh toán |
 
-**2. Tầng điều khiển (Control/DAO)**
+**2. Tầng điều khiển (Control)**
 
 a) Lấy danh sách phòng đang hoạt động => `getActiveRooms()`
 - Input: mã chi nhánh
@@ -144,7 +144,7 @@ c) Xác nhận thanh toán => `confirmPayment()`
 |------|-----------|-------|
 | **CancelBookingPage** | Page | Tìm và hủy booking trạng thái "Chờ nhận" |
 
-**2. Tầng điều khiển (Control/DAO)**
+**2. Tầng điều khiển (Control)**
 
 a) Tìm booking => `searchBooking()`
 - Input: tên khách, SĐT, hoặc mã booking
@@ -179,6 +179,7 @@ b) Hủy booking => `cancelBooking()`
 left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
+skinparam packageMaxWidth 800
 skinparam classAttributeIconSize 0
 skinparam classFontSize 11
 skinparam packageFontSize 13

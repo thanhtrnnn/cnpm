@@ -25,8 +25,12 @@ OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'booking_module.docx')
 
 # Files in order with phase headers: (filename, phase_header_before)
 FILES = [
+    (None, 'I. PHA XÁC ĐỊNH YÊU CẦU'),
+    ('section-booking-i.md', None),
     (None, 'II. PHA PHÂN TÍCH'),
+    ('section-booking-ii.1-datphong.md', None),
     ('section-booking-ii.1-fix.md', None),
+    ('section-booking-ii.3-2.4.md', None),
     (None, 'III. PHA THIẾT KẾ'),
     ('section-booking-iii.1.md', None),
     ('section-booking-iii.2.md', None),
