@@ -95,7 +95,7 @@ NguoiDung gắn composition với OTP: một OTP không tồn tại độc lập
 
 ### 3. Biểu đồ lớp phân tích
 
-**Kiến trúc chọn: React** ( Boundary class dùng hậu tố Page, Form, Modal, Panel )
+**Kiến trúc chọn: React** ( Boundary class dùng hậu tố Page, Form, Modal, Panel. Method names tiếng Việt ở pha phân tích )
 
 **Bước 1 – Lớp Boundary từ giao diện**
 
@@ -112,44 +112,18 @@ NguoiDung gắn composition với OTP: một OTP không tồn tại độc lập
 
 **Bước 2 – Phân loại thành phần giao diện**
 
-LoginPage:
-- inSDT: ô nhập SĐT/Email
-- inMatKhau: ô nhập mật khẩu
-- subDangNhap: nút Đăng nhập
-- subQuenMatKhau: liên kết Quên mật khẩu
-- subDangKy: liên kết Đăng ký
-
-RegisterPage:
-- inHoTen, inSDT, inEmail, inMatKhau, inXacNhanMK: ô nhập liệu
-- subTiepTuc: nút Tiếp tục
-- subHuy: nút Hủy
-
-OTPVerifyModal:
-- inOTP: ô nhập 6 chữ số OTP
-- subXacNhan: nút Xác nhận
-- subGuiLai: liên kết Gửi lại OTP
-
-ChangePasswordForm:
-- inMKHienTai, inMKMoi, inXacNhanMKMoi: ô nhập liệu
-- subLuu: nút Lưu thay đổi
-- subHuy: nút Hủy
-
-ProfilePage:
-- outHoTen, outSDT, outEmail, outHang, outDiem, outNgayThamGia: vùng hiển thị
-- subChinhSua: nút Chỉnh sửa thông tin
-- subDoiMK: nút Đổi mật khẩu
-
-StaffManagePage:
-- outDSNhanVien: bảng danh sách nhân viên
-- subThem: nút Thêm nhân viên
-- outsubChonNV: chọn dòng trong bảng
-- subSua: nút Sửa
-- subXoa: nút Xóa
+LoginPage: inSDT, inMatKhau, subDangNhap, subQuenMatKhau, subDangKy
+RegisterPage: inHoTen, inSDT, inEmail, inMatKhau, inXacNhanMK, subTiepTuc, subHuy
+OTPVerifyModal: inOTP, subXacNhan, subGuiLai
+ChangePasswordForm: inMKHienTai, inMKMoi, inXacNhanMKMoi, subLuu, subHuy
+ProfilePage: outHoTen, outSDT, outEmail, outHang, outDiem, subChinhSua, subDoiMK
+StaffManagePage: outDSNhanVien, outsubChonNV, subThem, subSua, subXoa
+StaffForm: inHoTen, inVaiTro, subLuu, subHuy
 
 **Bước 3 – Phương thức cho mỗi chức năng**
 
 [1]. Giao diện LoginPage → lớp LoginPage
-Phương thức: `dangNhap()`
+Phương thức: `dangNhap()` ← tên tiếng Việt, ngôn ngữ tự nhiên
 Input: sdt, matKhau
 Output: Session (token, vaiTro)
 Lớp chủ thể: NguoiDung
@@ -228,8 +202,8 @@ B1 --> KH : 2: hiển thị form đăng nhập
 KH -> B1 : 3: nhập SĐT + Mật khẩu + nhấn [Đăng nhập]
 B1 -> E1 : 4: dangNhap(sdt, matKhau)
 activate E1
-E1 -> E1 : 5: findBySDT(sdt)
-E1 -> E1 : 6: checkPassword(matKhau, hash)
+E1 -> E1 : 5: timTheoSDT(sdt)
+E1 -> E1 : 6: kiemTraMatKhau(matKhau, hash)
 E1 --> B1 : 7: trả về NguoiDung + Session
 deactivate E1
 B1 --> KH : 8: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"

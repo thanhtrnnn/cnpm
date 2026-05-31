@@ -172,17 +172,17 @@
 +--------------------------------------------------+
 ```
 
-### 4. MVC class diagram
+### 4. DAO class diagram
 
-Mô hình MVC thiết kế theo kiến trúc BCE:
+Mô hình thiết kế theo kiến trúc DAO (BCE):
 
 **Boundary:** LoginPage, RegisterPage, OTPVerifyPage, ChangePasswordPage, ProfilePage, StaffManagePage
 
-**Control:** AuthController, UserController
+**DAO:** NguoiDungDAO (extends DAO), NhanVienDAO (extends DAO)
 
 **Entity:** NguoiDung, HangHoiVien, OTP, PhienDangNhap, NhanVien
 
-<!-- PLACEHOLDER: account_mvc_class -->
+<!-- PLACEHOLDER: account_dao_class -->
 <!-- File: output/diagrams/account_mvc_class.png -->
 
 ### 5. Biểu đồ tuần tự thiết kế
