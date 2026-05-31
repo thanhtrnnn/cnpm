@@ -252,14 +252,27 @@ def get_tab_content(client, doc_id, tab_title):
 
 
 def get_insert_index(content):
-    """Get the last valid insertion index in the tab."""
-    # Find the last non-empty element
-    last_index = 1  # Default to after document start
-    for elem in content:
-        if 'paragraph' in elem:
-            last_index = elem['endIndex']
-        elif 'table' in elem:
-            last_index = elem['endIndex']
+    """Get the last valid insertion index in the tab.
+
+    For empty tabs (only default paragraph [1,2] with '\n'), insert at index 1.
+    For non-empty tabs, insert at endIndex of last element.
+    """
+    # Collect all paragraph/table elements
+    elements = [e for e in content if 'paragraph' in e or 'table' in e]
+
+    # Check if tab is empty: only 1 paragraph with just '\n'
+    if len(elements) == 1 and 'paragraph' in elements[0]:
+        text = ''.join(
+            e.get('textRun', {}).get('content', '')
+            for e in elements[0]['paragraph'].get('elements', [])
+        )
+        if text.strip() in ('', '\n'):
+            return 1  # Empty tab
+
+    # Non-empty: insert after last element
+    last_index = 1
+    for elem in elements:
+        last_index = elem['endIndex']
     return last_index
 
 
