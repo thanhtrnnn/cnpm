@@ -45,6 +45,9 @@
 
 ### Biểu đồ ERD
 
+<!-- PLACEHOLDER: Chèn ảnh ERD tại đây -->
+<!-- File: output/diagrams/booking_erd.png -->
+
 ```plantuml
 @startuml
 skinparam linetype ortho

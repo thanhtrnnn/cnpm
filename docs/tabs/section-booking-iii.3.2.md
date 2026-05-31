@@ -171,6 +171,9 @@ b) Hủy booking => `cancelBooking()`
 
 ### Sơ đồ lớp thiết kế
 
+<!-- PLACEHOLDER: Chèn ảnh sơ đồ lớp thiết kế MVC tại đây -->
+<!-- File: output/diagrams/booking_mvc_class.png -->
+
 ```plantuml
 @startuml
 left to right direction

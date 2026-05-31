@@ -2,6 +2,9 @@
 
 ### Biểu đồ tuần tự
 
+<!-- PLACEHOLDER: Chèn ảnh tuần tự Đặt phòng tại đây -->
+<!-- File: output/diagrams/booking_seq_datphong.png -->
+
 ```plantuml
 @startuml
 left to right direction
@@ -110,6 +113,9 @@ deactivate SearchClient
 
 ### Biểu đồ tuần tự
 
+<!-- PLACEHOLDER: Chèn ảnh tuần tự Check-in tại đây -->
+<!-- File: output/diagrams/booking_seq_checkin.png -->
+
 ```plantuml
 @startuml
 actor "Nhân viên lễ tân" as NV
@@ -165,6 +171,9 @@ deactivate CheckIn
 ## 4.3. Chức năng "Check-out" — Thiết kế
 
 ### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: Chèn ảnh tuần tự Check-out tại đây -->
+<!-- File: output/diagrams/booking_seq_checkout.png -->
 
 ```plantuml
 @startuml
@@ -250,6 +259,9 @@ deactivate CheckOut
 ## 4.4. Chức năng "Huỷ phòng" — Thiết kế
 
 ### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: Chèn ảnh tuần tự Huỷ phòng tại đây -->
+<!-- File: output/diagrams/booking_seq_huyphong.png -->
 
 ```plantuml
 @startuml

@@ -46,6 +46,9 @@ Chuyển tất cả thuộc tính sang kiểu ngôn ngữ lập trình (Java):
 
 ### Biểu đồ lớp thực thể
 
+<!-- PLACEHOLDER: Chèn ảnh sơ đồ lớp thực thể tại đây -->
+<!-- File: output/diagrams/booking_entity_class.png -->
+
 ```plantuml
 @startuml
 skinparam classAttributeIconSize 0
