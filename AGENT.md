@@ -133,13 +133,24 @@ Invoice.serviceTotal = SUM(ServiceOrderItem.unitPrice × quantity)
   - GUIDELINE BỐ CỤC
   - MÔ TẢ HỆ THỐNG
   - XÁC ĐỊNH YÊU CẦU
-  - MODULES (5 children)
-    - Tài khoản & Thành viên
-    - Quản lý đặt và trả phòng
-    - **Dịch vụ & Sản phẩm** ← tab chính đang làm
-    - Quản trị cốt lõi
-    - Nhân sự và báo cáo thống kê
+  - MODULES (t.p369u2ksun2) — 5 children:
+    - Tài khoản & Thành viên (t.e7vhkfc8t70g) — 2/11 done
+    - Quản lý đặt & trả phòng (t.13baw92fsltt) — 5/11 done
+    - **Dịch vụ & Sản phẩm** (t.67b8yduyz40) ← tab chính đang làm
+    - Quản trị cốt lõi (t.pl02ohyiavub)
+    - Nhân sự & Báo cáo thống kê (t.13yka5ejnzqx)
   - THIẾT KẾ
+
+### Heading Formatting Reference (from "Quản lý đặt & trả phòng")
+| Style | lineSpacing | spaceBelow | indentFirstLine | indentStart |
+|-------|-------------|------------|-----------------|-------------|
+| HEADING_1 | 100 | 3pt | 18pt | 36pt |
+| HEADING_2 | — | — | 18pt | 36pt |
+| HEADING_3 | — | — | 36pt | 36pt |
+| HEADING_4 | — | — | 54pt | 72pt |
+| NORMAL_TEXT | — | — | 36pt | 36pt |
+
+PlantUML URL quá dài (>2K) → skip insertInlineImage, chỉ render ra output/
 
 ## Quy trình phân tích yêu cầu
 

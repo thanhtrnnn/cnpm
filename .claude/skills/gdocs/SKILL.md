@@ -144,9 +144,44 @@ Fix: after inserting cell text, strip inherited bold, then re-apply only where n
 - Batch 20 requests + 3s delay between batches
 - Retry 3 times with exponential backoff on 429
 
+## Document Structure
+
+Document ID: `1H0pFNhmbX9yDMObxERGsZ0RqKjpX9Je6N60n4tYrB6s`
+
+### Tab hierarchy (parent → children)
+```
+MODULES (t.p369u2ksun2)
+├── Tài khoản & Thành viên (t.e7vhkfc8t70g)
+├── Quản lý đặt & trả phòng (t.13baw92fsltt)
+├── Dịch vụ & Sản phẩm (t.67b8yduyz40)
+├── Quản trị cốt lõi (t.pl02ohyiavub)
+└── Nhân sự & Báo cáo thống kê (t.13yka5ejnzqx)
+```
+
+### Heading Formatting Reference (from "Quản lý đặt & trả phòng")
+
+| Style | lineSpacing | spaceBelow | indentFirstLine | indentStart |
+|-------|-------------|------------|-----------------|-------------|
+| HEADING_1 | 100 | 3pt | 18pt | 36pt |
+| HEADING_2 | — | — | 18pt | 36pt |
+| HEADING_3 | — | — | 36pt | 36pt |
+| HEADING_4 | — | — | 54pt | 72pt |
+| NORMAL_TEXT | — | — | 36pt | 36pt |
+
+- "Tài khoản & Thành viên" hiện tại KHÔNG có spacing/indent → cần apply formatting này
+- Bold paragraphs: `updateTextStyle:bold=True` on full paragraph range
+- Inline code: `updateTextStyle:weightedFontFamily=Courier New`
+- Bullets: `createParagraphBullets` with `BULLET_DISC_CIRCLE_SQUARE`
+
+### Cell Formatting (4 steps per cell — critical)
+1. `insertText` — insert clean text
+2. `updateParagraphStyle:NORMAL_TEXT` — reset heading inheritance
+3. `updateTextStyle:fontSize=12PT` — font size 12
+4. `updateTextStyle:bold` — header row bold all, data rows selective
+
 ## Hạn chế
 
-- **PlantUML:** `insertInlineImage` with public URL đã hoạt động. Fallback: render PNG thủ công
+- **PlantUML:** `insertInlineImage` URL quá dài (>2K chars) → skip, chỉ render ra `output/`
 - **Tables:** Native tables hỗ trợ tốt. Không merge cells phức tạp
 - **Formatting:** Hỗ trợ bold, italic, heading, bullets, inline code (Courier New), native tables
 - **Index arithmetic:** Google Docs dùng character index, phải re-read sau mỗi batchUpdate
