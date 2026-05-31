@@ -153,6 +153,15 @@ Invoice.serviceTotal = SUM(ServiceOrderItem.unitPrice × quantity)
 
 PlantUML URL quá dài (>2K) → skip insertInlineImage, chỉ render ra output/
 
+### DOCX Generation
+- Script: `scripts/generate_booking_docx.py`
+- Reads 7 markdown files → DOCX with headings, tables, images, wireframes
+- PlantUML encoding: zlib compress [2:-4] + `~1` prefix for Huffman
+- Wireframe naming: entity attribute names as table headers (NOT UI display names)
+- Boundary naming: React suffixes — Page (router), Form (input), Modal (popup), Table (data)
+- Scenario tables: 30/70 column width split
+- H1: blue underline (phase headers)
+
 ## Quy trình phân tích yêu cầu
 
 Khi nhận yêu cầu từ user:
