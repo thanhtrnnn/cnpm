@@ -133,10 +133,11 @@ Invoice.serviceTotal = SUM(ServiceOrderItem.unitPrice × quantity)
   - GUIDELINE BỐ CỤC
   - MÔ TẢ HỆ THỐNG
   - XÁC ĐỊNH YÊU CẦU
-  - MODULES (t.p369u2ksun2) — 5 children:
+  - MODULES (t.p369u2ksun2) — 6 children:
     - Tài khoản & Thành viên (t.e7vhkfc8t70g) — 2/11 done
     - Quản lý đặt & trả phòng (t.13baw92fsltt) — 5/11 done
     - **Dịch vụ & Sản phẩm** (t.67b8yduyz40) ← tab chính đang làm
+    - **TUẤN TEMP** (t.9xhhz2bghmsr) ← staging tab cho insert content mới
     - Quản trị cốt lõi (t.pl02ohyiavub)
     - Nhân sự & Báo cáo thống kê (t.13yka5ejnzqx)
   - THIẾT KẾ
