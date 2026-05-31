@@ -1,8 +1,7 @@
 ' VP Base Theme v2 — matches Visual Paradigm default styling
-' Font: JVM SansSerif (Segoe UI on Win, Helvetica on Mac)
-' Class: ~12pt name, ~10pt attributes, no C/A icons
-' Sequence: #7ACFF5 blue, tight padding via <style>
-' Usage: paste at top of @startuml block
+' Font: Arial, 10pt
+' Sequence: #7AD2FF blue, dashed lifelines, transparent actor
+' UC: #7ACFF5 blue fill
 
 skinparam linetype ortho
 skinparam defaultFontName "Arial"
@@ -35,56 +34,55 @@ skinparam class {
 
 skinparam package {
   Style rectangle
-  FontSize 13
+  FontSize 11
   MaxWidth 800
   BackgroundColor #FFFFFF
   BorderColor #000000
 }
 
-skinparam sequence {
-  ArrowColor Black
-  ActorBorderColor Black
-  ActorBackgroundColor #7ACFF5
-  ParticipantBorderColor Black
-  ParticipantBackgroundColor #7ACFF5
-  LifeLineBorderColor Black
-  LifeLineBackgroundColor #7ACFF5
-  BoundaryBorderColor Black
-  BoundaryBackgroundColor #7ACFF5
-  EntityBorderColor Black
-  EntityBackgroundColor #7ACFF5
-  MessageFontSize 10
-}
+skinparam SequenceMessageAlign left
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
 
 <style>
 sequenceDiagram {
-  actor {
-    Padding 2
-    Margin 2
-    FontName "Arial"
-    FontSize 10
-  }
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
   participant {
-    Padding 2
-    Margin 2
-    FontName "Arial"
-    FontSize 10
-  }
-  lifeLine {
+    BackgroundColor #7AD2FF
+    LineColor #000000
     LineThickness 1
-    Padding 4
   }
-  message {
-    FontName "Arial"
-    FontSize 10
-    Padding 1
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
   }
-  divider {
-    FontName "Arial"
-    FontSize 10
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
   }
-  group {
-    FontName "Arial"
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
     FontSize 10
   }
 }

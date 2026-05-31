@@ -174,7 +174,6 @@ Sau mỗi pha, hỏi: *"Pha [X] đã hoàn thành. Bạn có muốn điều ch�
 - Bảng Markdown chuẩn, có header rõ ràng.
 - PlantUML đặt trong code block plantuml.
 - Wireframe dùng ASCII box diagram (xem ví dụ trong `references/module-phases.md`).
-- **Header bảng wireframe PHẢI dùng thuộc tính thật của Entity** — tên cột = tên attribute (VD: `ma`, `ten`, `ngayMuon`), KHÔNG phải tên hiển thị giao diện.
 
 ### Quy tắc Columns (BẮT BUỘC cho Notion output)
 
@@ -216,117 +215,34 @@ Nội dung đầu vào...
 
 ---
 
-## PlantUML Theme
+## Markdown Formatting Rules (BẮT BUỘC)
 
-Mỗi biểu đồ UML **PHẢI** bắt đầu bằng theme để đảm bảo style đồng nhất:
+### Bold
+Dùng `**text**` cho:
+- Tên class (Boundary, Control, Entity): `**OrderController**`, `**MenuItem**`
+- Tên hàm trong phân tích chữ ký: `createOrder()` in backtick
+- Tiêu đề con: `**1. Tầng giao diện (Boundary)**`
 
-```plantuml
-@startuml
-' === VP Base Theme v2 ===
-skinparam linetype ortho
-skinparam defaultFontName "Arial"
-skinparam defaultFontSize 10
-skinparam shadowing false
-skinparam arrowColor #000000
-skinparam lineColor #000000
-hide circle
+### Backtick
+Dùng `` `text` `` cho:
+- Tên biến, tên tham số, tên type: `roomId`, `String`, `OrderStatus`
+- Giá trị enum: `PENDING`, `PREPARING`
+- Tên hàm: `createOrder()`, `getAll()`
 
-skinparam usecase {
-  BackgroundColor #7ACFF5
-  BorderColor Black
-  FontColor Black
-}
+### Bảng
+- Luôn có header row + separator row (`|------|`)
+- Tối đa 4 cột
+- Nếu bước chứa bảng → tối đa 2 cột trong Notion
 
-skinparam rectangle {
-  BackgroundColor #FFFFFF
-  BorderColor Black
-}
+### Heading hierarchy
+- `##` = section chính (II.3, III.2)
+- `###` = sub-section (a, b, c, d)
+- `**bold paragraph**` = tiêu đề con (1. Tầng giao diện)
 
-skinparam class {
-  BackgroundColor #FFFFFF
-  BorderColor #000000
-  FontColor #000000
-  FontSize 11
-  AttributeFontSize 9
-  AttributeIconSize 0
-  BorderThickness 1
-}
-
-skinparam package {
-  Style rectangle
-  FontSize 13
-  MaxWidth 800
-  BackgroundColor #FFFFFF
-  BorderColor #000000
-}
-
-skinparam sequence {
-  ArrowColor Black
-  ActorBorderColor Black
-  ActorBackgroundColor #7ACFF5
-  ParticipantBorderColor Black
-  ParticipantBackgroundColor #7ACFF5
-  LifeLineBorderColor Black
-  LifeLineBackgroundColor #7ACFF5
-  BoundaryBorderColor Black
-  BoundaryBackgroundColor #7ACFF5
-  EntityBorderColor Black
-  EntityBackgroundColor #7ACFF5
-  MessageFontSize 10
-}
-
-<style>
-sequenceDiagram {
-  actor {
-    Padding 2
-    Margin 2
-    FontName "Arial"
-    FontSize 10
-  }
-  participant {
-    Padding 2
-    Margin 2
-    FontName "Arial"
-    FontSize 10
-  }
-  lifeLine {
-    LineThickness 1
-    Padding 4
-  }
-  message {
-    FontName "Arial"
-    FontSize 10
-    Padding 1
-  }
-  divider {
-    FontName "Arial"
-    FontSize 10
-  }
-  group {
-    FontName "Arial"
-    FontSize 10
-  }
-}
-</style>
-
-hide empty members
-
-' === BCE Color Overlay (optional — cho class diagram có màu packages) ===
-skinparam class {
-  BackgroundColor<<Boundary>> #DDEEFF
-  BackgroundColor<<Component>> #DDEEFF
-  BackgroundColor<<DAO>> #FFE0B2
-  BackgroundColor<<Control>> #FFE0B2
-  BackgroundColor<<Entity>> #FFF3CD
-}
-@enduml
-```
-
-**Lưu ý:** MCP PlantUML server không hỗ trợ `!include` — PHẢI inline toàn bộ skinparam.
-
-Theme files tham khảo:
-- `assets/vp-base.puml` — base theme (class + sequence)
-- `assets/bce-colors.puml` — BCE color overlay
+### PlantUML
+- Luôn dùng code block `plantuml`, KHÔNG dùng `javascript`
+- Class diagram: 3 cột Boundary | Control | Entity
+- **Đồng nhất 1 sơ đồ cho toàn module** (không tách theo chức năng)
 
 ---
 
@@ -356,15 +272,11 @@ skinparam packageStyle rectangle
 - Package dọc theo chiều ngang (trái → phải)
 - **KHÔNG xếp dọc** — classes trong mỗi package phải dàn ngang, không chồng chất
 
-**Quy tắc bố cục class diagram (BẮT BUỘC):**
-
-1. **Luôn `left to right direction`** — layout ngang, KHÔNG xếp dọc
-2. **Packages xếp theo chiều ngang:** Boundary (trái) → DAO (giữa) → Entity (phải)
-3. **Classes trong package PHẢI dàn ngang** — dùng `together { }` để buộc cùng hàng
-4. **Cùng loại class phải cùng hàng:** 2 Boundary class → 1 dòng, 2 Entity class → 1 dòng
-5. **Dùng hidden links** `hidden` để kéo classes ra xa nếu bị chồng
-6. **`skinparam packageMaxWidth 800`** nếu package quá hẹp
-7. **Nếu layout bị dọc** → thêm `together` hoặc chia package nhỏ hơn
+**Cách tránh xếp dọc (BẮT BUỘC):**
+- Dùng `together { }` để nhóm classes nằm ngang trong cùng package
+- Nếu nhiều classes, chia thành nhiều package nhỏ thay vì 1 package lớn
+- Dùng hidden links `hidden` để kéo classes ra xa nhau theo chiều ngang
+- `skinparam packageMaxWidth 800` nếu cần mở rộng package
 
 **Boundary classes — Theo lựa chọn công nghệ:**
 
@@ -482,7 +394,8 @@ BDao --> B
 
 ### Ví dụ template — HTML (React + Spring Boot MVC)
 
-Xem chi tiết class names, attributes, methods trong `references/iii.3.2_sodo_lop_thietke.md`.
+Tham khảo: `docs/tabs/section-3.2-mvc.md` — module Dịch vụ & Sản phẩm.
+Google Docs: https://docs.google.com/document/d/1H0pFNhmbX9yDMObxERGsZ0RqKjpX9Je6N60n4tYrB6s (tab "Dịch vụ & Sản phẩm", mục 3.2)
 
 ```plantuml
 @startuml
@@ -490,145 +403,133 @@ left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
-title Biểu đồ lớp thiết kế – Module Dịch vụ & Sản phẩm (React MVC)
+title Biểu đồ lớp – Module Dịch vụ & Sản phẩm (React MVC)
 
 package "<<Boundary>>" #E3F2FD {
   together {
-    class LoginPage {
-      -txtUsername : TextBox
-      -txtPassword : TextBox
-      -btnLogin : Button
-      +btnLoginClick() : void
-      +showMessage(msg : String) : void
-    }
-    class StaffHomePage {
-      -btnManageOrder : Button
-      +btnManageOrderClick() : void
-    }
-    class SearchRoomPage {
-      -tblActiveRooms : Table
-      -txtRoomName : TextBox
-      -btnSearchRoom : Button
-      -btnCreateOrder : Button
-      +formLoad() : void
-      +btnSearchRoomClick() : void
-      +displayActiveRooms(rooms : List<Room>) : void
-      +tblEmptyRoomsClick(selectedRow : int) : void
-    }
-    class CreateOrderPage {
-      -lblRoomName : Label
-      -txtProductName : TextBox
-      -btnSearchProduct : Button
-      -tblProducts : Table
-      -btnSave : Button
-      +formLoad() : void
-      +btnSearchProductClick() : void
-      +btnSaveClick() : void
-    }
-    class ConfirmOrderPage {
-      -lblMessage : Label
-      -btnConfirm : Button
-      +btnConfirmClick() : void
-    }
+    class OrderPage { +render() }
+    class RoomSelector { +render() }
+    class ProductSearchForm { +render() }
+    class ProductTable { +render() }
+    class OrderCartPanel { +render() }
+    class ConfirmOrderModal { +render() }
+  }
+  together {
+    class OrderManagement { +render() }
+    class StatusFilterTabs { +render() }
+    class OrderCard { +render() }
+    class StatusUpdateModal { +render() }
+  }
+  together {
+    class MenuManagement { +render() }
+    class CategoryFilter { +render() }
+    class MenuItemTable { +render() }
+    class MenuItemForm { +render() }
+  }
+  together {
+    class InventoryPage { +render() }
+    class StockTable { +render() }
+    class StockUpdateForm { +render() }
   }
 }
 
 package "<<Control>>" #E8F5E9 {
-  class LoginController {
-    +checkLogin(username : String, password : String) : boolean
-  }
-  class RoomController {
-    +getActiveRooms() : List<Room>
-    +searchRoomByName(roomName : String) : List<Room>
-  }
-  class ProductController {
-    +getAllProducts() : List<Product>
-    +searchProductByName(productName : String) : List<Product>
-  }
   class OrderController {
-    +saveOrder(order : Order) : boolean
+    +createOrder(roomId, items) : OrderResponse
+    +getOrders(status) : List<OrderResponse>
+    +updateStatus(id, status) : OrderResponse
+  }
+  class MenuItemController {
+    +getAll(category) : List<MenuItem>
+    +getById(id) : MenuItem
+    +create(item) : MenuItem
+    +update(id, item) : MenuItem
+    +delete(id) : void
+  }
+  class InvoiceController {
+    +generate(bookingId) : Invoice
   }
 }
 
 package "<<Entity>>" #FFF3E0 {
-  class Employee {
-    -id : int
-    -fullName : String
-    -dob : Date
-    -tel : String
-    -role : String
-    -username : String
-    -password : String
-    -status : String
+  class ServiceOrder {
+    -id : String
+    -orderedAt : DateTime
+    -status : OrderStatus
   }
-  class Room {
-    -id : int
-    -name : String
-    -type : String
-    -price : double
-    -capacity : int
-    -status : String
-  }
-  class Order {
-    -id : int
-    -orderTime : DateTime
-    -totalAmount : double
-    -status : String
-  }
-  class Product {
-    -id : int
-    -name : String
-    -category : String
-    -unit : String
-    -price : double
-    -currentStock : int
-    -safetyStock : int
-  }
-  class Room_receipt {
-    -id : int
-    -checkinTime : DateTime
-    -checkoutTime : DateTime
-    -roomFee : double
-    -serviceFee : double
-    -damageFee : double
-    -totalAmount : double
-    -status : String
-  }
-  class Order_detail {
+  class ServiceOrderItem {
     -quantity : int
     -unitPrice : double
-    -lineTotal : double
+  }
+  class MenuItem {
+    -id : String
+    -name : String
+    -category : String
+    -price : double
+    -stock : int
+    -image : String
+    -active : boolean
+  }
+  enum OrderStatus {
+    PENDING
+    PREPARING
+    SERVED
+    CANCELLED
+  }
+  class Room {
+    -id : String
+    -name : String
+    -branch : String
+  }
+  class Invoice {
+    -id : String
+    -roomTotal : double
+    -serviceTotal : double
+    -discount : double
+    -grandTotal : double
+    -paidAt : DateTime
   }
 }
 
 ' Boundary -> Control
-LoginPage --> LoginController
-SearchRoomPage --> RoomController
-CreateOrderPage --> ProductController
-CreateOrderPage --> OrderController
+OrderPage --> OrderController
+RoomSelector --> OrderController
+ProductSearchForm --> OrderController
+ProductTable --> OrderController
+OrderCartPanel --> OrderController
+ConfirmOrderModal --> OrderController
+OrderManagement --> OrderController
+StatusFilterTabs --> OrderController
+OrderCard --> OrderController
+StatusUpdateModal --> OrderController
+MenuManagement --> MenuItemController
+CategoryFilter --> MenuItemController
+MenuItemTable --> MenuItemController
+MenuItemForm --> MenuItemController
+InventoryPage --> MenuItemController
+StockTable --> MenuItemController
+StockUpdateForm --> MenuItemController
 
 ' Control -> Entity
-LoginController --> Employee
-RoomController --> Room
-ProductController --> Product
-OrderController --> Order
-OrderController --> Room_receipt
+OrderController --> ServiceOrder
+OrderController --> MenuItem
+MenuItemController --> MenuItem
+InvoiceController --> Invoice
 
 ' Entity relationships
-Room_receipt "1" --> "*" Order
-Order "1" --> "*" Order_detail
-Order_detail "*" --> "1" Product
-Room_receipt "*" --> "1" Room
-Room_receipt "*" --> "1" Employee
-Order "*" --> "1" Employee
+ServiceOrder "1" --> "*" ServiceOrderItem
+ServiceOrder "*" --> "1" Room
+ServiceOrderItem "*" --> "1" MenuItem
+ServiceOrder --> OrderStatus
+Invoice --> ServiceOrder
 @enduml
 ```
 
 **Quy tắc React MVC (BẮT BUỘC):**
-- **Boundary:** React components, hậu tố `Page`. Thuộc tính UI: `-txtTên : TextBox`, `-btnTên : Button`, `-tblTên : Table`, `-lblTên : Label`. Phương thức: `+formLoad()`, `+btnTênClick()`, `+displayDữLiệu(data)`, `+showMessage(msg)`.
-- **Control:** Spring Boot Controllers, hậu tố `Controller`. Methods: `+getAll()`, `+getById(id)`, `+search(keyword)`, `+save(entity)`, `+update(entity)`, `+delete(id)`.
-- **Entity:** JPA Entities, attributes private (`-`) với kiểu Java cụ thể. Relationships: `ManyToOne`, `OneToMany`, bảng trung gian cho n-n.
-- **Package colors:** Boundary `#E3F2FD`, Control `#E8F5E9`, Entity `#FFF3E0`.
+- **Boundary:** React components, mỗi class chỉ có `+render()`. Tên class tiếng Anh + hậu tố (`Page`, `Form`, `Table`, `Panel`, `Modal`, `Card`).
+- **Control:** Spring Boot Controllers, methods theo RESTful CRUD (`getAll`, `getById`, `create`, `update`, `delete`). KHÔNG dùng DAO pattern.
+- **Entity:** JPA Entities, attributes private (`-`) với kiểu Java cụ thể. Relationships: `ManyToOne`, `OneToMany`.
+- **Package colors:** Boundary `#E3F2FD`, Control `#E8F5E9`, Entity `#FFF3E0` (không dùng BCE colors cũ cho React MVC).
 - **Entity naming:** Tên entity tiếng Anh, bảng DB dùng `tbl` + tên (VD: `tblOrder`, `tblProduct`, `tblRoom`). Quan hệ n-n qua bảng trung gian (VD: `Order_detail`, `Damage_detail`).
 
 ### Biểu đồ Tuần tự (Sequence Diagram)
@@ -641,103 +542,54 @@ Order "*" --> "1" Employee
 
 ### Biểu đồ UC (Use Case)
 
-- **Luôn dùng VP Base Theme v2** khi viết PlantUML UC (xem mục "PlantUML Theme" ở trên)
 - `left to right direction`
 - Actors bên trái, use cases bên phải trong package
 - `<<include>>` và `<<extend>>` dùng mũi tên đứt nét
 - **Generalization:** UC con kế thừa UC cha — mũi tên tam giác rỗng hướng lên UC cha. VD: "Tìm sách" là cha, "Tìm theo tên sách" và "Tìm theo mã sách" là con
 - **Extension points:** Hiển thị trong UC cha, ghi rõ UC extend nào mở rộng tại điểm nào
 - **Layout ngang:** Sắp xếp UC theo chiều rộng, tránh chồng chất theo chiều dọc. UC chính ở giữa, các UC include/extend/generalization tỏa ra hai bên
-- **Actor nối trực tiếp vào UC:** Actor PHẢI nối thẳng (`-->`) vào UC mà actor đó tương tác. KHÔNG vòng vèo qua UC khác, KHÔNG nối gián tiếp.
 
-**Quy trình xác định UC con (BẮT BUỘC):**
-Trước khi xác định các UC nhỏ, PHẢI dựa vào **phần 2.4 "Mỗi chức năng hoạt động như thế nào?"** để làm các business process mô tả chi tiết hoạt động của từng UC trong module. Từ business process, tách ra các UC con tương ứng từng bước bắt buộc / tùy chọn.
+**Cấu trúc UC phân rã chuẩn:**
+```
+Actor (trái) → UC chính (giữa) → UC include (phải)
+                                  ↘ UC extend (dưới phải)
+UC cha (trên) ← UC con generalization (dưới)
+```
 
-**Hai loại biểu đồ UC (BẮT BUỘC vẽ cả hai):**
-1. **UC Tổng quan:** Chỉ có các UC lớn, mỗi UC nối thẳng với đúng actor. KHÔNG vẽ UC con, KHÔNG include/extend.
-2. **UC Chi tiết (cho từng UC lớn):** Đã có chi tiết các UC nhỏ từ business process ở trên. Actor nối trực tiếp vào UC lớn, UC con hiển thị bên trong bằng include/extend/generalization.
-
-**Ví dụ 1 — UC Tổng quan (module Mượn sách):**
-Chỉ các UC lớn, actor nối trực tiếp vào từng UC.
+**Ví dụ PlantUML UC với generalization:**
 ```plantuml
 @startuml
-' === VP Base Theme v2 ===
+left to right direction
 skinparam linetype ortho
-skinparam defaultFontName "Arial"
-skinparam defaultFontSize 10
-skinparam shadowing false
-skinparam arrowColor #000000
-skinparam lineColor #000000
-hide circle
-
-skinparam usecase {
-  BackgroundColor #7ACFF5
-  BorderColor Black
-  FontColor Black
-}
-
-skinparam rectangle {
-  BackgroundColor #FFFFFF
-  BorderColor Black
-}
+skinparam packageStyle rectangle
+title Biểu đồ Use Case – Quản lý mượn sách
 
 left to right direction
-title UC Tổng quan – Module Mượn sách
 
-rectangle "Module Mượn sách" {
-  usecase "Đăng nhập" as UC1
-  usecase "Mượn sách" as UC2
-  usecase "Tìm sách" as UC3
-  usecase "Quản lý độc giả" as UC4
+rectangle "Quản lý mượn sách" {
+  usecase "Mượn sách" as UC1
+  usecase "Đăng nhập" as UC2
+  usecase "Lập phiếu mượn" as UC3
+  usecase "Tìm sách" as UC4
+  usecase "Tìm thông tin độc giả" as UC5
+  usecase "Thêm độc giả" as UC6
+  usecase "Tìm theo mã độc giả" as UC7
+  usecase "Tìm theo tên độc giả" as UC8
+  usecase "Tìm theo mã sách" as UC9
+  usecase "Tìm theo tên sách" as UC10
 }
 
 actor "Thư thư" as A1
 
 A1 --> UC1
-A1 --> UC2
-A1 --> UC3
-A1 --> UC4
-@enduml
-```
-
-**Ví dụ 2 — UC Chi tiết (UC "Tìm sách"):**
-Dựa vào business process từ mục 2.4, tách UC con. Actor nối trực tiếp vào UC lớn.
-```plantuml
-@startuml
-' === VP Base Theme v2 ===
-skinparam linetype ortho
-skinparam defaultFontName "Arial"
-skinparam defaultFontSize 10
-skinparam shadowing false
-skinparam arrowColor #000000
-skinparam lineColor #000000
-hide circle
-
-skinparam usecase {
-  BackgroundColor #7ACFF5
-  BorderColor Black
-  FontColor Black
-}
-
-skinparam rectangle {
-  BackgroundColor #FFFFFF
-  BorderColor Black
-}
-
-left to right direction
-title UC Chi tiết – Tìm sách
-
-rectangle "Tìm sách" {
-  usecase "Tìm theo mã sách" as UC3a
-  usecase "Tìm theo tên sách" as UC3b
-  usecase "Hiển thị kết quả" as UC3c
-}
-
-actor "Thư thư" as A1
-
-A1 --> UC3a
-A1 --> UC3b
-UC3a ..> UC3c : <<include>>
-UC3b ..> UC3c : <<include>>
+UC1 ..> UC2 : <<include>>
+UC1 ..> UC3 : <<include>>
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC5 : <<include>>
+UC6 ..> UC5 : <<Extend>>
+UC4 <|-- UC9
+UC4 <|-- UC10
+UC5 <|-- UC7
+UC5 <|-- UC8
 @enduml
 ```

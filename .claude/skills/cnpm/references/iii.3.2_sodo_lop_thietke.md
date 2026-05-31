@@ -2,29 +2,61 @@
 
 ## III.3.2. Sơ đồ lớp thiết kế
 
-### Kiến trúc React MVC (BẮT BUỘC áp dụng cho React + Spring Boot)
+### Kiến trúc React MVC (BẮT BUỘC cho React + Spring Boot)
 
 3 tầng: **Boundary** (React) → **Control** (Spring Boot) → **Entity** (JPA)
 
-**Tầng Boundary — React Components:**
-- Hậu tố `Page`: trang chính (LoginPage, SearchRoomPage, MenuPage)
-- Thuộc tính: `-txtTên : TextBox`, `-btnTên : Button`, `-tblTên : Table`, `-lblTên : Label`
-- Phương thức: `+formLoad()`, `+btnTênClick()`, `+displayDữLiệu(data : List<Entity>)`, `+showMessage(msg : String)`
+---
 
-**Tầng Control — Spring Boot Controllers:**
-- Hậu tố `Controller`: LoginController, RoomController, OrderController, ProductController
-- Phương thức theo CRUD: `+getAll()`, `+getById(id)`, `+search(keyword)`, `+save(entity)`, `+update(entity)`, `+delete(id)`
+### Quy tắc đặt tên (BẮT BUỘC)
 
-**Tầng Entity — JPA Entities:**
-- Attributes private (`-`) với kiểu Java cụ thể
-- Relationships: `ManyToOne`, `OneToMany`, bảng trung gian cho n-n
+**Boundary — React Components:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | `[Chức năng]Page` | `LoginPage`, `SearchRoomPage`, `CreateOrderPage`, `MenuPage` |
+| Thuộc tính ô nhập | `- txt[Tên] : TextBox` | `- txtUsername : TextBox`, `- txtRoomName : TextBox` |
+| Thuộc tính nút | `- btn[Tên] : Button` | `- btnLogin : Button`, `- btnSave : Button` |
+| Thuộc tính bảng | `- tbl[Tên] : Table` | `- tblActiveRooms : Table`, `- tblProducts : Table` |
+| Thuộc tính nhãn | `- lbl[Tên] : Label` | `- lblRoomName : Label`, `- lblMessage : Label` |
+| Phương thức khởi tạo | `+ formLoad() : void` | Tự động chạy khi giao diện load |
+| Phương thức nút bấm | `+ btn[Tên]Click() : void` | `+ btnLoginClick()`, `+ btnSaveClick()` |
+| Phương thức bảng click | `+ tbl[Tên]Click(id : int) : void` | `+ tblProductsClick(productId : int)` |
+| Phương thức hiển thị | `+ display[Dữ liệu](data : List<Entity>) : void` | `+ displayActiveRooms(rooms : List<Room>)` |
+| Phương thức thông báo | `+ showMessage(msg : String) : void` | Hiển thị popup thông báo |
+
+**Control — Spring Boot Controllers:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | `[Entity]Controller` | `LoginController`, `RoomController`, `ProductController`, `OrderController` |
+| Đăng nhập | `+ checkLogin(username, password) : boolean` | Kiểm tra tài khoản |
+| Lấy tất cả | `+ getAll[Tên]() : List<Entity>` | `+ getAllProducts() : List<Product>` |
+| Tìm kiếm | `+ search[Tên](keyword : String) : List<Entity>` | `+ searchProduct(keyword) : List<Product>` |
+| Tìm theo tên | `+ search[Tên]ByName(name : String) : List<Entity>` | `+ searchRoomByName(roomName) : List<Room>` |
+| Lấy theo ID | `+ get[Tên]ById(id : int) : Entity` | `+ getProductById(id) : Product` |
+| Lưu mới | `+ save[Tên](entity : Entity) : boolean` | `+ saveOrder(order : Order) : boolean` |
+| Cập nhật | `+ update[Tên](entity : Entity) : boolean` | `+ updateProduct(product) : boolean` |
+| Xóa | `+ delete[Tên](id : int) : boolean` | `+ deleteProduct(id) : boolean` |
+
+**Entity — JPA Entities:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | PascalCase tiếng Anh | `Employee`, `Room`, `Order`, `Product`, `Room_receipt` |
+| Bảng DB | `tbl` + tên entity | `tblEmployee`, `tblRoom`, `tblOrder`, `tblProduct` |
+| Thuộc tính | `- tênCamelCase : KiểuJava` | `- fullName : String`, `- orderTime : DateTime`, `- currentStock : int` |
+| Cột DB | snake_case | `full_name`, `order_time`, `current_stock`, `safety_stock` |
+| Quan hệ n-n | Bảng trung gian `[A]_[B]` | `Order_detail`, `Damage_detail`, `Import_detail` |
 
 **Package colors:**
 - Boundary: `<<Boundary>>` `#E3F2FD`
 - Control: `<<Control>>` `#E8F5E9`
 - Entity: `<<Entity>>` `#FFF3E0`
 
-### Quy trình xác định chữ ký hàm (BẮT BUỘC trình bày reasoning):
+---
+
+### Quy trình xác định chữ ký hàm (BẮT BUỘC trình bày reasoning)
 
 Với mỗi phương thức trong Control, trình bày:
 ```
@@ -40,7 +72,9 @@ Với mỗi phương thức trong Control, trình bày:
   [tênHàm](): List<TênLớp>                             → chọn (trả về danh sách)
 ```
 
-### Variant JFrame (giữ nguyên cho dự án JFrame)
+---
+
+### Variant JFrame (dự án JFrame)
 
 ```plantuml
 @startuml
@@ -94,19 +128,19 @@ GDThemXFrm --> TenEntityDAO
 @enduml
 ```
 
+---
+
 ### Variant React MVC
 
-**Ví dụ: Module Dịch vụ & Sản phẩm** (tham khảo Google Docs section 3.2)
-
-**a) Chức năng Tạo order**
+**Ví dụ: Module Dịch vụ & Sản phẩm — Chức năng Tạo order**
 
 Boundary classes:
 | Lớp | Thuộc tính | Phương thức |
 |-----|-----------|------------|
 | LoginPage | -txtUsername: TextBox, -txtPassword: TextBox, -btnLogin: Button | +btnLoginClick(), +showMessage(msg) |
 | StaffHomePage | -btnManageOrder: Button | +btnManageOrderClick() |
-| SearchRoomPage | -tblActiveRooms: Table, -txtRoomName: TextBox, -btnSearchRoom: Button, -btnCreateOrder: Button | +formLoad(), +btnSearchRoomClick(), +displayActiveRooms(rooms), +tblEmptyRoomsClick(selectedRow) |
-| CreateOrderPage | -lblRoomName: Label, -txtProductName: TextBox, -btnSearchProduct: Button, -tblProducts: Table, -btnSave: Button | +formLoad(), +btnSearchProductClick(), +btnSaveClick() |
+| SearchRoomPage | -tblActiveRooms: Table, -txtRoomName: TextBox, -btnSearchRoom: Button, -btnCreateOrder: Button | +formLoad(), +btnSearchRoomClick(), +displayActiveRooms(rooms), +tblEmptyRoomsClick(selectedRow), +showMessage(msg) |
+| CreateOrderPage | -lblRoomName: Label, -txtProductName: TextBox, -btnSearchProduct: Button, -tblProducts: Table, -tblOrderDetails: Table, -btnSaveOrder: Button | +formLoad(), +btnSearchProductClick(), +btnAddClick(), +btnSaveOrderClick(), +displayProducts(products), +displayOrderCart(orderDetails), +showMessage(msg) |
 | ConfirmOrderPage | -lblMessage: Label, -btnConfirm: Button | +btnConfirmClick() |
 
 Control methods:
@@ -121,45 +155,7 @@ Control methods:
 
 Entity: Employee, Room, Order, Order_detail, Product, Room_receipt.
 
-**b) Chức năng Báo cáo tình trạng hàng hóa**
-
-Boundary classes:
-| Lớp | Thuộc tính | Phương thức |
-|-----|-----------|------------|
-| SearchRoomPage | -txtRoomName: TextBox, -btnSearchRoom: Button, -tblPendingRooms: Table, -btnCreateDamageReport: Button | +formLoad(), +btnSearchRoomClick(), +tblPendingRoomsClick(roomId), +btnCreateDamageReportClick(), +displayPendingRooms(rooms), +showMessage(msg) |
-| DamageReportPage | -lblRoomName: Label, -txtFacilityName: TextBox, -btnSearchFacility: Button, -tblFacilities: Table, -btnSave: Button | +formLoad(), +btnSearchFacilityClick(), +btnSaveClick() |
-| ConfirmReportPage | -lblMessage: Label, -btnConfirm: Button | +btnConfirmClick() |
-
-Control methods:
-| Lớp | Phương thức | Chức năng |
-|-----|------------|----------|
-| RoomController | +searchPendingRoom(keyword) : List\<Room\> | Tìm phòng chờ dọn |
-| FacilityController | +searchFacility(keyword) : List\<Facility\> | Tìm cơ sở vật chất |
-| DamageReportController | +saveDamageReport(report : DamageReport) : boolean | Lưu báo cáo hỏng |
-| DamageReportController | +updateReceipt(receiptId, totalFine) : boolean | Cập nhật phí phát sinh vào hóa đơn |
-
-Entity: Employee, Facility, Damage_report, Room, Damage_detail, Room_receipt.
-
-**c) Chức năng Quản lý menu**
-
-Boundary classes:
-| Lớp | Thuộc tính | Phương thức |
-|-----|-----------|------------|
-| ManagerHomePage | -btnManageMenu: Button | +btnManageMenuClick() |
-| MenuPage | -txtProductName: TextBox, -btnSearchProduct: Button, -tblProducts: Table, -btnAdd: Button, -btnEdit: Button, -btnDelete: Button | +formLoad(), +btnSearchClick(), +tblProductsClick(productId), +btnAddClick(), +btnEditClick(), +btnDeleteClick() |
-| EditMenuPage | -txtName: TextBox, -txtPrice: TextBox, -txtStock: TextBox, -btnSave: Button | +formLoad(productId), +btnSaveClick() |
-
-Control methods:
-| Lớp | Phương thức | Chức năng |
-|-----|------------|----------|
-| ProductController | +getAllProducts() : List\<Product\> | Lấy toàn bộ sản phẩm |
-| ProductController | +searchProduct(keyword) : List\<Product\> | Tìm theo tên/danh mục |
-| ProductController | +getProductById(id) : Product | Lấy chi tiết sản phẩm |
-| ProductController | +updateProduct(product) : boolean | Cập nhật sản phẩm |
-| ProductController | +addProduct(product) : boolean | Thêm sản phẩm |
-| ProductController | +deleteProduct(id) : boolean | Xóa sản phẩm |
-
-Entity: Employee, Product.
+---
 
 ### PlantUML template — React MVC
 
@@ -191,11 +187,13 @@ package "<<Boundary>>" #E3F2FD {
     class CreateOrderPage {
       -lblRoomName : Label
       -txtProductName : TextBox
+      -btnSearchProduct : Button
       -tblProducts : Table
-      -btnSave : Button
+      -btnSaveOrder : Button
       +formLoad() : void
       +btnSearchProductClick() : void
-      +btnSaveClick() : void
+      +btnSaveOrderClick() : void
+      +displayProducts(products : List<Product>) : void
     }
   }
 }
