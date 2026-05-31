@@ -8,6 +8,9 @@ import os
 import re
 import time
 
+# Force unbuffered stdout
+sys.stdout.reconfigure(line_buffering=True)
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '.claude', 'skills', 'gdocs'))
 from scripts.client import GDocsClient
 
@@ -254,26 +257,29 @@ def get_tab_content(client, doc_id, tab_title):
 def get_insert_index(content):
     """Get the last valid insertion index in the tab.
 
+    Google Docs API requires insert index < segment end index.
+    The segment always ends with a trailing newline at endIndex.
+    So we must insert at endIndex - 1 (before the trailing newline).
+
     For empty tabs (only default paragraph [1,2] with '\n'), insert at index 1.
-    For non-empty tabs, insert at endIndex of last element.
+    For non-empty tabs, insert at endIndex - 1 of last element.
     """
-    # Collect all paragraph/table elements
     elements = [e for e in content if 'paragraph' in e or 'table' in e]
 
-    # Check if tab is empty: only 1 paragraph with just '\n'
+    # Empty tab: 1 paragraph with just '\n'
     if len(elements) == 1 and 'paragraph' in elements[0]:
         text = ''.join(
             e.get('textRun', {}).get('content', '')
             for e in elements[0]['paragraph'].get('elements', [])
         )
         if text.strip() in ('', '\n'):
-            return 1  # Empty tab
+            return 1
 
-    # Non-empty: insert after last element
-    last_index = 1
+    # Non-empty: insert at endIndex - 1 (before trailing newline)
+    last_end = 1
     for elem in elements:
-        last_index = elem['endIndex']
-    return last_index
+        last_end = elem['endIndex']
+    return last_end - 1
 
 
 def get_elements_all(client, doc_id, tab_title):
@@ -354,8 +360,7 @@ def process_file(client, doc_id, md_file, batch_num, total_batches):
     insert_index = get_insert_index(content)
     print(f"  Inserting at index {insert_index}")
 
-    # Add section separator
-    full_text = '\n' + clean_text
+    full_text = clean_text
 
     ok = api_call(client, doc_id, [{
         'insertText': {
