@@ -1,132 +1,188 @@
 ## 3.1. Thiết kế giao diện
 
-### Màn hình 1: ReceptionistHomeView — Giao diện chính lễ tân
+### Màn hình 1: ReceptionistHomePage — Giao diện chính lễ tân
 
 ```
 +------------------------------------------------------------------+
-|  [Logo]  Quản lý Karaoke ABC            [Nhân viên: Nguyễn Văn A]|
+|  [Logo]  Quan ly Karaoke ABC            [Nhan vien: Nguyen Van A]|
 +------------------------------------------------------------------+
-|  Chi nhánh: Quận 1                        Ngày: 30/05/2026       |
+|  Chi nhanh: Quan 1                        Ngay: 30/05/2026       |
 +------------------------------------------------------------------+
 |                                                                    |
 |  +------------------+  +------------------+  +------------------+  |
-|  |   ĐẶT PHÒNG     |  |   CHECK-IN       |  |   CHECK-OUT      |  |
-|  |   [Click để đặt] |  |   [Click để C.I] |  |   [Click để C.O] |  |
+|  |   DAT PHONG      |  |   CHECK-IN       |  |   CHECK-OUT      |  |
+|  |   [Click de dat] |  |   [Click de C.I] |  |   [Click de C.O] |  |
 |  +------------------+  +------------------+  +------------------+  |
 |                                                                    |
-|  Danh sách booking hôm nay:                                        |
+|  Danh sach booking hom nay:                                        |
 |  +--------------------------------------------------------------+  |
-|  | Mã BK  | Khách hàng   | Phòng  | Giờ đặt  | Trạng thái    |  |
-|  |--------|------------- |--------|-----------|---------------|  |
-|  | BK001  | Nguyễn V.A   | P.VIP1 | 14:00     | Chờ nhận      |  |
-|  | BK002  | Trần T.B     | P.Std3 | 15:00     | Đang hoạt động|  |
-|  | BK003  | Lê M.C       | P.VIP2 | 16:00     | Chờ nhận      |  |
+|  | maBK | khachHang  | phong  | gioDat    | trangThai         |  |
+|  |------|------------|--------|-----------|-------------------|  |
+|  | BK001| Nguyen V.A | P.VIP1 | 14:00     | Cho nhan          |  |
+|  | BK002| Tran T.B   | P.Std3 | 15:00     | Dang hoat dong    |  |
+|  | BK003| Le M.C     | P.VIP2 | 16:00     | Cho nhan          |  |
 |  +--------------------------------------------------------------+  |
 |                                                                    |
 +------------------------------------------------------------------+
 ```
 
-### Màn hình 2: SearchFreeRoomView — Tìm phòng trống
+### Màn hình 2: SearchFreeRoomForm — Tìm phòng trống
 
 ```
 +------------------------------------------------------------------+
-|  [< Quay lại]   Tìm phòng trống                                   |
+|  [< Quay lai]   Tim phong trong                                  |
 +------------------------------------------------------------------+
 |                                                                    |
-|  Thời gian đặt:  [30/05/2026]  Từ: [14:00]  Đến: [17:00]        |
-|  Chi nhánh:       [Quận 1        v]                                |
-|  Loại phòng:      [Tất cả        v]                                |
+|  Thoi gian dat:  [30/05/2026]  Tu: [14:00]  Den: [17:00]        |
+|  Chi nhanh:      [Quan 1       v]                                 |
+|  Loai phong:     [Tat ca        v]                                |
 |                                                                    |
-|  [Tìm phòng trống]                                                 |
+|  [Tim phong trong]                                                 |
 |                                                                    |
-|  Kết quả: 3 phòng trống                                            |
+|  Ket qua: 3 phong trong                                            |
 |  +--------------------------------------------------------------+  |
-|  | Phòng   | Loại      | Sức chứa | Giá/giờ  | Trạng thái     |  |
-|  |---------|-----------|----------|----------|----------------|  |
-|  | P.VIP1  | Super VIP | 15 người | 200.000đ | Trống          |  |
-|  | P.Std3  | Standard  | 8 người  | 100.000đ | Trống          |  |
-|  | P.VIP2  | VIP       | 12 người | 150.000đ | Trống          |  |
+|  | maPhong | loaiPhong  | sucChua | giaTheoGio | trangThai     |  |
+|  |---------|------------|---------|------------|---------------|  |
+|  | P.VIP1  | Super VIP  | 15      | 200000     | Trong         |  |
+|  | P.Std3  | Standard   | 8       | 100000     | Trong         |  |
+|  | P.VIP2  | VIP        | 12      | 150000     | Trong         |  |
 |  +--------------------------------------------------------------+  |
 |                                                                    |
-|  [Chọn phòng]                                                      |
+|  [Chon phong]                                                      |
 +------------------------------------------------------------------+
 ```
 
-### Màn hình 3: SearchClientView — Tìm thông tin khách hàng
+### Màn hình 3: SearchClientForm — Tìm thông tin khách hàng
 
 ```
 +------------------------------------------------------------------+
-|  [< Quay lại]   Tìm khách hàng                                    |
+|  [< Quay lai]   Tim khach hang                                   |
 +------------------------------------------------------------------+
 |                                                                    |
-|  Phòng đã chọn: P.VIP1 (Super VIP, 200.000đ/giờ)                |
-|  Thời gian: 30/05/2026, 14:00 - 17:00                            |
+|  Phong da chon: P.VIP1 (Super VIP, 200000/gio)                   |
+|  Thoi gian: 30/05/2026, 14:00 - 17:00                            |
 |                                                                    |
-|  Thông tin khách hàng:                                             |
-|  Họ tên:       [Nguyễn Văn An          ]                          |
-|  Số điện thoại: [0912345678             ]                          |
+|  Thong tin khach hang:                                             |
+|  hoTen:        [Nguyen Van An           ]                         |
+|  soDienThoai:  [0912345678              ]                         |
 |                                                                    |
-|  [Tìm kiếm]                                                        |
+|  [Tim kiem]                                                        |
 |                                                                    |
-|  Kết quả:                                                          |
+|  Ket qua:                                                          |
 |  +--------------------------------------------------------------+  |
-|  | Họ tên         | SĐT        | Hạng    | Điểm   | Chọn      |  |
-|  |----------------|------------|---------|--------|-----------|  |
-|  | Nguyễn Văn An  | 0912345678 | Bạc     | 1250   | [Chọn]    |  |
+|  | hoTen          | soDienThoai | hangHoiVien | diemTichLuy    |  |
+|  |----------------|-------------|-------------|----------------|  |
+|  | Nguyen Van An  | 0912345678  | Bac         | 1250           |  |
 |  +--------------------------------------------------------------+  |
 |                                                                    |
-|  Khách mới? [Đăng ký nhanh]                                        |
+|  Khach moi? [Dang ky nhanh]                                        |
 +------------------------------------------------------------------+
 ```
 
-### Màn hình 4: ConfirmView — Xác nhận đặt phòng
+### Màn hình 4: ConfirmBookingModal — Xác nhận đặt phòng
 
 ```
 +------------------------------------------------------------------+
-|  [< Quay lại]   Xác nhận đặt phòng                                |
+|  [< Quay lai]   Xac nhan dat phong                                |
 +------------------------------------------------------------------+
 |                                                                    |
 |  +--------------------------------------------------------------+  |
-|  | THÔNG TIN ĐẶT PHÒNG                                          |  |
+|  | THONG TIN DAT PHONG                                          |  |
 |  |----------------------------------------------------------------|  |
-|  | Khách hàng:    Nguyễn Văn An (0912345678)                     |  |
-|  | Hạng hội viên: Bạc (giảm 10%)                                 |  |
-|  | Phòng:         P.VIP1 - Super VIP                             |  |
-|  | Chi nhánh:     Quận 1                                          |  |
-|  | Thời gian:     30/05/2026, 14:00 - 17:00 (3 giờ)             |  |
-|  | Đơn giá:       200.000đ/giờ                                   |  |
-|  | Dự kiến:       600.000đ                                       |  |
+|  | khachHang:     Nguyen Van An (0912345678)                     |  |
+|  | hangHoiVien:   Bac (giam 10%)                                 |  |
+|  | phong:         P.VIP1 - Super VIP                             |  |
+|  | chiNhanh:      Quan 1                                          |  |
+|  | thoiGian:      30/05/2026, 14:00 - 17:00 (3 gio)             |  |
+|  | giaTheoGio:    200000                                         |  |
+|  | duKien:        600000                                         |  |
 |  +--------------------------------------------------------------+  |
 |                                                                    |
-|  [Xác nhận đặt phòng]    [Hủy]                                    |
+|  [Xac nhan dat phong]    [Huy]                                    |
 +------------------------------------------------------------------+
 ```
 
-### Màn hình 5: CheckOutView — Thanh toán check-out
+### Màn hình 5: CheckOutPage — Thanh toán check-out
 
 ```
 +------------------------------------------------------------------+
-|  [< Quay lại]   Check-out - Phòng P.VIP1                          |
+|  [< Quay lai]   Check-out - Phong P.VIP1                          |
 +------------------------------------------------------------------+
 |                                                                    |
 |  +--------------------------------------------------------------+  |
-|  | HÓA ĐƠN THANH TOÁN                                           |  |
+|  | HOA DON THANH TOAN                                           |  |
 |  |----------------------------------------------------------------|  |
-|  | Khách hàng:    Nguyễn Văn An (Bạc - giảm 10%)                |  |
-|  | Phòng:         P.VIP1                                         |  |
-|  | Thời gian:     14:05 - 16:45 (2h40p)                         |  |
+|  | khachHang:     Nguyen Van An (Bac - giam 10%)                |  |
+|  | phong:         P.VIP1                                         |  |
+|  | thoiGian:      14:05 - 16:45 (2h40p)                         |  |
 |  |----------------------------------------------------------------|  |
-|  | Tiền phòng:    200.000đ × 2.67h = 534.000đ                   |  |
-|  | Dịch vụ:       2 lon bia + 1 dĩa trái cây = 250.000đ        |  |
-|  | Tổng cộng:     784.000đ                                       |  |
-|  | Giảm giá (10%): -78.400đ                                     |  |
-|  | THANH TOÁN:    705.600đ                                       |  |
+|  | tienPhong:     200000 x 2.67h = 534000                       |  |
+|  | tienDichVu:    2 lon bia + 1 dia trai cay = 250000           |  |
+|  | tongCong:      784000                                         |  |
+|  | giamGia(10%):  -78400                                        |  |
+|  | THANH TOAN:    705600                                         |  |
 |  +--------------------------------------------------------------+  |
 |                                                                    |
-|  Mã voucher: [____________] [Áp dụng]                              |
+|  maVoucher: [____________] [Ap dung]                               |
 |                                                                    |
-|  Phương thức: (o) Tiền mặt  ( ) Chuyển khoản                      |
+|  phuongThucThanhToan: (o) Tien mat  ( ) Chuyen khoan              |
 |                                                                    |
-|  [Xác nhận thanh toán]    [In hóa đơn]    [Hủy]                    |
+|  [Xac nhan thanh toan]    [In hoa don]    [Huy]                   |
++------------------------------------------------------------------+
+```
+
+### Màn hình 6: CancelBookingPage — Quản lý đặt phòng (Huỷ)
+
+```
++------------------------------------------------------------------+
+|  [< Quay lai]   Quan ly dat phong                                 |
++------------------------------------------------------------------+
+|                                                                    |
+|  Tim kiem: [Ten khach / SDT / maBK___________] [Tim kiem]         |
+|                                                                    |
+|  Ket qua:                                                          |
+|  +--------------------------------------------------------------+  |
+|  | maBK | khachHang  | phong  | gioDat    | trangThai         |  |
+|  |------|------------|--------|-----------|-------------------|  |
+|  | BK001| Nguyen V.A | P.VIP1 | 14:00     | Cho nhan          |  |
+|  +--------------------------------------------------------------+  |
+|                                                                    |
+|  +--------------------------------------------------------------+  |
+|  | Chi tiet booking BK001                                       |  |
+|  |----------------------------------------------------------------|  |
+|  | khachHang:     Nguyen Van An (0912345678)                     |  |
+|  | phong:         P.VIP1 - Super VIP                             |  |
+|  | thoiGian:      30/05/2026, 14:00 - 17:00                     |  |
+|  | tienCoc:       200000                                         |  |
+|  +--------------------------------------------------------------+  |
+|                                                                    |
+|  [Huy dat phong]              [Quay lai]                          |
++------------------------------------------------------------------+
+```
+
+### Màn hình 7: CheckInPage — Check-in phòng
+
+```
++------------------------------------------------------------------+
+|  [< Quay lai]   Check-in                                          |
++------------------------------------------------------------------+
+|                                                                    |
+|  Danh sach booking "Cho nhan" hom nay:                             |
+|  +--------------------------------------------------------------+  |
+|  | maBK | khachHang  | phong  | gioDat    | trangThai         |  |
+|  |------|------------|--------|-----------|-------------------|  |
+|  | BK001| Nguyen V.A | P.VIP1 | 14:00     | Cho nhan          |  |
+|  | BK003| Le M.C     | P.VIP2 | 16:00     | Cho nhan          |  |
+|  +--------------------------------------------------------------+  |
+|                                                                    |
+|  +--------------------------------------------------------------+  |
+|  | Chi tiet booking BK001                                       |  |
+|  |----------------------------------------------------------------|  |
+|  | khachHang:     Nguyen Van An (0912345678)                     |  |
+|  | phong:         P.VIP1 - Super VIP                             |  |
+|  | gioDat:        14:00 - 17:00                                  |  |
+|  +--------------------------------------------------------------+  |
+|                                                                    |
+|  [Xac nhan Check-in]           [Huy booking]                      |
 +------------------------------------------------------------------+
 ```
