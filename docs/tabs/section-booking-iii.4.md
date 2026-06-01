@@ -99,7 +99,7 @@ activate RR
 RR --> Ctrl : 33: Room_receipt updated
 deactivate RR
 Ctrl -> Ctrl : 34: saveBooking()
-Ctrl --> CBM : 35: BookingResponse
+Ctrl --> CBM : 35: Room_receipt
 deactivate Ctrl
 CBM --> NV : 36: showMessage("Dat phong thanh cong!")
 deactivate CBM
@@ -150,7 +150,7 @@ deactivate Home
 31. Phương thức btnConfirmClick() gọi phương thức createBooking(clientId: int, roomId: int, startTime: Date, endTime: Date, staffId: int) của lớp BookingController.
 32. Phương thức createBooking() gọi phương thức updateStatus(roomId, "Chờ nhận") của lớp Entity Room_receipt.
 33. Lớp Room_receipt cập nhật trạng thái và trả kết quả về cho phương thức createBooking().
-34. Phương thức createBooking() lưu booking vào CSDL và trả BookingResponse về cho phương thức btnConfirmClick().
+34. Phương thức createBooking() lưu booking vào CSDL và trả Room_receipt về cho phương thức btnConfirmClick().
 35. Lớp ConfirmBookingModal hiển thị thông báo "Đặt phòng thành công!".
 36. Nhân viên ấn nút OK.
 37. Phương thức showMessage() của lớp ConfirmBookingModal được gọi.
@@ -208,7 +208,7 @@ Ctrl -> Room : 6: findByStatus("Cho nhan")
 activate Room
 Room --> Ctrl : 7: List<Room>
 deactivate Room
-Ctrl --> CIP : 8: List<BookingResponse>
+Ctrl --> CIP : 8: List<Room_receipt>
 deactivate Ctrl
 CIP --> NV : 9: hien thi danh sach booking cho
 deactivate CIP
@@ -217,7 +217,7 @@ NV -> CIP : 10: chon booking can check-in
 activate CIP
 NV -> CIP : 11: click [Xac nhan Check-in]
 CIP -> CIP : 12: tblPendingBookingsClick(selectedRow)
-CIP -> CCV : 13: navigate(bookingId)
+CIP -> CCV : 13: navigate(room_receipt_ID)
 activate CCV
 CCV --> NV : 14: hien thi chi tiet phong va khach hang
 deactivate CCV
@@ -225,7 +225,7 @@ deactivate CCV
 NV -> CCV : 15: click [Xac nhan Check-in]
 activate CCV
 CCV -> CCV : 16: btnCheckInClick()
-CCV -> Ctrl : 17: checkIn(bookingId)
+CCV -> Ctrl : 17: checkIn(room_receipt_ID)
 activate Ctrl
 Ctrl -> Room : 18: updateStatus(roomId, "Dang hoat dong")
 activate Room
@@ -235,7 +235,7 @@ Ctrl -> RR : 20: setStartTime(now)
 activate RR
 RR --> Ctrl : 21: Room_receipt updated
 deactivate RR
-Ctrl --> CCV : 22: BookingResponse
+Ctrl --> CCV : 22: Room_receipt
 deactivate Ctrl
 CCV --> NV : 23: showMessage("Check-in thanh cong!")
 deactivate CCV
@@ -264,16 +264,16 @@ deactivate Home
 9. Lớp CheckInPage hiển thị danh sách booking "Chờ nhận" hôm nay cho nhân viên.
 10. Nhân viên ấn chọn booking tương ứng cần check-in trên danh sách.
 11. Phương thức tblPendingBookingsClick(selectedRow: int) của lớp CheckInPage được gọi.
-12. Phương thức tblPendingBookingsClick() gọi phương thức navigate(bookingId) của lớp ConfirmCheckInView.
+12. Phương thức tblPendingBookingsClick() gọi phương thức navigate(room_receipt_ID) của lớp ConfirmCheckInView.
 13. Lớp ConfirmCheckInView hiển thị thông tin chi tiết của phòng và khách hàng.
 14. Nhân viên ấn nút xác nhận check-in.
 15. Phương thức btnCheckInClick() của lớp ConfirmCheckInView được gọi.
-16. Phương thức btnCheckInClick() gọi phương thức checkIn(bookingId: int) của lớp BookingController.
+16. Phương thức btnCheckInClick() gọi phương thức checkIn(room_receipt_ID: int) của lớp BookingController.
 17. Phương thức checkIn() gọi phương thức updateStatus(roomId, "Đang hoạt động") của lớp Entity Room.
 18. Lớp Room cập nhật trạng thái và trả kết quả về cho phương thức checkIn().
 19. Phương thức checkIn() gọi phương thức setStartTime(now) của lớp Entity Room_receipt.
 20. Lớp Room_receipt ghi nhận thời gian bắt đầu và trả kết quả về cho phương thức checkIn().
-21. Phương thức checkIn() trả BookingResponse về cho phương thức btnCheckInClick().
+21. Phương thức checkIn() trả Room_receipt về cho phương thức btnCheckInClick().
 22. Lớp ConfirmCheckInView hiển thị thông báo "Check-in thành công! Phòng [tên phòng] đã sẵn sàng."
 23. Nhân viên ấn nút quay lại.
 24. Phương thức showMessage() của lớp ConfirmCheckInView được gọi.
@@ -510,7 +510,7 @@ Ctrl --> RR : 11: findByKeyword(keyword)
 activate RR
 RR --> Ctrl : 12: List<Room_receipt>
 deactivate RR
-Ctrl --> CBP : 13: List<BookingResponse>
+Ctrl --> CBP : 13: List<Room_receipt>
 deactivate Ctrl
 CBP --> NV : 14: hien thi danh sach booking
 deactivate CBP
@@ -529,7 +529,7 @@ deactivate CBP
 NV -> CBP : 20: click [Dong y]
 activate CBP
 CBP -> CBP : 21: btnCancelClick()
-CBP -> Ctrl : 22: cancelBooking(bookingId)
+CBP -> Ctrl : 22: cancelBooking(room_receipt_ID)
 activate Ctrl
 Ctrl -> Room : 23: updateStatus(roomId, "Trong")
 activate Room
@@ -539,7 +539,7 @@ Ctrl -> RR : 25: updateStatus("Da huy")
 activate RR
 RR --> Ctrl : 26: Room_receipt updated
 deactivate RR
-Ctrl --> CBP : 27: BookingResponse
+Ctrl --> CBP : 27: Room_receipt
 deactivate Ctrl
 CBP --> NV : 28: showMessage("Huy dat phong thanh cong!")
 deactivate CBP
@@ -577,12 +577,12 @@ deactivate Home
 18. Lớp CancelBookingPage hiển thị xác nhận "Bạn có chắc chắn muốn hủy booking này?".
 19. Nhân viên click [Đồng ý].
 20. Phương thức btnCancelClick() của lớp CancelBookingPage được gọi.
-21. Phương thức btnCancelClick() gọi phương thức cancelBooking(bookingId: int) của lớp BookingController.
+21. Phương thức btnCancelClick() gọi phương thức cancelBooking(room_receipt_ID: int) của lớp BookingController.
 22. Phương thức cancelBooking() gọi phương thức updateStatus(roomId, "Trống") của lớp Entity Room.
 23. Lớp Room cập nhật trạng thái và trả kết quả về cho phương thức cancelBooking().
 24. Phương thức cancelBooking() gọi phương thức updateStatus("Đã hủy") của lớp Entity Room_receipt.
 25. Lớp Room_receipt cập nhật trạng thái và trả kết quả về cho phương thức cancelBooking().
-26. Phương thức cancelBooking() trả BookingResponse về cho phương thức btnCancelClick().
+26. Phương thức cancelBooking() trả Room_receipt về cho phương thức btnCancelClick().
 27. Lớp CancelBookingPage hiển thị thông báo "Hủy đặt phòng thành công."
 28. Nhân viên ấn nút quay lại.
 29. Phương thức showMessage() của lớp CancelBookingPage được gọi.

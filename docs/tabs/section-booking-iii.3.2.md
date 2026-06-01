@@ -42,7 +42,7 @@ c) Tạo booking => `createBooking()`
 - Ứng viên tham số vào:
   - `createBooking(clientId: int, roomId: int, startTime: Date, endTime: Date, staffId: int)` → chọn
 - Ứng viên tham số ra:
-  - `createBooking(): BookingResponse` → chọn (trả về thông tin booking)
+  - `createBooking(): Room_receipt` → chọn (trả về thông tin booking)
 
 d) Thay đổi trạng thái phòng => `updateRoomStatus()`
 - Input: mã phòng, trạng thái mới
@@ -76,15 +76,15 @@ a) Lấy danh sách booking chờ => `getPendingBookings()`
 - Ứng viên tham số vào:
   - `getPendingBookings(branchId: int, date: Date)` → chọn
 - Ứng viên tham số ra:
-  - `getPendingBookings(): List<BookingResponse>` → chọn
+  - `getPendingBookings(): List<Room_receipt>` → chọn
 
 b) Xác nhận check-in => `checkIn()`
 - Input: mã booking
 - Output: booking đã cập nhật
 - Ứng viên tham số vào:
-  - `checkIn(bookingId: int)` → chọn
+  - `checkIn(room_receipt_ID: int)` → chọn
 - Ứng viên tham số ra:
-  - `checkIn(): BookingResponse` → chọn
+  - `checkIn(): Room_receipt` → chọn
 
 **3. Tầng thực thể (Entity)**
 
@@ -116,7 +116,7 @@ b) Tính tiền hóa đơn => `calculateInvoice()`
 - Input: mã booking
 - Output: chi tiết hóa đơn (tiền phòng, tiền dịch vụ, giảm giá, tổng)
 - Ứng viên tham số vào:
-  - `calculateInvoice(bookingId: int)` → chọn
+  - `calculateInvoice(room_receipt_ID: int)` → chọn
 - Ứng viên tham số ra:
   - `calculateInvoice(): Room_receipt` → chọn
 
@@ -153,15 +153,15 @@ a) Tìm booking => `searchBooking()`
 - Ứng viên tham số vào:
   - `searchBooking(keyword: String)` → chọn
 - Ứng viên tham số ra:
-  - `searchBooking(): List<BookingResponse>` → chọn
+  - `searchBooking(): List<Room_receipt>` → chọn
 
 b) Hủy booking => `cancelBooking()`
 - Input: mã booking
 - Output: booking đã hủy
 - Ứng viên tham số vào:
-  - `cancelBooking(bookingId: int)` → chọn
+  - `cancelBooking(room_receipt_ID: int)` → chọn
 - Ứng viên tham số ra:
-  - `cancelBooking(): BookingResponse` → chọn
+  - `cancelBooking(): Room_receipt` → chọn
 
 **3. Tầng thực thể (Entity)**
 
@@ -248,7 +248,7 @@ package "<<Boundary>>" #E3F2FD {
       -lblTongTien : Label
       -btnConfirm : Button
       -btnCancel : Button
-      +formLoad(booking : BookingResponse) : void
+      +formLoad(booking : Room_receipt) : void
       +btnConfirmClick() : void
       +btnCancelClick() : void
       +showMessage(msg : String) : void
@@ -305,7 +305,7 @@ package "<<Control>>" #E8F5E9 {
     +searchFreeRoom(startTime : Date, endTime : Date, branchId : int) : List<Room>
     +updateStatus(roomId : int, status : String) : Room
     +getActiveRooms(branchId : int) : List<Room>
-    +getPendingBookings(branchId : int, date : Date) : List<BookingResponse>
+    +getPendingBookings(branchId : int, date : Date) : List<Room_receipt>
   }
   class ClientController {
     +getAll() : List<Client>
@@ -313,13 +313,13 @@ package "<<Control>>" #E8F5E9 {
     +search(keyword : String) : List<Client>
   }
   class BookingController {
-    +createBooking(clientId : int, roomId : int, startTime : Date, endTime : Date, staffId : int) : BookingResponse
-    +checkIn(bookingId : int) : BookingResponse
-    +cancelBooking(bookingId : int) : BookingResponse
-    +searchBooking(keyword : String) : List<BookingResponse>
+    +createBooking(clientId : int, roomId : int, startTime : Date, endTime : Date, staffId : int) : Room_receipt
+    +checkIn(room_receipt_ID : int) : Room_receipt
+    +cancelBooking(room_receipt_ID : int) : Room_receipt
+    +searchBooking(keyword : String) : List<Room_receipt>
   }
   class InvoiceController {
-    +calculateInvoice(bookingId : int) : Room_receipt
+    +calculateInvoice(room_receipt_ID : int) : Room_receipt
     +confirmPayment(invoiceId : int, paymentMethod : String, voucherCode : String) : Room_receipt
     +getById(id : int) : Room_receipt
   }
