@@ -57,38 +57,39 @@ N+5. Phương thức [methodName] trả về kết quả cho phương thức [bt
 title [Tên UC] – Tuần tự Thiết kế (JFrame)
 
 actor "Tên Actor" as Actor
-participant "GDChinhFrm\n<<Boundary>>" as B0
-participant "GDTimXFrm\n<<Boundary>>" as B1
-participant "TenEntityDAO\n<<DAO>>" as DAO
-participant "TenEntity\n<<Entity>>" as E
+boundary GDChinhFrm
+boundary GDTimXFrm
+control TenEntityDAO
+entity TenEntity
 
-Actor -> B0 : 1: sd dịch vụ trả góp
-activate B0
-B0 -> B1 : 2: actionPerformed(e : ActionEvent)
-activate B1
-B0 -> B1 : 3: TimXFrm(nv : NhanVien)
-B1 --> B0 : 4: hiển thị
-Actor -> B1 : 5: nhập từ khóa + nhấn Tìm
-B1 -> B1 : 6: actionPerformed(e : ActionEvent)
-B1 -> DAO : 7: gọi
-activate DAO
-DAO -> E : 8: timX(ten : String) : List<TenEntity>
-activate E
-E --> DAO : 9: List<TenEntity>
-deactivate E
-DAO --> B1 : 10: trả về
-deactivate DAO
-B1 --> Actor : 11: hiển thị danh sách
+Actor -> GDChinhFrm : 1: sd dịch vụ trả góp
+activate GDChinhFrm
+GDChinhFrm -> GDTimXFrm : 2: actionPerformed(e : ActionEvent)
+activate GDTimXFrm
+GDChinhFrm -> GDTimXFrm : 3: TimXFrm(nv : NhanVien)
+GDTimXFrm --> GDChinhFrm : 4: hiển thị
+Actor -> GDTimXFrm : 5: nhập từ khóa + nhấn Tìm
+GDTimXFrm -> GDTimXFrm : 6: actionPerformed(e : ActionEvent)
+GDTimXFrm -> TenEntityDAO : 7: gọi
+activate TenEntityDAO
+TenEntityDAO -> TenEntity : 8: timX(ten : String) : List<TenEntity>
+activate TenEntity
+TenEntity --> TenEntityDAO : 9: List<TenEntity>
+deactivate TenEntity
+TenEntityDAO --> GDTimXFrm : 10: trả về
+deactivate TenEntityDAO
+GDTimXFrm --> Actor : 11: hiển thị danh sách
 
 alt timX() trả về rỗng
-  DAO --> B1 : List rỗng
-  B1 --> Actor : thông báo không tìm thấy
+  TenEntityDAO --> GDTimXFrm : List rỗng
+  GDTimXFrm --> Actor : thông báo không tìm thấy
 end
 @enduml
 ```
 
 **Variant React MVC:**
 
+<<<<<<< Updated upstream
 **Lưu ý:** Tên participant dùng hậu tố `View` (LoginView, SearchRoomView, CreateOrderView...) theo quy ước ở III.3.2.
 
 ```plantuml
@@ -144,6 +145,12 @@ sequenceDiagram {
 }
 </style>
 
+=======
+**Lưu ý:** Dùng `boundary`, `control`, `entity` khi khai báo participant (không dùng `participant`).
+
+```plantuml
+@startuml
+>>>>>>> Stashed changes
 title [Tên UC] – Tuần tự Thiết kế (React MVC)
 
 actor "Tên Actor" as Actor

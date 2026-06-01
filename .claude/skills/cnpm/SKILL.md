@@ -537,8 +537,14 @@ Invoice --> ServiceOrder
 - Participants xếp theo thứ tự: Actor → Boundary → [Control] → DAO → Entity
 - Thông điệp đánh số liên tục
 - Dùng `alt` cho ngoại lệ
+<<<<<<< Updated upstream
 - Phân tích: thông điệp tiếng Việt + tên hàm tiếng Anh đơn giản · Thiết kế: tên hàm tiếng Anh + kiểu dữ liệu
 - **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation), KHÔNG dùng khung (rectangle). KHÔNG dùng `skinparam sequence { ParticipantStyle rectangle }` — để PlantUML hiển thị circle mặc định cho lifeline.
+=======
+- Phân tích: tiếng Việt · Thiết kế: tên hàm tiếng Anh
+- **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation): dùng `boundary "Name"`, `entity "Name"`, `control "Name"` khi khai báo participant. KHÔNG dùng `participant "Name"` (sẽ hiển thị khung).
+- **Activation bar màu xanh:** `skinparam SequenceLifeLineBackgroundColor #7AD2FF`
+>>>>>>> Stashed changes
 
 ### Biểu đồ UC (Use Case)
 
