@@ -78,7 +78,7 @@
 <!-- PLACEHOLDER: WIREFRAMES -->
 <!-- Wireframes sẽ được render thành monospace frames trong DOCX -->
 
-#### Màn hình 1: LoginPage
+#### Màn hình 1: LoginView
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -92,7 +92,7 @@
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 2: RegisterPage
+#### Màn hình 2: RegisterView
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -108,7 +108,7 @@
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 3: OTPVerifyPage
+#### Màn hình 3: OTPVerifyView
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -123,7 +123,7 @@
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 4: ChangePasswordPage
+#### Màn hình 4: ChangePasswordView
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -137,7 +137,7 @@
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 5: ProfilePage
+#### Màn hình 5: ProfileView
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -153,7 +153,7 @@
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 6: StaffManagePage
+#### Màn hình 6: StaffManageView
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -449,7 +449,7 @@ User "n" o-- "1" MembershipTier
 
 ### 5. Biểu đồ tuần tự thiết kế
 
-#### Đăng nhập
+### Đăng nhập
 
 <!-- PLACEHOLDER: account_seq_login -->
 <!-- File: output/diagrams/account_seq_login.png -->
@@ -519,7 +519,7 @@ end
 - Phương thức `checkLogin()` trả về `false` cho `btnLoginClick()`.
 - Lớp LoginPage hiển thị showMessage("Mật khẩu không chính xác. Còn [N] lần thử.")
 
-#### Đăng ký
+### Đăng ký
 
 <!-- PLACEHOLDER: account_seq_register -->
 <!-- File: output/diagrams/account_seq_register.png -->
@@ -627,7 +627,7 @@ end
 - AuthController trả về `false` cho OTPVerifyPage.
 - OTPVerifyPage hiển thị showMessage("Mã OTP không đúng. Vui lòng thử lại.")
 
-#### Đổi mật khẩu
+### Đổi mật khẩu
 
 <!-- PLACEHOLDER: account_seq_changepw -->
 <!-- File: output/diagrams/account_seq_changepw.png -->
@@ -705,7 +705,7 @@ end
 - AuthController trả về lỗi cho ChangePasswordPage.
 - ChangePasswordPage hiển thị showMessage("Mật khẩu mới không được trùng mật khẩu hiện tại.")
 
-#### Quản lý TTCN
+### Quản lý TTCN
 
 <!-- PLACEHOLDER: account_seq_profile -->
 <!-- File: output/diagrams/account_seq_profile.png -->
@@ -785,7 +785,7 @@ end
 - ProfileController trả về lỗi cho ProfilePage.
 - ProfilePage hiển thị showMessage("Email này đã được đăng ký bởi tài khoản khác.")
 
-#### Quản lý nhân viên
+### Quản lý nhân viên
 
 <!-- PLACEHOLDER: account_seq_staff -->
 <!-- File: output/diagrams/account_seq_staff.png -->

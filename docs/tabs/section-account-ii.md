@@ -95,7 +95,7 @@ User gắn composition với OTP: một OTP không tồn tại độc lập nế
 
 ### 3. Biểu đồ lớp phân tích
 
-**Kiến trúc chọn: React** ( Boundary class dùng hậu tố View. Method names tiếng Việt ở pha phân tích, đặt trên Entity. )
+**Kiến trúc chọn: React** ( Boundary class dùng hậu tố View. Method names tiếng Anh ở tất cả các pha, đặt trên Entity. )
 
 **Bước 1 – Lớp Boundary từ giao diện**
 
@@ -122,8 +122,8 @@ StaffManageView: tblEmployee, btnChonNV, btnThem, btnSua, btnXoa
 [1]. Giao diện LoginView → lớp LoginView
 Phân tích chi tiết chức năng Đăng nhập:
 Người dùng nhập SĐT, Mật khẩu và nhấn [Đăng nhập] -> hệ thống xác thực thông tin -> đề xuất lớp LoginView, có txtSDT, txtMatKhau, btnDangNhap.
-Người dùng nhấn [Đăng nhập] -> hệ thống cần xác thực tài khoản -> cần chức năng `dangNhap(sdt, matKhau)` của đối tượng User.
-Phương thức: `dangNhap(sdt, matKhau)` ← tên tiếng Việt, ngôn ngữ tự nhiên
+Người dùng nhấn [Đăng nhập] -> hệ thống cần xác thực tài khoản -> cần chức năng `checkLogin(sdt, matKhau)` của đối tượng User.
+Phương thức: `checkLogin(sdt, matKhau)`
 Input: sdt, matKhau
 Output: Session (token, vaiTro)
 Lớp chủ thể: User
@@ -131,8 +131,8 @@ Lớp chủ thể: User
 [2]. Giao diện RegisterView → lớp RegisterView
 Phân tích chi tiết chức năng Đăng ký:
 Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK và nhấn [Tiếp tục] -> hệ thống hiển thị form đăng ký -> đề xuất lớp RegisterView, có txtHoTen, txtSDT, txtEmail, txtMatKhau, txtXacNhanMK, btnTiepTuc.
-Người dùng nhấn [Tiếp tục] -> hệ thống cần tạo tài khoản mới -> cần chức năng `dangKy(hoTen, sdt, email, matKhau)` của đối tượng User.
-Phương thức: `dangKy(hoTen, sdt, email, matKhau)`
+Người dùng nhấn [Tiếp tục] -> hệ thống cần tạo tài khoản mới -> cần chức năng `register(hoTen, sdt, email, matKhau)` của đối tượng User.
+Phương thức: `register(hoTen, sdt, email, matKhau)`
 Input: hoTen, sdt, email, matKhau
 Output: User (vừa tạo)
 Lớp chủ thể: User
@@ -140,8 +140,8 @@ Lớp chủ thể: User
 [3]. Giao diện OTPVerifyView → lớp OTPVerifyView
 Phân tích chi tiết chức năng Xác nhận OTP:
 Người dùng nhập mã OTP và nhấn [Xác nhận] -> hệ thống hiển thị form OTP -> đề xuất lớp OTPVerifyView, có txtOTP, btnXacNhan, btnGuiLai.
-Người dùng nhấn [Xác nhận] -> hệ thống cần xác minh mã OTP -> cần chức năng `xacMinhOTP(maOTP)` của đối tượng OTP.
-Phương thức: `xacMinhOTP(maOTP)`
+Người dùng nhấn [Xác nhận] -> hệ thống cần xác minh mã OTP -> cần chức năng `verifyOTP(maOTP)` của đối tượng OTP.
+Phương thức: `verifyOTP(maOTP)`
 Input: maOTP
 Output: boolean (đúng/sai)
 Lớp chủ thể: OTP
@@ -149,8 +149,8 @@ Lớp chủ thể: OTP
 [4]. Giao diện ChangePasswordView → lớp ChangePasswordView
 Phân tích chi tiết chức năng Đổi mật khẩu:
 Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới và nhấn [Lưu] -> hệ thống hiển thị form đổi mật khẩu -> đề xuất lớp ChangePasswordView, có txtMKHienTai, txtMKMoi, txtXacNhanMKMoi, btnLuu.
-Người dùng nhấn [Lưu] -> hệ thống cần đổi mật khẩu -> cần chức năng `doiMatKhau(mkHienTai, mkMoi)` của đối tượng User.
-Phương thức: `doiMatKhau(mkHienTai, mkMoi)`
+Người dùng nhấn [Lưu] -> hệ thống cần đổi mật khẩu -> cần chức năng `changePassword(mkHienTai, mkMoi)` của đối tượng User.
+Phương thức: `changePassword(mkHienTai, mkMoi)`
 Input: mkHienTai, mkMoi
 Output: boolean (thành công/thất bại)
 Lớp chủ thể: User
@@ -158,8 +158,8 @@ Lớp chủ thể: User
 [5]. Giao diện ProfileView → lớp ProfileView
 Phân tích chi tiết chức năng Xem hồ sơ:
 Người dùng nhấn vào ảnh đại diện -> hệ thống hiển thị thông tin cá nhân -> đề xuất lớp ProfileView, có lblHoTen, lblSDT, lblEmail, lblHang, lblDiem.
-Hệ thống cần lấy thông tin hồ sơ -> cần chức năng `xemHoSo(userId)` của đối tượng User.
-Phương thức: `xemHoSo(userId)`
+Hệ thống cần lấy thông tin hồ sơ -> cần chức năng `getProfile(userId)` của đối tượng User.
+Phương thức: `getProfile(userId)`
 Input: userId
 Output: User (thông tin hồ sơ)
 Lớp chủ thể: User
@@ -167,8 +167,8 @@ Lớp chủ thể: User
 [6]. Giao diện ProfileView → lớp ProfileView
 Phân tích chi tiết chức năng Cập nhật hồ sơ:
 Người dùng chỉnh sửa họ tên, email và nhấn [Lưu] -> hệ thống cập nhật thông tin -> đề xuất lớp ProfileView, có btnChinhSua, btnLuu.
-Người dùng nhấn [Lưu] -> hệ thống cần cập nhật hồ sơ -> cần chức năng `capNhatHoSo(userId, hoTen, email)` của đối tượng User.
-Phương thức: `capNhatHoSo(userId, hoTen, email)`
+Người dùng nhấn [Lưu] -> hệ thống cần cập nhật hồ sơ -> cần chức năng `updateProfile(userId, hoTen, email)` của đối tượng User.
+Phương thức: `updateProfile(userId, hoTen, email)`
 Input: userId, hoTen, email
 Output: User (đã cập nhật)
 Lớp chủ thể: User
@@ -176,8 +176,8 @@ Lớp chủ thể: User
 [7]. Giao diện StaffManageView → lớp StaffManageView
 Phân tích chi tiết chức năng Xem danh sách nhân viên:
 Admin truy cập "Quản lý nhân viên" -> hệ thống hiển thị bảng danh sách nhân viên -> đề xuất lớp StaffManageView, có tblEmployee, btnThem, btnSua, btnXoa.
-Hệ thống cần tải danh sách nhân viên -> cần chức năng `xemDanhSachNV()` của đối tượng Employee.
-Phương thức: `xemDanhSachNV()`
+Hệ thống cần tải danh sách nhân viên -> cần chức năng `getAllStaff()` của đối tượng Employee.
+Phương thức: `getAllStaff()`
 Input: (không có — tải toàn bộ)
 Output: List\<Employee\>
 Lớp chủ thể: Employee
@@ -185,8 +185,8 @@ Lớp chủ thể: Employee
 [8]. Giao diện StaffManageView → lớp StaffManageView
 Phân tích chi tiết chức năng Thêm nhân viên:
 Admin nhấn [Thêm], nhập thông tin và nhấn [Lưu] -> hệ thống tạo tài khoản nhân viên mới -> đề xuất lớp StaffManageView, có btnThem, txtHoTen, txtVaiTro.
-Admin nhấn [Lưu] -> hệ thống cần tạo nhân viên mới -> cần chức năng `themNV(hoTen, vaiTro)` của đối tượng Employee.
-Phương thức: `themNV(hoTen, vaiTro)`
+Admin nhấn [Lưu] -> hệ thống cần tạo nhân viên mới -> cần chức năng `addStaff(hoTen, vaiTro)` của đối tượng Employee.
+Phương thức: `addStaff(hoTen, vaiTro)`
 Input: hoTen, vaiTro
 Output: Employee (vừa tạo)
 Lớp chủ thể: Employee
@@ -194,8 +194,8 @@ Lớp chủ thể: Employee
 [9]. Giao diện StaffManageView → lớp StaffManageView
 Phân tích chi tiết chức năng Sửa nhân viên:
 Admin chọn nhân viên, chỉnh sửa thông tin và nhấn [Lưu] -> hệ thống cập nhật thông tin nhân viên -> đề xuất lớp StaffManageView, có btnSua, btnChonNV.
-Admin nhấn [Lưu] -> hệ thống cần cập nhật nhân viên -> cần chức năng `suaNV(id, hoTen, vaiTro)` của đối tượng Employee.
-Phương thức: `suaNV(id, hoTen, vaiTro)`
+Admin nhấn [Lưu] -> hệ thống cần cập nhật nhân viên -> cần chức năng `updateStaff(id, hoTen, vaiTro)` của đối tượng Employee.
+Phương thức: `updateStaff(id, hoTen, vaiTro)`
 Input: id, hoTen, vaiTro
 Output: Employee (đã cập nhật)
 Lớp chủ thể: Employee
@@ -203,8 +203,8 @@ Lớp chủ thể: Employee
 [10]. Giao diện StaffManageView → lớp StaffManageView
 Phân tích chi tiết chức năng Xóa nhân viên:
 Admin chọn nhân viên và nhấn [Xóa] -> hệ thống chuyển trạng thái "Đã nghỉ" -> đề xuất lớp StaffManageView, có btnXoa, btnChonNV.
-Admin nhấn [Xóa] -> hệ thống cần xóa nhân viên -> cần chức năng `xoaNV(id)` của đối tượng Employee.
-Phương thức: `xoaNV(id)`
+Admin nhấn [Xóa] -> hệ thống cần xóa nhân viên -> cần chức năng `deleteStaff(id)` của đối tượng Employee.
+Phương thức: `deleteStaff(id)`
 Input: id
 Output: boolean (thành công/thất bại)
 Lớp chủ thể: Employee
@@ -227,10 +227,10 @@ KH -> B1 : 1: truy cập màn hình Đăng nhập
 activate B1
 B1 --> KH : 2: hiển thị form đăng nhập
 KH -> B1 : 3: nhập SĐT + Mật khẩu + nhấn [Đăng nhập]
-B1 -> E1 : 4: dangNhap(sdt, matKhau)
+B1 -> E1 : 4: checkLogin(sdt, matKhau)
 activate E1
-E1 -> E1 : 5: timTheoSDT(sdt)
-E1 -> E1 : 6: kiemTraMatKhau(matKhau, hash)
+E1 -> E1 : 5: findBySDT(sdt)
+E1 -> E1 : 6: checkPassword(matKhau, hash)
 E1 --> B1 : 7: trả về User + Session
 deactivate E1
 B1 --> KH : 8: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
@@ -254,9 +254,9 @@ end
 2. Lớp LoginView hiển thị form gồm ô nhập SĐT/Email, ô nhập Mật khẩu, nút [Đăng nhập], liên kết "Quên mật khẩu?" / "Đăng ký".
 3. Khách hàng nhập SĐT = "0912345678" và Mật khẩu = "Abc@1234".
 4. Khách hàng nhấn nút [Đăng nhập].
-5. Lớp LoginView gọi phương thức `dangNhap(sdt, matKhau)` của User.
-6. User tìm tài khoản theo SĐT bằng `timTheoSDT(sdt)`.
-7. User so sánh mật khẩu bằng `kiemTraMatKhau(matKhau, hash)`.
+5. Lớp LoginView gọi phương thức `checkLogin(sdt, matKhau)` của User.
+6. User tìm tài khoản theo SĐT bằng `findBySDT(sdt)`.
+7. User so sánh mật khẩu bằng `checkPassword(matKhau, hash)`.
 8. User trả kết quả về cho LoginView.
 9. Lớp LoginView hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
 
@@ -284,7 +284,7 @@ KH -> B1 : 1: nhấn "Đăng ký"
 activate B1
 B1 --> KH : 2: hiển thị form đăng ký
 KH -> B1 : 3: nhập thông tin + nhấn [Tiếp tục]
-B1 -> E1 : 4: dangKy(hoTen, sdt, email, matKhau)
+B1 -> E1 : 4: register(hoTen, sdt, email, matKhau)
 activate E1
 E1 -> E1 : 5: existsBySDT(sdt)
 E1 -> E1 : 6: existsByEmail(email)
@@ -299,12 +299,12 @@ deactivate B1
 
 KH -> B2 : 11: nhập OTP = "482917"
 activate B2
-B2 -> E2 : 12: xacMinhOTP(otp)
+B2 -> E2 : 12: verifyOTP(otp)
 activate E2
 E2 -> E2 : 13: verify(otp)
 E2 --> B2 : 14: true
 deactivate E2
-B2 -> E1 : 15: luuTaiKhoan()
+B2 -> E1 : 15: saveUser()
 activate E1
 E1 --> B2 : 16: thanh cong
 deactivate E1
@@ -319,16 +319,16 @@ deactivate B2
 2. Lớp RegisterView hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
 3. Khách hàng nhập: Họ tên = "Nguyễn Thị Bình", SĐT = "0987654321", Email = "binh.nt@email.com", MK = "Pass@2025".
 4. Khách hàng nhấn [Tiếp tục].
-5. RegisterView gọi `dangKy(hoTen, sdt, email, matKhau)` của User.
+5. RegisterView gọi `register(hoTen, sdt, email, matKhau)` của User.
 6. User kiểm tra SĐT chưa tồn tại bằng `existsBySDT(sdt)`.
 7. User kiểm tra email chưa tồn tại bằng `existsByEmail(email)`.
 8. User gọi `guiOTP(sdt, DANG_KY)` của OTP để gửi mã xác minh.
 9. User trả kết quả về RegisterView.
 10. RegisterView hiển thị form xác nhận OTP.
 11. Khách hàng nhập OTP = "482917" và nhấn [Xác nhận].
-12. OTPVerifyView gọi `xacMinhOTP(otp)` của OTP.
+12. OTPVerifyView gọi `verifyOTP(otp)` của OTP.
 13. OTP kiểm tra mã đúng và còn hiệu lực bằng `verify(otp)`.
-14. OTPVerifyView gọi `luuTaiKhoan()` của User để hoàn tất đăng ký.
+14. OTPVerifyView gọi `saveUser()` của User để hoàn tất đăng ký.
 15. Hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
 
 **Ngoại lệ: SĐT đã tồn tại**
@@ -353,7 +353,7 @@ ND -> B1 : 1: truy cập "Bảo mật"
 activate B1
 B1 --> ND : 2: hiển thị form đổi mật khẩu
 ND -> B1 : 3: nhập MK hiện tại, MK mới + nhấn [Lưu]
-B1 -> E1 : 4: doiMatKhau(mkHienTai, mkMoi)
+B1 -> E1 : 4: changePassword(mkHienTai, mkMoi)
 activate E1
 E1 -> E1 : 5: findByToken(session)
 E1 -> E1 : 6: checkPassword(mkHienTai, hash)
@@ -373,7 +373,7 @@ deactivate B1
 2. Lớp ChangePasswordView hiển thị form: MK hiện tại, MK mới, Xác nhận MK mới.
 3. Người dùng nhập: MK hiện tại = "Abc@1234", MK mới = "NewPass@2025", xác nhận = "NewPass@2025".
 4. Người dùng nhấn [Lưu thay đổi].
-5. ChangePasswordView gọi `doiMatKhau(mkHienTai, mkMoi)` của User.
+5. ChangePasswordView gọi `changePassword(mkHienTai, mkMoi)` của User.
 6. User tìm thông tin người dùng bằng `findByToken(session)`.
 7. User xác minh MK hiện tại khớp CSDL bằng `checkPassword(mkHienTai, hash)`.
 8. User mã hóa MK mới bằng `hashPassword(mkMoi)`.
@@ -401,14 +401,14 @@ entity "User\n<<Entity>>" as E1
 
 KH -> B1 : 1: nhấn vào ảnh đại diện
 activate B1
-B1 -> E1 : 2: xemHoSo(userId)
+B1 -> E1 : 2: getProfile(userId)
 activate E1
 E1 -> E1 : 3: findById(userId)
 E1 --> B1 : 4: User
 deactivate E1
 B1 --> KH : 5: hiển thị hồ sơ cá nhân
 KH -> B1 : 6: nhấn [Chỉnh sửa thông tin] + cập nhật + nhấn [Lưu]
-B1 -> E1 : 7: capNhatHoSo(userId, hoTen, email)
+B1 -> E1 : 7: updateProfile(userId, hoTen, email)
 activate E1
 E1 -> E1 : 8: checkEmail(email)
 E1 -> E1 : 9: update()
@@ -422,12 +422,12 @@ deactivate B1
 **Kịch bản phiên bản 2 – UC04 Quản lý TTCN**
 
 1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản ở góc trên phải.
-2. ProfileView gọi `xemHoSo(userId)` của User.
+2. ProfileView gọi `getProfile(userId)` của User.
 3. User tìm thông tin bằng `findById(userId)`.
 4. User trả về đối tượng User cho ProfileView.
 5. ProfileView hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
 6. Khách hàng nhấn [Chỉnh sửa thông tin], cập nhật họ tên và email, nhấn [Lưu].
-7. ProfileView gọi `capNhatHoSo(userId, hoTen, email)` của User.
+7. ProfileView gọi `updateProfile(userId, hoTen, email)` của User.
 8. User kiểm tra email hợp lệ bằng `checkEmail(email)`.
 9. User cập nhật thông tin bằng `update()`.
 10. ProfileView hiển thị "Cập nhật thành công!"
@@ -448,7 +448,7 @@ entity "Employee\n<<Entity>>" as E1
 
 Admin -> B1 : 1: truy cập "Quản lý nhân viên"
 activate B1
-B1 -> E1 : 2: xemDanhSachNV()
+B1 -> E1 : 2: getAllStaff()
 activate E1
 E1 -> E1 : 3: findAll()
 E1 --> B1 : 4: List Employee
@@ -456,7 +456,7 @@ deactivate E1
 B1 --> Admin : 5: hiển thị danh sách nhân viên
 
 Admin -> B1 : 6: nhấn [Thêm nhân viên] + nhập thông tin + nhấn [Lưu]
-B1 -> E1 : 7: themNV(hoTen, vaiTro)
+B1 -> E1 : 7: addStaff(hoTen, vaiTro)
 activate E1
 E1 -> E1 : 8: save()
 E1 --> B1 : 9: Employee vừa tạo
@@ -469,12 +469,12 @@ deactivate B1
 **Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên**
 
 1. Admin truy cập "Quản lý nhân viên" từ trang quản trị.
-2. StaffManageView gọi `xemDanhSachNV()` của Employee.
+2. StaffManageView gọi `getAllStaff()` của Employee.
 3. Employee tải danh sách bằng `findAll()`.
 4. Employee trả về danh sách nhân viên cho StaffManageView.
 5. StaffManageView hiển thị bảng: họ tên, vai trò, trạng thái.
 6. Admin nhấn [Thêm nhân viên], nhập thông tin, nhấn [Lưu].
-7. StaffManageView gọi `themNV(hoTen, vaiTro)` của Employee.
+7. StaffManageView gọi `addStaff(hoTen, vaiTro)` của Employee.
 8. Employee lưu bằng `save()`.
 9. StaffManageView hiển thị "Thêm nhân viên thành công!"
 
