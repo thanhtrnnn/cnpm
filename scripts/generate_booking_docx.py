@@ -38,7 +38,8 @@ FILES = [
     ('section-booking-iii.3.1.md', None),
     ('section-booking-iii.3.2.md', None),
     ('section-booking-iii.4.md', None),
-    ('section-booking-iv.md', 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'),
+    (None, 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'),
+    ('section-booking-iv.md', None),
 ]
 
 # Diagram files mapped to their placeholder comments in markdown
@@ -154,24 +155,17 @@ def determine_heading_level(text):
     return None
 
 
-def add_heading_with_blue_underline(doc, text, level):
-    """Add heading with blue underline for H1."""
+def add_heading(doc, text, level):
+    """Add heading with black text, no underline."""
     p = doc.add_heading(level=level)
     segments = extract_inline_formatting(text)
     for seg_text, is_bold, is_code in segments:
         run = p.add_run(seg_text)
+        run.font.color.rgb = RGBColor(0, 0, 0)
         if is_bold:
             run.bold = True
         if is_code:
             run.font.name = 'Courier New'
-
-    if level == 1:
-        # Add blue underline
-        for run in p.runs:
-            run.font.color.rgb = RGBColor(0, 0, 200)
-            rPr = run._element.get_or_add_rPr()
-            u = parse_xml(f'<w:u {nsdecls("w")} w:val="single" w:color="0000C8"/>')
-            rPr.append(u)
 
     return p
 
@@ -480,14 +474,14 @@ def process_file(doc, md_file):
             current_table = []
             in_table = False
 
-        # Heading (## / ### / ####)
+        # Heading (## / ### / ####) — cap at level 3
         m = re.match(r'^(#{1,4})\s+(.+)$', line)
         if m:
             md_level = len(m.group(1))
             text = m.group(2).strip()
-            # Use markdown # level directly — content detection only for plain-text phase headers
-            level = md_level
-            add_heading_with_blue_underline(doc, text, level)
+            # Cap at level 3 (no H4)
+            level = min(md_level, 3)
+            add_heading(doc, text, level)
             i += 1
             continue
 
@@ -497,7 +491,7 @@ def process_file(doc, md_file):
             text = bm_heading.group(1).strip()
             level = determine_heading_level(text)
             if level:
-                add_heading_with_blue_underline(doc, text, level)
+                add_heading(doc, text, level)
             else:
                 p = doc.add_paragraph()
                 run = p.add_run(text)
@@ -570,7 +564,7 @@ def main():
         if filename is None:
             # Standalone phase header (no file follows)
             if phase_header:
-                add_heading_with_blue_underline(doc, phase_header, 1)
+                add_heading(doc, phase_header, 1)
             continue
 
         md_file = os.path.join(DOCS_DIR, filename)
@@ -584,7 +578,7 @@ def main():
             with open(md_file, 'r', encoding='utf-8') as f:
                 first_lines = f.read()[:500]
             if phase_header not in first_lines:
-                add_heading_with_blue_underline(doc, phase_header, 1)
+                add_heading(doc, phase_header, 1)
 
         process_file(doc, md_file)
         doc.add_paragraph('')
