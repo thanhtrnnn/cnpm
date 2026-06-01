@@ -162,6 +162,29 @@ PlantUML URL quá dài (>2K) → skip insertInlineImage, chỉ render ra output/
 - Scenario tables: 30/70 column width split
 - H1: blue underline (phase headers)
 
+## Cấu trúc thư mục `docs/tabs/`
+
+Mỗi module có thư mục riêng. Quy ước vị trí ảnh (BẮT BUỘC):
+
+```
+docs/tabs/
+├── <module>/              # nguồn markdown UP (account, booking, services...)
+│   ├── i-requirements.md
+│   ├── ii-analysis.md
+│   ├── iii-design.md
+│   └── iv-test.md
+├── images/<module>/       # ẢNH PlantUML render thủ công (đặt tên: uc_*, bce_*, seq_*, erd, *_class)
+├── exports/<module>/      # bản tải về từ Google Docs (nguồn audit, read-only)
+│   ├── <module>.md        # text tab
+│   └── screenshots/       # ảnh tab tải kèm (image_NN.png)
+└── audit/                 # báo cáo audit
+```
+
+**Quy tắc vị trí ảnh:**
+- **Ảnh PlantUML render thủ công** → `docs/tabs/images/<module>/<tên_có_nghĩa>.png` (VD: `images/booking/uc_overview.png`)
+- **Ảnh tải về từ Google Docs** (`tab-read`) → `docs/tabs/exports/<module>/screenshots/` — dùng flag `--output docs/tabs/exports/<module>`
+- `exports/` là **nguồn chuẩn cho audit** (phản ánh đúng trạng thái trên Google Docs), KHÔNG sửa tay.
+
 ## Quy trình phân tích yêu cầu
 
 Khi nhận yêu cầu từ user:
