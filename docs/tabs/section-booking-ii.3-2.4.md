@@ -325,6 +325,7 @@ PaymentView --> KhuyenMai
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -335,12 +336,12 @@ skinparam EntityBorderColor black
 title Dat phong – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "SearchFreeRoomView\n<<Boundary>>" as SRF
-participant "SearchClientView\n<<Boundary>>" as SCF
-participant "ConfirmView\n<<Boundary>>" as CV
-participant "Room\n<<Entity>>" as Room
-participant "Customer\n<<Entity>>" as Cust
+boundary "ReceptionistHomeView" as Home
+boundary "SearchFreeRoomView" as SRF
+boundary "SearchClientView" as SCF
+boundary "ConfirmView" as CV
+entity "Room" as Room
+entity "Customer" as Cust
 
 NV -> Home : 1: click "Dat phong"
 activate Home
@@ -445,6 +446,7 @@ deactivate Home
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -455,10 +457,10 @@ skinparam EntityBorderColor black
 title Huy phong – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "SearchBookingView\n<<Boundary>>" as SBV
-participant "ConfirmCancelView\n<<Boundary>>" as CCV
-participant "Room\n<<Entity>>" as Room
+boundary "ReceptionistHomeView" as Home
+boundary "SearchBookingView" as SBV
+boundary "ConfirmCancelView" as CCV
+entity "Room" as Room
 
 NV -> Home : 1: click "Quan ly dat phong"
 activate Home
@@ -535,6 +537,7 @@ deactivate Home
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -545,10 +548,10 @@ skinparam EntityBorderColor black
 title Check-in – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "CheckInView\n<<Boundary>>" as CIV
-participant "ConfirmCheckInView\n<<Boundary>>" as CCV
-participant "Room\n<<Entity>>" as Room
+boundary "ReceptionistHomeView" as Home
+boundary "CheckInView" as CIV
+boundary "ConfirmCheckInView" as CCV
+entity "Room" as Room
 
 NV -> Home : 1: click "Check-in"
 activate Home
@@ -612,6 +615,7 @@ deactivate Home
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -622,14 +626,14 @@ skinparam EntityBorderColor black
 title Check-out – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "CheckOutView\n<<Boundary>>" as COV
-participant "InvoiceView\n<<Boundary>>" as IV
-participant "PaymentView\n<<Boundary>>" as PV
-participant "Room\n<<Entity>>" as Room
-participant "Room_receipt\n<<Entity>>" as RR
-participant "Customer\n<<Entity>>" as Cust
-participant "Promotion\n<<Entity>>" as Promo
+boundary "ReceptionistHomeView" as Home
+boundary "CheckOutView" as COV
+boundary "InvoiceView" as IV
+boundary "PaymentView" as PV
+entity "Room" as Room
+entity "Room_receipt" as RR
+entity "Customer" as Cust
+entity "Promotion" as Promo
 
 NV -> Home : 1: click "Check-out"
 activate Home

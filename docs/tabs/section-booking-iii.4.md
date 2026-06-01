@@ -10,6 +10,7 @@
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -22,14 +23,14 @@ skinparam EntityBorderColor black
 title Dat phong – Tuần tự Thiết kế (React MVC)
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomePage\n<<Boundary>>" as Home
-participant "SearchFreeRoomForm\n<<Boundary>>" as SRF
-participant "BookingController\n<<Control>>" as Ctrl
-participant "SearchClientForm\n<<Boundary>>" as SCF
-participant "ConfirmBookingModal\n<<Boundary>>" as CBM
-participant "Room\n<<Entity>>" as Room
-participant "Customer\n<<Entity>>" as Cust
-participant "Room_receipt\n<<Entity>>" as RR
+boundary "ReceptionistHomePage" as Home
+boundary "SearchFreeRoomForm" as SRF
+control "BookingController" as Ctrl
+boundary "SearchClientForm" as SCF
+boundary "ConfirmBookingModal" as CBM
+entity "Room" as Room
+entity "Customer" as Cust
+entity "Room_receipt" as RR
 
 NV -> Home : 1: click "Dat phong"
 activate Home
@@ -182,6 +183,7 @@ deactivate Home
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -194,11 +196,11 @@ skinparam EntityBorderColor black
 title Check-in – Tuần tự Thiết kế (React MVC)
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomePage\n<<Boundary>>" as Home
-participant "CheckInPage\n<<Boundary>>" as CIP
-participant "BookingController\n<<Control>>" as Ctrl
-participant "Room\n<<Entity>>" as Room
-participant "Room_receipt\n<<Entity>>" as RR
+boundary "ReceptionistHomePage" as Home
+boundary "CheckInPage" as CIP
+control "BookingController" as Ctrl
+entity "Room" as Room
+entity "Room_receipt" as RR
 
 NV -> Home : 1: click "Check-in"
 activate Home
@@ -297,6 +299,7 @@ deactivate Home
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -309,14 +312,14 @@ skinparam EntityBorderColor black
 title Check-out – Tuần tự Thiết kế (React MVC)
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomePage\n<<Boundary>>" as Home
-participant "CheckOutPage\n<<Boundary>>" as COP
-participant "InvoicePanel\n<<Boundary>>" as IP
-participant "BookingController\n<<Control>>" as Ctrl
-participant "Room\n<<Entity>>" as Room
-participant "Room_receipt\n<<Entity>>" as RR
-participant "Customer\n<<Entity>>" as Cust
-participant "Promotion\n<<Entity>>" as Promo
+boundary "ReceptionistHomePage" as Home
+boundary "CheckOutPage" as COP
+boundary "InvoicePanel" as IP
+control "BookingController" as Ctrl
+entity "Room" as Room
+entity "Room_receipt" as RR
+entity "Customer" as Cust
+entity "Promotion" as Promo
 
 NV -> Home : 1: click "Check-out"
 activate Home
@@ -469,6 +472,7 @@ deactivate Home
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam ParticipantBackgroundColor #7AD2FF
 skinparam ParticipantBorderColor black
 skinparam BoundaryBackgroundColor #7AD2FF
@@ -481,10 +485,10 @@ skinparam EntityBorderColor black
 title Huy phong – Tuần tự Thiết kế (React MVC)
 
 actor "Nhan vien le tan" as NV
-participant "ReceptionistHomePage\n<<Boundary>>" as Home
-participant "CancelBookingPage\n<<Boundary>>" as CBP
-participant "BookingController\n<<Control>>" as Ctrl
-participant "Room\n<<Entity>>" as Room
+boundary "ReceptionistHomePage" as Home
+boundary "CancelBookingPage" as CBP
+control "BookingController" as Ctrl
+entity "Room" as Room
 
 NV -> Home : 1: click "Quan ly dat phong"
 activate Home
