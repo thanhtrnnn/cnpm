@@ -90,72 +90,19 @@ UC20 có 3 UC con "Thêm NV", "Sửa NV", "Xóa NV" có cùng đặc điểm (CR
 left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
-skinparam maxMessageSize 200
 
 actor "Khách hàng" as KH
 actor "Nhân viên" as NV
 actor "Chủ DN\n(Admin)" as Admin
 
 package "Module: Tài khoản & Thành viên" {
-
   usecase "UC01 – Đăng nhập" as UC01
   usecase "UC02 – Đăng ký" as UC02
   usecase "UC03 – Đổi mật khẩu" as UC03
   usecase "UC04 – Quản lý TTCN" as UC04
   usecase "UC20 – Quản lý NV" as UC20
-
-  ' UC01 sub-UCs
-  usecase "Nhập thông tin\nđăng nhập" as UC01_1
-  usecase "Xác thực\ntài khoản" as UC01_2
-  usecase "Quên mật khẩu" as UC01_3
-
-  ' UC02 sub-UCs
-  usecase "Điền thông tin\nđăng ký" as UC02_1
-  usecase "Xác nhận OTP" as UC02_2
-
-  ' UC03 sub-UCs
-  usecase "Xác minh\nmật khẩu cũ" as UC03_1
-  usecase "Nhập thông tin\nđổi mật khẩu" as UC03_2
-
-  ' UC04 sub-UCs
-  usecase "Xem hồ sơ\ncá nhân" as UC04_1
-  usecase "Chỉnh sửa\nthông tin" as UC04_2
-
-  ' UC20 sub-UCs
-  usecase "Xem danh sách\nnhân viên" as UC20_1
-  usecase "Thêm nhân viên" as UC20_2
-  usecase "Sửa nhân viên" as UC20_3
-  usecase "Xóa nhân viên" as UC20_4
-
-  ' UC01 relationships
-  UC01 .> UC01_1 : <<include>>
-  UC01 .> UC01_2 : <<include>>
-  UC01_3 .> UC01 : <<extend>>
-
-  ' UC02 relationships
-  UC02 .> UC02_1 : <<include>>
-  UC02 .> UC02_2 : <<include>>
-
-  ' UC03 relationships
-  UC03 .> UC03_1 : <<include>>
-  UC03 .> UC03_2 : <<include>>
-
-  ' UC04 relationships
-  UC04 .> UC04_1 : <<include>>
-  UC04_2 .> UC04 : <<extend>>
-
-  ' UC20 relationships
-  UC20 .> UC20_1 : <<include>>
-  UC20_2 .> UC20 : <<extend>>
-  UC20_3 .> UC20 : <<extend>>
-  UC20_4 .> UC20 : <<extend>>
-
-  ' Inter-UC relationships
-  UC01 .> UC03 : <<extend>>
-  UC02 ..> UC01 : "Sau ĐK →\nĐăng nhập tự động"
 }
 
-' Actor assignments
 KH --> UC01
 KH --> UC02
 KH --> UC04
