@@ -38,8 +38,7 @@ FILES = [
     ('section-booking-iii.3.1.md', None),
     ('section-booking-iii.3.2.md', None),
     ('section-booking-iii.4.md', None),
-    (None, 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'),
-    ('section-booking-iv.md', None),
+    ('section-booking-iv.md', 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'),
 ]
 
 # Diagram files mapped to their placeholder comments in markdown
@@ -568,11 +567,10 @@ def main():
     for item in FILES:
         filename, phase_header = item
 
-        # Add phase header (H1 with blue underline)
-        if phase_header:
-            add_heading_with_blue_underline(doc, phase_header, 1)
-
         if filename is None:
+            # Standalone phase header (no file follows)
+            if phase_header:
+                add_heading_with_blue_underline(doc, phase_header, 1)
             continue
 
         md_file = os.path.join(DOCS_DIR, filename)
@@ -580,6 +578,14 @@ def main():
             print(f"SKIP: {filename}")
             continue
         print(f"Processing: {filename}")
+
+        # Skip phase header if file already contains it as first heading
+        if phase_header:
+            with open(md_file, 'r', encoding='utf-8') as f:
+                first_lines = f.read()[:500]
+            if phase_header not in first_lines:
+                add_heading_with_blue_underline(doc, phase_header, 1)
+
         process_file(doc, md_file)
         doc.add_paragraph('')
 
