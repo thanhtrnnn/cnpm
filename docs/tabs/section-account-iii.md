@@ -456,15 +456,61 @@ User "n" o-- "1" MembershipTier
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Đăng nhập – Tuần tự Thiết kế
 
-left to right direction
-skinparam linetype ortho
-
 actor "Khách hàng" as KH
-participant "LoginPage\n<<Boundary>>" as B1
-participant "AuthController\n<<Control>>" as C1
-entity "User\n<<Entity>>" as E1
+boundary LoginPage as B1
+control AuthController as C1
+entity User as E1
 
 KH -> B1 : 1: truy cập URL /login
 activate B1
@@ -530,17 +576,63 @@ end
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Đăng ký – Tuần tự Thiết kế
 
-left to right direction
-skinparam linetype ortho
-
 actor "Khách hàng" as KH
-participant "RegisterPage\n<<Boundary>>" as B1
-participant "OTPVerifyPage\n<<Boundary>>" as B2
-participant "AuthController\n<<Control>>" as C1
-entity "User\n<<Entity>>" as E1
-entity "OTP\n<<Entity>>" as E2
+boundary RegisterPage as B1
+boundary OTPVerifyPage as B2
+control AuthController as C1
+entity User as E1
+entity OTP as E2
 
 KH -> B1 : 1: click liên kết "Đăng ký" từ trang /login
 activate B1
@@ -644,15 +736,61 @@ end
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Đổi mật khẩu – Tuần tự Thiết kế
 
-left to right direction
-skinparam linetype ortho
-
 actor "Người dùng" as User
-participant "ChangePasswordPage\n<<Boundary>>" as B1
-participant "AuthController\n<<Control>>" as C1
-entity "User\n<<Entity>>" as E1
+boundary ChangePasswordPage as B1
+control AuthController as C1
+entity User as E1
 
 User -> B1 : 1: truy cập URL /security
 activate B1
@@ -724,15 +862,61 @@ end
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Quản lý TTCN – Tuần tự Thiết kế
 
-left to right direction
-skinparam linetype ortho
-
 actor "Khách hàng" as KH
-participant "ProfilePage\n<<Boundary>>" as B1
-participant "ProfileController\n<<Control>>" as C1
-entity "User\n<<Entity>>" as E1
+boundary ProfilePage as B1
+control ProfileController as C1
+entity User as E1
 
 KH -> B1 : 1: click avatar / tên tài khoản
 activate B1
@@ -809,15 +993,61 @@ end
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Quản lý nhân viên – Tuần tự Thiết kế
 
-left to right direction
-skinparam linetype ortho
-
 actor "Admin" as Admin
-participant "StaffManagePage\n<<Boundary>>" as B1
-participant "StaffController\n<<Control>>" as C1
-entity "Employee\n<<Entity>>" as E1
+boundary StaffManagePage as B1
+control StaffController as C1
+entity Employee as E1
 
 Admin -> B1 : 1: truy cập URL /admin/staff
 activate B1

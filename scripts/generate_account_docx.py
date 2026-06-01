@@ -37,6 +37,11 @@ FILES = [
 DIAGRAM_MAP = {
     # Phase I
     'account_uc_overview': 'output/diagrams/account_uc_overview.png',
+    'account_uc_detail_login': 'output/diagrams/account_uc_detail_login.png',
+    'account_uc_detail_register': 'output/diagrams/account_uc_detail_register.png',
+    'account_uc_detail_changepw': 'output/diagrams/account_uc_detail_changepw.png',
+    'account_uc_detail_profile': 'output/diagrams/account_uc_detail_profile.png',
+    'account_uc_detail_staff': 'output/diagrams/account_uc_detail_staff.png',
     # Phase II — Analysis
     'account_entity_analysis': 'output/diagrams/account_entity_analysis.png',
     'account_bce_login': 'output/diagrams/account_bce_login.png',

@@ -169,11 +169,60 @@ Admin nhấn [Thêm], nhập thông tin và nhấn [Lưu] → Hệ thống cần
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Đăng nhập – Tuần tự Phân tích
 
 actor "Khách hàng" as KH
-participant "LoginView\n<<Boundary>>" as B1
-entity "User\n<<Entity>>" as E1
+boundary LoginView as B1
+entity User as E1
 
 KH -> B1 : 1: truy cập màn hình Đăng nhập
 activate B1
@@ -229,13 +278,62 @@ end
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Đăng ký – Tuần tự Phân tích
 
 actor "Khách hàng" as KH
-participant "RegisterView\n<<Boundary>>" as B1
-participant "OTPVerifyView\n<<Boundary>>" as B2
-entity "User\n<<Entity>>" as E1
-entity "OTP\n<<Entity>>" as E2
+boundary RegisterView as B1
+boundary OTPVerifyView as B2
+entity User as E1
+entity OTP as E2
 
 KH -> B1 : 1: nhấn "Đăng ký"
 activate B1
@@ -305,11 +403,60 @@ deactivate B2
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Đổi mật khẩu – Tuần tự Phân tích
 
 actor "Người dùng" as ND
-participant "ChangePasswordView\n<<Boundary>>" as B1
-entity "User\n<<Entity>>" as E1
+boundary ChangePasswordView as B1
+entity User as E1
 
 ND -> B1 : 1: truy cập "Bảo mật"
 activate B1
@@ -361,11 +508,60 @@ deactivate B1
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Quản lý TTCN – Tuần tự Phân tích
 
 actor "Khách hàng" as KH
-participant "ProfileView\n<<Boundary>>" as B1
-entity "User\n<<Entity>>" as E1
+boundary ProfileView as B1
+entity User as E1
 
 KH -> B1 : 1: nhấn vào ảnh đại diện
 activate B1
@@ -413,11 +609,60 @@ deactivate B1
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+
+skinparam SequenceLifeLineBackgroundColor #7AD2FF
+skinparam SequenceLifeLineBorderColor #000000
+
+<style>
+sequenceDiagram {
+  Shadowing 0
+  RoundCorner 0
+  FontName "Arial"
+  FontSize 10
+  FontColor #000000
+
+  participant {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+    LineThickness 1
+  }
+
+  actor {
+    BackgroundColor transparent
+    LineColor #000000
+  }
+  boundary {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  control {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+  entity {
+    BackgroundColor #7AD2FF
+    LineColor #000000
+  }
+
+  lifeline {
+    LineColor #000000
+    LineStyle 5-5
+  }
+
+  arrow {
+    LineColor #000000
+    LineThickness 1
+    FontSize 10
+  }
+}
+</style>
 title Quản lý tài khoản nhân viên – Tuần tự Phân tích
 
 actor "Admin" as Admin
-participant "StaffManageView\n<<Boundary>>" as B1
-entity "Employee\n<<Entity>>" as E1
+boundary StaffManageView as B1
+entity Employee as E1
 
 Admin -> B1 : 1: truy cập "Quản lý nhân viên"
 activate B1

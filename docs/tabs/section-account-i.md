@@ -178,3 +178,142 @@ Admin --> UC20
 **UC04 – Quản lý thông tin cá nhân:** UC này cho phép Khách hàng xem hồ sơ cá nhân (họ tên, SĐT, email, hạng hội viên, điểm tích lũy) và cập nhật thông tin (họ tên, email). SĐT bị khóa, muốn đổi phải xác minh OTP.
 
 **UC20 – Quản lý tài khoản nhân viên:** UC này cho phép Chủ doanh nghiệp quản lý tài khoản nhân viên toàn hệ thống: xem danh sách, thêm mới, chỉnh sửa và xóa (chuyển trạng thái "Đã nghỉ"). Không thể xóa nhân viên đang xử lý order.
+
+### 6. Biểu đồ Use Case chi tiết
+
+#### UC01 – Đăng nhập
+
+<!-- PLACEHOLDER: account_uc_detail_login -->
+
+```plantuml
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+actor "Khách hàng" as KH
+actor "Nhân viên" as NV
+
+rectangle "UC01 – Đăng nhập" {
+  usecase "Đăng nhập" as UC01
+  usecase "Nhập thông tin\nđăng nhập" as UC01_1
+  usecase "Xác thực\ntài khoản" as UC01_2
+  usecase "Quên mật khẩu" as UC01_3
+}
+
+UC01 .> UC01_1 : <<include>>
+UC01 .> UC01_2 : <<include>>
+UC01_3 .> UC01 : <<extend>>
+
+KH --> UC01
+NV --> UC01
+@enduml
+```
+
+#### UC02 – Đăng ký
+
+<!-- PLACEHOLDER: account_uc_detail_register -->
+
+```plantuml
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+actor "Khách hàng" as KH
+
+rectangle "UC02 – Đăng ký" {
+  usecase "Đăng ký" as UC02
+  usecase "Điền thông tin\nđăng ký" as UC02_1
+  usecase "Nhập mã OTP" as UC02_2
+  usecase "Xác nhận OTP" as UC02_3
+}
+
+UC02 .> UC02_1 : <<include>>
+UC02 .> UC02_2 : <<include>>
+UC02 .> UC02_3 : <<include>>
+
+KH --> UC02
+@enduml
+```
+
+#### UC03 – Đổi mật khẩu
+
+<!-- PLACEHOLDER: account_uc_detail_changepw -->
+
+```plantuml
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+actor "Khách hàng" as KH
+actor "Nhân viên" as NV
+
+rectangle "UC03 – Đổi mật khẩu" {
+  usecase "Đổi mật khẩu" as UC03
+  usecase "Nhập thông tin\nđổi mật khẩu" as UC03_1
+}
+
+UC03 .> UC03_1 : <<include>>
+
+KH --> UC03
+NV --> UC03
+@enduml
+```
+
+#### UC04 – Quản lý TTCN
+
+<!-- PLACEHOLDER: account_uc_detail_profile -->
+
+```plantuml
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+actor "Khách hàng" as KH
+
+rectangle "UC04 – Quản lý TTCN" {
+  usecase "Quản lý TTCN" as UC04
+  usecase "Xem hồ sơ\ncá nhân" as UC04_1
+  usecase "Chỉnh sửa\nthông tin" as UC04_2
+  usecase "Xem hạng\nhội viên" as UC04_3
+}
+
+UC04 .> UC04_1 : <<include>>
+UC04_2 .> UC04 : <<extend>>
+UC04_3 .> UC04 : <<extend>>
+
+KH --> UC04
+@enduml
+```
+
+#### UC20 – Quản lý nhân viên
+
+<!-- PLACEHOLDER: account_uc_detail_staff -->
+
+```plantuml
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+
+actor "Chủ DN\n(Admin)" as Admin
+
+rectangle "UC20 – Quản lý NV" {
+  usecase "Quản lý NV" as UC20
+  usecase "Xem danh sách\nnhân viên" as UC20_1
+  usecase "Thêm nhân viên" as UC20_2
+  usecase "Sửa nhân viên" as UC20_3
+  usecase "Xóa nhân viên" as UC20_4
+}
+
+UC20 .> UC20_1 : <<include>>
+UC20_2 .> UC20 : <<extend>>
+UC20_3 .> UC20 : <<extend>>
+UC20_4 .> UC20 : <<extend>>
+
+Admin --> UC20
+@enduml
+```
