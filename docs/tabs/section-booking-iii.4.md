@@ -14,61 +14,61 @@ participant "SearchFreeRoomForm\n<<Boundary>>" as SearchRoom
 participant "BookingController\n<<Control>>" as Ctrl
 participant "SearchClientForm\n<<Boundary>>" as SearchClient
 participant "ConfirmBookingModal\n<<Boundary>>" as Confirm
-entity "Phong\n<<Entity>>" as Phong
-entity "KhachHang\n<<Entity>>" as KH
-entity "Phong\n<<Entity>>" as PhongDB
+entity "Room\n<<Entity>>" as Room
+entity "Customer\n<<Entity>>" as Cust
+entity "Room_receipt\n<<Entity>>" as RR
 
-NV -> Home: click "Đặt phòng"
+NV -> Home: click "Dat phong"
 activate Home
 Home -> SearchRoom: navigate()
 activate SearchRoom
-Home -> NV: hiển thị SearchFreeRoomForm
+Home -> NV: hien thi SearchFreeRoomForm
 
-NV -> SearchRoom: nhập startTime, endTime, branchId
-NV -> SearchRoom: click [Tìm phòng trống]
+NV -> SearchRoom: nhap startTime, endTime, branchId
+NV -> SearchRoom: click [Tim phong trong]
 SearchRoom -> Ctrl: searchFreeRoom(startTime, endTime, branchId)
 activate Ctrl
-Ctrl -> Phong: findByTimeAndBranch(startTime, endTime, branchId)
-activate Phong
-Phong --> Ctrl: List<Phong>
-deactivate Phong
-Ctrl --> SearchRoom: List<Phong>
+Ctrl -> Room: findByTimeAndBranch(startTime, endTime, branchId)
+activate Room
+Room --> Ctrl: List<Room>
+deactivate Room
+Ctrl --> SearchRoom: List<Room>
 deactivate Ctrl
-SearchRoom --> NV: hiển thị danh sách phòng trống
+SearchRoom --> NV: hien thi danh sach phong trong
 
-NV -> SearchRoom: chọn phòng (roomId)
+NV -> SearchRoom: chon phong (roomId)
 SearchRoom -> SearchClient: navigate(roomId)
 activate SearchClient
-SearchRoom -> NV: hiển thị SearchClientForm
+SearchRoom -> NV: hien thi SearchClientForm
 
-NV -> SearchClient: nhập keyword (tên/SĐT)
-NV -> SearchClient: click [Tìm kiếm]
+NV -> SearchClient: nhap keyword (ten/SDT)
+NV -> SearchClient: click [Tim kiem]
 SearchClient -> Ctrl: searchClient(keyword)
 activate Ctrl
-Ctrl -> KH: findByKeyword(keyword)
-activate KH
-KH --> Ctrl: List<KhachHang>
-deactivate KH
-Ctrl --> SearchClient: List<KhachHang>
+Ctrl -> Cust: findByKeyword(keyword)
+activate Cust
+Cust --> Ctrl: List<Customer>
+deactivate Cust
+Ctrl --> SearchClient: List<Customer>
 deactivate Ctrl
-SearchClient --> NV: hiển thị danh sách khách hàng
+SearchClient --> NV: hien thi danh sach khach hang
 
-NV -> SearchClient: chọn khách hàng (clientId)
+NV -> SearchClient: chon khach hang (clientId)
 SearchClient -> Confirm: navigate(roomId, clientId, timeRange)
 activate Confirm
-SearchClient -> NV: hiển thị ConfirmBookingModal
+SearchClient -> NV: hien thi ConfirmBookingModal
 
-NV -> Confirm: click [Xác nhận đặt phòng]
+NV -> Confirm: click [Xac nhan dat phong]
 Confirm -> Ctrl: createBooking(clientId, roomId, startTime, endTime, staffId)
 activate Ctrl
-Ctrl -> PhongDB: updateStatus(roomId, "Chờ nhận")
-activate PhongDB
-PhongDB --> Ctrl: Phong updated
-deactivate PhongDB
+Ctrl -> RR: updateStatus(roomId, "Cho nhan")
+activate RR
+RR --> Ctrl: Room_receipt updated
+deactivate RR
 Ctrl -> Ctrl: saveBooking()
 Ctrl --> Confirm: BookingResponse
 deactivate Ctrl
-Confirm --> NV: hiển thị "Đặt phòng thành công!"
+Confirm --> NV: hien thi "Dat phong thanh cong!"
 deactivate Confirm
 
 NV -> Confirm: click [OK]
@@ -87,13 +87,13 @@ deactivate SearchClient
 3. Nhân viên nhập thời gian bắt đầu, thời gian kết thúc và chọn chi nhánh.
 4. Nhân viên click nút [Tìm phòng trống].
 5. Phương thức searchFreeRoom(startTime: Date, endTime: Date, branchId: int) của lớp BookingController được gọi.
-6. BookingController truy vấn danh sách phòng trống từ Entity Phong.
+6. BookingController truy vấn danh sách phòng trống từ Entity Room.
 7. SearchFreeRoomForm hiển thị danh sách phòng trống cho nhân viên.
 8. Nhân viên chọn phòng mong muốn.
 9. SearchFreeRoomForm chuyển sang SearchClientForm với roomId đã chọn.
 10. Nhân viên nhập thông tin khách hàng (tên hoặc SĐT) và click [Tìm kiếm].
 11. Phương thức searchClient(keyword: String) của lớp BookingController được gọi.
-12. BookingController truy vấn danh sách khách hàng từ Entity KhachHang.
+12. BookingController truy vấn danh sách khách hàng từ Entity Customer.
 13. SearchClientForm hiển thị danh sách khách hàng khớp.
 14. Nhân viên chọn khách hàng tương ứng.
 15. SearchClientForm chuyển sang ConfirmBookingModal với đầy đủ thông tin.
@@ -121,29 +121,30 @@ deactivate SearchClient
 actor "Nhân viên lễ tân" as NV
 participant "CheckInPage\n<<Boundary>>" as CheckIn
 participant "BookingController\n<<Control>>" as Ctrl
-entity "Phong\n<<Entity>>" as Phong
+entity "Room\n<<Entity>>" as Room
+entity "Room_receipt\n<<Entity>>" as RR
 
 NV -> CheckIn: click "Check-in"
 activate CheckIn
 CheckIn -> Ctrl: getPendingBookings(branchId, today)
 activate Ctrl
-Ctrl -> Ctrl: findByStatus("Chờ nhận")
+Ctrl -> Ctrl: findByStatus("Cho nhan")
 Ctrl --> CheckIn: List<BookingResponse>
 deactivate Ctrl
-CheckIn --> NV: hiển thị danh sách booking chờ
+CheckIn --> NV: hien thi danh sach booking cho
 
-NV -> CheckIn: chọn booking cần check-in
-NV -> CheckIn: click [Xác nhận Check-in]
+NV -> CheckIn: chon booking can check-in
+NV -> CheckIn: click [Xac nhan Check-in]
 CheckIn -> Ctrl: checkIn(bookingId)
 activate Ctrl
-Ctrl -> Phong: updateStatus(roomId, "Đang hoạt động")
-activate Phong
-Phong --> Ctrl: Phong updated
-deactivate Phong
-Ctrl -> Phong: setStartTime(now)
+Ctrl -> Room: updateStatus(roomId, "Dang hoat dong")
+activate Room
+Room --> Ctrl: Room updated
+deactivate Room
+Ctrl -> RR: setStartTime(now)
 Ctrl --> CheckIn: BookingResponse
 deactivate Ctrl
-CheckIn --> NV: "Check-in thành công!"
+CheckIn --> NV: "Check-in thanh cong!"
 deactivate CheckIn
 @enduml
 ```

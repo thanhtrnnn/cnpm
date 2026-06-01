@@ -329,8 +329,8 @@ participant "ReceptionistHomeView\n<<Boundary>>" as Home
 participant "SearchFreeRoomView\n<<Boundary>>" as SearchRoom
 participant "SearchClientView\n<<Boundary>>" as SearchClient
 participant "ConfirmView\n<<Boundary>>" as Confirm
-entity "Phong\n<<Entity>>" as Phong
-entity "KhachHang\n<<Entity>>" as KH
+entity "Room\n<<Entity>>" as Room
+entity "Customer\n<<Entity>>" as Cust
 
 NV -> Home : 1: click "Dat phong"
 activate Home
@@ -338,32 +338,32 @@ Home -> SearchRoom : 2: hienThi()
 activate SearchRoom
 SearchRoom --> NV : 3: hien thi form tim phong trong
 NV -> SearchRoom : 4: nhap thoiGian check-in + click Tim
-SearchRoom -> Phong : 5: searchFreeRoom(thoiGianBD, thoiGianKT)
-activate Phong
-Phong --> SearchRoom : 6: danhSachPhong
-deactivate Phong
+SearchRoom -> Room : 5: searchFreeRoom(thoiGianBD, thoiGianKT)
+activate Room
+Room --> SearchRoom : 6: danhSachPhong
+deactivate Room
 SearchRoom --> NV : 7: hienThiKetQua(danhSachPhong)
-NV -> SearchRoom : 8: chonPhong(maPhong)
+NV -> SearchRoom : 8: chonPhong(roomID)
 deactivate SearchRoom
 SearchRoom -> SearchClient : 9: hienThi()
 activate SearchClient
 SearchClient --> NV : 10: hien thi form tim khach hang
-NV -> SearchClient : 11: nhap hoTen, sdt + click Tim
-SearchClient -> KH : 12: searchClient(keyword)
-activate KH
-KH --> SearchClient : 13: danhSachKH
-deactivate KH
+NV -> SearchClient : 11: nhap name, phone_number + click Tim
+SearchClient -> Cust : 12: searchClient(keyword)
+activate Cust
+Cust --> SearchClient : 13: danhSachKH
+deactivate Cust
 SearchClient --> NV : 14: hienThiKH(danhSachKH)
-NV -> SearchClient : 15: chonKH(maKH)
+NV -> SearchClient : 15: chonKH(customerID)
 deactivate SearchClient
-SearchClient -> Confirm : 16: hienThiXacNhan(maPhong, maKH)
+SearchClient -> Confirm : 16: hienThiXacNhan(roomID, customerID)
 activate Confirm
 Confirm --> NV : 17: hien thi thong tin xac nhan
 NV -> Confirm : 18: click Xac nhan
-Confirm -> Phong : 19: changeStatus("Cho nhan")
-activate Phong
-Phong --> Confirm : 20: thanhCong
-deactivate Phong
+Confirm -> Room : 19: changeStatus("Cho nhan")
+activate Room
+Room --> Confirm : 20: thanhCong
+deactivate Room
 Confirm --> NV : 21: hienThi("Dat phong thanh cong")
 NV -> Confirm : 22: click OK
 deactivate Confirm
@@ -380,9 +380,9 @@ deactivate Home
 4. Nhân viên hỏi khách hàng thời gian đặt phòng.
 5. Khách hàng trả lời.
 6. Nhân viên nhập thời gian đặt phòng mong muốn của khách vào ô thời gian và ấn nút tìm kiếm.
-7. Lớp SearchFreeRoomView gọi đến lớp Phong để xử lý thông tin.
-8. Lớp Phong gọi hàm `searchFreeRoom()`.
-9. Lớp Phong trả kết quả về cho SearchFreeRoomView.
+7. Lớp SearchFreeRoomView gọi đến lớp Room để xử lý thông tin.
+8. Lớp Room gọi hàm `searchFreeRoom()`.
+9. Lớp Room trả kết quả về cho SearchFreeRoomView.
 10. Lớp SearchFreeRoomView hiển thị danh sách các phòng trống cho nhân viên.
 11. Nhân viên ấn vào phòng trống.
 12. Lớp SearchFreeRoomView gọi sang lớp SearchClientView.
@@ -390,17 +390,17 @@ deactivate Home
 14. Nhân viên hỏi khách hàng về thông tin khách hàng.
 15. Khách hàng trả lời.
 16. Nhân viên nhập thông tin khách hàng và ấn nút tìm kiếm.
-17. Lớp SearchClientView gọi đến lớp KhachHang.
-18. Lớp KhachHang gọi hàm `searchClient()`.
-19. Lớp KhachHang trả kết quả về cho lớp SearchClientView.
+17. Lớp SearchClientView gọi đến lớp Customer.
+18. Lớp Customer gọi hàm `searchClient()`.
+19. Lớp Customer trả kết quả về cho lớp SearchClientView.
 20. Lớp SearchClientView hiển thị thông tin khách hàng tương ứng.
 21. Nhân viên chọn thông tin khách hàng tương ứng.
 22. Lớp SearchClientView gọi sang lớp ConfirmView.
 23. Lớp ConfirmView hiển thị.
 24. Nhân viên ấn xác nhận.
-25. Lớp ConfirmView gọi đến lớp Phong để xử lý.
-26. Lớp Phong gọi hàm `changeStatus("Cho nhan")`.
-27. Lớp Phong trả kết quả về lớp ConfirmView.
+25. Lớp ConfirmView gọi đến lớp Room để xử lý.
+26. Lớp Room gọi hàm `changeStatus("Cho nhan")`.
+27. Lớp Room trả kết quả về lớp ConfirmView.
 28. Lớp ConfirmView hiện thông báo.
 29. Nhân viên ấn OK.
 30. Lớp ConfirmView gọi lại về lớp ReceptionistHomeView.
@@ -422,7 +422,7 @@ actor "Nhan vien le tan" as NV
 participant "ReceptionistHomeView\n<<Boundary>>" as Home
 participant "SearchBookingView\n<<Boundary>>" as SearchBooking
 participant "ConfirmCancelView\n<<Boundary>>" as Confirm
-entity "Phong\n<<Entity>>" as Phong
+entity "Room\n<<Entity>>" as Room
 
 NV -> Home : 1: click "Quan ly dat phong"
 activate Home
@@ -430,21 +430,21 @@ Home -> SearchBooking : 2: hienThi()
 activate SearchBooking
 SearchBooking --> NV : 3: hien thi form tim booking
 NV -> SearchBooking : 4: nhap keyword + click Tim
-SearchBooking -> Phong : 5: searchBooking(keyword)
-activate Phong
-Phong --> SearchBooking : 6: danhSachBooking
-deactivate Phong
+SearchBooking -> Room : 5: searchBooking(keyword)
+activate Room
+Room --> SearchBooking : 6: danhSachBooking
+deactivate Room
 SearchBooking --> NV : 7: hienThiKetQua(danhSachBooking)
-NV -> SearchBooking : 8: chonBooking(maBooking)
+NV -> SearchBooking : 8: chonBooking(room_receipt_ID)
 deactivate SearchBooking
-SearchBooking -> Confirm : 9: hienThiXacNhan(maBooking)
+SearchBooking -> Confirm : 9: hienThiXacNhan(room_receipt_ID)
 activate Confirm
 Confirm --> NV : 10: hien thi thong tin xac nhan huy
 NV -> Confirm : 11: click Xac nhan huy
-Confirm -> Phong : 12: changeStatus("Trong")
-activate Phong
-Phong --> Confirm : 13: thanhCong
-deactivate Phong
+Confirm -> Room : 12: changeStatus("Trong")
+activate Room
+Room --> Confirm : 13: thanhCong
+deactivate Room
 Confirm --> NV : 14: hienThi("Huy dat phong thanh cong")
 NV -> Confirm : 15: click OK
 deactivate Confirm
@@ -460,17 +460,17 @@ deactivate Home
 3. Lớp SearchBookingView hiển thị.
 4. Nhân viên nhập thông tin tìm kiếm (tên khách, SĐT, hoặc mã booking).
 5. Nhân viên ấn nút tìm kiếm.
-6. Lớp SearchBookingView gọi đến lớp Phong.
-7. Lớp Phong gọi hàm `searchBooking(keyword)`.
-8. Lớp Phong trả kết quả về cho SearchBookingView.
+6. Lớp SearchBookingView gọi đến lớp Room.
+7. Lớp Room gọi hàm `searchBooking(keyword)`.
+8. Lớp Room trả kết quả về cho SearchBookingView.
 9. Lớp SearchBookingView hiển thị danh sách booking tìm thấy.
 10. Nhân viên chọn booking cần hủy.
 11. Lớp SearchBookingView gọi sang lớp ConfirmCancelView.
 12. Lớp ConfirmCancelView hiển thị xác nhận.
 13. Nhân viên ấn [Đồng ý].
-14. Lớp ConfirmCancelView gọi đến lớp Phong.
-15. Lớp Phong gọi hàm `changeStatus("Trong")`.
-16. Lớp Phong trả kết quả về.
+14. Lớp ConfirmCancelView gọi đến lớp Room.
+15. Lớp Room gọi hàm `changeStatus("Trong")`.
+16. Lớp Room trả kết quả về.
 17. Lớp ConfirmCancelView hiện thông báo thành công.
 18. Nhân viên ấn OK.
 19. Lớp ConfirmCancelView gọi về ReceptionistHomeView.
@@ -491,24 +491,24 @@ actor "Nhan vien le tan" as NV
 participant "ReceptionistHomeView\n<<Boundary>>" as Home
 participant "CheckInView\n<<Boundary>>" as CheckIn
 participant "ConfirmCheckInView\n<<Boundary>>" as Confirm
-entity "Phong\n<<Entity>>" as Phong
+entity "Room\n<<Entity>>" as Room
 
 NV -> Home : 1: click "Check-in"
 activate Home
 Home -> CheckIn : 2: hienThiDanhSach()
 activate CheckIn
 CheckIn --> NV : 3: hien thi danh sach booking "Cho nhan"
-NV -> CheckIn : 4: chonBooking(maBooking)
+NV -> CheckIn : 4: chonBooking(room_receipt_ID)
 deactivate CheckIn
-CheckIn -> Confirm : 5: hienThiXacNhan(maBooking)
+CheckIn -> Confirm : 5: hienThiXacNhan(room_receipt_ID)
 activate Confirm
 Confirm --> NV : 6: hien thi thong tin xac nhan
 NV -> Confirm : 7: click Xac nhan Check-in
-Confirm -> Phong : 8: changeStatus("Dang hoat dong")
-activate Phong
-Phong -> Phong : 9: startTimer()
-Phong --> Confirm : 10: thanhCong
-deactivate Phong
+Confirm -> Room : 8: changeStatus("Dang hoat dong")
+activate Room
+Room -> Room : 9: startTimer()
+Room --> Confirm : 10: thanhCong
+deactivate Room
 Confirm --> NV : 11: hienThi("Check-in thanh cong")
 NV -> Confirm : 12: click OK
 deactivate Confirm
@@ -526,16 +526,16 @@ deactivate Home
 5. Lớp CheckInView gọi sang lớp ConfirmCheckInView.
 6. Lớp ConfirmCheckInView hiển thị thông tin xác nhận.
 7. Nhân viên ấn [Xác nhận Check-in].
-8. Lớp ConfirmCheckInView gọi đến lớp Phong.
-9. Lớp Phong gọi hàm `changeStatus("Dang hoat dong")`.
-10. Lớp Phong gọi hàm `startTimer()`.
-11. Lớp Phong trả kết quả về.
+8. Lớp ConfirmCheckInView gọi đến lớp Room.
+9. Lớp Room gọi hàm `changeStatus("Dang hoat dong")`.
+10. Lớp Room gọi hàm `startTimer()`.
+11. Lớp Room trả kết quả về.
 12. Lớp ConfirmCheckInView hiện thông báo thành công.
 13. Nhân viên ấn OK.
 14. Lớp ConfirmCheckInView gọi về ReceptionistHomeView.
 
 **Ngoại lệ:**
-- Phòng đang dọn dẹp: Phong trả về lỗi. CheckInView hiển thị "Phòng đang dọn dẹp, vui lòng chờ."
+- Phòng đang dọn dẹp: Room trả về lỗi. CheckInView hiển thị "Phòng đang dọn dẹp, vui lòng chờ."
 - Khách hàng không đến: Nhân viên chọn hủy booking thay vì check-in.
 
 ---
@@ -551,49 +551,49 @@ participant "ReceptionistHomeView\n<<Boundary>>" as Home
 participant "CheckOutView\n<<Boundary>>" as CheckOut
 participant "InvoiceView\n<<Boundary>>" as Invoice
 participant "PaymentView\n<<Boundary>>" as Payment
-entity "Phong\n<<Entity>>" as Phong
-entity "HoaDon\n<<Entity>>" as HD
-entity "KhachHang\n<<Entity>>" as KH
-entity "KhuyenMai\n<<Entity>>" as KM
+entity "Room\n<<Entity>>" as Room
+entity "Room_receipt\n<<Entity>>" as RR
+entity "Customer\n<<Entity>>" as Cust
+entity "Promotion\n<<Entity>>" as Promo
 
 NV -> Home : 1: click "Check-out"
 activate Home
 Home -> CheckOut : 2: hienThiDanhSach()
 activate CheckOut
 CheckOut --> NV : 3: hien thi danh sach phong "Dang hoat dong"
-NV -> CheckOut : 4: chonPhong(maPhong)
+NV -> CheckOut : 4: chonPhong(roomID)
 deactivate CheckOut
-CheckOut -> Invoice : 5: tinhHoaDon(maPhong)
+CheckOut -> Invoice : 5: tinhHoaDon(roomID)
 activate Invoice
-Invoice -> HD : 6: tinhTien()
-activate HD
-HD --> Invoice : 7: hoaDon
-deactivate HD
-Invoice -> KH : 8: checkMember()
-activate KH
-KH --> Invoice : 9: thongTinKH + hangHoiVien
-deactivate KH
-Invoice -> KM : 10: applyVoucher(maHD)
-activate KM
-KM --> Invoice : 11: uuDai
-deactivate KM
-Invoice --> NV : 12: hienThiHoaDon(hoaDon, uuDai)
+Invoice -> RR : 6: tinhTien()
+activate RR
+RR --> Invoice : 7: room_receipt
+deactivate RR
+Invoice -> Cust : 8: checkMember()
+activate Cust
+Cust --> Invoice : 9: thongTinKH + memberRanking
+deactivate Cust
+Invoice -> Promo : 10: applyPromotion(room_receipt_ID)
+activate Promo
+Promo --> Invoice : 11: discount
+deactivate Promo
+Invoice --> NV : 12: hienThiHoaDon(room_receipt, discount)
 NV -> Invoice : 13: chonPhuongThuc("Tien mat") + click Xac nhan
 deactivate Invoice
-Invoice -> Payment : 14: xuLyThanhToan(maHD, phuongThuc)
+Invoice -> Payment : 14: xuLyThanhToan(room_receipt_ID, paymentMethod)
 activate Payment
-Payment -> HD : 15: updateStatus("Da thanh toan")
-activate HD
-HD --> Payment : 16: thanhCong
-deactivate HD
-Payment -> Phong : 17: changeStatus("Trong")
-activate Phong
-Phong --> Payment : 18: thanhCong
-deactivate Phong
-Payment -> KH : 19: addPoints(diem)
-activate KH
-KH --> Payment : 20: thanhCong
-deactivate KH
+Payment -> RR : 15: updateStatus("Da thanh toan")
+activate RR
+RR --> Payment : 16: thanhCong
+deactivate RR
+Payment -> Room : 17: changeStatus("Trong")
+activate Room
+Room --> Payment : 18: thanhCong
+deactivate Room
+Payment -> Cust : 19: addPoints(base_score)
+activate Cust
+Cust --> Payment : 20: thanhCong
+deactivate Cust
 Payment --> NV : 21: hienThi("Check-out thanh cong")
 NV -> Payment : 22: click In hoa don
 Payment --> NV : 23: hoaDonIn
@@ -609,17 +609,17 @@ deactivate Home
 3. Lớp CheckOutView hiển thị danh sách phòng đang hoạt động.
 4. Nhân viên chọn phòng cần check-out.
 5. Lớp CheckOutView gọi sang lớp InvoiceView.
-6. Lớp InvoiceView gọi hàm `tinhTien()` trên lớp HoaDon.
-7. Lớp HoaDon trả kết quả hóa đơn về InvoiceView.
-8. InvoiceView gọi lớp KhachHang `checkMember()` để lấy thông tin khách.
-9. InvoiceView gọi lớp KhuyenMai `applyVoucher()` để kiểm tra ưu đãi.
+6. Lớp InvoiceView gọi hàm `tinhTien()` trên lớp Room_receipt.
+7. Lớp Room_receipt trả kết quả hóa đơn về InvoiceView.
+8. InvoiceView gọi lớp Customer `checkMember()` để lấy thông tin khách.
+9. InvoiceView gọi lớp Promotion `applyPromotion()` để kiểm tra ưu đãi.
 10. InvoiceView hiển thị hóa đơn cho nhân viên.
 11. Nhân viên chọn phương thức thanh toán "Tiền mặt".
 12. Nhân viên ấn [Xác nhận thanh toán].
 13. InvoiceView gọi lớp Payment.
-14. Payment gọi hàm `updateStatus("Da thanh toan")` trên HoaDon.
-15. Payment gọi hàm `changeStatus("Trong")` trên Phong.
-16. Payment gọi hàm `addPoints(diem)` trên KhachHang.
+14. Payment gọi hàm `updateStatus("Da thanh toan")` trên Room_receipt.
+15. Payment gọi hàm `changeStatus("Trong")` trên Room.
+16. Payment gọi hàm `addPoints(base_score)` trên Customer.
 17. Payment hiện thông báo thành công.
 18. Nhân viên ấn [In hóa đơn].
 
