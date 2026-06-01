@@ -364,30 +364,24 @@ User "1" *-- "n" LoginSession
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-skinparam SequenceLifeLineBackgroundColor #7AD2FF
-skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 1
+skinparam sequenceLifeLineBorderColor #000000
+skinparam sequenceLifeLineBackgroundColor #7AD2FF
 skinparam sequenceParticipantBackgroundColor #7AD2FF
 skinparam sequenceParticipantBorderColor #000000
 skinparam sequenceParticipantFontColor #000000
 skinparam sequenceArrowColor #000000
 skinparam sequenceArrowFontColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
-  actor { BackgroundColor transparent LineColor #000000 }
-  boundary { BackgroundColor #7AD2FF LineColor #000000 }
-  control { BackgroundColor #7AD2FF LineColor #000000 }
-  entity { BackgroundColor #7AD2FF LineColor #000000 }
-  lifeline { LineColor #000000 LineStyle 5-5 }
-  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
-}
-</style>
+skinparam sequenceGroupBorderColor #000000
+skinparam sequenceGroupBackgroundColor #DDEEFF
+skinparam sequenceDividerBorderColor #000000
+skinparam sequenceDividerBackgroundColor #DDEEFF
+skinparam sequenceMessageFontColor #000000
+skinparam sequenceMessageFontSize 10
+skinparam sequenceActorBorderColor #000000
+skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorFontColor #000000
 title Đăng nhập – Tuần tự Phân tích (5 bước)
 
 actor "Người dùng" as Actor
@@ -423,30 +417,24 @@ deactivate B1
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-skinparam SequenceLifeLineBackgroundColor #7AD2FF
-skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 1
+skinparam sequenceLifeLineBorderColor #000000
+skinparam sequenceLifeLineBackgroundColor #7AD2FF
 skinparam sequenceParticipantBackgroundColor #7AD2FF
 skinparam sequenceParticipantBorderColor #000000
 skinparam sequenceParticipantFontColor #000000
 skinparam sequenceArrowColor #000000
 skinparam sequenceArrowFontColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
-  actor { BackgroundColor transparent LineColor #000000 }
-  boundary { BackgroundColor #7AD2FF LineColor #000000 }
-  control { BackgroundColor #7AD2FF LineColor #000000 }
-  entity { BackgroundColor #7AD2FF LineColor #000000 }
-  lifeline { LineColor #000000 LineStyle 5-5 }
-  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
-}
-</style>
+skinparam sequenceGroupBorderColor #000000
+skinparam sequenceGroupBackgroundColor #DDEEFF
+skinparam sequenceDividerBorderColor #000000
+skinparam sequenceDividerBackgroundColor #DDEEFF
+skinparam sequenceMessageFontColor #000000
+skinparam sequenceMessageFontSize 10
+skinparam sequenceActorBorderColor #000000
+skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorFontColor #000000
 title Đăng ký – Tuần tự Phân tích (8 bước)
 
 actor "Khách hàng" as Actor
@@ -504,30 +492,24 @@ deactivate B1
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-skinparam SequenceLifeLineBackgroundColor #7AD2FF
-skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 1
+skinparam sequenceLifeLineBorderColor #000000
+skinparam sequenceLifeLineBackgroundColor #7AD2FF
 skinparam sequenceParticipantBackgroundColor #7AD2FF
 skinparam sequenceParticipantBorderColor #000000
 skinparam sequenceParticipantFontColor #000000
 skinparam sequenceArrowColor #000000
 skinparam sequenceArrowFontColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
-  actor { BackgroundColor transparent LineColor #000000 }
-  boundary { BackgroundColor #7AD2FF LineColor #000000 }
-  control { BackgroundColor #7AD2FF LineColor #000000 }
-  entity { BackgroundColor #7AD2FF LineColor #000000 }
-  lifeline { LineColor #000000 LineStyle 5-5 }
-  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
-}
-</style>
+skinparam sequenceGroupBorderColor #000000
+skinparam sequenceGroupBackgroundColor #DDEEFF
+skinparam sequenceDividerBorderColor #000000
+skinparam sequenceDividerBackgroundColor #DDEEFF
+skinparam sequenceMessageFontColor #000000
+skinparam sequenceMessageFontSize 10
+skinparam sequenceActorBorderColor #000000
+skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorFontColor #000000
 title Đổi mật khẩu – Tuần tự Phân tích (5 bước)
 
 actor "Người dùng" as Actor
@@ -563,30 +545,24 @@ deactivate B1
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-skinparam SequenceLifeLineBackgroundColor #7AD2FF
-skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 1
+skinparam sequenceLifeLineBorderColor #000000
+skinparam sequenceLifeLineBackgroundColor #7AD2FF
 skinparam sequenceParticipantBackgroundColor #7AD2FF
 skinparam sequenceParticipantBorderColor #000000
 skinparam sequenceParticipantFontColor #000000
 skinparam sequenceArrowColor #000000
 skinparam sequenceArrowFontColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
-  actor { BackgroundColor transparent LineColor #000000 }
-  boundary { BackgroundColor #7AD2FF LineColor #000000 }
-  control { BackgroundColor #7AD2FF LineColor #000000 }
-  entity { BackgroundColor #7AD2FF LineColor #000000 }
-  lifeline { LineColor #000000 LineStyle 5-5 }
-  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
-}
-</style>
+skinparam sequenceGroupBorderColor #000000
+skinparam sequenceGroupBackgroundColor #DDEEFF
+skinparam sequenceDividerBorderColor #000000
+skinparam sequenceDividerBackgroundColor #DDEEFF
+skinparam sequenceMessageFontColor #000000
+skinparam sequenceMessageFontSize 10
+skinparam sequenceActorBorderColor #000000
+skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorFontColor #000000
 title Quản lý TTCN – Tuần tự Phân tích (7 bước)
 
 actor "Khách hàng" as Actor
@@ -630,30 +606,24 @@ deactivate B1
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-skinparam SequenceLifeLineBackgroundColor #7AD2FF
-skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 1
+skinparam sequenceLifeLineBorderColor #000000
+skinparam sequenceLifeLineBackgroundColor #7AD2FF
 skinparam sequenceParticipantBackgroundColor #7AD2FF
 skinparam sequenceParticipantBorderColor #000000
 skinparam sequenceParticipantFontColor #000000
 skinparam sequenceArrowColor #000000
 skinparam sequenceArrowFontColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
-  actor { BackgroundColor transparent LineColor #000000 }
-  boundary { BackgroundColor #7AD2FF LineColor #000000 }
-  control { BackgroundColor #7AD2FF LineColor #000000 }
-  entity { BackgroundColor #7AD2FF LineColor #000000 }
-  lifeline { LineColor #000000 LineStyle 5-5 }
-  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
-}
-</style>
+skinparam sequenceGroupBorderColor #000000
+skinparam sequenceGroupBackgroundColor #DDEEFF
+skinparam sequenceDividerBorderColor #000000
+skinparam sequenceDividerBackgroundColor #DDEEFF
+skinparam sequenceMessageFontColor #000000
+skinparam sequenceMessageFontSize 10
+skinparam sequenceActorBorderColor #000000
+skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorFontColor #000000
 title Quản lý nhân viên – Tuần tự Phân tích (14 bước)
 
 actor "Admin" as Actor
