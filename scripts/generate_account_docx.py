@@ -23,15 +23,12 @@ DIAGRAM_DIR = os.path.join(SCRIPT_DIR, '..', 'output', 'diagrams')
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', 'output')
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'account_module.docx')
 
+# Chỉ xuất Pha III + IV (Pha I/II đã có trên Google Docs). Path theo cấu trúc docs/tabs/account/.
 FILES = [
-    (None, 'I. PHA XÁC ĐỊNH YÊU CẦU'),
-    ('section-account-i.md', None),
-    (None, 'II. PHA PHÂN TÍCH'),
-    ('section-account-ii.md', None),
     (None, 'III. PHA THIẾT KẾ'),
-    ('section-account-iii.md', None),
+    ('account/iii-design.md', None),
     (None, 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'),
-    ('section-account-iv.md', None),
+    ('account/iv-test.md', None),
 ]
 
 DIAGRAM_MAP = {
@@ -411,6 +408,11 @@ def process_file(doc, md_file):
                 if key in stripped:
                     add_diagram_image(doc, path)
                     break
+            i += 1
+            continue
+
+        # Bất kỳ HTML comment nào khác (vd: <!-- File: ... -->) — bỏ qua, không in ra
+        if stripped.startswith('<!--'):
             i += 1
             continue
 

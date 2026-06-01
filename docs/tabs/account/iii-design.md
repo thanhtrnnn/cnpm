@@ -35,6 +35,65 @@
 <!-- PLACEHOLDER: account_entity_class -->
 <!-- File: output/diagrams/account_entity_class.png -->
 
+```plantuml
+@startuml
+title Biểu đồ lớp thực thể – Module Account
+
+left to right direction
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+
+class User {
+  -id : int
+  -hoTen : String
+  -soDienThoai : String
+  -email : String
+  -matKhau : String
+  -ngayTao : Date
+  -diemTichLuy : int
+  -trangThai : String
+  -membershipTier : MembershipTier
+}
+
+class MembershipTier {
+  -id : int
+  -tenHang : String
+  -diemToiThieu : int
+  -moTa : String
+  -heSoUuDai : double
+}
+
+class OTP {
+  -id : int
+  -maOTP : String
+  -loai : String
+  -thoiHanHetHan : Date
+  -daXacMinh : boolean
+  -user : User
+}
+
+class LoginSession {
+  -id : int
+  -tokenPhien : String
+  -thoiGianDangNhap : DateTime
+  -thoiGianHetHan : DateTime
+  -thietBi : String
+  -user : User
+}
+
+class Employee {
+  -id : int
+  -hoTen : String
+  -vaiTro : String
+  -trangThai : String
+}
+
+User "n" o-- "1" MembershipTier
+User "1" *-- "n" OTP
+User "1" *-- "n" LoginSession
+@enduml
+```
+
 ### 2. Thiết kế CSDL
 
 #### 2.1. Bước 1 – Tạo bảng
@@ -72,6 +131,68 @@
 
 <!-- PLACEHOLDER: account_erd -->
 <!-- File: output/diagrams/account_erd.png -->
+
+```plantuml
+@startuml
+title ERD – Module Account
+
+skinparam linetype ortho
+
+entity tblMembershipTier {
+  + ma : integer(10) <<PK>>
+  --
+  tenHang : varchar(255)
+  diemToiThieu : integer(10)
+  moTa : varchar(255)
+  heSoUuDai : double(10)
+}
+
+entity tblUser {
+  + ma : integer(10) <<PK>>
+  --
+  hoTen : varchar(255)
+  soDienThoai : varchar(255)
+  email : varchar(255)
+  matKhau : varchar(255)
+  ngayTao : date
+  diemTichLuy : integer(10)
+  trangThai : varchar(255)
+  # tblMembershipTierMa : integer(10) <<FK>>
+}
+
+entity tblOTP {
+  + ma : integer(10) <<PK>>
+  --
+  maOTP : varchar(255)
+  loai : varchar(255)
+  thoiHanHetHan : date
+  daXacMinh : integer(10)
+  # tblUserMa : integer(10) <<FK>>
+}
+
+entity tblLoginSession {
+  + ma : integer(10) <<PK>>
+  --
+  tokenPhien : varchar(255)
+  thoiGianDangNhap : datetime
+  thoiGianHetHan : datetime
+  thietBi : varchar(255)
+  # tblUserMa : integer(10) <<FK>>
+}
+
+entity tblEmployee {
+  + ma : integer(10) <<PK>>
+  --
+  hoTen : varchar(255)
+  vaiTro : varchar(255)
+  trangThai : varchar(255)
+}
+
+tblUser }o--|| tblMembershipTier
+tblUser ||--o{ tblOTP
+tblUser ||--o{ tblLoginSession
+@enduml
+```
 
 ### 3. Wireframe
 
