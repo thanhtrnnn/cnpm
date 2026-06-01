@@ -358,7 +358,7 @@ generateDdl("ERD - QuanLyKhachHang")
 
 **Thứ tự participant (BẮT BUỘC):**
 ```
-Actor → FrmX (Boundary) → [CtrlX (Control)] → XDao (DAO) → X (Entity)
+Actor → [TênView] (Boundary) → [EntityController] (Control) → [Entity] (Entity)
 ```
 
 **Alias lifeline (BẮT BUỘC):**
@@ -369,8 +369,10 @@ Mỗi lifeline PHẢI có alias ngắn gọn để layout đọc được:
 | Actor | `Actor` | `Actor` |
 | Boundary | `B` + index | `B0`, `B1` |
 | Control | `C` + index | `C0` |
-| DAO | `DAO` + index | `DAO1` |
 | Entity | `E` + index | `E1` |
+
+**Lifeline type (BẮT BUỘC):**
+Dùng `boundary`, `control`, `entity` khi khai báo lifeline (không dùng `participant`) để hiển thị ký hiệu tròn gạch.
 
 Dùng `addLifeline` với tham số `alias`. Alias xuất hiện làm label của lifeline.
 
@@ -394,13 +396,14 @@ Ví dụ: 1, 2, 3, 4, 5 (trong alt: 5.1, 5.2), 6
 
 **Ngôn ngữ theo pha:**
 - **Phân tích:** Thông điệp = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản: `"nhập ngày + nhấn Tìm"`, `"searchFreeRoom()"`, `"hiển thị kết quả"`
-- **Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`
+- **Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `btnSearchRoomClick()`
+- **Tên method PHẢI tiếng Anh trong MỌI pha** (checkLogin, searchProduct, addOrder...). KHÔNG dùng tên tiếng Việt.
 
 **Diễn giải tuần tự (BẮT BUỘC alongside diagram):**
 
 Bên cạnh biểu đồ sequence diagram, PHẢI viết thêm block diễn giải tuần tự dưới dạng danh sách đánh số:
 - **Phân tích → Kịch bản phiên bản 2:** Danh sách bước bằng tiếng Việt tự nhiên, mô tả Actor ↔ Boundary ↔ Entity. Xem `cnpm/references/ii.4_tuantu_phantich.md` để biết format chi tiết.
-- **Thiết kế → Kịch bản phiên bản 3:** Danh sách bước có tên hàm Java + kiểu dữ liệu, mô tả Actor ↔ Boundary ↔ DAO ↔ Entity. Xem `cnpm/references/iii.4_tuantu_thietke.md` để biết format chi tiết.
+- **Thiết kế → Kịch bản phiên bản 3:** Danh sách bước có tên hàm Java + kiểu dữ liệu, mô tả Actor ↔ Boundary ↔ Control ↔ Entity. Xem `cnpm/references/iii.4_tuantu_thietke.md` để biết format chi tiết.
 
 Block diễn giải giúp người đọc hiểu luồng xử lý mà không cần đọc biểu đồ UML. Luôn đặt ngay sau biểu đồ, trong callout `📖` màu green.
 
@@ -419,26 +422,25 @@ Block diễn giải giúp người đọc hiểu luồng xử lý mà không c�
 - `opt` = bước tùy chọn
 - `loop` = lặp lại
 
-**Ví dụ: Sequence Diagram "Mượn sách" (Phân tích)**
+**Ví dụ: Sequence Diagram "Tạo order" (Phân tích)**
 ```
-createSequenceDiagram("SD - MuonSach_PhanTich")
-addLifeline("SD - MuonSach_PhanTich", "Actor", "ThuThu", "actor", "Actor")
-addLifeline("SD - MuonSach_PhanTich", "FrmMuonSach", "FrmMuonSach", "boundary", "B0")
-addLifeline("SD - MuonSach_PhanTich", "BanDocDAO", "BanDocDAO", "control", "DAO1")
-addLifeline("SD - MuonSach_PhanTich", "BanDoc", "BanDoc", "entity", "E1")
-addActivation("SD - MuonSach_PhanTich", "FrmMuonSach")
-addMessage("SD - MuonSach_PhanTich", "Actor", "FrmMuonSach", "nhập mã bạn đọc + nhấn Tìm", "1", "sync")
-addMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "BanDocDAO", "searchReader()", "2", "sync")
-addReturnMessage("SD - MuonSach_PhanTich", "BanDocDAO", "FrmMuonSach", "Reader", "3")
-addReturnMessage("SD - MuonSach_PhanTich", "FrmMuonSach", "Actor", "hiển thị thông tin bạn đọc", "4")
-addCombinedFragment("SD - MuonSach_PhanTich", "alt", "searchReader() trả về rỗng", "FrmMuonSach,Actor")
-autoLayoutDiagram("SD - MuonSach_PhanTich")
-```
-addMessage("SD - TimKH", "GDTimKHFrm", "KhachHangDAO", "searchClient()", "2", "sync")
-addReturnMessage("SD - TimKH", "KhachHangDAO", "GDTimKHFrm", "List<Client>", "3")
-addReturnMessage("SD - TimKH", "GDTimKHFrm", "Actor", "hiển thị danh sách", "4")
-addCombinedFragment("SD - TimKH", "alt", "searchClient() trả về rỗng", "GDTimKHFrm,Actor")
-autoLayoutDiagram("SD - TimKH")
+createSequenceDiagram("SD - TaoOrder_PhanTich")
+addLifeline("SD - TaoOrder_PhanTich", "Actor", "NhanVien", "actor", "Actor")
+addLifeline("SD - TaoOrder_PhanTich", "LoginView", "LoginView", "boundary", "B0")
+addLifeline("SD - TaoOrder_PhanTich", "SearchRoomView", "SearchRoomView", "boundary", "B1")
+addLifeline("SD - TaoOrder_PhanTich", "Employee", "Employee", "entity", "E1")
+addLifeline("SD - TaoOrder_PhanTich", "Room", "Room", "entity", "E2")
+addActivation("SD - TaoOrder_PhanTich", "LoginView")
+addMessage("SD - TaoOrder_PhanTich", "Actor", "LoginView", "nhập username/password + click Login", "1", "sync")
+addMessage("SD - TaoOrder_PhanTich", "LoginView", "Employee", "checkLogin()", "2", "sync")
+addReturnMessage("SD - TaoOrder_PhanTich", "Employee", "LoginView", "true", "3")
+addMessage("SD - TaoOrder_PhanTich", "LoginView", "SearchRoomView", "mở giao diện tìm phòng", "4", "sync")
+addMessage("SD - TaoOrder_PhanTich", "Actor", "SearchRoomView", "nhập tên phòng + click Tìm", "5", "sync")
+addMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Room", "searchActiveRoom()", "6", "sync")
+addReturnMessage("SD - TaoOrder_PhanTich", "Room", "SearchRoomView", "List<Room>", "7")
+addReturnMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Actor", "hiển thị danh sách phòng", "8")
+addCombinedFragment("SD - TaoOrder_PhanTich", "alt", "searchActiveRoom() trả về rỗng", "SearchRoomView,Actor")
+autoLayoutDiagram("SD - TaoOrder_PhanTich")
 ```
 
 ---
