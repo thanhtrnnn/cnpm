@@ -183,62 +183,62 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 
 **Quy trình xác định chữ ký hàm Controller:**
 
-a) Đăng nhập => `checkLogin()`
+a) Đăng nhập => `checkLogin()``
 - Input: username, password
 - Output: boolean
 - Ứng viên tham số vào:
-  - `checkLogin(username: String, password: String)` → chọn (gom nhóm tham số)
+  - `checkLogin()`` → chọn (gom nhóm tham số)
 - Ứng viên tham số ra:
-  - `checkLogin(): void` → loại (cần trả về kết quả xác thực)
-  - `checkLogin(): boolean` → chọn (trả về true/false xác thực thành công)
+  - `checkLogin()`: void` → loại (cần trả về kết quả xác thực)
+  - `checkLogin()`: boolean` → chọn (trả về true/false xác thực thành công)
 
-b) Đăng ký => `register()`
+b) Đăng ký => `register()``
 - Input: hoTen, sdt, email, matKhau
 - Output: User (vừa tạo)
 - Ứng viên tham số vào:
-  - `register(hoTen: String, sdt: String, email: String, matKhau: String)` → chọn
+  - `register()`` → chọn
 - Ứng viên tham số ra:
-  - `register(): User` → chọn
+  - `register()`: User` → chọn
 
-c) Xác minh OTP => `verifyOTP()`
+c) Xác minh OTP => `verifyOTP()``
 - Input: otp
 - Output: boolean
 - Ứng viên tham số vào:
-  - `verifyOTP(otp: String)` → chọn
+  - `verifyOTP()`` → chọn
 - Ứng viên tham số ra:
-  - `verifyOTP(): boolean` → chọn (cần biết đúng/sai)
+  - `verifyOTP()`: boolean` → chọn (cần biết đúng/sai)
 
-d) Đổi mật khẩu => `changePassword()`
+d) Đổi mật khẩu => `changePassword()``
 - Input: mkHienTai, mkMoi
 - Output: boolean
 - Ứng viên tham số vào:
-  - `changePassword(mkHienTai: String, mkMoi: String)` → chọn
+  - `changePassword()`` → chọn
 - Ứng viên tham số ra:
-  - `changePassword(): boolean` → chọn
+  - `changePassword()`: boolean` → chọn
 
-e) Xem hồ sơ => `getProfile()`
+e) Xem hồ sơ => `getProfile()``
 - Input: userId
 - Output: User
 - Ứng viên tham số vào:
-  - `getProfile(userId: int)` → chọn
+  - `getProfile()`` → chọn
 - Ứng viên tham số ra:
-  - `getProfile(): User` → chọn
+  - `getProfile()`: User` → chọn
 
-f) Cập nhật hồ sơ => `updateProfile()`
+f) Cập nhật hồ sơ => `updateProfile()``
 - Input: userId, hoTen, email
 - Output: User
 - Ứng viên tham số vào:
-  - `updateProfile(userId: int, hoTen: String, email: String)` → chọn
+  - `updateProfile()`` → chọn
 - Ứng viên tham số ra:
-  - `updateProfile(): User` → chọn
+  - `updateProfile()`: User` → chọn
 
-g) Xem danh sách NV => `getAllStaff()`
+g) Xem danh sách NV => `getAllStaff()``
 - Input: (không có)
 - Output: List\<Employee\>
 - Ứng viên tham số vào:
-  - `getAllStaff()` → chọn
+  - `getAllStaff()`` → chọn
 - Ứng viên tham số ra:
-  - `getAllStaff(): List<Employee>` → chọn
+  - `getAllStaff()`: List<Employee>` → chọn
 
 h) Tìm kiếm NV => `searchStaff()`
 - Input: keyword
@@ -264,21 +264,21 @@ j) Thêm NV => `saveStaff()`
 - Ứng viên tham số ra:
   - `saveStaff(): boolean` → chọn (cần biết thành công/thất bại)
 
-k) Sửa NV => `updateStaff()`
+k) Sửa NV => `updateStaff()``
 - Input: employee
 - Output: boolean
 - Ứng viên tham số vào:
-  - `updateStaff(employee: Employee)` → chọn
+  - `updateStaff()`` → chọn
 - Ứng viên tham số ra:
-  - `updateStaff(): boolean` → chọn
+  - `updateStaff()`: boolean` → chọn
 
-l) Xóa NV => `deleteStaff()`
+l) Xóa NV => `deleteStaff()``
 - Input: id
 - Output: boolean
 - Ứng viên tham số vào:
-  - `deleteStaff(id: int)` → chọn
+  - `deleteStaff()`` → chọn
 - Ứng viên tham số ra:
-  - `deleteStaff(): boolean` → chọn (cần biết thành công/thất bại)
+  - `deleteStaff()`: boolean` → chọn (cần biết thành công/thất bại)
 
 ```plantuml
 @startuml
@@ -506,21 +506,21 @@ end
 3. Khách hàng nhập SĐT và Mật khẩu.
 4. Khách hàng click nút [Đăng nhập].
 5. Phương thức `btnLoginClick()` của lớp LoginPage được gọi.
-6. Phương thức `btnLoginClick()` gọi phương thức `checkLogin()` của lớp AuthController.
-7. Phương thức `checkLogin()` gọi phương thức `findBySDT()` của lớp User.
-8. Lớp User trả về đối tượng User cho phương thức `checkLogin()`.
-9. Phương thức `checkLogin()` gọi `checkPassword()` để so sánh mật khẩu.
-10. Phương thức `checkLogin()` trả về `true` cho phương thức `btnLoginClick()`.
+6. Phương thức `btnLoginClick()` gọi phương thức `checkLogin()`` của lớp AuthController.
+7. Phương thức `checkLogin()`` gọi phương thức `findBySDT()`` của lớp User.
+8. Lớp User trả về đối tượng User cho phương thức `checkLogin()``.
+9. Phương thức `checkLogin()`` gọi `checkPassword()`` để so sánh mật khẩu.
+10. Phương thức `checkLogin()`` trả về `true` cho phương thức `btnLoginClick()`.
 11. Phương thức `btnLoginClick()` gọi `redirect /home`, hiển thị showMessage("Đăng nhập thành công").
 
 **Ngoại lệ: tài khoản không tồn tại**
-- Phương thức `findBySDT()` trả về `null`.
-- Phương thức `checkLogin()` trả về `false` cho `btnLoginClick()`.
+- Phương thức `findBySDT()`` trả về `null`.
+- Phương thức `checkLogin()`` trả về `false` cho `btnLoginClick()`.
 - Lớp LoginPage hiển thị showMessage("Tài khoản không tồn tại. Vui lòng kiểm tra lại.")
 
 **Ngoại lệ: mật khẩu sai**
-- Phương thức `checkPassword()` trả về `false`.
-- Phương thức `checkLogin()` trả về `false` cho `btnLoginClick()`.
+- Phương thức `checkPassword()`` trả về `false`.
+- Phương thức `checkLogin()`` trả về `false` cho `btnLoginClick()`.
 - Lớp LoginPage hiển thị showMessage("Mật khẩu không chính xác. Còn [N] lần thử.")
 
 ### Đăng ký
@@ -608,33 +608,33 @@ end
 3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu.
 4. Khách hàng click nút [Tiếp tục].
 5. Phương thức `btnTiepTucClick()` của lớp RegisterPage được gọi.
-6. Phương thức `btnTiepTucClick()` gọi phương thức `register()` của lớp AuthController.
-7. Phương thức `register()` gọi phương thức `existsBySDT()` của lớp User.
-8. Lớp User trả về `false` cho phương thức `register()`.
-9. Phương thức `register()` gọi phương thức `existsByEmail()` của lớp User.
-10. Lớp User trả về `false` cho phương thức `register()`.
-11. Phương thức `register()` gọi `save()` để tạo tài khoản mới.
-12. Phương thức `register()` gọi `sendOTP()` của lớp OTP.
+6. Phương thức `btnTiepTucClick()` gọi phương thức `register()`` của lớp AuthController.
+7. Phương thức `register()`` gọi phương thức `existsBySDT()`` của lớp User.
+8. Lớp User trả về `false` cho phương thức `register()``.
+9. Phương thức `register()`` gọi phương thức `existsByEmail()`` của lớp User.
+10. Lớp User trả về `false` cho phương thức `register()``.
+11. Phương thức `register()`` gọi `save()`` để tạo tài khoản mới.
+12. Phương thức `register()`` gọi `sendOTP()`` của lớp OTP.
 13. Lớp OTP gửi mã OTP đến SĐT.
-14. Phương thức `register()` trả về đối tượng User cho phương thức `btnTiepTucClick()`.
+14. Phương thức `register()`` trả về đối tượng User cho phương thức `btnTiepTucClick()`.
 15. RegisterPage hiển thị trang OTPVerifyPage.
 16. Khách hàng nhập mã OTP.
 17. Khách hàng click nút [Xác nhận].
 18. Phương thức `btnXacNhanClick()` của lớp OTPVerifyPage được gọi.
-19. Phương thức `btnXacNhanClick()` gọi phương thức `verifyOTP()` của lớp AuthController.
-20. Phương thức `verifyOTP()` gọi phương thức `verify()` của lớp OTP.
-21. Lớp OTP trả về `true` cho phương thức `verifyOTP()`.
-22. Phương thức `verifyOTP()` trả về `true` cho phương thức `btnXacNhanClick()`.
+19. Phương thức `btnXacNhanClick()` gọi phương thức `verifyOTP()`` của lớp AuthController.
+20. Phương thức `verifyOTP()`` gọi phương thức `verify()` của lớp OTP.
+21. Lớp OTP trả về `true` cho phương thức `verifyOTP()``.
+22. Phương thức `verifyOTP()`` trả về `true` cho phương thức `btnXacNhanClick()`.
 23. Phương thức `btnXacNhanClick()` gọi showMessage("Đăng ký thành công!")
 
 **Ngoại lệ: SĐT đã tồn tại**
-- Phương thức `existsBySDT()` trả về `true`.
-- Phương thức `register()` trả về lỗi cho `btnTiepTucClick()`.
+- Phương thức `existsBySDT()`` trả về `true`.
+- Phương thức `register()`` trả về lỗi cho `btnTiepTucClick()`.
 - Lớp RegisterPage hiển thị showMessage("SĐT này đã được sử dụng.")
 
 **Ngoại lệ: OTP sai**
 - Phương thức `verify()` trả về `false`.
-- Phương thức `verifyOTP()` trả về `false` cho `btnXacNhanClick()`.
+- Phương thức `verifyOTP()`` trả về `false` cho `btnXacNhanClick()`.
 - Lớp OTPVerifyPage hiển thị showMessage("Mã OTP không đúng. Vui lòng thử lại.")
 
 ### Đổi mật khẩu
@@ -696,25 +696,25 @@ end
 3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới.
 4. Người dùng click nút [Lưu thay đổi].
 5. Phương thức `btnLuuClick()` của lớp ChangePasswordPage được gọi.
-6. Phương thức `btnLuuClick()` gọi phương thức `changePassword()` của lớp AuthController.
-7. Phương thức `changePassword()` gọi phương thức `findById()` của lớp User.
-8. Lớp User trả về đối tượng User cho phương thức `changePassword()`.
-9. Phương thức `changePassword()` gọi `checkPassword()` để xác minh Mật khẩu hiện tại.
-10. Phương thức `changePassword()` gọi `hashPassword()` để mã hóa Mật khẩu mới.
-11. Phương thức `changePassword()` gọi `updatePassword()` của lớp User.
-12. Lớp User trả về `true` cho phương thức `changePassword()`.
-13. Phương thức `changePassword()` gọi `revokeAllSessions()` để thu hồi tất cả session.
-14. Phương thức `changePassword()` trả về `true` cho phương thức `btnLuuClick()`.
+6. Phương thức `btnLuuClick()` gọi phương thức `changePassword()`` của lớp AuthController.
+7. Phương thức `changePassword()`` gọi phương thức `findById()` của lớp User.
+8. Lớp User trả về đối tượng User cho phương thức `changePassword()``.
+9. Phương thức `changePassword()`` gọi `checkPassword()`` để xác minh Mật khẩu hiện tại.
+10. Phương thức `changePassword()`` gọi `hashPassword()`` để mã hóa Mật khẩu mới.
+11. Phương thức `changePassword()`` gọi `updatePassword()`` của lớp User.
+12. Lớp User trả về `true` cho phương thức `changePassword()``.
+13. Phương thức `changePassword()`` gọi `revokeAllSessions()`` để thu hồi tất cả session.
+14. Phương thức `changePassword()`` trả về `true` cho phương thức `btnLuuClick()`.
 15. Phương thức `btnLuuClick()` gọi showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.")
 
 **Ngoại lệ: MK hiện tại sai**
-- Phương thức `checkPassword()` trả về `false`.
-- Phương thức `changePassword()` trả về `false` cho `btnLuuClick()`.
+- Phương thức `checkPassword()`` trả về `false`.
+- Phương thức `changePassword()`` trả về `false` cho `btnLuuClick()`.
 - Lớp ChangePasswordPage hiển thị showMessage("Mật khẩu hiện tại không chính xác.")
 
 **Ngoại lệ: MK mới trùng MK cũ**
-- Phương thức `changePassword()` kiểm tra MK mới trùng MK hiện tại.
-- Phương thức `changePassword()` trả về lỗi cho `btnLuuClick()`.
+- Phương thức `changePassword()`` kiểm tra MK mới trùng MK hiện tại.
+- Phương thức `changePassword()`` trả về lỗi cho `btnLuuClick()`.
 - Lớp ChangePasswordPage hiển thị showMessage("Mật khẩu mới không được trùng mật khẩu hiện tại.")
 
 ### Quản lý TTCN
@@ -780,26 +780,26 @@ end
 
 1. Khách hàng click vào avatar / tên tài khoản ở góc trên phải.
 2. Phương thức `formLoad()` của lớp ProfilePage được gọi.
-3. Phương thức `formLoad()` gọi phương thức `getProfile()` của lớp ProfileController.
-4. Phương thức `getProfile()` gọi phương thức `findById()` của lớp User.
-5. Lớp User trả về đối tượng User cho phương thức `getProfile()`.
-6. Phương thức `getProfile()` trả về đối tượng User cho phương thức `formLoad()`.
+3. Phương thức `formLoad()` gọi phương thức `getProfile()`` của lớp ProfileController.
+4. Phương thức `getProfile()`` gọi phương thức `findById()` của lớp User.
+5. Lớp User trả về đối tượng User cho phương thức `getProfile()``.
+6. Phương thức `getProfile()`` trả về đối tượng User cho phương thức `formLoad()`.
 7. Phương thức `formLoad()` gọi `displayProfile()` để hiển thị hồ sơ: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
 8. Khách hàng click nút [Chỉnh sửa].
 9. Khách hàng sửa Họ tên và Email.
 10. Khách hàng click nút [Lưu].
 11. Phương thức `btnChinhSuaClick()` của lớp ProfilePage được gọi.
-12. Phương thức `btnChinhSuaClick()` gọi phương thức `updateProfile()` của lớp ProfileController.
-13. Phương thức `updateProfile()` gọi phương thức `checkEmail()` của lớp User.
-14. Lớp User trả về `true` cho phương thức `updateProfile()`.
-15. Phương thức `updateProfile()` gọi `save()` để cập nhật hồ sơ.
-16. Lớp User trả về đối tượng User đã cập nhật cho phương thức `updateProfile()`.
-17. Phương thức `updateProfile()` trả về đối tượng User cho phương thức `btnChinhSuaClick()`.
+12. Phương thức `btnChinhSuaClick()` gọi phương thức `updateProfile()`` của lớp ProfileController.
+13. Phương thức `updateProfile()`` gọi phương thức `checkEmail()`` của lớp User.
+14. Lớp User trả về `true` cho phương thức `updateProfile()``.
+15. Phương thức `updateProfile()`` gọi `save()`` để cập nhật hồ sơ.
+16. Lớp User trả về đối tượng User đã cập nhật cho phương thức `updateProfile()``.
+17. Phương thức `updateProfile()`` trả về đối tượng User cho phương thức `btnChinhSuaClick()`.
 18. Phương thức `btnChinhSuaClick()` gọi `displayProfile()`, hiển thị showMessage("Cập nhật thành công!")
 
 **Ngoại lệ: Email đã được dùng**
-- Phương thức `checkEmail()` trả về `false`.
-- Phương thức `updateProfile()` trả về lỗi cho `btnChinhSuaClick()`.
+- Phương thức `checkEmail()`` trả về `false`.
+- Phương thức `updateProfile()`` trả về lỗi cho `btnChinhSuaClick()`.
 - Lớp ProfilePage hiển thị showMessage("Email này đã được đăng ký bởi tài khoản khác.")
 
 ### Quản lý nhân viên
@@ -880,26 +880,26 @@ end
 
 1. Admin truy cập URL `/admin/staff` trên trình duyệt.
 2. Phương thức `formLoad()` của lớp StaffManagePage được gọi.
-3. Phương thức `formLoad()` gọi phương thức `getAllStaff()` của lớp StaffController.
-4. Phương thức `getAllStaff()` gọi phương thức `findAll()` của lớp Employee.
-5. Lớp Employee trả về danh sách nhân viên cho phương thức `getAllStaff()`.
-6. Phương thức `getAllStaff()` trả về danh sách cho phương thức `formLoad()`.
+3. Phương thức `formLoad()` gọi phương thức `getAllStaff()`` của lớp StaffController.
+4. Phương thức `getAllStaff()`` gọi phương thức `findAll()`` của lớp Employee.
+5. Lớp Employee trả về danh sách nhân viên cho phương thức `getAllStaff()``.
+6. Phương thức `getAllStaff()`` trả về danh sách cho phương thức `formLoad()`.
 7. Phương thức `formLoad()` gọi `displayStaffList()` để hiển thị bảng nhân viên.
 8. Admin click nút [Thêm nhân viên].
 9. Admin nhập Họ tên và Vai trò.
 10. Admin click nút [Lưu].
 11. Phương thức `btnThemClick()` của lớp StaffManagePage được gọi.
 12. Phương thức `btnThemClick()` gọi phương thức `saveStaff()` của lớp StaffController.
-13. Phương thức `saveStaff()` gọi `save()` của lớp Employee.
+13. Phương thức `saveStaff()` gọi `save()`` của lớp Employee.
 14. Lớp Employee trả về đối tượng Employee vừa tạo cho phương thức `saveStaff()`.
 15. Phương thức `saveStaff()` trả về `true` cho phương thức `btnThemClick()`.
 16. Phương thức `btnThemClick()` gọi `displayStaffList()`, hiển thị showMessage("Thêm nhân viên thành công!")
 17. Admin click nút [Xóa] trên một dòng nhân viên trong bảng.
 18. Phương thức `btnXoaClick()` của lớp StaffManagePage được gọi.
-19. Phương thức `btnXoaClick()` gọi phương thức `deleteStaff()` của lớp StaffController.
-20. Phương thức `deleteStaff()` gọi `deleteById()` của lớp Employee.
-21. Lớp Employee trả về `true` cho phương thức `deleteStaff()`.
-22. Phương thức `deleteStaff()` trả về `true` cho phương thức `btnXoaClick()`.
+19. Phương thức `btnXoaClick()` gọi phương thức `deleteStaff()`` của lớp StaffController.
+20. Phương thức `deleteStaff()`` gọi `deleteById()`` của lớp Employee.
+21. Lớp Employee trả về `true` cho phương thức `deleteStaff()``.
+22. Phương thức `deleteStaff()`` trả về `true` cho phương thức `btnXoaClick()`.
 23. Phương thức `btnXoaClick()` gọi `displayStaffList()`, hiển thị showMessage("Xóa nhân viên thành công!")
 
 **Ngoại lệ: thêm nhân viên thất bại**
@@ -907,5 +907,5 @@ end
 - Lớp StaffManagePage hiển thị showMessage("Thêm nhân viên thất bại.")
 
 **Ngoại lệ: nhân viên đang xử lý order**
-- Phương thức `deleteStaff()` trả về `false` cho `btnXoaClick()`.
+- Phương thức `deleteStaff()`` trả về `false` cho `btnXoaClick()`.
 - Lớp StaffManagePage hiển thị showMessage("Nhân viên đang xử lý order, không thể xóa.")
