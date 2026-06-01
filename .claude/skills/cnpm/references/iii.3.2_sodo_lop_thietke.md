@@ -2,17 +2,63 @@
 
 ## III.3.2. Sơ đồ lớp thiết kế
 
-**Kiến trúc DAO (BẮT BUỘC áp dụng):**
-- Lớp **Boundary** (Form/Frame hoặc React Component): xử lý giao diện.
-  - **JFrame:** bắt sự kiện `actionPerformed()`.
-  - **React:** bắt sự kiện `handleSubmit()`, `onClick()`, `onChange()`.
-- Lớp **DAO** (Data Access Object): thực hiện truy vấn CSDL. Đặt tên `[TênEntity]DAO`.
-- Lớp **DAO** kế thừa từ lớp `DAO` chung (có `conn: Connection` và constructor `DAO()`).
-- Lớp **Entity**: chỉ chứa thuộc tính + getter/setter, không chứa logic CSDL.
+### Kiến trúc React MVC (BẮT BUỘC cho React + Spring Boot)
 
-**Quy trình xác định chữ ký hàm (BẮT BUỘC trình bày reasoning):**
+3 tầng: **Boundary** (React) → **Control** (Spring Boot) → **Entity** (JPA)
 
-Với mỗi phương thức trong DAO, trình bày:
+---
+
+### Quy tắc đặt tên (BẮT BUỘC)
+
+**Boundary — React Components:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | `[Chức năng]Page` | `LoginPage`, `SearchRoomPage`, `CreateOrderPage`, `MenuPage` |
+| Thuộc tính ô nhập | `- txt[Tên] : TextBox` | `- txtUsername : TextBox`, `- txtRoomName : TextBox` |
+| Thuộc tính nút | `- btn[Tên] : Button` | `- btnLogin : Button`, `- btnSave : Button` |
+| Thuộc tính bảng | `- tbl[Tên] : Table` | `- tblActiveRooms : Table`, `- tblProducts : Table` |
+| Thuộc tính nhãn | `- lbl[Tên] : Label` | `- lblRoomName : Label`, `- lblMessage : Label` |
+| Phương thức khởi tạo | `+ formLoad() : void` | Tự động chạy khi giao diện load |
+| Phương thức nút bấm | `+ btn[Tên]Click() : void` | `+ btnLoginClick()`, `+ btnSaveClick()` |
+| Phương thức bảng click | `+ tbl[Tên]Click(id : int) : void` | `+ tblProductsClick(productId : int)` |
+| Phương thức hiển thị | `+ display[Dữ liệu](data : List<Entity>) : void` | `+ displayActiveRooms(rooms : List<Room>)` |
+| Phương thức thông báo | `+ showMessage(msg : String) : void` | Hiển thị popup thông báo |
+
+**Control — Spring Boot Controllers:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | `[Entity]Controller` | `LoginController`, `RoomController`, `ProductController`, `OrderController` |
+| Đăng nhập | `+ checkLogin(username, password) : boolean` | Kiểm tra tài khoản |
+| Lấy tất cả | `+ getAll[Tên]() : List<Entity>` | `+ getAllProducts() : List<Product>` |
+| Tìm kiếm | `+ search[Tên](keyword : String) : List<Entity>` | `+ searchProduct(keyword) : List<Product>` |
+| Tìm theo tên | `+ search[Tên]ByName(name : String) : List<Entity>` | `+ searchRoomByName(roomName) : List<Room>` |
+| Lấy theo ID | `+ get[Tên]ById(id : int) : Entity` | `+ getProductById(id) : Product` |
+| Lưu mới | `+ save[Tên](entity : Entity) : boolean` | `+ saveOrder(order : Order) : boolean` |
+| Cập nhật | `+ update[Tên](entity : Entity) : boolean` | `+ updateProduct(product) : boolean` |
+| Xóa | `+ delete[Tên](id : int) : boolean` | `+ deleteProduct(id) : boolean` |
+
+**Entity — JPA Entities:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | PascalCase tiếng Anh | `Employee`, `Room`, `Order`, `Product`, `Room_receipt` |
+| Bảng DB | `tbl` + tên entity | `tblEmployee`, `tblRoom`, `tblOrder`, `tblProduct` |
+| Thuộc tính | `- tênCamelCase : KiểuJava` | `- fullName : String`, `- orderTime : DateTime`, `- currentStock : int` |
+| Cột DB | snake_case | `full_name`, `order_time`, `current_stock`, `safety_stock` |
+| Quan hệ n-n | Bảng trung gian `[A]_[B]` | `Order_detail`, `Damage_detail`, `Import_detail` |
+
+**Package colors:**
+- Boundary: `<<Boundary>>` `#E3F2FD`
+- Control: `<<Control>>` `#E8F5E9`
+- Entity: `<<Entity>>` `#FFF3E0`
+
+---
+
+### Quy trình xác định chữ ký hàm (BẮT BUỘC trình bày reasoning)
+
+Với mỗi phương thức trong Control, trình bày:
 ```
 [Tên chức năng] => [tênHàmTiếngAnh()]
 - Input: [liệt kê]
@@ -26,7 +72,9 @@ Với mỗi phương thức trong DAO, trình bày:
   [tênHàm](): List<TênLớp>                             → chọn (trả về danh sách)
 ```
 
-**Variant JFrame:**
+---
+
+### Variant JFrame (dự án JFrame)
 
 ```plantuml
 @startuml
@@ -80,57 +128,163 @@ GDThemXFrm --> TenEntityDAO
 @enduml
 ```
 
-**Variant React:**
+---
 
-**Quy ước đặt tên:** Tên class React dùng tiếng Anh + hậu tố loại component (`Page`, `Card`, `Panel`, `Modal`, `Form`, `Table`). Xem bảng quy ước chi tiết ở II.3.
+### Variant React MVC
+
+**Ví dụ: Module Dịch vụ & Sản phẩm — Chức năng Tạo order**
+
+Boundary classes:
+| Lớp | Thuộc tính | Phương thức |
+|-----|-----------|------------|
+| LoginPage | -txtUsername: TextBox, -txtPassword: TextBox, -btnLogin: Button | +btnLoginClick(), +showMessage(msg) |
+| StaffHomePage | -btnManageOrder: Button | +btnManageOrderClick() |
+| SearchRoomPage | -tblActiveRooms: Table, -txtRoomName: TextBox, -btnSearchRoom: Button, -btnCreateOrder: Button | +formLoad(), +btnSearchRoomClick(), +displayActiveRooms(rooms), +tblEmptyRoomsClick(selectedRow), +showMessage(msg) |
+| CreateOrderPage | -lblRoomName: Label, -txtProductName: TextBox, -btnSearchProduct: Button, -tblProducts: Table, -tblOrderDetails: Table, -btnSaveOrder: Button | +formLoad(), +btnSearchProductClick(), +btnAddClick(), +btnSaveOrderClick(), +displayProducts(products), +displayOrderCart(orderDetails), +showMessage(msg) |
+| ConfirmOrderPage | -lblMessage: Label, -btnConfirm: Button | +btnConfirmClick() |
+
+Control methods:
+| Lớp | Phương thức | Chức năng |
+|-----|------------|----------|
+| LoginController | +checkLogin(username, password) | Kiểm tra đăng nhập |
+| RoomController | +getActiveRooms() : List\<Room\> | Lấy danh sách phòng đang hoạt động |
+| RoomController | +searchRoomByName(roomName) : List\<Room\> | Tìm phòng theo tên |
+| ProductController | +getAllProducts() : List\<Product\> | Lấy toàn bộ sản phẩm |
+| ProductController | +searchProductByName(productName) : List\<Product\> | Tìm sản phẩm theo tên |
+| OrderController | +saveOrder(order : Order) : boolean | Lưu order vào CSDL |
+
+Entity: Employee, Room, Order, Order_detail, Product, Room_receipt.
+
+---
+
+### PlantUML template — React MVC
 
 ```plantuml
 @startuml
-title Biểu đồ lớp thiết kế – Module [Tên] (React)
+left to right direction
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam packageMaxWidth 800
+title Biểu đồ lớp thiết kế – Module [Tên] (React MVC)
 
-class EntityPage <<Component>> {
-  -nv : NhanVien
-  +btnChucNang : JSX.Element
-  +handleClick() : void
+package "<<Boundary>>" #E3F2FD {
+  together {
+    class LoginPage {
+      -txtUsername : TextBox
+      -txtPassword : TextBox
+      -btnLogin : Button
+      +btnLoginClick() : void
+      +showMessage(msg : String) : void
+    }
+    class SearchRoomPage {
+      -tblActiveRooms : Table
+      -txtRoomName : TextBox
+      -btnSearchRoom : Button
+      +formLoad() : void
+      +btnSearchRoomClick() : void
+      +displayActiveRooms(rooms : List<Room>) : void
+    }
+    class CreateOrderPage {
+      -lblRoomName : Label
+      -txtProductName : TextBox
+      -btnSearchProduct : Button
+      -tblProducts : Table
+      -btnSaveOrder : Button
+      +formLoad() : void
+      +btnSearchProductClick() : void
+      +btnSaveOrderClick() : void
+      +displayProducts(products : List<Product>) : void
+    }
+  }
 }
 
-class SearchEntityForm <<Component>> {
-  -inTen : string (state)
-  -tableData : Array (state)
-  +handleSubmit() : void
-  +handleChange(e) : void
-  +render() : JSX
+package "<<Control>>" #E8F5E9 {
+  class LoginController {
+    +checkLogin(username : String, password : String) : boolean
+  }
+  class RoomController {
+    +getActiveRooms() : List<Room>
+    +searchRoomByName(roomName : String) : List<Room>
+  }
+  class ProductController {
+    +getAllProducts() : List<Product>
+    +searchProductByName(productName : String) : List<Product>
+  }
+  class OrderController {
+    +saveOrder(order : Order) : boolean
+  }
 }
 
-class AddEntityForm <<Component>> {
-  -formData : State
-  +handleSubmit() : void
-  +handleChange(e) : void
-  +render() : JSX
+package "<<Entity>>" #FFF3E0 {
+  class Employee {
+    -id : int
+    -fullName : String
+    -dob : Date
+    -tel : String
+    -role : String
+    -username : String
+    -password : String
+    -status : String
+  }
+  class Room {
+    -id : int
+    -name : String
+    -type : String
+    -price : double
+    -capacity : int
+    -status : String
+  }
+  class Order {
+    -id : int
+    -orderTime : DateTime
+    -totalAmount : double
+    -status : String
+  }
+  class Product {
+    -id : int
+    -name : String
+    -category : String
+    -unit : String
+    -price : double
+    -currentStock : int
+    -safetyStock : int
+  }
+  class Room_receipt {
+    -id : int
+    -checkinTime : DateTime
+    -checkoutTime : DateTime
+    -roomFee : double
+    -serviceFee : double
+    -damageFee : double
+    -totalAmount : double
+    -status : String
+  }
+  class Order_detail {
+    -quantity : int
+    -unitPrice : double
+    -lineTotal : double
+  }
 }
 
-abstract class DAO {
-  #conn : Connection
-  +DAO()
-}
+' Boundary -> Control
+LoginPage --> LoginController
+SearchRoomPage --> RoomController
+CreateOrderPage --> ProductController
+CreateOrderPage --> OrderController
 
-class TenEntityDAO {
-  +timX(ten : String) : List<TenEntity>
-  +themX(x : TenEntity) : boolean
-  +luuX(x : TenEntity) : boolean
-}
+' Control -> Entity
+LoginController --> Employee
+RoomController --> Room
+ProductController --> Product
+OrderController --> Order
+OrderController --> Room_receipt
 
-class TenEntity {
-  -ma : int
-  -ten : String
-  +getTen() : String
-  +setTen(ten : String) : void
-}
-
-DAO <|-- TenEntityDAO
-TenEntityDAO --> TenEntity
-EntityPage --> SearchEntityForm
-SearchEntityForm --> TenEntityDAO
-AddEntityForm --> TenEntityDAO
+' Entity relationships
+Room_receipt "1" --> "*" Order
+Order "1" --> "*" Order_detail
+Order_detail "*" --> "1" Product
+Room_receipt "*" --> "1" Room
+Room_receipt "*" --> "1" Employee
+Order "*" --> "1" Employee
 @enduml
 ```

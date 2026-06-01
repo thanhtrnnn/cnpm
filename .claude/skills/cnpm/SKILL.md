@@ -25,7 +25,7 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 3. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
    - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản (VD: `"Lớp Room gọi phương thức searchFreeRoom()"`, `"nhập ngày + nhấn Tìm"`)
    - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (VD: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`)
-4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến ở pha Thiết kế).
+4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến — MỌI pha đều dùng tiếng Anh).
 5. **UML:** PlantUML trong code block plantuml.
 6. **Công nghệ giao diện:** Hỏi người dùng chọn JFrame (Java Swing) hoặc HTML (React) ngay từ BƯỚC 0 PLAN. Toàn bộ Boundary classes, wireframe, và sequence diagram phải thống nhất theo lựa chọn này.
 7. **Diễn giải tuần tự (BẮT BUỘC cho II.4 và III.4):** Bên cạnh biểu đồ sequence diagram, PHẢI viết block diễn giải tuần tự dạng danh sách đánh số trong callout:
@@ -215,71 +215,34 @@ Nội dung đầu vào...
 
 ---
 
-## PlantUML Theme
+## Markdown Formatting Rules (BẮT BUỘC)
 
-Mỗi biểu đồ UML **PHẢI** bắt đầu bằng theme để đảm bảo style đồng nhất:
+### Bold
+Dùng `**text**` cho:
+- Tên class (Boundary, Control, Entity): `**OrderController**`, `**MenuItem**`
+- Tên hàm trong phân tích chữ ký: `createOrder()` in backtick
+- Tiêu đề con: `**1. Tầng giao diện (Boundary)**`
 
-```plantuml
-@startuml
-' === VP Base Theme ===
-skinparam linetype ortho
-skinparam defaultFontName "Segoe UI"
-skinparam defaultFontSize 12
-skinparam shadowing false
-skinparam arrowColor #000000
-skinparam lineColor #000000
+### Backtick
+Dùng `` `text` `` cho:
+- Tên biến, tên tham số, tên type: `roomId`, `String`, `OrderStatus`
+- Giá trị enum: `PENDING`, `PREPARING`
+- Tên hàm: `createOrder()`, `getAll()`
 
-skinparam class {
-  BackgroundColor #FFFFFF
-  BorderColor #000000
-  FontColor #000000
-  FontSize 11
-  AttributeFontSize 10
-  AttributeIconSize 0
-  BorderThickness 1
-}
+### Bảng
+- Luôn có header row + separator row (`|------|`)
+- Tối đa 4 cột
+- Nếu bước chứa bảng → tối đa 2 cột trong Notion
 
-skinparam package {
-  Style rectangle
-  FontSize 13
-  MaxWidth 800
-  BackgroundColor #FFFFFF
-  BorderColor #000000
-}
+### Heading hierarchy
+- `##` = section chính (II.3, III.2)
+- `###` = sub-section (a, b, c, d)
+- `**bold paragraph**` = tiêu đề con (1. Tầng giao diện)
 
-skinparam sequence {
-  ArrowColor Black
-  ActorBorderColor Black
-  ActorBackgroundColor #7ACFF5
-  ParticipantBorderColor Black
-  ParticipantBackgroundColor #7ACFF5
-  LifeLineBorderColor Black
-  LifeLineBackgroundColor #7ACFF5
-  BoundaryBorderColor Black
-  BoundaryBackgroundColor #7ACFF5
-  EntityBorderColor Black
-  EntityBackgroundColor #7ACFF5
-  MessageFontSize 11
-}
-
-hide empty members
-
-' === BCE Color Overlay (optional — cho class diagram có màu packages) ===
-skinparam class {
-  BackgroundColor<<Boundary>> #DDEEFF
-  BackgroundColor<<Component>> #DDEEFF
-  BackgroundColor<<DAO>> #FFE0B2
-  BackgroundColor<<Control>> #FFE0B2
-  BackgroundColor<<Entity>> #FFF3CD
-}
-@enduml
-```
-
-**Lưu ý:** MCP PlantUML server không hỗ trợ `!include` — PHẢI inline toàn bộ skinparam.
-
-Theme files tham khảo:
-- `assets/vp-base.puml` — base theme (class + sequence)
-- `assets/bce-colors.puml` — BCE color overlay
+### PlantUML
+- Luôn dùng code block `plantuml`, KHÔNG dùng `javascript`
+- Class diagram: 3 cột Boundary | Control | Entity
+- **Đồng nhất 1 sơ đồ cho toàn module** (không tách theo chức năng)
 
 ---
 
@@ -429,7 +392,10 @@ BDao --> B
 @enduml
 ```
 
-### Ví dụ template — HTML (React)
+### Ví dụ template — HTML (React + Spring Boot MVC)
+
+Tham khảo: `docs/tabs/section-3.2-mvc.md` — module Dịch vụ & Sản phẩm.
+Google Docs: https://docs.google.com/document/d/1H0pFNhmbX9yDMObxERGsZ0RqKjpX9Je6N60n4tYrB6s (tab "Dịch vụ & Sản phẩm", mục 3.2)
 
 ```plantuml
 @startuml
@@ -437,68 +403,148 @@ left to right direction
 skinparam linetype ortho
 skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
-title Biểu đồ lớp – Module [Tên] (React)
+title Biểu đồ lớp – Module Dịch vụ & Sản phẩm (React MVC)
 
-package "Boundary" #DDEEFF {
+package "<<Boundary>>" #E3F2FD {
   together {
-    class EntityPage <<Component>> {
-      -formData : State
-      +handleSubmit() : void
-      +render() : JSX
-    }
-    class SearchEntityForm <<Component>> {
-      -tableData : State
-      +render() : JSX
-    }
+    class OrderPage { +render() }
+    class RoomSelector { +render() }
+    class ProductSearchForm { +render() }
+    class ProductTable { +render() }
+    class OrderCartPanel { +render() }
+    class ConfirmOrderModal { +render() }
+  }
+  together {
+    class OrderManagement { +render() }
+    class StatusFilterTabs { +render() }
+    class OrderCard { +render() }
+    class StatusUpdateModal { +render() }
+  }
+  together {
+    class MenuManagement { +render() }
+    class CategoryFilter { +render() }
+    class MenuItemTable { +render() }
+    class MenuItemForm { +render() }
+  }
+  together {
+    class InventoryPage { +render() }
+    class StockTable { +render() }
+    class StockUpdateForm { +render() }
   }
 }
 
-package "DAO" #FFE0B2 {
-  abstract class DAO {
-    #conn : Connection
-    +DAO()
+package "<<Control>>" #E8F5E9 {
+  class OrderController {
+    +createOrder(roomId, items) : OrderResponse
+    +getOrders(status) : List<OrderResponse>
+    +updateStatus(id, status) : OrderResponse
   }
-  together {
-    class ADao extends DAO {
-      +findByName(name : String) : List<A>
-      +save(entity : A) : boolean
-    }
-    class BDao extends DAO {
-      +findAll() : List<B>
-      +delete(id : int) : boolean
-    }
+  class MenuItemController {
+    +getAll(category) : List<MenuItem>
+    +getById(id) : MenuItem
+    +create(item) : MenuItem
+    +update(id, item) : MenuItem
+    +delete(id) : void
   }
-}
-
-package "Entity" #FFF3CD {
-  together {
-    class A {
-      -id : int
-      -name : String
-      +getter/setter
-    }
-    class B {
-      -id : int
-      -value : String
-      +getter/setter
-    }
+  class InvoiceController {
+    +generate(bookingId) : Invoice
   }
 }
 
-EntityPage --> SearchEntityForm
-SearchEntityForm --> ADao
-EntityPage --> BDao
-ADao --> A
-BDao --> B
+package "<<Entity>>" #FFF3E0 {
+  class ServiceOrder {
+    -id : String
+    -orderedAt : DateTime
+    -status : OrderStatus
+  }
+  class ServiceOrderItem {
+    -quantity : int
+    -unitPrice : double
+  }
+  class MenuItem {
+    -id : String
+    -name : String
+    -category : String
+    -price : double
+    -stock : int
+    -image : String
+    -active : boolean
+  }
+  enum OrderStatus {
+    PENDING
+    PREPARING
+    SERVED
+    CANCELLED
+  }
+  class Room {
+    -id : String
+    -name : String
+    -branch : String
+  }
+  class Invoice {
+    -id : String
+    -roomTotal : double
+    -serviceTotal : double
+    -discount : double
+    -grandTotal : double
+    -paidAt : DateTime
+  }
+}
+
+' Boundary -> Control
+OrderPage --> OrderController
+RoomSelector --> OrderController
+ProductSearchForm --> OrderController
+ProductTable --> OrderController
+OrderCartPanel --> OrderController
+ConfirmOrderModal --> OrderController
+OrderManagement --> OrderController
+StatusFilterTabs --> OrderController
+OrderCard --> OrderController
+StatusUpdateModal --> OrderController
+MenuManagement --> MenuItemController
+CategoryFilter --> MenuItemController
+MenuItemTable --> MenuItemController
+MenuItemForm --> MenuItemController
+InventoryPage --> MenuItemController
+StockTable --> MenuItemController
+StockUpdateForm --> MenuItemController
+
+' Control -> Entity
+OrderController --> ServiceOrder
+OrderController --> MenuItem
+MenuItemController --> MenuItem
+InvoiceController --> Invoice
+
+' Entity relationships
+ServiceOrder "1" --> "*" ServiceOrderItem
+ServiceOrder "*" --> "1" Room
+ServiceOrderItem "*" --> "1" MenuItem
+ServiceOrder --> OrderStatus
+Invoice --> ServiceOrder
 @enduml
 ```
+
+**Quy tắc React MVC (BẮT BUỘC):**
+- **Boundary:** React components, mỗi class chỉ có `+render()`. Tên class tiếng Anh + hậu tố (`Page`, `Form`, `Table`, `Panel`, `Modal`, `Card`).
+- **Control:** Spring Boot Controllers, methods theo RESTful CRUD (`getAll`, `getById`, `create`, `update`, `delete`). KHÔNG dùng DAO pattern.
+- **Entity:** JPA Entities, attributes private (`-`) với kiểu Java cụ thể. Relationships: `ManyToOne`, `OneToMany`.
+- **Package colors:** Boundary `#E3F2FD`, Control `#E8F5E9`, Entity `#FFF3E0` (không dùng BCE colors cũ cho React MVC).
+- **Entity naming:** Tên entity tiếng Anh, bảng DB dùng `tbl` + tên (VD: `tblOrder`, `tblProduct`, `tblRoom`). Quan hệ n-n qua bảng trung gian (VD: `Order_detail`, `Damage_detail`).
 
 ### Biểu đồ Tuần tự (Sequence Diagram)
 
 - Participants xếp theo thứ tự: Actor → Boundary → [Control] → DAO → Entity
 - Thông điệp đánh số liên tục
 - Dùng `alt` cho ngoại lệ
+<<<<<<< Updated upstream
+- Phân tích: thông điệp tiếng Việt + tên hàm tiếng Anh đơn giản · Thiết kế: tên hàm tiếng Anh + kiểu dữ liệu
+- **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation), KHÔNG dùng khung (rectangle). KHÔNG dùng `skinparam sequence { ParticipantStyle rectangle }` — để PlantUML hiển thị circle mặc định cho lifeline.
+=======
 - Phân tích: tiếng Việt · Thiết kế: tên hàm tiếng Anh
+- **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation): dùng `boundary "Name"`, `entity "Name"`, `control "Name"` khi khai báo participant. KHÔNG dùng `participant "Name"` (sẽ hiển thị khung).
+- **Activation bar màu xanh:** `skinparam SequenceLifeLineBackgroundColor #7AD2FF`
+>>>>>>> Stashed changes
 
 ### Biểu đồ UC (Use Case)
 

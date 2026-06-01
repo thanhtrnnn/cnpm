@@ -111,65 +111,19 @@ Nội dung đầu vào...
 
 ### PlantUML Style Rules (BẮT BUỘC)
 
-Mọi diagram PlantUML **PHẢI** bắt đầu bằng VP base theme (inline, vì MCP server không hỗ trợ `!include`):
+Mọi diagram PlantUML **PHẢI** có:
 
 ```plantuml
 @startuml
-' === VP Base Theme ===
+left to right direction
 skinparam linetype ortho
-skinparam defaultFontName "Segoe UI"
-skinparam defaultFontSize 12
-skinparam shadowing false
-skinparam arrowColor #000000
-skinparam lineColor #000000
-
-skinparam class {
-  BackgroundColor #FFFFFF
-  BorderColor #000000
-  FontColor #000000
-  FontSize 11
-  AttributeFontSize 10
-  AttributeIconSize 0
-  BorderThickness 1
-}
-
-skinparam package {
-  Style rectangle
-  FontSize 13
-  MaxWidth 800
-  BackgroundColor #FFFFFF
-  BorderColor #000000
-}
-
-skinparam sequence {
-  ArrowColor Black
-  ActorBorderColor Black
-  ActorBackgroundColor #7ACFF5
-  ParticipantBorderColor Black
-  ParticipantBackgroundColor #7ACFF5
-  LifeLineBorderColor Black
-  LifeLineBackgroundColor #7ACFF5
-  BoundaryBorderColor Black
-  BoundaryBackgroundColor #7ACFF5
-  EntityBorderColor Black
-  EntityBackgroundColor #7ACFF5
-  MessageFontSize 11
-}
-
-hide empty members
-
-' === BCE Color Overlay ===
-skinparam class {
-  BackgroundColor<<Boundary>> #DDEEFF
-  BackgroundColor<<Component>> #DDEEFF
-  BackgroundColor<<DAO>> #FFE0B2
-  BackgroundColor<<Control>> #FFE0B2
-  BackgroundColor<<Entity>> #FFF3CD
-}
+skinparam packageStyle rectangle
 @enduml
 ```
 
-Theme files tham khảo: `assets/vp-base.puml` + `assets/bce-colors.puml`
+- **`left to right direction`** — layout ngang từ trái sang phải
+- **`skinparam linetype ortho`** — đường thẳng gấp khúc, KHÔNG cong
+- **`skinparam packageStyle rectangle`** — package dạng hình chữ nhật
 
 **Class diagram:**
 - Lớp xếp theo chiều ngang, chia rõ Boundary | DAO | Entity
