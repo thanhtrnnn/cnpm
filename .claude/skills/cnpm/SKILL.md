@@ -25,7 +25,7 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 3. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
    - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản (VD: `"Lớp Room gọi phương thức searchFreeRoom()"`, `"nhập ngày + nhấn Tìm"`)
    - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (VD: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`)
-4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến ở pha Thiết kế).
+4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến — MỌI pha đều dùng tiếng Anh).
 5. **UML:** PlantUML trong code block plantuml.
 6. **Công nghệ giao diện:** Hỏi người dùng chọn JFrame (Java Swing) hoặc HTML (React) ngay từ BƯỚC 0 PLAN. Toàn bộ Boundary classes, wireframe, và sequence diagram phải thống nhất theo lựa chọn này.
 7. **Diễn giải tuần tự (BẮT BUỘC cho II.4 và III.4):** Bên cạnh biểu đồ sequence diagram, PHẢI viết block diễn giải tuần tự dạng danh sách đánh số trong callout:
@@ -537,7 +537,7 @@ Invoice --> ServiceOrder
 - Participants xếp theo thứ tự: Actor → Boundary → [Control] → DAO → Entity
 - Thông điệp đánh số liên tục
 - Dùng `alt` cho ngoại lệ
-- Phân tích: tiếng Việt · Thiết kế: tên hàm tiếng Anh
+- Phân tích: thông điệp tiếng Việt + tên hàm tiếng Anh đơn giản · Thiết kế: tên hàm tiếng Anh + kiểu dữ liệu
 - **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation), KHÔNG dùng khung (rectangle). KHÔNG dùng `skinparam sequence { ParticipantStyle rectangle }` — để PlantUML hiển thị circle mặc định cho lifeline.
 
 ### Biểu đồ UC (Use Case)
