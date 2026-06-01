@@ -61,35 +61,35 @@ Hệ thống cho phép khách hàng đăng ký tài khoản hội viên mới b�
 **Bước 2 + 3 – Trích danh từ và đánh giá**
 
 ▪ Hệ thống → loại: quá chung, không phải thực thể nghiệp vụ
-▪ Khách hàng → lớp NguoiDung: hoTen, soDienThoai, email, matKhau, ngayTao
-▪ Tài khoản → thuộc về NguoiDung (gộp vào NguoiDung, tránh tách thừa)
-▪ Họ tên → thuộc tính của NguoiDung
-▪ Số điện thoại → thuộc tính của NguoiDung (dùng làm username đăng nhập)
-▪ Email → thuộc tính của NguoiDung
-▪ Mật khẩu → thuộc tính của NguoiDung (lưu dạng mã hóa bcrypt)
-▪ Ngày tham gia → thuộc tính ngayTao của NguoiDung
-▪ Hạng hội viên → lớp HangHoiVien: tenHang, diemToiThieu, moTa, heSoUuDai
-▪ Điểm tích lũy → thuộc tính diemTichLuy của NguoiDung
+▪ Khách hàng → lớp User: hoTen, soDienThoai, email, matKhau, ngayTao
+▪ Tài khoản → thuộc về User (gộp vào User, tránh tách thừa)
+▪ Họ tên → thuộc tính của User
+▪ Số điện thoại → thuộc tính của User (dùng làm username đăng nhập)
+▪ Email → thuộc tính của User
+▪ Mật khẩu → thuộc tính của User (lưu dạng mã hóa bcrypt)
+▪ Ngày tham gia → thuộc tính ngayTao của User
+▪ Hạng hội viên → lớp MembershipTier: tenHang, diemToiThieu, moTa, heSoUuDai
+▪ Điểm tích lũy → thuộc tính diemTichLuy của User
 ▪ Mã OTP → lớp OTP: maOTP, loai (DANG_KY/DOI_SDT), thoiHanHetHan, daXacMinh
-▪ Phiên đăng nhập → lớp PhienDangNhap: tokenPhien, thoiGianDangNhap, thoiGianHetHan, thietBi
-▪ Lịch sử → loại: quá chung → cụ thể là PhienDangNhap đã đủ
+▪ Phiên đăng nhập → lớp LoginSession: tokenPhien, thoiGianDangNhap, thoiGianHetHan, thietBi
+▪ Lịch sử → loại: quá chung → cụ thể là LoginSession đã đủ
 ▪ Danh sách → loại: không phải thực thể
 ▪ Giao diện → loại: là Boundary, không phải Entity
-▪ Nhân viên → lớp NhanVien: hoTen, vaiTro, chiNhanh, trangThai
+▪ Nhân viên → lớp Employee: hoTen, vaiTro, chiNhanh, trangThai
 ▪ Chủ doanh nghiệp → loại: actor, không phải thực thể dữ liệu
 
 **Bước 4 – Xác định quan hệ số lượng**
 
-▪ 1 NguoiDung có 1 HangHoiVien → NguoiDung – HangHoiVien: n – 1
+▪ 1 User có 1 MembershipTier → User – MembershipTier: n – 1
 (nhiều người dùng có thể có cùng hạng)
-▪ 1 NguoiDung có nhiều OTP → NguoiDung – OTP: 1 – n
+▪ 1 User có nhiều OTP → User – OTP: 1 – n
 (mỗi lần đăng ký/đổi SĐT tạo 1 OTP mới)
-▪ 1 NguoiDung có nhiều PhienDangNhap → NguoiDung – PhienDangNhap: 1 – n
+▪ 1 User có nhiều LoginSession → User – LoginSession: 1 – n
 (người dùng có thể đăng nhập trên nhiều thiết bị)
 
 **Bước 5 – Bổ sung quan hệ**
 
-NguoiDung gắn composition với OTP: một OTP không tồn tại độc lập nếu không có NguoiDung tương ứng (khi xóa NguoiDung thì xóa theo tất cả OTP). Tương tự, PhienDangNhap không tồn tại độc lập khỏi NguoiDung. Quan hệ với HangHoiVien là aggregation: HangHoiVien là dữ liệu danh mục tồn tại độc lập với NguoiDung. NhanVien là lớp riêng biệt, không kế thừa từ NguoiDung.
+User gắn composition với OTP: một OTP không tồn tại độc lập nếu không có User tương ứng (khi xóa User thì xóa theo tất cả OTP). Tương tự, LoginSession không tồn tại độc lập khỏi User. Quan hệ với MembershipTier là aggregation: MembershipTier là dữ liệu danh mục tồn tại độc lập với User. Employee là lớp riêng biệt, không kế thừa từ User.
 
 <!-- PLACEHOLDER: account_entity_analysis -->
 
@@ -115,7 +115,7 @@ RegisterPage: inHoTen, inSDT, inEmail, inMatKhau, inXacNhanMK, subTiepTuc, subHu
 OTPVerifyPage: inOTP, subXacNhan, subGuiLai
 ChangePasswordPage: inMKHienTai, inMKMoi, inXacNhanMKMoi, subLuu, subHuy
 ProfilePage: outHoTen, outSDT, outEmail, outHang, outDiem, subChinhSua, subDoiMK
-StaffManagePage: outDSNhanVien, outsubChonNV, subThem, subSua, subXoa
+StaffManagePage: outDSEmployee, outsubChonNV, subThem, subSua, subXoa
 
 **Bước 3 – Phương thức cho mỗi chức năng**
 
@@ -123,13 +123,13 @@ StaffManagePage: outDSNhanVien, outsubChonNV, subThem, subSua, subXoa
 Phương thức: `dangNhap()` ← tên tiếng Việt, ngôn ngữ tự nhiên
 Input: sdt, matKhau
 Output: Session (token, vaiTro)
-Lớp chủ thể: NguoiDung
+Lớp chủ thể: User
 
 [2]. Giao diện RegisterPage → lớp RegisterPage
 Phương thức: `dangKy()`
 Input: hoTen, sdt, email, matKhau
-Output: NguoiDung (vừa tạo)
-Lớp chủ thể: NguoiDung
+Output: User (vừa tạo)
+Lớp chủ thể: User
 
 [3]. Giao diện OTPVerifyPage → lớp OTPVerifyPage
 Phương thức: `xacMinhOTP()`
@@ -141,43 +141,43 @@ Lớp chủ thể: OTP
 Phương thức: `doiMatKhau()`
 Input: mkHienTai, mkMoi
 Output: boolean (thành công/thất bại)
-Lớp chủ thể: NguoiDung
+Lớp chủ thể: User
 
 [5]. Giao diện ProfilePage → lớp ProfilePage
 Phương thức: `xemHoSo()`
 Input: userId
-Output: NguoiDung (thông tin hồ sơ)
-Lớp chủ thể: NguoiDung
+Output: User (thông tin hồ sơ)
+Lớp chủ thể: User
 
 [6]. Giao diện ProfilePage → lớp ProfilePage
 Phương thức: `capNhatHoSo()`
 Input: userId, hoTen, email
-Output: NguoiDung (đã cập nhật)
-Lớp chủ thể: NguoiDung
+Output: User (đã cập nhật)
+Lớp chủ thể: User
 
 [7]. Giao diện StaffManagePage → lớp StaffManagePage
 Phương thức: `xemDanhSachNV()`
 Input: (không có — tải toàn bộ)
-Output: List\<NhanVien\>
-Lớp chủ thể: NhanVien
+Output: List\<Employee\>
+Lớp chủ thể: Employee
 
 [8]. Giao diện StaffManagePage → lớp StaffManagePage
 Phương thức: `themNV()`
 Input: hoTen, vaiTro
-Output: NhanVien (vừa tạo)
-Lớp chủ thể: NhanVien
+Output: Employee (vừa tạo)
+Lớp chủ thể: Employee
 
 [9]. Giao diện StaffManagePage → lớp StaffManagePage
 Phương thức: `suaNV()`
 Input: id, hoTen, vaiTro
-Output: NhanVien (đã cập nhật)
-Lớp chủ thể: NhanVien
+Output: Employee (đã cập nhật)
+Lớp chủ thể: Employee
 
 [10]. Giao diện StaffManagePage → lớp StaffManagePage
 Phương thức: `xoaNV()`
 Input: id
 Output: boolean (thành công/thất bại)
-Lớp chủ thể: NhanVien
+Lớp chủ thể: Employee
 
 <!-- PLACEHOLDER: account_bce_analysis -->
 
@@ -192,7 +192,7 @@ title Đăng nhập – Tuần tự Phân tích
 actor "Khách hàng" as KH
 participant "LoginPage\n<<Boundary>>" as B1
 participant "AuthController\n<<Control>>" as C1
-entity "NguoiDung\n<<Entity>>" as E1
+entity "User\n<<Entity>>" as E1
 
 KH -> B1 : 1: truy cập màn hình Đăng nhập
 activate B1
@@ -202,10 +202,10 @@ B1 -> C1 : 4: dangNhap(sdt, matKhau)
 activate C1
 C1 -> E1 : 5: timTheoSDT(sdt)
 activate E1
-E1 --> C1 : 6: NguoiDung
+E1 --> C1 : 6: User
 deactivate E1
 C1 -> C1 : 7: kiemTraMatKhau(matKhau, hash)
-C1 --> B1 : 8: trả về NguoiDung + Session
+C1 --> B1 : 8: trả về User + Session
 deactivate C1
 B1 --> KH : 9: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
 deactivate B1
@@ -230,14 +230,14 @@ end
 3. Khách hàng nhập SĐT = "0912345678" và Mật khẩu = "Abc@1234".
 4. Khách hàng nhấn nút [Đăng nhập].
 5. Lớp LoginPage gọi phương thức `dangNhap()` của AuthController với tham số sdt, matKhau.
-6. AuthController gọi phương thức `findBySDT()` của NguoiDung để tìm tài khoản theo SĐT.
-7. NguoiDung trả về đối tượng NguoiDung cho AuthController.
+6. AuthController gọi phương thức `findBySDT()` của User để tìm tài khoản theo SĐT.
+7. User trả về đối tượng User cho AuthController.
 8. AuthController gọi `checkPassword()` để so sánh mật khẩu.
 9. AuthController trả kết quả về cho LoginPage.
 10. Lớp LoginPage hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
 
 **Ngoại lệ: tài khoản không tồn tại**
-- NguoiDung trả về null (không tìm thấy tài khoản).
+- User trả về null (không tìm thấy tài khoản).
 - AuthController trả về null cho LoginPage.
 - LoginPage hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
 
@@ -255,7 +255,7 @@ actor "Khách hàng" as KH
 participant "RegisterPage\n<<Boundary>>" as B1
 participant "OTPVerifyPage\n<<Boundary>>" as B2
 participant "AuthController\n<<Control>>" as C1
-entity "NguoiDung\n<<Entity>>" as E1
+entity "User\n<<Entity>>" as E1
 entity "OTP\n<<Entity>>" as E2
 
 KH -> B1 : 1: nhấn "Đăng ký"
@@ -272,15 +272,15 @@ C1 -> E1 : 7: existsByEmail(email)
 activate E1
 E1 --> C1 : 8: true/false
 deactivate E1
-C1 -> E1 : 9: createNguoiDung()
+C1 -> E1 : 9: createUser()
 activate E1
-E1 --> C1 : 10: NguoiDung
+E1 --> C1 : 10: User
 deactivate E1
 C1 -> E2 : 11: guiOTP(sdt, DANG_KY)
 activate E2
 E2 --> C1 : 12: OTP đã gửi
 deactivate E2
-C1 --> B1 : 13: trả về NguoiDung
+C1 --> B1 : 13: trả về User
 deactivate C1
 B1 --> KH : 14: hiển thị form xác nhận OTP
 deactivate B1
@@ -311,9 +311,9 @@ deactivate B2
 3. Khách hàng nhập: Họ tên = "Nguyễn Thị Bình", SĐT = "0987654321", Email = "binh.nt@email.com", MK = "Pass@2025".
 4. Khách hàng nhấn [Tiếp tục].
 5. RegisterPage gọi `dangKy()` của AuthController với các tham số hoTen, sdt, email, matKhau.
-6. AuthController gọi `existsBySDT()` của NguoiDung để kiểm tra SĐT chưa tồn tại.
-7. AuthController gọi `existsByEmail()` của NguoiDung để kiểm tra email chưa tồn tại.
-8. AuthController gọi `createNguoiDung()` để tạo tài khoản mới.
+6. AuthController gọi `existsBySDT()` của User để kiểm tra SĐT chưa tồn tại.
+7. AuthController gọi `existsByEmail()` của User để kiểm tra email chưa tồn tại.
+8. AuthController gọi `createUser()` để tạo tài khoản mới.
 9. AuthController gọi `guiOTP()` để gửi OTP đến SĐT.
 10. AuthController trả kết quả về RegisterPage.
 11. RegisterPage hiển thị form xác nhận OTP.
@@ -340,7 +340,7 @@ title Đổi mật khẩu – Tuần tự Phân tích
 actor "Người dùng" as User
 participant "ChangePasswordPage\n<<Boundary>>" as B1
 participant "AuthController\n<<Control>>" as C1
-entity "NguoiDung\n<<Entity>>" as E1
+entity "User\n<<Entity>>" as E1
 
 User -> B1 : 1: truy cập "Bảo mật"
 activate B1
@@ -350,7 +350,7 @@ B1 -> C1 : 4: doiMatKhau(mkHienTai, mkMoi)
 activate C1
 C1 -> E1 : 5: findByToken(session)
 activate E1
-E1 --> C1 : 6: NguoiDung
+E1 --> C1 : 6: User
 deactivate E1
 C1 -> C1 : 7: checkPassword(mkHienTai, hash)
 C1 -> C1 : 8: hashPassword(mkMoi)
@@ -376,10 +376,10 @@ deactivate B1
 3. Người dùng nhập: MK hiện tại = "Abc@1234", MK mới = "NewPass@2025", xác nhận = "NewPass@2025".
 4. Người dùng nhấn [Lưu thay đổi].
 5. ChangePasswordPage gọi `doiMatKhau()` của AuthController với mkHienTai, mkMoi.
-6. AuthController gọi `findByToken()` của NguoiDung để lấy thông tin người dùng.
+6. AuthController gọi `findByToken()` của User để lấy thông tin người dùng.
 7. AuthController xác minh MK hiện tại khớp CSDL bằng `checkPassword()`.
 8. AuthController mã hóa MK mới bằng `hashPassword()`.
-9. AuthController gọi `updatePassword()` của NguoiDung để cập nhật mật khẩu.
+9. AuthController gọi `updatePassword()` của User để cập nhật mật khẩu.
 10. AuthController gọi `revokeAllSessions()` để thu hồi tất cả session.
 11. ChangePasswordPage hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
 
@@ -400,7 +400,7 @@ title Quản lý TTCN – Tuần tự Phân tích
 actor "Khách hàng" as KH
 participant "ProfilePage\n<<Boundary>>" as B1
 participant "ProfileController\n<<Control>>" as C1
-entity "NguoiDung\n<<Entity>>" as E1
+entity "User\n<<Entity>>" as E1
 
 KH -> B1 : 1: nhấn vào ảnh đại diện
 activate B1
@@ -408,9 +408,9 @@ B1 -> C1 : 2: xemHoSo(userId)
 activate C1
 C1 -> E1 : 3: findById(userId)
 activate E1
-E1 --> C1 : 4: NguoiDung
+E1 --> C1 : 4: User
 deactivate E1
-C1 --> B1 : 5: trả về NguoiDung
+C1 --> B1 : 5: trả về User
 deactivate C1
 B1 --> KH : 6: hiển thị hồ sơ cá nhân
 KH -> B1 : 7: nhấn [Chỉnh sửa thông tin] + cập nhật + nhấn [Lưu]
@@ -435,18 +435,18 @@ deactivate B1
 
 1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản ở góc trên phải.
 2. ProfilePage gọi `xemHoSo(userId)` của ProfileController.
-3. ProfileController gọi `findById(userId)` của NguoiDung.
-4. NguoiDung trả về đối tượng NguoiDung cho ProfileController.
+3. ProfileController gọi `findById(userId)` của User.
+4. User trả về đối tượng User cho ProfileController.
 5. ProfileController trả kết quả về ProfilePage.
 6. ProfilePage hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
 7. Khách hàng nhấn [Chỉnh sửa thông tin], cập nhật họ tên và email, nhấn [Lưu].
 8. ProfilePage gọi `capNhatHoSo()` của ProfileController với userId, hoTen, email.
-9. ProfileController gọi `checkEmail()` của NguoiDung để kiểm tra email hợp lệ.
-10. ProfileController gọi `update()` của NguoiDung để cập nhật.
+9. ProfileController gọi `checkEmail()` của User để kiểm tra email hợp lệ.
+10. ProfileController gọi `update()` của User để cập nhật.
 11. ProfilePage hiển thị "Cập nhật thành công!"
 
 **Ngoại lệ: Email đã được dùng**
-- NguoiDung trả về false từ `checkEmail()`.
+- User trả về false từ `checkEmail()`.
 - ProfilePage hiển thị "Email này đã được đăng ký bởi tài khoản khác."
 
 #### UC20 – Quản lý tài khoản nhân viên
@@ -458,7 +458,7 @@ title Quản lý tài khoản nhân viên – Tuần tự Phân tích
 actor "Admin" as Admin
 participant "StaffManagePage\n<<Boundary>>" as B1
 participant "StaffController\n<<Control>>" as C1
-entity "NhanVien\n<<Entity>>" as E1
+entity "Employee\n<<Entity>>" as E1
 
 Admin -> B1 : 1: truy cập "Quản lý nhân viên"
 activate B1
@@ -466,9 +466,9 @@ B1 -> C1 : 2: xemDanhSachNV()
 activate C1
 C1 -> E1 : 3: findAll()
 activate E1
-E1 --> C1 : 4: List NhanVien
+E1 --> C1 : 4: List Employee
 deactivate E1
-C1 --> B1 : 5: List NhanVien
+C1 --> B1 : 5: List Employee
 deactivate C1
 B1 --> Admin : 6: hiển thị danh sách nhân viên
 
@@ -477,9 +477,9 @@ B1 -> C1 : 8: themNV(hoTen, vaiTro)
 activate C1
 C1 -> E1 : 9: save()
 activate E1
-E1 --> C1 : 10: NhanVien vừa tạo
+E1 --> C1 : 10: Employee vừa tạo
 deactivate E1
-C1 --> B1 : 11: NhanVien vừa tạo
+C1 --> B1 : 11: Employee vừa tạo
 deactivate C1
 B1 --> Admin : 12: "Thêm nhân viên thành công!"
 deactivate B1
@@ -490,19 +490,19 @@ deactivate B1
 
 1. Admin truy cập "Quản lý nhân viên" từ trang quản trị.
 2. StaffManagePage gọi `xemDanhSachNV()` của StaffController.
-3. StaffController gọi `findAll()` của NhanVien.
-4. NhanVien trả về danh sách nhân viên cho StaffController.
+3. StaffController gọi `findAll()` của Employee.
+4. Employee trả về danh sách nhân viên cho StaffController.
 5. StaffController trả kết quả về StaffManagePage.
 6. StaffManagePage hiển thị bảng: họ tên, vai trò, trạng thái.
 7. Admin nhấn [Thêm nhân viên], nhập thông tin, nhấn [Lưu].
 8. StaffManagePage gọi `themNV(hoTen, vaiTro)` của StaffController.
-9. StaffController gọi `save()` của NhanVien.
+9. StaffController gọi `save()` của Employee.
 10. StaffManagePage hiển thị "Thêm nhân viên thành công!"
 
 **Ngoại lệ: SĐT đã tồn tại**
-- StaffController nhận lỗi từ NhanVien.
+- StaffController nhận lỗi từ Employee.
 - StaffManagePage hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: Nhân viên đang xử lý order**
-- StaffController nhận lỗi từ NhanVien.
+- StaffController nhận lỗi từ Employee.
 - StaffManagePage hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."

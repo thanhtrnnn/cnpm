@@ -87,6 +87,7 @@ UC20 có 3 UC con "Thêm NV", "Sửa NV", "Xóa NV" có cùng đặc điểm (CR
 ```plantuml
 @startuml
 left to right direction
+skinparam linetype ortho
 skinparam packageStyle rectangle
 skinparam maxMessageSize 200
 

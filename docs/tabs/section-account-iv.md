@@ -22,15 +22,15 @@
 
 **Trạng thái CSDL trước:**
 
-tblHangHoiVien
+tblMembershipTier
 | ma | tenHang | diemToiThieu | heSoUuDai |
 |----|---------|-------------|-----------|
 | 1 | Thường | 0 | 0.0 |
 | 2 | Bạc | 1000 | 0.1 |
 
-tblNguoiDung
-| ma | hoTen | soDienThoai | email | matKhau | diemTichLuy | tblHangHoiVienMa |
-|----|-------|-------------|-------|---------|-------------|-------------------|
+tblUser
+| ma | hoTen | soDienThoai | email | matKhau | diemTichLuy | tblMembershipTierMa |
+|----|-------|-------------|-------|---------|-------------|---------------------|
 | 1 | Nguyễn Văn A | 0912345678 | vana@email.com | $2a$10$hash... | 1250 | 2 |
 
 **Kịch bản thực hiện:**
@@ -45,9 +45,9 @@ tblNguoiDung
 
 **Trạng thái CSDL sau:**
 
-tblPhienDangNhap (mới tạo)
-| ma | tokenPhien | thoiGianDangNhap | thietBi | tblNguoiDungMa |
-|----|-----------|-----------------|---------|----------------|
+tblLoginSession (mới tạo)
+| ma | tokenPhien | thoiGianDangNhap | thietBi | tblUserMa |
+|----|-----------|-----------------|---------|-----------|
 | 1 | abc123... | 2026-06-01 10:00 | Chrome/Mac | 1 |
 
 ---
@@ -56,7 +56,7 @@ tblPhienDangNhap (mới tạo)
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | email |
 |----|-------|-------|
 | 1 | Nguyễn Văn A | vana@email.com |
@@ -74,7 +74,7 @@ tblNguoiDung
 
 **Trạng thái CSDL sau:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | email |
 |----|-------|-------|
 | 1 | **Nguyễn Văn An** | **vanan@newemail.com** |
@@ -85,7 +85,7 @@ tblNguoiDung
 
 **Trạng thái CSDL trước:**
 
-tblNhanVien
+tblEmployee
 | ma | hoTen | vaiTro | trangThai |
 |----|-------|--------|-----------|
 | 1 | Trần Thị B | Lễ tân | Đang làm |
@@ -102,7 +102,7 @@ tblNhanVien
 
 **Trạng thái CSDL sau:**
 
-tblNhanVien
+tblEmployee
 | ma | hoTen | vaiTro | trangThai |
 |----|-------|--------|-----------|
 | 1 | Trần Thị B | Lễ tân | Đang làm |
@@ -114,7 +114,7 @@ tblNhanVien
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai |
 |----|-------|-------------|
 | 1 | Nguyễn Văn A | 0912345678 |
@@ -136,7 +136,7 @@ tblNguoiDung
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai |
 |----|-------|-------------|
 | 1 | Nguyễn Văn A | 0912345678 |
@@ -155,9 +155,9 @@ tblNguoiDung
 
 **Trạng thái CSDL sau:**
 
-tblNguoiDung
-| ma | hoTen | soDienThoai | diemTichLuy | tblHangHoiVienMa |
-|----|-------|-------------|-------------|-------------------|
+tblUser
+| ma | hoTen | soDienThoai | diemTichLuy | tblMembershipTierMa |
+|----|-------|-------------|-------------|---------------------|
 | 1 | Nguyễn Văn A | 0912345678 | 1250 | 2 |
 | 2 | **Lê Thị D** | **0911111111** | **0** | **1** |
 
@@ -167,7 +167,7 @@ tblNguoiDung
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | matKhau |
 |----|-------|---------|
 | 1 | Nguyễn Văn A | $2a$10$hashAbc@1234 |
@@ -185,12 +185,12 @@ tblNguoiDung
 
 **Trạng thái CSDL sau:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | matKhau |
 |----|-------|---------|
 | 1 | Nguyễn Văn A | **$2a$10$hashNewPass@2025** |
 
-tblPhienDangNhap
+tblLoginSession
 | ma | trangThai |
 |----|-----------|
 | 1 | **Đã thu hồi** |
@@ -201,7 +201,7 @@ tblPhienDangNhap
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | matKhau |
 |----|-------|---------|
 | 1 | Nguyễn Văn A | $2a$10$hashAbc@1234 |
@@ -223,7 +223,7 @@ tblNguoiDung
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai | matKhau | soLanSai | thoiGianKhoa |
 |----|-------|-------------|---------|----------|--------------|
 | 1 | Nguyễn Văn A | 0912345678 | $2a$10$hashAbc@1234 | 0 | null |
@@ -242,7 +242,7 @@ tblNguoiDung
 
 **Trạng thái CSDL sau:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai | soLanSai | thoiGianKhoa |
 |----|-------|-------------|----------|--------------|
 | 1 | Nguyễn Văn A | 0912345678 | **5** | **2026-06-01 10:15** |
@@ -253,7 +253,7 @@ tblNguoiDung
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai | email |
 |----|-------|-------------|-------|
 | 1 | Nguyễn Văn A | 0912345678 | vana@email.com |
@@ -275,14 +275,14 @@ tblNguoiDung
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai |
 |----|-------|-------------|
 | 1 | Nguyễn Văn A | 0912345678 |
 
 tblOTP
-| ma | maOTP | loai | thoiHanHetHan | daXacMinh | tblNguoiDungMa |
-|----|-------|------|---------------|-----------|----------------|
+| ma | maOTP | loai | thoiHanHetHan | daXacMinh | tblUserMa |
+|----|-------|------|---------------|-----------|-----------|
 | 1 | 482917 | DANG_KY | 2026-06-01 10:05 | false | 1 |
 
 **Kịch bản thực hiện:**
@@ -297,11 +297,11 @@ tblOTP
 **Trạng thái CSDL sau:**
 
 tblOTP
-| ma | maOTP | loai | daXacMinh | tblNguoiDungMa |
-|----|-------|------|-----------|----------------|
+| ma | maOTP | loai | daXacMinh | tblUserMa |
+|----|-------|------|-----------|-----------|
 | 1 | 482917 | DANG_KY | **true** | 1 |
 
-tblNguoiDung: Tài khoản chưa tạo (đăng ký bị hủy).
+tblUser: Tài khoản chưa tạo (đăng ký bị hủy).
 
 ---
 
@@ -309,7 +309,7 @@ tblNguoiDung: Tài khoản chưa tạo (đăng ký bị hủy).
 
 **Trạng thái CSDL trước:**
 
-tblNguoiDung
+tblUser
 | ma | hoTen | soDienThoai | email |
 |----|-------|-------------|-------|
 | 1 | Nguyễn Văn A | 0912345678 | vana@email.com |
