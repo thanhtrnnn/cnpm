@@ -83,21 +83,51 @@ deactivate SearchClient
 **Kịch bản phiên bản 3 - Đặt phòng**
 
 1. Nhân viên lễ tân click chức năng "Đặt phòng" trên giao diện ReceptionistHomePage.
-2. Phương thức navigate() của lớp SearchFreeRoomForm được gọi, hiển thị form tìm phòng trống.
-3. Nhân viên nhập thời gian bắt đầu, thời gian kết thúc và chọn chi nhánh.
-4. Nhân viên click nút [Tìm phòng trống].
-5. Phương thức searchFreeRoom(startTime: Date, endTime: Date, branchId: int) của lớp BookingController được gọi.
-6. BookingController truy vấn danh sách phòng trống từ Entity Room.
-7. SearchFreeRoomForm hiển thị danh sách phòng trống cho nhân viên.
-8. Nhân viên chọn phòng mong muốn.
-9. SearchFreeRoomForm chuyển sang SearchClientForm với roomId đã chọn.
-10. Nhân viên nhập thông tin khách hàng (tên hoặc SĐT) và click [Tìm kiếm].
-11. Phương thức searchClient(keyword: String) của lớp BookingController được gọi.
-12. BookingController truy vấn danh sách khách hàng từ Entity Customer.
-13. SearchClientForm hiển thị danh sách khách hàng khớp.
-14. Nhân viên chọn khách hàng tương ứng.
-15. SearchClientForm chuyển sang ConfirmBookingModal với đầy đủ thông tin.
-16. Nhân viên click [Xác nhận đặt phòng].
+2. Phương thức btnDatPhongClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnDatPhongClick() gọi phương thức navigate() của lớp SearchFreeRoomForm.
+4. Lớp SearchFreeRoomForm hiển thị form tìm phòng trống cho nhân viên.
+5. Nhân viên hỏi khách hàng thời gian đặt phòng.
+6. Khách hàng trả lời.
+7. Nhân viên nhập thời gian bắt đầu (startTime), thời gian kết thúc (endTime) và chọn chi nhánh (branchId).
+8. Nhân viên click nút [Tìm phòng trống].
+9. Phương thức btnSearchClick() của lớp SearchFreeRoomForm được gọi.
+10. Phương thức btnSearchClick() gọi phương thức searchFreeRoom(startTime: Date, endTime: Date, branchId: int) của lớp BookingController.
+11. Phương thức searchFreeRoom() gọi phương thức findByTimeAndBranch(startTime, endTime, branchId) của lớp Entity Room.
+12. Lớp Room trả kết quả danh sách phòng trống về cho phương thức searchFreeRoom().
+13. Phương thức searchFreeRoom() trả kết quả về cho phương thức btnSearchClick().
+14. Lớp SearchFreeRoomForm hiển thị danh sách phòng trống cho nhân viên.
+15. Nhân viên ấn vào phòng trống.
+16. Phương thức tblRoomsClick(selectedRow: int) của lớp SearchFreeRoomForm được gọi.
+17. Phương thức tblRoomsClick() gọi phương thức navigate(roomId) của lớp SearchClientForm.
+18. Lớp SearchClientForm hiển thị form tìm khách hàng cho nhân viên.
+19. Nhân viên hỏi khách hàng về thông tin khách hàng.
+20. Khách hàng trả lời.
+21. Nhân viên nhập thông tin khách hàng (tên hoặc số điện thoại) và click [Tìm kiếm].
+22. Phương thức btnSearchClick() của lớp SearchClientForm được gọi.
+23. Phương thức btnSearchClick() gọi phương thức searchClient(keyword: String) của lớp BookingController.
+24. Phương thức searchClient() gọi phương thức findByKeyword(keyword) của lớp Entity Customer.
+25. Lớp Customer trả kết quả danh sách khách hàng về cho phương thức searchClient().
+26. Phương thức searchClient() trả kết quả về cho phương thức btnSearchClick().
+27. Lớp SearchClientForm hiển thị danh sách khách hàng khớp.
+28. Nhân viên chọn thông tin khách hàng tương ứng.
+29. Phương thức tblClientsClick(selectedRow: int) của lớp SearchClientForm được gọi.
+30. Phương thức tblClientsClick() gọi phương thức navigate(roomId, clientId, timeRange) của lớp ConfirmBookingModal.
+31. Lớp ConfirmBookingModal hiển thị thông tin xác nhận đặt phòng.
+32. Nhân viên ấn nút xác nhận.
+33. Phương thức btnConfirmClick() của lớp ConfirmBookingModal được gọi.
+34. Phương thức btnConfirmClick() gọi phương thức createBooking(clientId: int, roomId: int, startTime: Date, endTime: Date, staffId: int) của lớp BookingController.
+35. Phương thức createBooking() gọi phương thức updateStatus(roomId, "Chờ nhận") của lớp Entity Room_receipt.
+36. Lớp Room_receipt cập nhật trạng thái và trả kết quả về cho phương thức createBooking().
+37. Phương thức createBooking() lưu booking vào CSDL và trả BookingResponse về cho phương thức btnConfirmClick().
+38. Lớp ConfirmBookingModal hiển thị thông báo "Đặt phòng thành công!".
+39. Nhân viên ấn nút OK.
+40. Phương thức showMessage() của lớp ConfirmBookingModal được gọi.
+41. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+42. Hệ thống quay về giao diện chính ReceptionistHomePage.
+
+**Ngoại lệ:**
+- **Phòng trống không tìm thấy:** Phương thức searchFreeRoom() trả về danh sách rỗng. Lớp SearchFreeRoomForm hiển thị "Không có phòng trống trong khung giờ này."
+- **Khách hàng chưa có trong CSDL:** Lớp SearchClientForm hiển thị nút [Đăng ký nhanh]. Nhân viên nhập thông tin mới, hệ thống tạo khách hàng mới trước khi tiếp tục.
 17. Phương thức createBooking(clientId: int, roomId: int, startTime: Date, endTime: Date, staffId: int) của lớp BookingController được gọi.
 18. BookingController cập nhật trạng thái phòng thành "Chờ nhận" và lưu booking vào CSDL.
 19. ConfirmBookingModal hiển thị thông báo "Đặt phòng thành công!".
@@ -153,19 +183,39 @@ deactivate CheckIn
 
 **Kịch bản phiên bản 3 - Check-in**
 
-1. Nhân viên lễ tân click chức năng "Check-in" trên giao diện chính.
-2. Phương thức getPendingBookings(branchId: int, date: Date) của lớp BookingController được gọi.
-3. BookingController truy vấn danh sách booking có trạng thái "Chờ nhận" hôm nay.
-4. CheckInPage hiển thị danh sách booking chờ nhận phòng.
-5. Nhân viên chọn booking cần check-in.
-6. Nhân viên click [Xác nhận Check-in].
-7. Phương thức checkIn(bookingId: int) của lớp BookingController được gọi.
-8. BookingController cập nhật trạng thái phòng từ "Chờ nhận" sang "Đang hoạt động" và ghi nhận thời gian bắt đầu.
-9. CheckInPage hiển thị "Check-in thành công! Phòng [tên phòng] đã sẵn sàng."
+1. Nhân viên lễ tân click chức năng "Check-in" trên giao diện ReceptionistHomePage.
+2. Phương thức btnCheckInClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnCheckInClick() gọi phương thức navigate() của lớp CheckInPage.
+4. Lớp CheckInPage hiển thị danh sách booking chờ nhận phòng.
+5. Phương thức formLoad() của lớp CheckInPage được gọi.
+6. Phương thức formLoad() gọi phương thức getPendingBookings(branchId: int, date: Date) của lớp BookingController.
+7. Phương thức getPendingBookings() gọi phương thức findByStatus("Chờ nhận") của lớp Entity Room.
+8. Lớp Room trả kết quả danh sách booking về cho phương thức getPendingBookings().
+9. Phương thức getPendingBookings() trả kết quả về cho phương thức formLoad().
+10. Lớp CheckInPage hiển thị danh sách booking "Chờ nhận" hôm nay cho nhân viên.
+11. Nhân viên hỏi khách hàng thông tin (tên hoặc mã đặt phòng) để đối chiếu.
+12. Khách hàng trả lời.
+13. Nhân viên ấn chọn booking tương ứng cần check-in trên danh sách.
+14. Phương thức tblPendingBookingsClick(selectedRow: int) của lớp CheckInPage được gọi.
+15. Phương thức tblPendingBookingsClick() gọi phương thức navigate(bookingId) của lớp ConfirmCheckInView.
+16. Lớp ConfirmCheckInView hiển thị thông tin chi tiết của phòng và khách hàng.
+17. Nhân viên ấn nút xác nhận check-in.
+18. Phương thức btnCheckInClick() của lớp ConfirmCheckInView được gọi.
+19. Phương thức btnCheckInClick() gọi phương thức checkIn(bookingId: int) của lớp BookingController.
+20. Phương thức checkIn() gọi phương thức updateStatus(roomId, "Đang hoạt động") của lớp Entity Room.
+21. Lớp Room cập nhật trạng thái và trả kết quả về cho phương thức checkIn().
+22. Phương thức checkIn() gọi phương thức setStartTime(now) của lớp Entity Room_receipt.
+23. Lớp Room_receipt ghi nhận thời gian bắt đầu và trả kết quả về cho phương thức checkIn().
+24. Phương thức checkIn() trả BookingResponse về cho phương thức btnCheckInClick().
+25. Lớp ConfirmCheckInView hiển thị thông báo "Check-in thành công! Phòng [tên phòng] đã sẵn sàng."
+26. Nhân viên ấn nút quay lại.
+27. Phương thức showMessage() của lớp ConfirmCheckInView được gọi.
+28. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+29. Hệ thống quay về giao diện chính ReceptionistHomePage.
 
 **Ngoại lệ:**
-- **Phòng đang dọn dẹp:** BookingController kiểm tra trạng thái phòng, trả về lỗi. CheckInPage hiển thị "Phòng đang dọn dẹp, vui lòng chờ."
-- **Khách hàng không đến:** Nhân viên chọn hủy booking thay vì check-in. BookingController chuyển trạng thái booking sang "Đã hủy".
+- **Phòng đang dọn dẹp:** Phương thức checkIn() kiểm tra trạng thái phòng, trả về lỗi. Lớp ConfirmCheckInView hiển thị "Phòng đang dọn dẹp, vui lòng chờ."
+- **Khách hàng không đến:** Nhân viên chọn hủy booking thay vì check-in. Phương thức cancelBooking() của BookingController được gọi, chuyển trạng thái booking sang "Đã hủy".
 
 ---
 
@@ -235,25 +285,56 @@ deactivate CheckOut
 
 **Kịch bản phiên bản 3 - Check-out**
 
-1. Nhân viên lễ tân click chức năng "Check-out" trên giao diện chính.
-2. Phương thức getActiveRooms(branchId: int) của lớp BookingController được gọi.
-3. BookingController truy vấn danh sách phòng trạng thái "Đang hoạt động".
-4. CheckOutPage hiển thị danh sách phòng đang sử dụng.
-5. Nhân viên chọn phòng cần check-out.
-6. CheckOutPage chuyển sang InvoicePanel với bookingId đã chọn.
-7. Phương thức calculateInvoice(bookingId: int) của lớp BookingController được gọi.
-8. BookingController tính tiền phòng (thời gian × đơn giá) + tổng tiền dịch vụ từ ChiTietHoaDon.
-9. InvoicePanel hiển thị chi tiết hóa đơn với tổng tiền.
-10. Nhân viên nhập mã voucher và chọn phương thức thanh toán (tiền mặt/chuyển khoản).
-11. Nhân viên click [Xác nhận thanh toán].
-12. Phương thức confirmPayment(invoiceId: int, paymentMethod: String, voucherCode: String) của lớp BookingController được gọi.
-13. BookingController cập nhật trạng thái hóa đơn "Đã thanh toán", chuyển phòng về "Trống", cộng điểm hội viên.
-14. InvoicePanel hiển thị "Check-out thành công! Tổng tiền: [X]đ."
-15. Nhân viên click [In hóa đơn].
+1. Nhân viên lễ tân click chức năng "Check-out" trên giao diện ReceptionistHomePage.
+2. Phương thức btnCheckOutClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnCheckOutClick() gọi phương thức navigate() của lớp CheckOutPage.
+4. Lớp CheckOutPage hiển thị danh sách phòng đang hoạt động.
+5. Phương thức formLoad() của lớp CheckOutPage được gọi.
+6. Phương thức formLoad() gọi phương thức getActiveRooms(branchId: int) của lớp BookingController.
+7. Phương thức getActiveRooms() gọi phương thức findByStatus("Đang hoạt động") của lớp Entity Room.
+8. Lớp Room trả kết quả danh sách phòng về cho phương thức getActiveRooms().
+9. Phương thức getActiveRooms() trả kết quả về cho phương thức formLoad().
+10. Lớp CheckOutPage hiển thị danh sách phòng đang sử dụng cho nhân viên.
+11. Nhân viên hỏi khách hàng số phòng cần trả.
+12. Khách hàng trả lời.
+13. Nhân viên chọn phòng tương ứng trên danh sách.
+14. Phương thức tblActiveRoomsClick(selectedRow: int) của lớp CheckOutPage được gọi.
+15. Phương thức tblActiveRoomsClick() gọi phương thức navigate(room_receipt_ID) của lớp InvoicePanel.
+16. Lớp InvoicePanel hiển thị chi tiết hóa đơn.
+17. Phương thức formLoad(invoice: Room_receipt) của lớp InvoicePanel được gọi.
+18. Phương thức formLoad() gọi phương thức calculateInvoice(room_receipt_ID: int) của lớp BookingController.
+19. Phương thức calculateInvoice() gọi phương thức calculateTimeFee() + calculateServiceFee() của lớp Entity Room_receipt.
+20. Lớp Room_receipt trả kết quả hóa đơn về cho phương thức calculateInvoice().
+21. Phương thức calculateInvoice() trả Room_receipt về cho phương thức formLoad().
+22. Lớp InvoicePanel hiển thị chi tiết tiền phòng, dịch vụ, thời gian sử dụng và tổng tiền.
+23. Nhân viên thông báo tổng tiền cho khách hàng.
+24. Khách hàng cung cấp mã ưu đãi (nếu có).
+25. Nhân viên nhập mã và ấn áp dụng.
+26. Phương thức btnApply() của lớp InvoicePanel được gọi.
+27. Phương thức btnApply() gọi phương thức applyPromotion(room_receipt_ID: int) của lớp BookingController.
+28. Phương thức applyPromotion() gọi phương thức applyVoucher() của lớp Entity Promotion.
+29. Lớp Promotion trả kết quả giảm giá về cho phương thức applyPromotion().
+30. Phương thức applyPromotion() trả kết quả về cho phương thức btnApply().
+31. Lớp InvoicePanel cập nhật lại tổng tiền sau giảm giá.
+32. Khách hàng đưa tiền mặt cho nhân viên.
+33. Nhân viên chọn phương thức thanh toán và click nút xác nhận thanh toán.
+34. Phương thức btnThanhToanClick() của lớp InvoicePanel được gọi.
+35. Phương thức btnThanhToanClick() gọi phương thức confirmPayment(room_receipt_ID: int, paymentMethod: String, voucherCode: String) của lớp BookingController.
+36. Phương thức confirmPayment() gọi phương thức updateStatus("Đã thanh toán") của lớp Entity Room_receipt.
+37. Phương thức confirmPayment() gọi phương thức updateStatus("Trống") của lớp Entity Room.
+38. Phương thức confirmPayment() gọi phương thức addPoints(base_score) của lớp Entity Customer.
+39. Các lớp Entity trả kết quả lưu trữ về cho phương thức confirmPayment().
+40. Phương thức confirmPayment() trả Room_receipt về cho phương thức btnThanhToanClick().
+41. Lớp InvoicePanel hiển thị thông báo "Check-out thành công! Tổng tiền: [X]đ."
+42. Nhân viên click nút in hóa đơn (để đưa cho khách hàng) và ấn hoàn tất.
+43. Phương thức btnInHoaDonClick() của lớp InvoicePanel được gọi.
+44. Phương thức btnInHoaDonClick() gọi phương thức showMessage() của lớp InvoicePanel.
+45. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+46. Hệ thống quay về giao diện chính ReceptionistHomePage.
 
 **Ngoại lệ:**
-- **Voucher không hợp lệ:** BookingController trả về lỗi. InvoicePanel hiển thị "Mã voucher không hợp lệ hoặc đã hết hạn."
-- **Thanh toán chuyển khoản thất bại:** InvoicePanel hiển thị lỗi, yêu cầu chọn lại phương thức.
+- **Voucher không hợp lệ:** Phương thức applyPromotion() trả về lỗi. Lớp InvoicePanel hiển thị "Mã voucher không hợp lệ hoặc đã hết hạn."
+- **Thanh toán chuyển khoản thất bại:** Phương thức confirmPayment() trả về lỗi. Lớp InvoicePanel hiển thị lỗi, yêu cầu chọn lại phương thức.
 
 ---
 
@@ -302,19 +383,37 @@ deactivate Cancel
 
 **Kịch bản phiên bản 3 - Huỷ phòng**
 
-1. Nhân viên lễ tân click "Quản lý đặt phòng" trên giao diện chính.
-2. Nhân viên nhập thông tin tìm kiếm (tên khách, SĐT, hoặc mã booking).
-3. Phương thức searchBooking(keyword: String) của lớp BookingController được gọi.
-4. BookingController truy vấn danh sách booking khớp từ CSDL.
-5. CancelBookingPage hiển thị danh sách booking tìm thấy.
-6. Nhân viên chọn booking cần hủy.
-7. Nhân viên click [Hủy đặt phòng].
-8. CancelBookingPage hiển thị xác nhận "Bạn có chắc chắn muốn hủy booking này?".
-9. Nhân viên click [Đồng ý].
-10. Phương thức cancelBooking(bookingId: int) của lớp BookingController được gọi.
-11. BookingController cập nhật trạng thái booking sang "Đã hủy" và chuyển phòng về "Trống".
-12. CancelBookingPage hiển thị "Hủy đặt phòng thành công."
+1. Nhân viên lễ tân click chức năng "Quản lý đặt phòng" trên giao diện ReceptionistHomePage.
+2. Phương thức btnBookingManagementClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnBookingManagementClick() gọi phương thức navigate() của lớp CancelBookingPage.
+4. Lớp CancelBookingPage hiển thị form tìm kiếm booking.
+5. Nhân viên hỏi khách hàng thông tin tra cứu (họ tên, số điện thoại hoặc mã phòng đã đặt).
+6. Khách hàng trả lời.
+7. Nhân viên nhập thông tin tìm kiếm và ấn nút tìm kiếm.
+8. Phương thức btnSearchClick() của lớp CancelBookingPage được gọi.
+9. Phương thức btnSearchClick() gọi phương thức searchBooking(keyword: String) của lớp BookingController.
+10. Phương thức searchBooking() gọi phương thức findByKeyword(keyword) của lớp Entity Room.
+11. Lớp Room trả kết quả danh sách booking về cho phương thức searchBooking().
+12. Phương thức searchBooking() trả kết quả về cho phương thức btnSearchClick().
+13. Lớp CancelBookingPage hiển thị danh sách các booking tương ứng cho nhân viên.
+14. Nhân viên ấn chọn bản ghi booking cần hủy.
+15. Phương thức tblBookingsClick(selectedRow: int) của lớp CancelBookingPage được gọi.
+16. Lớp CancelBookingPage hiển thị thông tin chi tiết booking và nút [Hủy đặt phòng].
+17. Nhân viên click [Hủy đặt phòng].
+18. Lớp CancelBookingPage hiển thị xác nhận "Bạn có chắc chắn muốn hủy booking này?".
+19. Nhân viên click [Đồng ý].
+20. Phương thức btnCancelClick() của lớp CancelBookingPage được gọi.
+21. Phương thức btnCancelClick() gọi phương thức cancelBooking(bookingId: int) của lớp BookingController.
+22. Phương thức cancelBooking() gọi phương thức updateStatus(roomId, "Trống") của lớp Entity Room.
+23. Lớp Room cập nhật trạng thái và trả kết quả về cho phương thức cancelBooking().
+24. Phương thức cancelBooking() cập nhật trạng thái booking sang "Đã hủy" trong CSDL.
+25. Phương thức cancelBooking() trả BookingResponse về cho phương thức btnCancelClick().
+26. Lớp CancelBookingPage hiển thị thông báo "Hủy đặt phòng thành công."
+27. Nhân viên ấn nút quay lại.
+28. Phương thức showMessage() của lớp CancelBookingPage được gọi.
+29. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+30. Hệ thống quay về giao diện chính ReceptionistHomePage.
 
 **Ngoại lệ:**
-- **Không tìm thấy booking:** BookingController trả về danh sách rỗng. CancelBookingPage hiển thị "Không tìm thấy booking phù hợp."
-- **Booking đã quá thời gian hủy:** BookingController kiểm tra thời gian, trả về lỗi. CancelBookingPage hiển thị "Booking đã quá thời gian hủy."
+- **Không tìm thấy booking:** Phương thức searchBooking() trả về danh sách rỗng. Lớp CancelBookingPage hiển thị "Không tìm thấy booking phù hợp."
+- **Booking đã quá thời gian hủy:** Phương thức cancelBooking() kiểm tra thời gian, trả về lỗi. Lớp CancelBookingPage hiển thị "Booking đã quá thời gian hủy."
