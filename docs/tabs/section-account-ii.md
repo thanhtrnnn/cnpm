@@ -105,36 +105,36 @@ User gắn composition với OTP: một OTP không tồn tại độc lập nế
 title Biểu đồ thực thể – Module Tài khoản & Thành viên
 
 class User {
-  -hoTen
-  -soDienThoai
+  -fullName
+  -phoneNumber
   -email
-  -matKhau
-  -diemTichLuy
-  -ngayTao
+  -password
+  -loyaltyPoints
+  -createdAt
 }
 class Employee {
-  -hoTen
-  -vaiTro
-  -chiNhanh
-  -trangThai
+  -fullName
+  -role
+  -branch
+  -status
 }
 class MembershipTier {
-  -tenHang
-  -diemToiThieu
-  -moTa
-  -heSoUuDai
+  -tierName
+  -minPoints
+  -description
+  -discountRate
 }
 class OTP {
-  -maOTP
-  -loai
-  -thoiHanHetHan
-  -daXacMinh
+  -otpCode
+  -type
+  -expiresAt
+  -verified
 }
 class LoginSession {
-  -tokenPhien
-  -thoiGianDangNhap
-  -thoiGianHetHan
-  -thietBi
+  -sessionToken
+  -loginTime
+  -expiresAt
+  -device
 }
 
 User "n" o-- "1" MembershipTier : aggregation
@@ -237,44 +237,44 @@ title Biểu đồ lớp phân tích – Module Tài khoản & Thành viên
 package "Boundary" #DDEEFF {
   together {
     class LoginView {
-      -txtSDT
-      -txtMatKhau
-      -btnDangNhap
-      -lnkQuenMatKhau
-      -lnkDangKy
+      -txtPhoneNumber
+      -txtPassword
+      -btnLogin
+      -lnkForgotPassword
+      -lnkRegister
     }
     class RegisterView {
-      -txtHoTen
-      -txtSDT
+      -txtFullName
+      -txtPhoneNumber
       -txtEmail
-      -txtMatKhau
-      -txtXacNhanMK
-      -btnTiepTuc
+      -txtPassword
+      -txtConfirmPassword
+      -btnContinue
     }
     class OTPVerifyView {
       -txtOTP
-      -btnXacNhan
-      -btnGuiLaiOTP
+      -btnConfirm
+      -btnResendOTP
     }
     class ChangePasswordView {
-      -txtMKHienTai
-      -txtMKMoi
-      -txtXacNhanMKMoi
-      -btnLuu
+      -txtCurrentPassword
+      -txtNewPassword
+      -txtConfirmNewPassword
+      -btnSave
     }
     class ProfileView {
-      -lblHoTen
-      -lblSDT
+      -lblFullName
+      -lblPhoneNumber
       -lblEmail
-      -lblHangHoiVien
-      -lblDiemTichLuy
-      -btnChinhSua
+      -lblMembershipTier
+      -lblLoyaltyPoints
+      -btnEdit
     }
     class StaffManageView {
-      -tblDanhSachNV
-      -btnThem
-      -btnSua
-      -btnXoa
+      -tblStaffList
+      -btnAdd
+      -btnEdit
+      -btnDelete
     }
   }
 }
@@ -282,12 +282,12 @@ package "Boundary" #DDEEFF {
 package "Entity" #FFF3CD {
   together {
     class User {
-      -hoTen
-      -soDienThoai
+      -fullName
+      -phoneNumber
       -email
-      -matKhau
-      -diemTichLuy
-      -ngayTao
+      -password
+      -loyaltyPoints
+      -createdAt
       +checkLogin()
       +register()
       +changePassword()
@@ -295,34 +295,34 @@ package "Entity" #FFF3CD {
       +updateProfile()
     }
     class Employee {
-      -hoTen
-      -vaiTro
-      -chiNhanh
-      -trangThai
+      -fullName
+      -role
+      -branch
+      -status
       +getAllStaff()
       +addStaff()
       +updateStaff()
       +deleteStaff()
     }
     class MembershipTier {
-      -tenHang
-      -diemToiThieu
-      -moTa
-      -heSoUuDai
+      -tierName
+      -minPoints
+      -description
+      -discountRate
     }
     class OTP {
-      -maOTP
-      -loai
-      -thoiHanHetHan
-      -daXacMinh
+      -otpCode
+      -type
+      -expiresAt
+      -verified
       +verifyOTP()
       +sendOTP()
     }
     class LoginSession {
-      -tokenPhien
-      -thoiGianDangNhap
-      -thoiGianHetHan
-      -thietBi
+      -sessionToken
+      -loginTime
+      -expiresAt
+      -device
     }
   }
 }
@@ -409,10 +409,10 @@ KH -> B1 : 1: truy cập chức năng Đăng nhập
 activate B1
 B1 --> KH : 2: hiển thị giao diện đăng nhập
 KH -> B1 : 3: nhập SĐT + Mật khẩu + nhấn Đăng nhập
-B1 -> E1 : 4: checkLogin(sdt, matKhau)
+B1 -> E1 : 4: checkLogin(phoneNumber, password)
 activate E1
-E1 -> E1 : 5: findBySDT(sdt)
-E1 -> E1 : 6: checkPassword(matKhau, hash)
+E1 -> E1 : 5: findByPhoneNumber(phoneNumber)
+E1 -> E1 : 6: checkPassword(password, hash)
 E1 --> B1 : 7: trả về User + LoginSession
 deactivate E1
 B1 --> KH : 8: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
@@ -500,11 +500,11 @@ KH -> B1 : 1: chọn chức năng Đăng ký
 activate B1
 B1 --> KH : 2: hiển thị giao diện đăng ký
 KH -> B1 : 3: nhập thông tin + nhấn Tiếp tục
-B1 -> E1 : 4: register(hoTen, sdt, email, matKhau)
+B1 -> E1 : 4: register(fullName, phoneNumber, email, password)
 activate E1
-E1 -> E1 : 5: existsBySDT(sdt)
+E1 -> E1 : 5: existsByPhoneNumber(phoneNumber)
 E1 -> E1 : 6: existsByEmail(email)
-E1 -> E2 : 7: sendOTP(sdt, DANG_KY)
+E1 -> E2 : 7: sendOTP(phoneNumber, REGISTER)
 activate E2
 E2 --> E1 : 8: OTP đã gửi
 deactivate E2
@@ -613,11 +613,11 @@ ND -> B1 : 1: truy cập chức năng Đổi mật khẩu
 activate B1
 B1 --> ND : 2: hiển thị giao diện đổi mật khẩu
 ND -> B1 : 3: nhập MK hiện tại, MK mới + nhấn Lưu
-B1 -> E1 : 4: changePassword(mkHienTai, mkMoi)
+B1 -> E1 : 4: changePassword(currentPassword, newPassword)
 activate E1
 E1 -> E1 : 5: findByToken(session)
-E1 -> E1 : 6: checkPassword(mkHienTai, hash)
-E1 -> E1 : 7: hashPassword(mkMoi)
+E1 -> E1 : 6: checkPassword(currentPassword, hash)
+E1 -> E1 : 7: hashPassword(newPassword)
 E1 -> E1 : 8: updatePassword(hash)
 E1 -> E1 : 9: revokeAllSessions()
 E1 --> B1 : 10: đổi mật khẩu thành công
@@ -713,7 +713,7 @@ E1 --> B1 : 4: trả về User
 deactivate E1
 B1 --> KH : 5: hiển thị hồ sơ cá nhân
 KH -> B1 : 6: nhấn Chỉnh sửa + cập nhật + nhấn Lưu
-B1 -> E1 : 7: updateProfile(userId, hoTen, email)
+B1 -> E1 : 7: updateProfile(userId, fullName, email)
 activate E1
 E1 -> E1 : 8: checkEmail(email)
 E1 -> E1 : 9: update()
@@ -810,7 +810,7 @@ deactivate E1
 B1 --> Admin : 5: hiển thị danh sách nhân viên
 
 Admin -> B1 : 6: nhấn Thêm + nhập thông tin + nhấn Lưu
-B1 -> E1 : 7: addStaff(hoTen, vaiTro)
+B1 -> E1 : 7: addStaff(fullName, role)
 activate E1
 E1 -> E1 : 8: save()
 E1 --> B1 : 9: trả về Employee vừa tạo

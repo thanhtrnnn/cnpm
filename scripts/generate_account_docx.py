@@ -486,11 +486,36 @@ def process_file(doc, md_file):
             i += 1
             continue
 
-        # Bullet
-        bm = re.match(r'^(\s*)[-]\s+(.+)$', line)
+        # Bullet (-, *, ▪, •, 🔹, ►)
+        bm = re.match(r'^(\s*)[-*▪•🔹►]\s+(.+)$', line)
         if bm:
+            indent = len(bm.group(1))
             text = bm.group(2).strip()
-            add_formatted_paragraph(doc, text, style='List Bullet')
+            level = min(indent // 2, 2)  # 0, 1, 2
+            p = add_formatted_paragraph(doc, text, style='Normal')
+            p.paragraph_format.left_indent = Pt(18 * (level + 1))
+            p.paragraph_format.first_line_indent = Pt(-12)
+            # Add bullet character
+            first_run = p.runs[0] if p.runs else p.add_run('')
+            first_run_text = first_run.text
+            first_run.text = '•  ' + first_run_text if level == 0 else ('◦  ' + first_run_text if level == 1 else ('▪  ' + first_run_text))
+            i += 1
+            continue
+
+        # Numbered list (1. 2. etc.)
+        nm = re.match(r'^(\s*)\d+[.)]\s+(.+)$', line)
+        if nm:
+            indent = len(nm.group(1))
+            text = nm.group(2).strip()
+            level = min(indent // 2, 2)
+            p = add_formatted_paragraph(doc, text, style='Normal')
+            p.paragraph_format.left_indent = Pt(18 * (level + 1))
+            p.paragraph_format.first_line_indent = Pt(-12)
+            # Add number
+            num_match = re.match(r'^(\d+[.)])\s', line.strip())
+            if num_match:
+                first_run = p.runs[0] if p.runs else p.add_run('')
+                first_run.text = num_match.group(1) + '  ' + first_run.text
             i += 1
             continue
 
@@ -509,6 +534,84 @@ def process_file(doc, md_file):
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     doc = Document()
+
+    # Add numbering config for bullets and numbered lists
+    numbering_part = doc.part.numbering_part
+    numbering_xml = numbering_part._element
+    nsmap = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
+
+    # Bullet list definition
+    from docx.oxml import OxmlElement
+    abstract_num_bullet = OxmlElement('w:abstractNum')
+    abstract_num_bullet.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}abstractNumId', '1')
+    multi_level = OxmlElement('w:multiLevelType')
+    multi_level.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', 'hybridMultilevel')
+    abstract_num_bullet.append(multi_level)
+    for lvl, (indent, hang) in enumerate([(360, 360), (720, 360), (1080, 360)]):
+        level = OxmlElement('w:lvl')
+        level.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ilvl', str(lvl))
+        start = OxmlElement('w:start')
+        start.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
+        level.append(start)
+        num_fmt = OxmlElement('w:numFmt')
+        num_fmt.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', 'bullet')
+        level.append(num_fmt)
+        level_text = OxmlElement('w:lvlText')
+        level_text.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '•' if lvl == 0 else ('◦' if lvl == 1 else '▪'))
+        level.append(level_text)
+        pPr = OxmlElement('w:pPr')
+        ind = OxmlElement('w:ind')
+        ind.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left', str(indent))
+        ind.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}hanging', str(hang))
+        pPr.append(ind)
+        level.append(pPr)
+        if lvl == 0:
+            rPr = OxmlElement('w:rPr')
+            rFonts = OxmlElement('w:rFonts')
+            rFonts.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}hint', 'default')
+            rPr.append(rFonts)
+            level.append(rPr)
+        abstract_num_bullet.append(level)
+    numbering_xml.append(abstract_num_bullet)
+    num_bullet = OxmlElement('w:num')
+    num_bullet.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numId', '1')
+    abstract_ref = OxmlElement('w:abstractNumId')
+    abstract_ref.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
+    num_bullet.append(abstract_ref)
+    numbering_xml.append(num_bullet)
+
+    # Numbered list definition
+    abstract_num_num = OxmlElement('w:abstractNum')
+    abstract_num_num.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}abstractNumId', '2')
+    multi_level2 = OxmlElement('w:multiLevelType')
+    multi_level2.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', 'hybridMultilevel')
+    abstract_num_num.append(multi_level2)
+    for lvl, (indent, hang) in enumerate([(360, 360), (720, 360), (1080, 360)]):
+        level = OxmlElement('w:lvl')
+        level.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ilvl', str(lvl))
+        start = OxmlElement('w:start')
+        start.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
+        level.append(start)
+        num_fmt = OxmlElement('w:numFmt')
+        num_fmt.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', 'decimal')
+        level.append(num_fmt)
+        level_text = OxmlElement('w:lvlText')
+        level_text.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', f'%{lvl+1}.')
+        level.append(level_text)
+        pPr = OxmlElement('w:pPr')
+        ind = OxmlElement('w:ind')
+        ind.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}left', str(indent))
+        ind.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}hanging', str(hang))
+        pPr.append(ind)
+        level.append(pPr)
+        abstract_num_num.append(level)
+    numbering_xml.append(abstract_num_num)
+    num_num = OxmlElement('w:num')
+    num_num.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numId', '2')
+    abstract_ref2 = OxmlElement('w:abstractNumId')
+    abstract_ref2.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '2')
+    num_num.append(abstract_ref2)
+    numbering_xml.append(num_num)
 
     style = doc.styles['Normal']
     font = style.font
