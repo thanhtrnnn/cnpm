@@ -61,42 +61,64 @@
 
 **Bước 1 – Mô tả chức năng bằng đoạn văn xuôi**
 
-Hệ thống cho phép khách hàng đăng ký tài khoản hội viên mới bằng cách cung cấp họ tên, số điện thoại, email và mật khẩu; sau đó xác minh số điện thoại qua mã OTP trước khi hoàn tất đăng ký. Mỗi tài khoản gắn liền với một hạng hội viên (Thường, Bạc, Vàng, Kim Cương) dựa trên điểm tích lũy. Người dùng sau khi đăng nhập có thể xem và cập nhật thông tin cá nhân như họ tên và email, hoặc thực hiện đổi mật khẩu bằng cách xác minh mật khẩu cũ rồi nhập mật khẩu mới. Hệ thống ghi nhận các phiên đăng nhập để phục vụ bảo mật và thu hồi phiên khi đổi mật khẩu. Ngoài ra, chủ doanh nghiệp có quyền quản lý tài khoản nhân viên: tạo, chỉnh sửa và xóa tài khoản nhân viên trong hệ thống.
+Module Tài khoản & Thành viên quản lý toàn bộ người dùng trong hệ thống chuỗi nhà hàng karaoke. Hệ thống có ba loại người dùng: khách hàng, nhân viên và chủ doanh nghiệp. Tất cả đều cần một tài khoản để đăng nhập vào hệ thống, mỗi tài khoản có số điện thoại (dùng làm tên đăng nhập), email, mật khẩu đã mã hóa và vai trò (khách hàng, nhân viên, admin).
+
+Khách hàng có thể tự đăng ký tài khoản mới bằng cách cung cấp họ tên, số điện thoại, email và mật khẩu. Hệ thống gửi mã OTP 6 chữ số đến số điện thoại để xác minh trước khi tạo tài khoản. Sau khi đăng ký, khách hàng được xếp vào hạng hội viên "Thường" với điểm tích lũy bằng 0. Mỗi khách hàng thuộc về một hạng hội viên (Thường, Bạc, Vàng, Kim Cương) dựa trên điểm tích lũy. Hạng hội viên định nghĩa ngưỡng điểm tối thiểu, mô tả và hệ số ưu đãi. Khách hàng có thể xem hồ sơ cá nhân (họ tên, số điện thoại, email, hạng hội viên, điểm tích lũy, ngày tham gia) và cập nhật họ tên, email.
+
+Nhân viên được tạo bởi chủ doanh nghiệp. Mỗi nhân viên có họ tên, vai trò (Lễ tân, Phục vụ, Quản lý), chi nhánh làm việc và trạng thái (Đang làm, Đã nghỉ). Nhân viên không thể tự đăng ký mà phải do admin tạo tài khoản.
+
+Tất cả người dùng (khách hàng, nhân viên) đều có thể đổi mật khẩu bằng cách xác minh mật khẩu hiện tại rồi nhập mật khẩu mới. Sau khi đổi mật khẩu, tất cả phiên đăng nhập khác bị thu hồi để đảm bảo bảo mật.
+
+Hệ thống ghi nhận các phiên đăng nhập (token, thời gian đăng nhập, thời gian hết hạn, thiết bị) để phục vụ bảo mật và quản lý truy cập. Mỗi lần người dùng đăng nhập trên thiết bị mới sẽ tạo một phiên đăng nhập mới.
+
+Chủ doanh nghiệp (admin) có quyền quản lý tài khoản nhân viên toàn hệ thống: xem danh sách, thêm mới, chỉnh sửa và xóa (chuyển trạng thái "Đã nghỉ"). Không thể xóa nhân viên đang xử lý đơn hàng.
 
 **Bước 2 + 3 – Trích danh từ và đánh giá**
 
 ▪ Hệ thống → loại: quá chung, không phải thực thể nghiệp vụ
-▪ Khách hàng → lớp User: fullName, phoneNumber, email, password, loyaltyPoints, createdAt
+▪ Người dùng → lớp User: đây là lớp gốc cho MỌI người dùng trong hệ thống (khách hàng, nhân viên, admin đều có tài khoản User). Thuộc tính: fullName, phoneNumber, email, password, role, createdAt
 ▪ Tài khoản → thuộc về User (gộp vào User, tránh tách thừa)
 ▪ Họ tên → thuộc tính fullName của User
-▪ Số điện thoại → thuộc tính phoneNumber của User (dùng làm username đăng nhập)
+▪ Số điện thoại → thuộc tính phoneNumber của User (dùng làm tên đăng nhập)
 ▪ Email → thuộc tính email của User
 ▪ Mật khẩu → thuộc tính password của User (lưu dạng mã hóa)
-▪ Ngày tham gia → thuộc tính createdAt của User
-▪ Hạng hội viên → lớp MembershipTier: tierName, minPoints, description, discountRate
-▪ Điểm tích lũy → thuộc tính loyaltyPoints của User
-▪ Mã OTP → lớp OTP: otpCode, type, expiresAt, verified
-▪ Phiên đăng nhập → lớp LoginSession: sessionToken, loginTime, expiresAt, device
-▪ Lịch sử → loại: quá chung → cụ thể là LoginSession đã đủ
+▪ Vai trò → thuộc tính role của User (CLIENT, EMPLOYEE, ADMIN)
+▪ Ngày tạo → thuộc tính createdAt của User
+▪ Khách hàng → lớp Client: KẾ THỪA từ User. Khách hàng là người dùng có vai trò CLIENT, có thêm thông tin về thành viên. Thuộc tính riêng: loyaltyPoints, joinedAt
+▪ Hạng hội viên → lớp MembershipTier: tierName, minPoints, description, discountRate. Đây là dữ liệu danh mục (lookup table), tồn tại độc lập.
+▪ Điểm tích lũy → thuộc tính loyaltyPoints của Client
+▪ Ngày tham gia → thuộc tính joinedAt của Client
+▪ Mã OTP → lớp OTP: otpCode, type, expiresAt, verified. OTP gắn với User (mỗi lần đăng ký/đổi SĐT tạo OTP mới).
+▪ Phiên đăng nhập → lớp LoginSession: sessionToken, loginTime, expiresAt, device. LoginSession gắn với User.
+▪ Nhân viên → lớp Employee: KẾ THỪA từ User. Nhân viên là người dùng có vai trò EMPLOYEE, có thêm thông tin về công việc. Thuộc tính riêng: staffRole, branch, status
+▪ Vai trò nhân viên → thuộc tính staffRole của Employee (Lễ tân, Phục vụ, Quản lý)
+▪ Chi nhánh → thuộc tính branch của Employee (tên chi nhánh, không tách riêng vì Chi nhánh thuộc module khác)
+▪ Trạng thái nhân viên → thuộc tính status của Employee (Đang làm, Đã nghỉ)
+▪ Chủ doanh nghiệp → loại: actor (admin), là một User có vai trò ADMIN, không cần lớp riêng
 ▪ Danh sách → loại: không phải thực thể
 ▪ Giao diện → loại: là Boundary, không phải Entity
-▪ Nhân viên → lớp Employee: fullName, role, branch, status
-▪ Chủ doanh nghiệp → loại: actor, không phải thực thể dữ liệu
 
 **Bước 4 – Xác định quan hệ số lượng**
 
-▪ 1 User có 1 MembershipTier → User – MembershipTier: n – 1
-(nhiều người dùng có thể có cùng hạng)
+▪ User là lớp cha, Client kế thừa từ User → User – Client: 1 – 1 (generalization)
+(mỗi User có vai trò CLIENT thì tương ứng 1 Client)
+▪ User là lớp cha, Employee kế thừa từ User → User – Employee: 1 – 1 (generalization)
+(mỗi User có vai trò EMPLOYEE thì tương ứng 1 Employee)
+▪ 1 Client có 1 MembershipTier → Client – MembershipTier: n – 1
+(nhiều khách hàng có thể có cùng hạng hội viên)
 ▪ 1 User có nhiều OTP → User – OTP: 1 – n
 (mỗi lần đăng ký/đổi SĐT tạo 1 OTP mới)
 ▪ 1 User có nhiều LoginSession → User – LoginSession: 1 – n
 (người dùng có thể đăng nhập trên nhiều thiết bị)
-▪ Employee là lớp độc lập, không có quan hệ với User
-(branch là thuộc tính text, không cần tách riêng vì Chi nhánh thuộc module khác)
+▪ Client và Employee không có quan hệ trực tiếp với nhau
+(cả hai đều kế thừa từ User nhưng phục vụ mục đích khác nhau)
 
 **Bước 5 – Bổ sung quan hệ**
 
-User gắn composition với OTP: một OTP không tồn tại độc lập nếu không có User tương ứng (khi xóa User thì xóa theo tất cả OTP). Tương tự, LoginSession không tồn tại độc lập khỏi User. Quan hệ với MembershipTier là aggregation: MembershipTier là dữ liệu danh mục tồn tại độc lập với User. Employee là lớp riêng biệt, không kế thừa từ User.
+▪ User gắn composition với OTP: OTP không tồn tại độc lập nếu không có User (khi xóa User thì xóa theo tất cả OTP).
+▪ User gắn composition với LoginSession: LoginSession không tồn tại độc lập khỏi User.
+▪ Client gắn aggregation với MembershipTier: MembershipTier là dữ liệu danh mục tồn tại độc lập, nhiều Client có thể thuộc cùng 1 hạng.
+▪ Client và Employee kế thừa (generalization) từ User: cả hai đều có các thuộc tính chung của User (fullName, phoneNumber, email, password) plus các thuộc tính riêng.
 
 **Biểu đồ thực thể Module Tài khoản & Thành viên:**
 
@@ -115,12 +137,15 @@ class User {
   -phoneNumber
   -email
   -password
-  -loyaltyPoints
+  -role
   -createdAt
 }
+class Client {
+  -loyaltyPoints
+  -joinedAt
+}
 class Employee {
-  -fullName
-  -role
+  -staffRole
   -branch
   -status
 }
@@ -143,7 +168,9 @@ class LoginSession {
   -device
 }
 
-User "n" o-- "1" MembershipTier : aggregation
+User <|-- Client : generalization
+User <|-- Employee : generalization
+Client "n" o-- "1" MembershipTier : aggregation
 User "1" *-- "n" OTP : composition
 User "1" *-- "n" LoginSession : composition
 @enduml
@@ -160,16 +187,16 @@ Người dùng nhập SĐT, mật khẩu và nhấn nút Đăng nhập -> hệ t
 Nếu tài khoản không tồn tại -> hệ thống hiển thị thông báo lỗi.
 Nếu mật khẩu sai -> hệ thống hiển thị thông báo lỗi.
 
-Hoàn tất, hệ thống tạo phiên đăng nhập và chuyển hướng trang chủ.
+Hoàn tất, hệ thống tạo phiên đăng nhập và chuyển hướng sang HomeView.
 
-**Boundary:** LoginView
+**Boundary:** LoginView, HomeView
 **Entity:** User
 
 **Phân tích chi tiết chức năng "Đăng ký":**
 
 Người dùng truy cập trang đăng ký -> đề xuất lớp **RegisterView**, có ô nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK, nút Tiếp tục.
 
-Người dùng nhập thông tin và nhấn nút Tiếp tục -> hệ thống cần tạo tài khoản mới -> cần chức năng `register()` của đối tượng **User**.
+Người dùng nhập thông tin và nhấn nút Tiếp tục -> hệ thống cần tạo tài khoản khách hàng mới -> cần chức năng `register()` của đối tượng **Client**.
 
 Hệ thống gửi OTP đến SĐT -> đề xuất lớp **OTPVerifyView**, có ô nhập OTP, nút Xác nhận.
 
@@ -178,7 +205,7 @@ Người dùng nhập OTP và nhấn nút Xác nhận -> hệ thống cần xác
 Hoàn tất, hệ thống tạo tài khoản mới và tự động đăng nhập.
 
 **Boundary:** RegisterView, OTPVerifyView
-**Entity:** User, OTP
+**Entity:** Client, OTP
 
 **Phân tích chi tiết chức năng "Đổi mật khẩu":**
 
@@ -189,25 +216,25 @@ Người dùng nhập MK hiện tại, MK mới và nhấn nút Lưu -> hệ th�
 Nếu MK hiện tại sai -> hệ thống hiển thị thông báo lỗi.
 Nếu MK mới không hợp lệ -> hệ thống hiển thị thông báo lỗi.
 
-Hoàn tất, hệ thống cập nhật mật khẩu mới và thu hồi tất cả phiên đăng nhập khác.
+Hoàn tất, hệ thống cập nhật mật khẩu mới, thu hồi tất cả phiên đăng nhập khác và chuyển hướng về LoginView.
 
-**Boundary:** ChangePasswordView
+**Boundary:** ChangePasswordView, LoginView
 **Entity:** User
 
 **Phân tích chi tiết chức năng "Quản lý thông tin cá nhân":**
 
 Người dùng nhấn vào ảnh đại diện -> đề xuất lớp **ProfileView**, có hiển thị Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, nút Chỉnh sửa.
 
-Hệ thống cần lấy thông tin hồ sơ -> cần chức năng `getProfile()` của đối tượng **User**.
+Hệ thống cần lấy thông tin hồ sơ -> cần chức năng `getProfile()` của đối tượng **Client**.
 
-Người dùng nhấn Chỉnh sửa, sửa thông tin và nhấn Lưu -> hệ thống cần cập nhật hồ sơ -> cần chức năng `updateProfile()` của đối tượng **User**.
+Người dùng nhấn Chỉnh sửa, sửa thông tin và nhấn Lưu -> hệ thống cần cập nhật hồ sơ -> cần chức năng `updateProfile()` của đối tượng **Client**.
 
 Nếu email không hợp lệ hoặc đã được dùng -> hệ thống hiển thị thông báo lỗi.
 
 Hoàn tất, hệ thống cập nhật hồ sơ vào CSDL.
 
 **Boundary:** ProfileView
-**Entity:** User
+**Entity:** Client
 
 **Phân tích chi tiết chức năng "Quản lý nhân viên":**
 
@@ -288,6 +315,11 @@ package "Boundary" #DDEEFF {
       -btnEdit
       -btnDelete
     }
+    class HomeView {
+      -lblWelcome
+      -navMenu
+      -btnLogout
+    }
   }
 }
 
@@ -298,17 +330,20 @@ package "Entity" #FFF3CD {
       -phoneNumber
       -email
       -password
-      -loyaltyPoints
+      -role
       -createdAt
       +checkLogin()
-      +register()
       +changePassword()
+    }
+    class Client {
+      -loyaltyPoints
+      -joinedAt
+      +register()
       +getProfile()
       +updateProfile()
     }
     class Employee {
-      -fullName
-      -role
+      -staffRole
       -branch
       -status
       +getAllStaff()
@@ -339,15 +374,29 @@ package "Entity" #FFF3CD {
   }
 }
 
+' Generalization
+User <|-- Client
+User <|-- Employee
+
 ' Boundary -> Entity
 LoginView --> User
-RegisterView --> User
+LoginView --> HomeView
+RegisterView --> Client
 RegisterView --> OTP
 OTPVerifyView --> OTP
-OTPVerifyView --> User
+OTPVerifyView --> Client
+OTPVerifyView --> HomeView
 ChangePasswordView --> User
-ProfileView --> User
+ChangePasswordView --> LoginView
+ProfileView --> Client
 StaffManageView --> Employee
+HomeView --> User
+
+' Entity relationships
+Client "n" o-- "1" MembershipTier
+User "1" *-- "n" OTP
+User "1" *-- "n" LoginSession
+HomeView --> User
 
 ' Entity relationships
 User "n" o-- "1" MembershipTier
@@ -380,12 +429,13 @@ skinparam sequenceDividerBackgroundColor #DDEEFF
 skinparam sequenceMessageFontColor #000000
 skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
-skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Đăng nhập – Tuần tự Phân tích (5 bước)
 
 actor "Người dùng" as Actor
 boundary LoginView as B1
+boundary HomeView as B2
 entity User as E1
 
 Actor -> B1 : 1: chọn chức năng Đăng nhập
@@ -396,7 +446,10 @@ B1 -> E1 : 4: gọi checkLogin(phoneNumber, password)
 activate E1
 E1 --> B1 : trả kết quả xác thực
 deactivate E1
-B1 --> Actor : 5: chuyển hướng trang chủ, "Đăng nhập thành công"
+B1 -> B2 : 5: chuyển hướng sang HomeView, "Đăng nhập thành công"
+activate B2
+B2 --> Actor : hiển thị trang chủ
+deactivate B2
 deactivate B1
 @enduml
 ```
@@ -409,7 +462,7 @@ deactivate B1
 2. Lớp LoginView hiển thị giao diện đăng nhập.
 3. Người dùng nhập SĐT/Email và Mật khẩu, nhấn nút Đăng nhập.
 4. Lớp LoginView gọi hàm `checkLogin()` của đối tượng User để xác thực.
-5. Lớp LoginView chuyển hướng trang chủ, hiển thị "Đăng nhập thành công".
+5. Lớp LoginView chuyển hướng sang HomeView, hiển thị "Đăng nhập thành công".
 
 #### UC02 – Đăng ký (8 bước)
 
@@ -433,14 +486,15 @@ skinparam sequenceDividerBackgroundColor #DDEEFF
 skinparam sequenceMessageFontColor #000000
 skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
-skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đăng ký – Tuần tự Phân tích (8 bước)
+title Đăng ký – Tuần tự Phân tích (9 bước)
 
 actor "Khách hàng" as Actor
 boundary RegisterView as B1
 boundary OTPVerifyView as B2
-entity User as E1
+boundary HomeView as B3
+entity Client as E1
 entity OTP as E2
 
 Actor -> B1 : 1: chọn liên kết Đăng ký
@@ -467,7 +521,11 @@ B2 -> E1 : gọi saveUser()
 activate E1
 E1 --> B2 : tạo tài khoản thành công
 deactivate E1
-B2 --> Actor : 8: "Đăng ký thành công!", tự động đăng nhập
+B2 --> Actor : 8: "Đăng ký thành công!"
+B2 -> B3 : 9: tự động đăng nhập, chuyển hướng HomeView
+activate B3
+B3 --> Actor : hiển thị trang chủ
+deactivate B3
 deactivate B2
 deactivate B1
 @enduml
@@ -475,16 +533,17 @@ deactivate B1
 
 <!-- PLACEHOLDER: account_seq_register_analysis -->
 
-**Kịch bản phiên bản 2 – UC02 Đăng ký (8 bước)**
+**Kịch bản phiên bản 2 – UC02 Đăng ký (9 bước)**
 
 1. Khách hàng chọn liên kết Đăng ký từ giao diện đăng nhập.
 2. Lớp RegisterView hiển thị giao diện đăng ký.
 3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu, nhấn Tiếp tục.
-4. Lớp RegisterView gọi hàm `register()` của đối tượng User.
-5. Lớp User kiểm tra thông tin hợp lệ, gọi hàm `sendOTP()` của đối tượng OTP.
+4. Lớp RegisterView gọi hàm `register()` của đối tượng Client.
+5. Lớp Client kiểm tra thông tin hợp lệ, gọi hàm `sendOTP()` của đối tượng OTP.
 6. Lớp RegisterView hiển thị giao diện xác nhận OTP.
 7. Khách hàng nhập mã OTP, nhấn Xác nhận. Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
-8. Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User, hiển thị "Đăng ký thành công!".
+8. Lớp OTPVerifyView gọi hàm `saveClient()` của đối tượng Client, hiển thị "Đăng ký thành công!".
+9. Lớp OTPVerifyView chuyển hướng sang HomeView, tự động đăng nhập.
 
 #### UC03 – Đổi mật khẩu (5 bước)
 
@@ -508,12 +567,13 @@ skinparam sequenceDividerBackgroundColor #DDEEFF
 skinparam sequenceMessageFontColor #000000
 skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
-skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đổi mật khẩu – Tuần tự Phân tích (5 bước)
+title Đổi mật khẩu – Tuần tự Phân tích (6 bước)
 
 actor "Người dùng" as Actor
 boundary ChangePasswordView as B1
+boundary LoginView as B2
 entity User as E1
 
 Actor -> B1 : 1: chọn chức năng Đổi mật khẩu
@@ -524,20 +584,25 @@ B1 -> E1 : 4: gọi changePassword(currentPassword, newPassword)
 activate E1
 E1 --> B1 : đổi mật khẩu thành công
 deactivate E1
-B1 --> Actor : 5: "Đổi mật khẩu thành công", chuyển hướng về đăng nhập
+B1 --> Actor : 5: "Đổi mật khẩu thành công"
+B1 -> B2 : 6: chuyển hướng về giao diện Đăng nhập
+activate B2
+B2 --> Actor : hiển thị trang đăng nhập
+deactivate B2
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_changepw_analysis -->
 
-**Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (5 bước)**
+**Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (6 bước)**
 
 1. Người dùng chọn chức năng Đổi mật khẩu.
 2. Lớp ChangePasswordView hiển thị giao diện đổi mật khẩu.
 3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới, nhấn Lưu.
 4. Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
-5. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công", chuyển hướng về đăng nhập.
+5. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công".
+6. Lớp ChangePasswordView chuyển hướng về giao diện Đăng nhập.
 
 #### UC04 – Quản lý thông tin cá nhân (7 bước)
 
@@ -561,25 +626,25 @@ skinparam sequenceDividerBackgroundColor #DDEEFF
 skinparam sequenceMessageFontColor #000000
 skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
-skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Quản lý TTCN – Tuần tự Phân tích (7 bước)
 
 actor "Khách hàng" as Actor
 boundary ProfileView as B1
-entity User as E1
+entity Client as E1
 
 Actor -> B1 : 1: chọn chức năng Hồ sơ cá nhân
 activate B1
-B1 -> E1 : 2: gọi getProfile(userId)
+B1 -> E1 : 2: gọi getProfile(clientId)
 activate E1
-E1 --> B1 : trả về thông tin User
+E1 --> B1 : trả về thông tin Client
 deactivate E1
 B1 --> Actor : 3: hiển thị trang hồ sơ cá nhân
 Actor -> B1 : 4: nhấn nút Chỉnh sửa
 B1 --> Actor : 5: chuyển sang chế độ chỉnh sửa
 Actor -> B1 : 6: cập nhật Họ tên, Email, nhấn Lưu
-B1 -> E1 : 7: gọi updateProfile(userId, fullName, email)
+B1 -> E1 : 7: gọi updateProfile(clientId, fullName, email)
 activate E1
 E1 --> B1 : cập nhật thành công
 deactivate E1
@@ -593,11 +658,11 @@ deactivate B1
 **Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân (7 bước)**
 
 1. Khách hàng chọn chức năng Hồ sơ cá nhân.
-2. Lớp ProfileView gọi hàm `getProfile()` của đối tượng User.
+2. Lớp ProfileView gọi hàm `getProfile()` của đối tượng Client.
 3. Lớp ProfileView hiển thị trang hồ sơ cá nhân.
 4. Khách hàng nhấn nút Chỉnh sửa.
 5. Lớp ProfileView chuyển sang chế độ chỉnh sửa.
-6. Khách hàng cập nhật Họ tên, Email, nhấn Lưu. Lớp ProfileView gọi hàm `updateProfile()` của đối tượng User.
+6. Khách hàng cập nhật Họ tên, Email, nhấn Lưu. Lớp ProfileView gọi hàm `updateProfile()` của đối tượng Client.
 7. Lớp ProfileView hiển thị "Cập nhật thành công!", quay về chế độ xem.
 
 #### UC20 – Quản lý tài khoản nhân viên (14 bước)
@@ -622,7 +687,7 @@ skinparam sequenceDividerBackgroundColor #DDEEFF
 skinparam sequenceMessageFontColor #000000
 skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
-skinparam sequenceActorBackgroundColor transparent
+skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Quản lý nhân viên – Tuần tự Phân tích (14 bước)
 
