@@ -407,7 +407,7 @@ User "1" *-- "n" LoginSession
 
 ### 4. Biểu đồ tuần tự phân tích
 
-#### UC01 – Đăng nhập (5 bước)
+#### UC01 – Đăng nhập (7 bước)
 
 ```plantuml
 @startuml
@@ -431,7 +431,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đăng nhập – Tuần tự Phân tích (5 bước)
+title Đăng nhập – Tuần tự Phân tích (7 bước)
 
 actor "Người dùng" as Actor
 boundary LoginView as B1
@@ -444,11 +444,11 @@ B1 --> Actor : 2: hiển thị giao diện đăng nhập
 Actor -> B1 : 3: nhập SĐT/Email + Mật khẩu, nhấn Đăng nhập
 B1 -> E1 : 4: gọi checkLogin(phoneNumber, password)
 activate E1
-E1 --> B1 : trả kết quả xác thực
+E1 --> B1 : 5: trả kết quả xác thực
 deactivate E1
-B1 -> B2 : 5: chuyển hướng sang HomeView, "Đăng nhập thành công"
+B1 -> B2 : 6: chuyển hướng sang HomeView, "Đăng nhập thành công"
 activate B2
-B2 --> Actor : hiển thị trang chủ
+B2 --> Actor : 7: hiển thị trang chủ
 deactivate B2
 deactivate B1
 @enduml
@@ -456,15 +456,17 @@ deactivate B1
 
 <!-- PLACEHOLDER: account_seq_login_analysis -->
 
-**Kịch bản phiên bản 2 – UC01 Đăng nhập (5 bước)**
+**Kịch bản phiên bản 2 – UC01 Đăng nhập (7 bước)**
 
 1. Người dùng chọn chức năng Đăng nhập.
 2. Lớp LoginView hiển thị giao diện đăng nhập.
-3. Người dùng nhập SĐT/Email và Mật khẩu, nhấn nút Đăng nhập.
-4. Lớp LoginView gọi hàm `checkLogin()` của đối tượng User để xác thực.
-5. Lớp LoginView chuyển hướng sang HomeView, hiển thị "Đăng nhập thành công".
+3. Người dùng nhập SĐT/Email + Mật khẩu, nhấn Đăng nhập.
+4. Lớp LoginView gọi checkLogin(phoneNumber, password).
+5. Lớp User trả kết quả xác thực.
+6. Lớp LoginView chuyển hướng sang HomeView, "Đăng nhập thành công".
+7. Lớp HomeView hiển thị trang chủ.
 
-#### UC02 – Đăng ký (8 bước)
+#### UC02 – Đăng ký (17 bước)
 
 ```plantuml
 @startuml
@@ -488,7 +490,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đăng ký – Tuần tự Phân tích (9 bước)
+title Đăng ký – Tuần tự Phân tích (17 bước)
 
 actor "Khách hàng" as Actor
 boundary RegisterView as B1
@@ -503,28 +505,28 @@ B1 --> Actor : 2: hiển thị giao diện đăng ký
 Actor -> B1 : 3: nhập Họ tên, SĐT, Email, Mật khẩu, nhấn Tiếp tục
 B1 -> E1 : 4: gọi register(fullName, phoneNumber, email, password)
 activate E1
-E1 -> E2 : gọi sendOTP(phoneNumber, REGISTER)
+E1 -> E2 : 5: gọi sendOTP(phoneNumber, REGISTER)
 activate E2
-E2 --> E1 : OTP đã gửi
+E2 --> E1 : 6: OTP đã gửi
 deactivate E2
-E1 --> B1 : trả kết quả
+E1 --> B1 : 7: trả kết quả
 deactivate E1
-B1 --> Actor : 5: kiểm tra hợp lệ, gửi mã OTP
-B1 --> Actor : 6: hiển thị giao diện xác nhận OTP
-Actor -> B2 : 7: nhập mã OTP, nhấn Xác nhận
+B1 --> Actor : 8: kiểm tra hợp lệ, gửi mã OTP
+B1 --> Actor : 9: hiển thị giao diện xác nhận OTP
+Actor -> B2 : 10: nhập mã OTP, nhấn Xác nhận
 activate B2
-B2 -> E2 : gọi verifyOTP(otpCode)
+B2 -> E2 : 11: gọi verifyOTP(otpCode)
 activate E2
-E2 --> B2 : xác minh thành công
+E2 --> B2 : 12: xác minh thành công
 deactivate E2
-B2 -> E1 : gọi saveUser()
+B2 -> E1 : 13: gọi saveUser()
 activate E1
-E1 --> B2 : tạo tài khoản thành công
+E1 --> B2 : 14: tạo tài khoản thành công
 deactivate E1
-B2 --> Actor : 8: "Đăng ký thành công!"
-B2 -> B3 : 9: tự động đăng nhập, chuyển hướng HomeView
+B2 --> Actor : 15: "Đăng ký thành công!"
+B2 -> B3 : 16: tự động đăng nhập, chuyển hướng HomeView
 activate B3
-B3 --> Actor : hiển thị trang chủ
+B3 --> Actor : 17: hiển thị trang chủ
 deactivate B3
 deactivate B2
 deactivate B1
@@ -533,19 +535,27 @@ deactivate B1
 
 <!-- PLACEHOLDER: account_seq_register_analysis -->
 
-**Kịch bản phiên bản 2 – UC02 Đăng ký (9 bước)**
+**Kịch bản phiên bản 2 – UC02 Đăng ký (17 bước)**
 
-1. Khách hàng chọn liên kết Đăng ký từ giao diện đăng nhập.
+1. Khách hàng chọn liên kết Đăng ký.
 2. Lớp RegisterView hiển thị giao diện đăng ký.
-3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu, nhấn Tiếp tục.
-4. Lớp RegisterView gọi hàm `register()` của đối tượng Client.
-5. Lớp Client kiểm tra thông tin hợp lệ, gọi hàm `sendOTP()` của đối tượng OTP.
-6. Lớp RegisterView hiển thị giao diện xác nhận OTP.
-7. Khách hàng nhập mã OTP, nhấn Xác nhận. Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
-8. Lớp OTPVerifyView gọi hàm `saveClient()` của đối tượng Client, hiển thị "Đăng ký thành công!".
-9. Lớp OTPVerifyView chuyển hướng sang HomeView, tự động đăng nhập.
+3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, nhấn Tiếp tục.
+4. Lớp RegisterView gọi register(fullName, phoneNumber, email, password).
+5. Lớp Client gọi sendOTP(phoneNumber, REGISTER).
+6. Lớp OTP OTP đã gửi.
+7. Lớp Client trả kết quả.
+8. Lớp RegisterView kiểm tra hợp lệ, gửi mã OTP.
+9. Lớp RegisterView hiển thị giao diện xác nhận OTP.
+10. Khách hàng nhập mã OTP, nhấn Xác nhận.
+11. Lớp OTPVerifyView gọi verifyOTP(otpCode).
+12. Lớp OTP xác minh thành công.
+13. Lớp OTPVerifyView gọi saveUser().
+14. Lớp Client tạo tài khoản thành công.
+15. Lớp OTPVerifyView "Đăng ký thành công!".
+16. Lớp OTPVerifyView tự động đăng nhập, chuyển hướng HomeView.
+17. Lớp HomeView hiển thị trang chủ.
 
-#### UC03 – Đổi mật khẩu (5 bước)
+#### UC03 – Đổi mật khẩu (8 bước)
 
 ```plantuml
 @startuml
@@ -569,7 +579,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đổi mật khẩu – Tuần tự Phân tích (6 bước)
+title Đổi mật khẩu – Tuần tự Phân tích (8 bước)
 
 actor "Người dùng" as Actor
 boundary ChangePasswordView as B1
@@ -582,12 +592,12 @@ B1 --> Actor : 2: hiển thị giao diện đổi mật khẩu
 Actor -> B1 : 3: nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn Lưu
 B1 -> E1 : 4: gọi changePassword(currentPassword, newPassword)
 activate E1
-E1 --> B1 : đổi mật khẩu thành công
+E1 --> B1 : 5: đổi mật khẩu thành công
 deactivate E1
-B1 --> Actor : 5: "Đổi mật khẩu thành công"
-B1 -> B2 : 6: chuyển hướng về giao diện Đăng nhập
+B1 --> Actor : 6: "Đổi mật khẩu thành công"
+B1 -> B2 : 7: chuyển hướng về giao diện Đăng nhập
 activate B2
-B2 --> Actor : hiển thị trang đăng nhập
+B2 --> Actor : 8: hiển thị trang đăng nhập
 deactivate B2
 deactivate B1
 @enduml
@@ -595,16 +605,18 @@ deactivate B1
 
 <!-- PLACEHOLDER: account_seq_changepw_analysis -->
 
-**Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (6 bước)**
+**Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (8 bước)**
 
 1. Người dùng chọn chức năng Đổi mật khẩu.
 2. Lớp ChangePasswordView hiển thị giao diện đổi mật khẩu.
-3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới, nhấn Lưu.
-4. Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
-5. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công".
-6. Lớp ChangePasswordView chuyển hướng về giao diện Đăng nhập.
+3. Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn Lưu.
+4. Lớp ChangePasswordView gọi changePassword(currentPassword, newPassword).
+5. Lớp User đổi mật khẩu thành công.
+6. Lớp ChangePasswordView "Đổi mật khẩu thành công".
+7. Lớp ChangePasswordView chuyển hướng về giao diện Đăng nhập.
+8. Lớp LoginView hiển thị trang đăng nhập.
 
-#### UC04 – Quản lý thông tin cá nhân (7 bước)
+#### UC04 – Quản lý thông tin cá nhân (10 bước)
 
 ```plantuml
 @startuml
@@ -628,7 +640,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Quản lý TTCN – Tuần tự Phân tích (7 bước)
+title Quản lý TTCN – Tuần tự Phân tích (10 bước)
 
 actor "Khách hàng" as Actor
 boundary ProfileView as B1
@@ -638,34 +650,37 @@ Actor -> B1 : 1: chọn chức năng Hồ sơ cá nhân
 activate B1
 B1 -> E1 : 2: gọi getProfile(clientId)
 activate E1
-E1 --> B1 : trả về thông tin Client
+E1 --> B1 : 3: trả về thông tin Client
 deactivate E1
-B1 --> Actor : 3: hiển thị trang hồ sơ cá nhân
-Actor -> B1 : 4: nhấn nút Chỉnh sửa
-B1 --> Actor : 5: chuyển sang chế độ chỉnh sửa
-Actor -> B1 : 6: cập nhật Họ tên, Email, nhấn Lưu
-B1 -> E1 : 7: gọi updateProfile(clientId, fullName, email)
+B1 --> Actor : 4: hiển thị trang hồ sơ cá nhân
+Actor -> B1 : 5: nhấn nút Chỉnh sửa
+B1 --> Actor : 6: chuyển sang chế độ chỉnh sửa
+Actor -> B1 : 7: cập nhật Họ tên, Email, nhấn Lưu
+B1 -> E1 : 8: gọi updateProfile(clientId, fullName, email)
 activate E1
-E1 --> B1 : cập nhật thành công
+E1 --> B1 : 9: cập nhật thành công
 deactivate E1
-B1 --> Actor : "Cập nhật thành công!", quay về chế độ xem
+B1 --> Actor : 10: "Cập nhật thành công!", quay về chế độ xem
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_profile_analysis -->
 
-**Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân (7 bước)**
+**Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân (10 bước)**
 
 1. Khách hàng chọn chức năng Hồ sơ cá nhân.
-2. Lớp ProfileView gọi hàm `getProfile()` của đối tượng Client.
-3. Lớp ProfileView hiển thị trang hồ sơ cá nhân.
-4. Khách hàng nhấn nút Chỉnh sửa.
-5. Lớp ProfileView chuyển sang chế độ chỉnh sửa.
-6. Khách hàng cập nhật Họ tên, Email, nhấn Lưu. Lớp ProfileView gọi hàm `updateProfile()` của đối tượng Client.
-7. Lớp ProfileView hiển thị "Cập nhật thành công!", quay về chế độ xem.
+2. Lớp ProfileView gọi getProfile(clientId).
+3. Lớp Client trả về thông tin Client.
+4. Lớp ProfileView hiển thị trang hồ sơ cá nhân.
+5. Khách hàng nhấn nút Chỉnh sửa.
+6. Lớp ProfileView chuyển sang chế độ chỉnh sửa.
+7. Khách hàng cập nhật Họ tên, Email, nhấn Lưu.
+8. Lớp ProfileView gọi updateProfile(clientId, fullName, email).
+9. Lớp Client cập nhật thành công.
+10. Lớp ProfileView "Cập nhật thành công!", quay về chế độ xem.
 
-#### UC20 – Quản lý tài khoản nhân viên (14 bước)
+#### UC20 – Quản lý tài khoản nhân viên (18 bước)
 
 ```plantuml
 @startuml
@@ -689,7 +704,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Quản lý nhân viên – Tuần tự Phân tích (14 bước)
+title Quản lý nhân viên – Tuần tự Phân tích (18 bước)
 
 actor "Admin" as Actor
 boundary StaffManageView as B1
@@ -699,46 +714,50 @@ Actor -> B1 : 1: chọn chức năng Quản lý nhân viên
 activate B1
 B1 -> E1 : 2: gọi getAllStaff()
 activate E1
-E1 --> B1 : trả về danh sách Employee
+E1 --> B1 : 3: trả về danh sách Employee
 deactivate E1
-B1 --> Actor : 3: hiển thị danh sách nhân viên
-Actor -> B1 : 4: nhấn nút Thêm nhân viên
-B1 --> Actor : 5: hiển thị giao diện nhập thông tin
-Actor -> B1 : 6: nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu
-B1 -> E1 : 7: gọi addStaff(fullName, role)
+B1 --> Actor : 4: hiển thị danh sách nhân viên
+Actor -> B1 : 5: nhấn nút Thêm nhân viên
+B1 --> Actor : 6: hiển thị giao diện nhập thông tin
+Actor -> B1 : 7: nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu
+B1 -> E1 : 8: gọi addStaff(fullName, role)
 activate E1
-E1 --> B1 : tạo thành công
+E1 --> B1 : 9: tạo thành công
 deactivate E1
-B1 --> Actor : 8: "Thêm nhân viên thành công!"
-Actor -> B1 : 9: nhấn nút Sửa trên dòng Nguyễn Minh Tuấn
-B1 --> Actor : 10: hiển thị giao diện chỉnh sửa
-Actor -> B1 : 11: cập nhật thông tin, nhấn Lưu
-B1 -> E1 : 12: gọi updateStaff(id, data)
+B1 --> Actor : 10: "Thêm nhân viên thành công!"
+Actor -> B1 : 11: nhấn nút Sửa trên dòng Nguyễn Minh Tuấn
+B1 --> Actor : 12: hiển thị giao diện chỉnh sửa
+Actor -> B1 : 13: cập nhật thông tin, nhấn Lưu
+B1 -> E1 : 14: gọi updateStaff(id, data)
 activate E1
-E1 --> B1 : cập nhật thành công
+E1 --> B1 : 15: cập nhật thành công
 deactivate E1
-B1 --> Actor : "Cập nhật thành công!"
-Actor -> B1 : 13: nhấn nút Xóa trên dòng Lê Văn Khánh
-B1 --> Actor : 14: yêu cầu xác nhận xóa, "Xóa nhân viên thành công!"
+B1 --> Actor : 16: "Cập nhật thành công!"
+Actor -> B1 : 17: nhấn nút Xóa trên dòng Lê Văn Khánh
+B1 --> Actor : 18: yêu cầu xác nhận xóa, "Xóa nhân viên thành công!"
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_staff_analysis -->
 
-**Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên (14 bước)**
+**Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên (18 bước)**
 
 1. Admin chọn chức năng Quản lý nhân viên.
-2. Lớp StaffManageView gọi hàm `getAllStaff()` của đối tượng Employee.
-3. Lớp StaffManageView hiển thị danh sách nhân viên.
-4. Admin nhấn nút Thêm nhân viên.
-5. Lớp StaffManageView hiển thị giao diện nhập thông tin.
-6. Admin nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu.
-7. Lớp StaffManageView gọi hàm `addStaff()` của đối tượng Employee.
-8. Lớp StaffManageView hiển thị "Thêm nhân viên thành công!".
-9. Admin nhấn nút Sửa trên dòng Nguyễn Minh Tuấn.
-10. Lớp StaffManageView hiển thị giao diện chỉnh sửa.
-11. Admin cập nhật thông tin, nhấn Lưu.
-12. Lớp StaffManageView gọi hàm `updateStaff()` của đối tượng Employee.
-13. Admin nhấn nút Xóa trên dòng Lê Văn Khánh.
-14. Lớp StaffManageView yêu cầu xác nhận, hiển thị "Xóa nhân viên thành công!".
+2. Lớp StaffManageView gọi getAllStaff().
+3. Lớp Employee trả về danh sách Employee.
+4. Lớp StaffManageView hiển thị danh sách nhân viên.
+5. Admin nhấn nút Thêm nhân viên.
+6. Lớp StaffManageView hiển thị giao diện nhập thông tin.
+7. Admin nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu.
+8. Lớp StaffManageView gọi addStaff(fullName, role).
+9. Lớp Employee tạo thành công.
+10. Lớp StaffManageView "Thêm nhân viên thành công!".
+11. Admin nhấn nút Sửa trên dòng Nguyễn Minh Tuấn.
+12. Lớp StaffManageView hiển thị giao diện chỉnh sửa.
+13. Admin cập nhật thông tin, nhấn Lưu.
+14. Lớp StaffManageView gọi updateStaff(id, data).
+15. Lớp Employee cập nhật thành công.
+16. Lớp StaffManageView "Cập nhật thành công!".
+17. Admin nhấn nút Xóa trên dòng Lê Văn Khánh.
+18. Lớp StaffManageView yêu cầu xác nhận xóa, "Xóa nhân viên thành công!".

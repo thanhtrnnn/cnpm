@@ -23,12 +23,15 @@ DIAGRAM_DIR = os.path.join(SCRIPT_DIR, '..', 'output', 'diagrams')
 OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', 'output')
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'account_module.docx')
 
-# Chỉ xuất Pha III + IV (Pha I/II đã có trên Google Docs). Path theo cấu trúc docs/tabs/account/.
+# Xuất II.4 (biểu đồ tuần tự phân tích) + Pha III + IV.
+# Tuple: (filename, phase_header, start_heading) — start_heading để cắt 1 phần file.
 FILES = [
-    (None, 'III. PHA THIẾT KẾ'),
-    ('account/iii-design.md', None),
-    (None, 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'),
-    ('account/iv-test.md', None),
+    (None, 'II. PHA PHÂN TÍCH', None),
+    ('account/ii-analysis.md', None, '### 4. Biểu đồ tuần tự phân tích'),
+    (None, 'III. PHA THIẾT KẾ', None),
+    ('account/iii-design.md', None, None),
+    (None, 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ', None),
+    ('account/iv-test.md', None, None),
 ]
 
 DIAGRAM_MAP = {
@@ -111,8 +114,6 @@ def determine_heading_level(text):
         return 3
     if re.match(r'^\d+\.\s', t):
         return 2
-    if re.match(r'^[a-e]\)\s', t):
-        return 4
     section_names = [
         'Danh sách Use Case', 'Danh sách Actor', 'UC con',
         'Biểu đồ Use Case', 'Kịch bản chuẩn', 'Trích xuất',
@@ -370,7 +371,7 @@ def new_numbered_list(doc):
     return new_id
 
 
-def process_file(doc, md_file):
+def process_file(doc, md_file, start_heading=None):
     with open(md_file, 'r', encoding='utf-8') as f:
         content = f.read()
 
@@ -378,6 +379,13 @@ def process_file(doc, md_file):
     content = re.sub(r'```plantuml\s*\n.*?```', '<!-- PLANTUML_PLACEHOLDER -->', content, flags=re.DOTALL)
 
     lines = content.split('\n')
+
+    # Chỉ lấy từ heading bắt đầu (vd: chỉ mục II.4 trong ii-analysis.md)
+    if start_heading:
+        for idx, ln in enumerate(lines):
+            if ln.strip() == start_heading.strip():
+                lines = lines[idx:]
+                break
     i = 0
     current_table = []
     in_table = False
@@ -682,7 +690,8 @@ def main():
             hs.font.bold = True
 
     for item in FILES:
-        filename, phase_header = item
+        filename, phase_header = item[0], item[1]
+        start_heading = item[2] if len(item) > 2 else None
         if phase_header:
             add_heading_with_blue_underline(doc, phase_header, 1)
         if filename is None:
@@ -691,8 +700,8 @@ def main():
         if not os.path.exists(md_file):
             print(f"SKIP: {filename}")
             continue
-        print(f"Processing: {filename}")
-        process_file(doc, md_file)
+        print(f"Processing: {filename}{' (from ' + start_heading + ')' if start_heading else ''}")
+        process_file(doc, md_file, start_heading)
         doc.add_paragraph('')
 
     doc.save(OUTPUT_FILE)

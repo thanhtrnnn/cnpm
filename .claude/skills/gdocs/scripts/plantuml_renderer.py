@@ -66,8 +66,8 @@ def _encode_plantuml(code: str) -> str:
     # Deflate the code
     compressed = zlib.compress(code.encode('utf-8'))[2:-4]
 
-    # Convert to PlantUML base64
-    result = _encode64(len(compressed), 3, alphabet)
+    # Convert to PlantUML base64 (KHÔNG prepend length — đó là bug gây ảnh lỗi)
+    result = ''
     for i in range(0, len(compressed), 3):
         if i + 2 < len(compressed):
             b1 = compressed[i]
