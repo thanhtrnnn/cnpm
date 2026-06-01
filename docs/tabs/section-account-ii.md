@@ -95,124 +95,72 @@ User gắn composition với OTP: một OTP không tồn tại độc lập nế
 
 ### 3. Biểu đồ lớp phân tích
 
-**Kiến trúc chọn: React** ( Boundary class dùng hậu tố View. Method names tiếng Anh ở tất cả các pha, đặt trên Entity. )
+**Phân tích chi tiết chức năng "Đăng nhập" diễn ra như sau:**
 
-**Bước 1 – Lớp Boundary từ giao diện**
+Người dùng truy cập trang đăng nhập → Đề xuất lớp **LoginView**, có ô nhập SĐT, ô nhập mật khẩu, nút Đăng nhập.
 
-| Giao diện | Lớp Boundary | Loại |
-|-----------|-------------|------|
-| Màn hình Đăng nhập | LoginView | View |
-| Màn hình Đăng ký | RegisterView | View |
-| Màn hình Xác nhận OTP | OTPVerifyView | View |
-| Màn hình Đổi mật khẩu | ChangePasswordView | View |
-| Trang Hồ sơ cá nhân | ProfileView | View |
-| Trang Quản lý nhân viên | StaffManageView | View |
+Người dùng nhập SĐT, mật khẩu và nhấn [Đăng nhập] → Hệ thống cần xác thực tài khoản → Cần chức năng `checkLogin()` của đối tượng **User**.
 
-**Bước 2 – Phân loại thành phần giao diện**
+Nếu tài khoản không tồn tại → Hệ thống hiển thị thông báo lỗi.
+Nếu mật khẩu sai → Hệ thống hiển thị thông báo lỗi.
 
-LoginView: txtSDT, txtMatKhau, btnDangNhap, btnQuenMatKhau, btnDangKy
-RegisterView: txtHoTen, txtSDT, txtEmail, txtMatKhau, txtXacNhanMK, btnTiepTuc, btnHuy
-OTPVerifyView: txtOTP, btnXacNhan, btnGuiLai
-ChangePasswordView: txtMKHienTai, txtMKMoi, txtXacNhanMKMoi, btnLuu, btnHuy
-ProfileView: lblHoTen, lblSDT, lblEmail, lblHang, lblDiem, btnChinhSua, btnDoiMK
-StaffManageView: tblEmployee, btnChonNV, btnThem, btnSua, btnXoa
-
-**Bước 3 – Phương thức cho mỗi chức năng**
-
-[1]. Giao diện LoginView → lớp LoginView
-Phân tích chi tiết chức năng Đăng nhập:
-Người dùng nhập SĐT, Mật khẩu và nhấn [Đăng nhập] -> hệ thống xác thực thông tin -> đề xuất lớp LoginView, có txtSDT, txtMatKhau, btnDangNhap.
-Người dùng nhấn [Đăng nhập] -> hệ thống cần xác thực tài khoản -> cần chức năng `checkLogin(sdt, matKhau)` của đối tượng User.
-Phương thức: `checkLogin(sdt, matKhau)`
-Input: sdt, matKhau
-Output: Session (token, vaiTro)
-Lớp chủ thể: User
-
-[2]. Giao diện RegisterView → lớp RegisterView
-Phân tích chi tiết chức năng Đăng ký:
-Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK và nhấn [Tiếp tục] -> hệ thống hiển thị form đăng ký -> đề xuất lớp RegisterView, có txtHoTen, txtSDT, txtEmail, txtMatKhau, txtXacNhanMK, btnTiepTuc.
-Người dùng nhấn [Tiếp tục] -> hệ thống cần tạo tài khoản mới -> cần chức năng `register(hoTen, sdt, email, matKhau)` của đối tượng User.
-Phương thức: `register(hoTen, sdt, email, matKhau)`
-Input: hoTen, sdt, email, matKhau
-Output: User (vừa tạo)
-Lớp chủ thể: User
-
-[3]. Giao diện OTPVerifyView → lớp OTPVerifyView
-Phân tích chi tiết chức năng Xác nhận OTP:
-Người dùng nhập mã OTP và nhấn [Xác nhận] -> hệ thống hiển thị form OTP -> đề xuất lớp OTPVerifyView, có txtOTP, btnXacNhan, btnGuiLai.
-Người dùng nhấn [Xác nhận] -> hệ thống cần xác minh mã OTP -> cần chức năng `verifyOTP(maOTP)` của đối tượng OTP.
-Phương thức: `verifyOTP(maOTP)`
-Input: maOTP
-Output: boolean (đúng/sai)
-Lớp chủ thể: OTP
-
-[4]. Giao diện ChangePasswordView → lớp ChangePasswordView
-Phân tích chi tiết chức năng Đổi mật khẩu:
-Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới và nhấn [Lưu] -> hệ thống hiển thị form đổi mật khẩu -> đề xuất lớp ChangePasswordView, có txtMKHienTai, txtMKMoi, txtXacNhanMKMoi, btnLuu.
-Người dùng nhấn [Lưu] -> hệ thống cần đổi mật khẩu -> cần chức năng `changePassword(mkHienTai, mkMoi)` của đối tượng User.
-Phương thức: `changePassword(mkHienTai, mkMoi)`
-Input: mkHienTai, mkMoi
-Output: boolean (thành công/thất bại)
-Lớp chủ thể: User
-
-[5]. Giao diện ProfileView → lớp ProfileView
-Phân tích chi tiết chức năng Xem hồ sơ:
-Người dùng nhấn vào ảnh đại diện -> hệ thống hiển thị thông tin cá nhân -> đề xuất lớp ProfileView, có lblHoTen, lblSDT, lblEmail, lblHang, lblDiem.
-Hệ thống cần lấy thông tin hồ sơ -> cần chức năng `getProfile(userId)` của đối tượng User.
-Phương thức: `getProfile(userId)`
-Input: userId
-Output: User (thông tin hồ sơ)
-Lớp chủ thể: User
-
-[6]. Giao diện ProfileView → lớp ProfileView
-Phân tích chi tiết chức năng Cập nhật hồ sơ:
-Người dùng chỉnh sửa họ tên, email và nhấn [Lưu] -> hệ thống cập nhật thông tin -> đề xuất lớp ProfileView, có btnChinhSua, btnLuu.
-Người dùng nhấn [Lưu] -> hệ thống cần cập nhật hồ sơ -> cần chức năng `updateProfile(userId, hoTen, email)` của đối tượng User.
-Phương thức: `updateProfile(userId, hoTen, email)`
-Input: userId, hoTen, email
-Output: User (đã cập nhật)
-Lớp chủ thể: User
-
-[7]. Giao diện StaffManageView → lớp StaffManageView
-Phân tích chi tiết chức năng Xem danh sách nhân viên:
-Admin truy cập "Quản lý nhân viên" -> hệ thống hiển thị bảng danh sách nhân viên -> đề xuất lớp StaffManageView, có tblEmployee, btnThem, btnSua, btnXoa.
-Hệ thống cần tải danh sách nhân viên -> cần chức năng `getAllStaff()` của đối tượng Employee.
-Phương thức: `getAllStaff()`
-Input: (không có — tải toàn bộ)
-Output: List\<Employee\>
-Lớp chủ thể: Employee
-
-[8]. Giao diện StaffManageView → lớp StaffManageView
-Phân tích chi tiết chức năng Thêm nhân viên:
-Admin nhấn [Thêm], nhập thông tin và nhấn [Lưu] -> hệ thống tạo tài khoản nhân viên mới -> đề xuất lớp StaffManageView, có btnThem, txtHoTen, txtVaiTro.
-Admin nhấn [Lưu] -> hệ thống cần tạo nhân viên mới -> cần chức năng `addStaff(hoTen, vaiTro)` của đối tượng Employee.
-Phương thức: `addStaff(hoTen, vaiTro)`
-Input: hoTen, vaiTro
-Output: Employee (vừa tạo)
-Lớp chủ thể: Employee
-
-[9]. Giao diện StaffManageView → lớp StaffManageView
-Phân tích chi tiết chức năng Sửa nhân viên:
-Admin chọn nhân viên, chỉnh sửa thông tin và nhấn [Lưu] -> hệ thống cập nhật thông tin nhân viên -> đề xuất lớp StaffManageView, có btnSua, btnChonNV.
-Admin nhấn [Lưu] -> hệ thống cần cập nhật nhân viên -> cần chức năng `updateStaff(id, hoTen, vaiTro)` của đối tượng Employee.
-Phương thức: `updateStaff(id, hoTen, vaiTro)`
-Input: id, hoTen, vaiTro
-Output: Employee (đã cập nhật)
-Lớp chủ thể: Employee
-
-[10]. Giao diện StaffManageView → lớp StaffManageView
-Phân tích chi tiết chức năng Xóa nhân viên:
-Admin chọn nhân viên và nhấn [Xóa] -> hệ thống chuyển trạng thái "Đã nghỉ" -> đề xuất lớp StaffManageView, có btnXoa, btnChonNV.
-Admin nhấn [Xóa] -> hệ thống cần xóa nhân viên -> cần chức năng `deleteStaff(id)` của đối tượng Employee.
-Phương thức: `deleteStaff(id)`
-Input: id
-Output: boolean (thành công/thất bại)
-Lớp chủ thể: Employee
+**Boundary:** LoginView
+**Entity:** User
 
 <!-- PLACEHOLDER: account_bce_login -->
+
+**Phân tích chi tiết chức năng "Đăng ký" diễn ra như sau:**
+
+Người dùng truy cập trang đăng ký → Đề xuất lớp **RegisterView**, có ô nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK, nút Tiếp tục.
+
+Người dùng nhập thông tin và nhấn [Tiếp tục] → Hệ thống cần tạo tài khoản mới → Cần chức năng `register()` của đối tượng **User**.
+
+Hệ thống gửi OTP đến SĐT → Đề xuất lớp **OTPVerifyView**, có ô nhập OTP, nút Xác nhận.
+
+Người dùng nhập OTP và nhấn [Xác nhận] → Hệ thống cần xác minh OTP → Cần chức năng `verifyOTP()` của đối tượng **OTP**.
+
+**Boundary:** RegisterView, OTPVerifyView
+**Entity:** User, OTP
+
 <!-- PLACEHOLDER: account_bce_register -->
+
+**Phân tích chi tiết chức năng "Đổi mật khẩu" diễn ra như sau:**
+
+Người dùng truy cập trang bảo mật → Đề xuất lớp **ChangePasswordView**, có ô nhập MK hiện tại, MK mới, Xác nhận MK mới, nút Lưu.
+
+Người dùng nhập MK hiện tại, MK mới và nhấn [Lưu] → Hệ thống cần đổi mật khẩu → Cần chức năng `changePassword()` của đối tượng **User**.
+
+Nếu MK hiện tại sai → Hệ thống hiển thị thông báo lỗi.
+
+**Boundary:** ChangePasswordView
+**Entity:** User
+
 <!-- PLACEHOLDER: account_bce_changepw -->
+
+**Phân tích chi tiết chức năng "Quản lý thông tin cá nhân" diễn ra như sau:**
+
+Người dùng nhấn vào ảnh đại diện → Đề xuất lớp **ProfileView**, có hiển thị Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, nút Chỉnh sửa.
+
+Hệ thống cần lấy thông tin hồ sơ → Cần chức năng `getProfile()` của đối tượng **User**.
+
+Người dùng nhấn [Chỉnh sửa], sửa thông tin và nhấn [Lưu] → Hệ thống cần cập nhật hồ sơ → Cần chức năng `updateProfile()` của đối tượng **User**.
+
+**Boundary:** ProfileView
+**Entity:** User
+
 <!-- PLACEHOLDER: account_bce_profile -->
+
+**Phân tích chi tiết chức năng "Quản lý nhân viên" diễn ra như sau:**
+
+Admin truy cập trang quản lý nhân viên → Đề xuất lớp **StaffManageView**, có bảng danh sách nhân viên, nút Thêm, Sửa, Xóa.
+
+Hệ thống cần tải danh sách nhân viên → Cần chức năng `getAllStaff()` của đối tượng **Employee**.
+
+Admin nhấn [Thêm], nhập thông tin và nhấn [Lưu] → Hệ thống cần tạo nhân viên mới → Cần chức năng `addStaff()` của đối tượng **Employee**.
+
+**Boundary:** StaffManageView
+**Entity:** Employee
+
 <!-- PLACEHOLDER: account_bce_staff -->
 
 ### 4. Biểu đồ tuần tự phân tích
@@ -257,23 +205,23 @@ end
 
 **Kịch bản phiên bản 2 – UC01 Đăng nhập**
 
-1. Khách hàng truy cập URL hệ thống để mở màn hình Đăng nhập.
-2. Lớp LoginView hiển thị form gồm ô nhập SĐT/Email, ô nhập Mật khẩu, nút [Đăng nhập], liên kết "Quên mật khẩu?" / "Đăng ký".
-3. Khách hàng nhập SĐT = "0912345678" và Mật khẩu = "Abc@1234".
-4. Khách hàng nhấn nút [Đăng nhập].
-5. Lớp LoginView gọi phương thức `checkLogin(sdt, matKhau)` của User.
-6. User tìm tài khoản theo SĐT bằng `findBySDT(sdt)`.
-7. User so sánh mật khẩu bằng `checkPassword(matKhau, hash)`.
-8. User trả kết quả về cho LoginView.
-9. Lớp LoginView hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
+* Khách hàng truy cập trang đăng nhập.
+* Lớp LoginView hiển thị form gồm ô nhập SĐT, ô nhập Mật khẩu, nút [Đăng nhập].
+* Khách hàng nhập SĐT = "0912345678" và Mật khẩu = "Abc@1234".
+* Khách hàng nhấn nút [Đăng nhập].
+* Lớp LoginView gọi hàm `checkLogin()` của đối tượng User.
+* Lớp User gọi hàm `findBySDT()` để tìm tài khoản theo SĐT.
+* Lớp User gọi hàm `checkPassword()` để so sánh mật khẩu.
+* Lớp User trả kết quả về cho LoginView.
+* Lớp LoginView hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
 
 **Ngoại lệ: tài khoản không tồn tại**
-- User trả về null (không tìm thấy tài khoản).
-- LoginView hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
+* Lớp User trả về null (không tìm thấy tài khoản).
+* Lớp LoginView hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
 
 **Ngoại lệ: mật khẩu sai**
-- User trả về sai mật khẩu cho LoginView.
-- LoginView hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
+* Lớp User trả về mật khẩu không khớp.
+* Lớp LoginView hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
 
 #### UC02 – Đăng ký
 
@@ -295,7 +243,7 @@ B1 -> E1 : 4: register(hoTen, sdt, email, matKhau)
 activate E1
 E1 -> E1 : 5: existsBySDT(sdt)
 E1 -> E1 : 6: existsByEmail(email)
-E1 -> E2 : 7: guiOTP(sdt, DANG_KY)
+E1 -> E2 : 7: sendOTP(sdt, DANG_KY)
 activate E2
 E2 --> E1 : 8: OTP đã gửi
 deactivate E2
@@ -325,29 +273,29 @@ deactivate B2
 
 **Kịch bản phiên bản 2 – UC02 Đăng ký**
 
-1. Khách hàng nhấn liên kết "Đăng ký" từ màn hình đăng nhập.
-2. Lớp RegisterView hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
-3. Khách hàng nhập: Họ tên = "Nguyễn Thị Bình", SĐT = "0987654321", Email = "binh.nt@email.com", MK = "Pass@2025".
-4. Khách hàng nhấn [Tiếp tục].
-5. RegisterView gọi `register(hoTen, sdt, email, matKhau)` của User.
-6. User kiểm tra SĐT chưa tồn tại bằng `existsBySDT(sdt)`.
-7. User kiểm tra email chưa tồn tại bằng `existsByEmail(email)`.
-8. User gọi `guiOTP(sdt, DANG_KY)` của OTP để gửi mã xác minh.
-9. User trả kết quả về RegisterView.
-10. RegisterView hiển thị form xác nhận OTP.
-11. Khách hàng nhập OTP = "482917" và nhấn [Xác nhận].
-12. OTPVerifyView gọi `verifyOTP(otp)` của OTP.
-13. OTP kiểm tra mã đúng và còn hiệu lực bằng `verify(otp)`.
-14. OTPVerifyView gọi `saveUser()` của User để hoàn tất đăng ký.
-15. Hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
+* Khách hàng nhấn liên kết "Đăng ký" từ màn hình đăng nhập.
+* Lớp RegisterView hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
+* Khách hàng nhập Họ tên = "Nguyễn Thị Bình", SĐT = "0987654321", Email = "binh.nt@email.com", Mật khẩu = "Pass@2025".
+* Khách hàng nhấn nút [Tiếp tục].
+* Lớp RegisterView gọi hàm `register()` của đối tượng User.
+* Lớp User gọi hàm `existsBySDT()` để kiểm tra SĐT chưa tồn tại.
+* Lớp User gọi hàm `existsByEmail()` để kiểm tra email chưa tồn tại.
+* Lớp User gọi hàm `sendOTP()` của đối tượng OTP để gửi mã xác minh.
+* Lớp User trả kết quả về cho RegisterView.
+* Lớp RegisterView hiển thị form xác nhận OTP.
+* Khách hàng nhập OTP = "482917" và nhấn nút [Xác nhận].
+* Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
+* Lớp OTP gọi hàm `verify()` để kiểm tra mã đúng và còn hiệu lực.
+* Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User để hoàn tất đăng ký.
+* Lớp OTPVerifyView hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
 
 **Ngoại lệ: SĐT đã tồn tại**
-- User trả về false từ `existsBySDT()`.
-- RegisterView hiển thị "SĐT này đã được sử dụng."
+* Lớp User trả về SĐT đã tồn tại.
+* Lớp RegisterView hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: OTP sai**
-- OTP trả về false từ `verify()`.
-- OTPVerifyView hiển thị "Mã OTP không đúng. Vui lòng thử lại."
+* Lớp OTP trả về mã không hợp lệ.
+* Lớp OTPVerifyView hiển thị "Mã OTP không đúng. Vui lòng thử lại."
 
 #### UC03 – Đổi mật khẩu
 
@@ -382,25 +330,26 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC03 Đổi mật khẩu**
 
-1. Người dùng truy cập mục "Bảo mật" trong cài đặt tài khoản.
-2. Lớp ChangePasswordView hiển thị form: MK hiện tại, MK mới, Xác nhận MK mới.
-3. Người dùng nhập: MK hiện tại = "Abc@1234", MK mới = "NewPass@2025", xác nhận = "NewPass@2025".
-4. Người dùng nhấn [Lưu thay đổi].
-5. ChangePasswordView gọi `changePassword(mkHienTai, mkMoi)` của User.
-6. User tìm thông tin người dùng bằng `findByToken(session)`.
-7. User xác minh MK hiện tại khớp CSDL bằng `checkPassword(mkHienTai, hash)`.
-8. User mã hóa MK mới bằng `hashPassword(mkMoi)`.
-9. User cập nhật mật khẩu bằng `updatePassword(hash)`.
-10. User thu hồi tất cả session bằng `revokeAllSessions()`.
-11. ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
+* Người dùng truy cập mục "Bảo mật" trong cài đặt.
+* Lớp ChangePasswordView hiển thị form gồm: Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới.
+* Người dùng nhập Mật khẩu hiện tại = "Abc@1234", Mật khẩu mới = "NewPass@2025", Xác nhận = "NewPass@2025".
+* Người dùng nhấn nút [Lưu thay đổi].
+* Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
+* Lớp User gọi hàm `findBySessionToken()` để tìm thông tin người dùng.
+* Lớp User gọi hàm `verifyPassword()` để xác minh mật khẩu hiện tại.
+* Lớp User gọi hàm `hashPassword()` để mã hóa mật khẩu mới.
+* Lớp User gọi hàm `updatePassword()` để cập nhật mật khẩu.
+* Lớp User gọi hàm `revokeAllSessions()` để thu hồi tất cả session.
+* Lớp User trả kết quả về cho ChangePasswordView.
+* Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
 
 **Ngoại lệ: MK hiện tại sai**
-- User trả về false từ `checkPassword()`.
-- ChangePasswordView hiển thị "Mật khẩu hiện tại không chính xác."
+* Lớp User trả về mật khẩu không khớp.
+* Lớp ChangePasswordView hiển thị "Mật khẩu hiện tại không chính xác."
 
 **Ngoại lệ: MK mới không đủ mạnh**
-- User trả về lỗi validation.
-- ChangePasswordView highlight ô và hiển thị yêu cầu còn thiếu.
+* Lớp User trả về lỗi validation.
+* Lớp ChangePasswordView highlight ô và hiển thị yêu cầu còn thiếu.
 
 #### UC04 – Quản lý thông tin cá nhân
 
@@ -435,22 +384,23 @@ deactivate B1
 <!-- PLACEHOLDER: account_seq_profile_analysis -->
 <!-- File: output/diagrams/account_seq_profile_analysis.png -->
 
-**Kịch bản phiên bản 2 – UC04 Quản lý TTCN**
+**Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân**
 
-1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản ở góc trên phải.
-2. ProfileView gọi `getProfile(userId)` của User.
-3. User tìm thông tin bằng `findById(userId)`.
-4. User trả về đối tượng User cho ProfileView.
-5. ProfileView hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
-6. Khách hàng nhấn [Chỉnh sửa thông tin], cập nhật họ tên và email, nhấn [Lưu].
-7. ProfileView gọi `updateProfile(userId, hoTen, email)` của User.
-8. User kiểm tra email hợp lệ bằng `checkEmail(email)`.
-9. User cập nhật thông tin bằng `update()`.
-10. ProfileView hiển thị "Cập nhật thành công!"
+* Khách hàng nhấn vào ảnh đại diện / tên tài khoản.
+* Lớp ProfileView gọi hàm `getProfile()` của đối tượng User.
+* Lớp User gọi hàm `findById()` để tìm thông tin người dùng.
+* Lớp User trả kết quả về cho ProfileView.
+* Lớp ProfileView hiển thị hồ sơ: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
+* Khách hàng nhấn nút [Chỉnh sửa thông tin], cập nhật Họ tên = "Nguyễn Văn An" và Email = "vanan@newemail.com", nhấn nút [Lưu].
+* Lớp ProfileView gọi hàm `updateProfile()` của đối tượng User.
+* Lớp User gọi hàm `checkEmail()` để kiểm tra email hợp lệ và chưa được dùng.
+* Lớp User gọi hàm `update()` để cập nhật thông tin.
+* Lớp User trả kết quả về cho ProfileView.
+* Lớp ProfileView hiển thị "Cập nhật thành công!"
 
 **Ngoại lệ: Email đã được dùng**
-- User trả về false từ `checkEmail()`.
-- ProfileView hiển thị "Email này đã được đăng ký bởi tài khoản khác."
+* Lớp User trả về email đã tồn tại.
+* Lớp ProfileView hiển thị "Email này đã được đăng ký bởi tài khoản khác."
 
 #### UC20 – Quản lý tài khoản nhân viên
 
@@ -487,20 +437,21 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên**
 
-1. Admin truy cập "Quản lý nhân viên" từ trang quản trị.
-2. StaffManageView gọi `getAllStaff()` của Employee.
-3. Employee tải danh sách bằng `findAll()`.
-4. Employee trả về danh sách nhân viên cho StaffManageView.
-5. StaffManageView hiển thị bảng: họ tên, vai trò, trạng thái.
-6. Admin nhấn [Thêm nhân viên], nhập thông tin, nhấn [Lưu].
-7. StaffManageView gọi `addStaff(hoTen, vaiTro)` của Employee.
-8. Employee lưu bằng `save()`.
-9. StaffManageView hiển thị "Thêm nhân viên thành công!"
+* Admin truy cập "Quản lý nhân viên" từ trang quản trị.
+* Lớp StaffManageView gọi hàm `getAllStaff()` của đối tượng Employee.
+* Lớp Employee gọi hàm `findAll()` để tải danh sách nhân viên.
+* Lớp Employee trả kết quả về cho StaffManageView.
+* Lớp StaffManageView hiển thị bảng danh sách nhân viên.
+* Admin nhấn nút [Thêm], nhập Họ tên = "Trần Văn A" và Vai trò = "Lễ tân", nhấn nút [Lưu].
+* Lớp StaffManageView gọi hàm `addStaff()` của đối tượng Employee.
+* Lớp Employee gọi hàm `save()` để lưu nhân viên mới.
+* Lớp Employee trả kết quả về cho StaffManageView.
+* Lớp StaffManageView hiển thị "Thêm nhân viên thành công!"
 
 **Ngoại lệ: SĐT đã tồn tại**
-- Employee trả về lỗi trùng SĐT.
-- StaffManageView hiển thị "SĐT này đã được sử dụng."
+* Lớp Employee trả về lỗi trùng SĐT.
+* Lớp StaffManageView hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: Nhân viên đang xử lý order**
-- Employee trả về lỗi không thể xóa.
-- StaffManageView hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
+* Lớp Employee trả về lỗi không thể xóa.
+* Lớp StaffManageView hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
