@@ -205,23 +205,25 @@ end
 
 **Kịch bản phiên bản 2 – UC01 Đăng nhập**
 
-* Khách hàng truy cập trang đăng nhập.
-* Lớp LoginView hiển thị form gồm ô nhập SĐT, ô nhập Mật khẩu, nút [Đăng nhập].
-* Khách hàng nhập SĐT = "0912345678" và Mật khẩu = "Abc@1234".
-* Khách hàng nhấn nút [Đăng nhập].
-* Lớp LoginView gọi hàm `checkLogin()` của đối tượng User.
-* Lớp User gọi hàm `findBySDT()` để tìm tài khoản theo SĐT.
-* Lớp User gọi hàm `checkPassword()` để so sánh mật khẩu.
-* Lớp User trả kết quả về cho LoginView.
-* Lớp LoginView hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
+1. Khách hàng truy cập trang đăng nhập.
+2. Lớp LoginView hiển thị form gồm ô nhập SĐT, ô nhập Mật khẩu, nút [Đăng nhập].
+3. Khách hàng nhập SĐT và Mật khẩu.
+4. Khách hàng nhấn nút [Đăng nhập].
+5. Lớp LoginView gọi hàm `checkLogin()` của đối tượng User.
+6. Lớp User gọi hàm `findBySDT()` để tìm tài khoản theo SĐT.
+7. Lớp User gọi hàm `checkPassword()` để so sánh mật khẩu.
+8. Lớp User trả kết quả về cho LoginView.
+9. Lớp LoginView hiển thị "Đăng nhập thành công" và chuyển hướng trang chủ.
 
 **Ngoại lệ: tài khoản không tồn tại**
-* Lớp User trả về null (không tìm thấy tài khoản).
-* Lớp LoginView hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
+
+- Lớp User trả về null.
+- Lớp LoginView hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
 
 **Ngoại lệ: mật khẩu sai**
-* Lớp User trả về mật khẩu không khớp.
-* Lớp LoginView hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
+
+- Lớp User trả về mật khẩu không khớp.
+- Lớp LoginView hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
 
 #### UC02 – Đăng ký
 
@@ -273,29 +275,31 @@ deactivate B2
 
 **Kịch bản phiên bản 2 – UC02 Đăng ký**
 
-* Khách hàng nhấn liên kết "Đăng ký" từ màn hình đăng nhập.
-* Lớp RegisterView hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
-* Khách hàng nhập Họ tên = "Nguyễn Thị Bình", SĐT = "0987654321", Email = "binh.nt@email.com", Mật khẩu = "Pass@2025".
-* Khách hàng nhấn nút [Tiếp tục].
-* Lớp RegisterView gọi hàm `register()` của đối tượng User.
-* Lớp User gọi hàm `existsBySDT()` để kiểm tra SĐT chưa tồn tại.
-* Lớp User gọi hàm `existsByEmail()` để kiểm tra email chưa tồn tại.
-* Lớp User gọi hàm `sendOTP()` của đối tượng OTP để gửi mã xác minh.
-* Lớp User trả kết quả về cho RegisterView.
-* Lớp RegisterView hiển thị form xác nhận OTP.
-* Khách hàng nhập OTP = "482917" và nhấn nút [Xác nhận].
-* Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
-* Lớp OTP gọi hàm `verify()` để kiểm tra mã đúng và còn hiệu lực.
-* Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User để hoàn tất đăng ký.
-* Lớp OTPVerifyView hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
+1. Khách hàng nhấn liên kết "Đăng ký" từ màn hình đăng nhập.
+2. Lớp RegisterView hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
+3. Khách hàng nhập Họ tên, SĐT, Email và Mật khẩu.
+4. Khách hàng nhấn nút [Tiếp tục].
+5. Lớp RegisterView gọi hàm `register()` của đối tượng User.
+6. Lớp User gọi hàm `existsBySDT()` để kiểm tra SĐT chưa tồn tại.
+7. Lớp User gọi hàm `existsByEmail()` để kiểm tra email chưa tồn tại.
+8. Lớp User gọi hàm `sendOTP()` của đối tượng OTP để gửi mã xác minh.
+9. Lớp User trả kết quả về cho RegisterView.
+10. Lớp RegisterView hiển thị form xác nhận OTP.
+11. Khách hàng nhập mã OTP và nhấn nút [Xác nhận].
+12. Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
+13. Lớp OTP gọi hàm `verify()` để kiểm tra mã đúng và còn hiệu lực.
+14. Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User để hoàn tất đăng ký.
+15. Lớp OTPVerifyView hiển thị "Đăng ký thành công!"
 
 **Ngoại lệ: SĐT đã tồn tại**
-* Lớp User trả về SĐT đã tồn tại.
-* Lớp RegisterView hiển thị "SĐT này đã được sử dụng."
+
+- Lớp User trả về SĐT đã tồn tại.
+- Lớp RegisterView hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: OTP sai**
-* Lớp OTP trả về mã không hợp lệ.
-* Lớp OTPVerifyView hiển thị "Mã OTP không đúng. Vui lòng thử lại."
+
+- Lớp OTP trả về mã không hợp lệ.
+- Lớp OTPVerifyView hiển thị "Mã OTP không đúng. Vui lòng thử lại."
 
 #### UC03 – Đổi mật khẩu
 
@@ -330,26 +334,28 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC03 Đổi mật khẩu**
 
-* Người dùng truy cập mục "Bảo mật" trong cài đặt.
-* Lớp ChangePasswordView hiển thị form gồm: Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới.
-* Người dùng nhập Mật khẩu hiện tại = "Abc@1234", Mật khẩu mới = "NewPass@2025", Xác nhận = "NewPass@2025".
-* Người dùng nhấn nút [Lưu thay đổi].
-* Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
-* Lớp User gọi hàm `findBySessionToken()` để tìm thông tin người dùng.
-* Lớp User gọi hàm `verifyPassword()` để xác minh mật khẩu hiện tại.
-* Lớp User gọi hàm `hashPassword()` để mã hóa mật khẩu mới.
-* Lớp User gọi hàm `updatePassword()` để cập nhật mật khẩu.
-* Lớp User gọi hàm `revokeAllSessions()` để thu hồi tất cả session.
-* Lớp User trả kết quả về cho ChangePasswordView.
-* Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
+1. Người dùng truy cập mục "Bảo mật" trong cài đặt.
+2. Lớp ChangePasswordView hiển thị form gồm: Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới.
+3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới và Xác nhận mật khẩu mới.
+4. Người dùng nhấn nút [Lưu thay đổi].
+5. Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
+6. Lớp User gọi hàm `findBySessionToken()` để tìm thông tin người dùng.
+7. Lớp User gọi hàm `verifyPassword()` để xác minh mật khẩu hiện tại.
+8. Lớp User gọi hàm `hashPassword()` để mã hóa mật khẩu mới.
+9. Lớp User gọi hàm `updatePassword()` để cập nhật mật khẩu.
+10. Lớp User gọi hàm `revokeAllSessions()` để thu hồi tất cả session.
+11. Lớp User trả kết quả về cho ChangePasswordView.
+12. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
 
 **Ngoại lệ: MK hiện tại sai**
-* Lớp User trả về mật khẩu không khớp.
-* Lớp ChangePasswordView hiển thị "Mật khẩu hiện tại không chính xác."
+
+- Lớp User trả về mật khẩu không khớp.
+- Lớp ChangePasswordView hiển thị "Mật khẩu hiện tại không chính xác."
 
 **Ngoại lệ: MK mới không đủ mạnh**
-* Lớp User trả về lỗi validation.
-* Lớp ChangePasswordView highlight ô và hiển thị yêu cầu còn thiếu.
+
+- Lớp User trả về lỗi validation.
+- Lớp ChangePasswordView highlight ô và hiển thị yêu cầu còn thiếu.
 
 #### UC04 – Quản lý thông tin cá nhân
 
@@ -386,21 +392,22 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân**
 
-* Khách hàng nhấn vào ảnh đại diện / tên tài khoản.
-* Lớp ProfileView gọi hàm `getProfile()` của đối tượng User.
-* Lớp User gọi hàm `findById()` để tìm thông tin người dùng.
-* Lớp User trả kết quả về cho ProfileView.
-* Lớp ProfileView hiển thị hồ sơ: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
-* Khách hàng nhấn nút [Chỉnh sửa thông tin], cập nhật Họ tên = "Nguyễn Văn An" và Email = "vanan@newemail.com", nhấn nút [Lưu].
-* Lớp ProfileView gọi hàm `updateProfile()` của đối tượng User.
-* Lớp User gọi hàm `checkEmail()` để kiểm tra email hợp lệ và chưa được dùng.
-* Lớp User gọi hàm `update()` để cập nhật thông tin.
-* Lớp User trả kết quả về cho ProfileView.
-* Lớp ProfileView hiển thị "Cập nhật thành công!"
+1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản.
+2. Lớp ProfileView gọi hàm `getProfile()` của đối tượng User.
+3. Lớp User gọi hàm `findById()` để tìm thông tin người dùng.
+4. Lớp User trả kết quả về cho ProfileView.
+5. Lớp ProfileView hiển thị hồ sơ: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
+6. Khách hàng nhấn nút [Chỉnh sửa thông tin], cập nhật thông tin và nhấn nút [Lưu].
+7. Lớp ProfileView gọi hàm `updateProfile()` của đối tượng User.
+8. Lớp User gọi hàm `checkEmail()` để kiểm tra email hợp lệ và chưa được dùng.
+9. Lớp User gọi hàm `update()` để cập nhật thông tin.
+10. Lớp User trả kết quả về cho ProfileView.
+11. Lớp ProfileView hiển thị "Cập nhật thành công!"
 
 **Ngoại lệ: Email đã được dùng**
-* Lớp User trả về email đã tồn tại.
-* Lớp ProfileView hiển thị "Email này đã được đăng ký bởi tài khoản khác."
+
+- Lớp User trả về email đã tồn tại.
+- Lớp ProfileView hiển thị "Email này đã được đăng ký bởi tài khoản khác."
 
 #### UC20 – Quản lý tài khoản nhân viên
 
@@ -437,21 +444,23 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên**
 
-* Admin truy cập "Quản lý nhân viên" từ trang quản trị.
-* Lớp StaffManageView gọi hàm `getAllStaff()` của đối tượng Employee.
-* Lớp Employee gọi hàm `findAll()` để tải danh sách nhân viên.
-* Lớp Employee trả kết quả về cho StaffManageView.
-* Lớp StaffManageView hiển thị bảng danh sách nhân viên.
-* Admin nhấn nút [Thêm], nhập Họ tên = "Trần Văn A" và Vai trò = "Lễ tân", nhấn nút [Lưu].
-* Lớp StaffManageView gọi hàm `addStaff()` của đối tượng Employee.
-* Lớp Employee gọi hàm `save()` để lưu nhân viên mới.
-* Lớp Employee trả kết quả về cho StaffManageView.
-* Lớp StaffManageView hiển thị "Thêm nhân viên thành công!"
+1. Admin truy cập "Quản lý nhân viên" từ trang quản trị.
+2. Lớp StaffManageView gọi hàm `getAllStaff()` của đối tượng Employee.
+3. Lớp Employee gọi hàm `findAll()` để tải danh sách nhân viên.
+4. Lớp Employee trả kết quả về cho StaffManageView.
+5. Lớp StaffManageView hiển thị bảng danh sách nhân viên.
+6. Admin nhấn nút [Thêm], nhập thông tin nhân viên và nhấn nút [Lưu].
+7. Lớp StaffManageView gọi hàm `addStaff()` của đối tượng Employee.
+8. Lớp Employee gọi hàm `save()` để lưu nhân viên mới.
+9. Lớp Employee trả kết quả về cho StaffManageView.
+10. Lớp StaffManageView hiển thị "Thêm nhân viên thành công!"
 
 **Ngoại lệ: SĐT đã tồn tại**
-* Lớp Employee trả về lỗi trùng SĐT.
-* Lớp StaffManageView hiển thị "SĐT này đã được sử dụng."
+
+- Lớp Employee trả về lỗi trùng SĐT.
+- Lớp StaffManageView hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: Nhân viên đang xử lý order**
-* Lớp Employee trả về lỗi không thể xóa.
-* Lớp StaffManageView hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
+
+- Lớp Employee trả về lỗi không thể xóa.
+- Lớp StaffManageView hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
