@@ -56,9 +56,9 @@ d) Thay đổi trạng thái phòng => `updateRoomStatus()`
 
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
-| **Phong** | id, tenPhong, loaiPhong, sucChua, giaTheoGio, trangThai | ManyToOne→ChiNhanh |
-| **KhachHang** | id, hoTen, soDienThoai, email, diemTichLuy | ManyToOne→HangHoiVien |
-| **ChiNhanh** | id, tenChiNhanh, diaChi | — |
+| **Room** | roomID, name, type, capacity, hourly_pricing, branchID, status | ManyToOne→Branch |
+| **Customer** | customerID, name, phone_number, account_status, rankingID | ManyToOne→MemberRanking |
+| **Branch** | branchID, name, address, phone_number | — |
 
 ### b) Chức năng Check-in
 
@@ -90,8 +90,8 @@ b) Xác nhận check-in => `checkIn()`
 
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
-| **Phong** | id, tenPhong, trangThai | ManyToOne→ChiNhanh |
-| **KhachHang** | id, hoTen, soDienThoai | — |
+| **Room** | roomID, name, status | ManyToOne→Branch |
+| **Customer** | customerID, name, phone_number | — |
 
 ### c) Chức năng Check-out
 
@@ -132,9 +132,9 @@ c) Xác nhận thanh toán => `confirmPayment()`
 
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
-| **HoaDon** | id, ngayLap, tienPhong, tienDichVu, giamGia, tongTien | ManyToOne→KhachHang, ManyToOne→Phong |
-| **ChiTietHoaDon** | id, tenDichVu, soLuong, donGia, thanhTien | ManyToOne→HoaDon |
-| **KhuyenMai** | id, tenKhuyenMai, loai, giaTri | — |
+| **Room_receipt** | room_receipt_ID, room_fee, service_fee, discount, status, payment_method | ManyToOne→Customer, ManyToOne→Room |
+| **Room_receipt_detail** | room_receipt_detail_ID, service_name, base_price, quantity, duration, total | ManyToOne→Room_receipt |
+| **Promotion** | promotionID, name, type, redeem, valid_until | — |
 
 ### d) Chức năng Huỷ phòng
 
@@ -166,8 +166,8 @@ b) Hủy booking => `cancelBooking()`
 
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
-| **Phong** | id, tenPhong, trangThai | — |
-| **KhachHang** | id, hoTen, soDienThoai | — |
+| **Room** | roomID, name, status | — |
+| **Customer** | customerID, name, phone_number | — |
 
 ### Sơ đồ lớp thiết kế
 
@@ -278,7 +278,7 @@ package "<<Boundary>>" #E3F2FD {
       -cmbPhuongThuc : Select
       -btnThanhToan : Button
       -btnInHoaDon : Button
-      +formLoad(invoice : HoaDon) : void
+      +formLoad(invoice : Room_receipt) : void
       +btnThanhToanClick() : void
       +btnInHoaDonClick() : void
       +showMessage(msg : String) : void
@@ -299,17 +299,17 @@ package "<<Boundary>>" #E3F2FD {
 
 package "<<Control>>" #E8F5E9 {
   class RoomController {
-    +getAll() : List<Phong>
-    +getById(id : int) : Phong
-    +searchFreeRoom(startTime : Date, endTime : Date, branchId : int) : List<Phong>
-    +updateStatus(roomId : int, status : String) : Phong
-    +getActiveRooms(branchId : int) : List<Phong>
+    +getAll() : List<Room>
+    +getById(id : int) : Room
+    +searchFreeRoom(startTime : Date, endTime : Date, branchId : int) : List<Room>
+    +updateStatus(roomId : int, status : String) : Room
+    +getActiveRooms(branchId : int) : List<Room>
     +getPendingBookings(branchId : int, date : Date) : List<BookingResponse>
   }
   class ClientController {
-    +getAll() : List<KhachHang>
-    +getById(id : int) : KhachHang
-    +search(keyword : String) : List<KhachHang>
+    +getAll() : List<Customer>
+    +getById(id : int) : Customer
+    +search(keyword : String) : List<Customer>
   }
   class BookingController {
     +createBooking(clientId : int, roomId : int, startTime : Date, endTime : Date, staffId : int) : BookingResponse
@@ -318,60 +318,68 @@ package "<<Control>>" #E8F5E9 {
     +searchBooking(keyword : String) : List<BookingResponse>
   }
   class InvoiceController {
-    +calculateInvoice(bookingId : int) : HoaDon
-    +confirmPayment(invoiceId : int, paymentMethod : String, voucherCode : String) : HoaDon
-    +getById(id : int) : HoaDon
+    +calculateInvoice(bookingId : int) : Room_receipt
+    +confirmPayment(invoiceId : int, paymentMethod : String, voucherCode : String) : Room_receipt
+    +getById(id : int) : Room_receipt
   }
 }
 
 package "<<Entity>>" #FFF3E0 {
-  class Phong {
-    -id: int
-    -tenPhong: String
-    -loaiPhong: String
-    -sucChua: int
-    -giaTheoGio: double
-    -trangThai: String
+  class Room {
+    -roomID: int
+    -name: String
+    -type: String
+    -capacity: int
+    -hourly_pricing: float
+    -branchID: String
+    -status: String
   }
-  class KhachHang {
-    -id: int
-    -hoTen: String
-    -soDienThoai: String
-    -email: String
-    -diemTichLuy: int
+  class Customer {
+    -customerID: int
+    -rankingID: int
+    -name: String
+    -phone_number: String
+    -account_status: String
   }
-  class HoaDon {
-    -id: int
-    -ngayLap: Date
-    -tienPhong: double
-    -tienDichVu: double
-    -giamGia: double
-    -tongTien: double
-    -trangThaiThanhToan: String
+  class Room_receipt {
+    -room_receipt_ID: int
+    -room_fee: float
+    -checkin_time: datetime
+    -checkout_time: datetime
+    -service_fee: float
+    -damage_fee: float
+    -discount: float
+    -status: String
+    -payment_method: String
   }
-  class ChiTietHoaDon {
-    -id: int
-    -tenDichVu: String
-    -soLuong: int
-    -donGia: double
-    -thanhTien: double
+  class Room_receipt_detail {
+    -room_receipt_detail_ID: int
+    -room_receipt_ID: int
+    -roomID: int
+    -service_name: String
+    -base_price: float
+    -quantity: int
+    -duration: float
+    -total: float
   }
-  class KhuyenMai {
-    -id: int
-    -tenKhuyenMai: String
-    -loai: String
-    -giaTri: double
+  class Promotion {
+    -promotionID: int
+    -name: String
+    -type: String
+    -redeem: String
+    -valid_until: datetime
   }
-  class ChiNhanh {
-    -id: int
-    -tenChiNhanh: String
-    -diaChi: String
+  class Branch {
+    -branchID: int
+    -name: String
+    -address: String
+    -phone_number: String
   }
-  class HangHoiVien {
-    -id: int
-    -tenHang: String
-    -diemToiThieu: int
-    -heSoUuDai: double
+  class MemberRanking {
+    -rankingID: int
+    -name: String
+    -base_score: bigint
+    -coupon: int
   }
 }
 
@@ -386,18 +394,18 @@ InvoicePanel --> InvoiceController
 CancelBookingPage --> BookingController
 
 ' Control -> Entity
-RoomController --> Phong
-ClientController --> KhachHang
-BookingController --> HoaDon
-BookingController --> Phong
-InvoiceController --> HoaDon
-InvoiceController --> ChiTietHoaDon
+RoomController --> Room
+ClientController --> Customer
+BookingController --> Room_receipt
+BookingController --> Room
+InvoiceController --> Room_receipt
+InvoiceController --> Room_receipt_detail
 
 ' Entity relationships
-ChiNhanh *-- "n" Phong
-KhachHang o-- "1" HangHoiVien
-HoaDon *-- "n" ChiTietHoaDon
-KhachHang o-- "n" HoaDon
-Phong o-- "n" HoaDon
+Branch *-- "n" Room
+MemberRanking o-- "1" Customer
+Room_receipt *-- "n" Room_receipt_detail
+Customer o-- "n" Room_receipt
+Room o-- "n" Room_receipt
 @enduml
 ```
