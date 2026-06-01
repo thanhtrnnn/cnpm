@@ -11,7 +11,7 @@
 | **Tiền điều kiện** | Người dùng chưa đăng nhập. Tài khoản đã tồn tại trong hệ thống. |
 | **Hậu điều kiện** | Người dùng được xác thực, chuyển hướng đến trang chủ. |
 | **Kịch bản chính** | 1. Người dùng chọn chức năng "Đăng nhập".<br>2. Hệ thống hiển thị giao diện đăng nhập có ô nhập SĐT/Email, ô nhập Mật khẩu, nút Đăng nhập, liên kết "Quên mật khẩu?" và "Đăng ký".<br>3. Người dùng nhập SĐT/Email và Mật khẩu.<br>4. Người dùng nhấn nút Đăng nhập.<br>5. Hệ thống xác thực thành công, chuyển hướng đến trang chủ và hiển thị thông báo "Đăng nhập thành công". |
-| **Ngoại lệ** | 5. Hệ thống thông báo "Tài khoản không tồn tại".<br>5.1 Người dùng chọn liên kết "Đăng ký" (chuyển sang UC02).<br><br>5. Hệ thống thông báo "Sai mật khẩu".<br>5.1 Người dùng nhập lại mật khẩu (quay về Bước 4). |
+| **Ngoại lệ** | 4. Hệ thống thông báo "Tài khoản không tồn tại".<br>4.1 Người dùng chọn liên kết "Đăng ký" (chuyển sang UC02).<br><br>4. Hệ thống thông báo "Sai mật khẩu".<br>4.1 Người dùng nhập lại mật khẩu (quay về Bước 4). |
 
 #### UC02 – Đăng ký
 
@@ -21,8 +21,8 @@
 | **Actor** | Khách hàng |
 | **Tiền điều kiện** | Người dùng chưa có tài khoản. |
 | **Hậu điều kiện** | Tài khoản mới được tạo, đăng nhập tự động. |
-| **Kịch bản chính** | 1. Người dùng chọn liên kết "Đăng ký" từ giao diện đăng nhập.<br>2. Hệ thống hiển thị giao diện đăng ký có ô nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu, nút Tiếp tục.<br>3. Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu.<br>4. Người dùng nhấn nút Tiếp tục.<br>5. Hệ thống gửi mã OTP 6 chữ số đến SĐT.<br>6. Hệ thống hiển thị giao diện xác nhận OTP có ô nhập mã OTP, nút Xác nhận, nút Gửi lại mã.<br>7. Người dùng nhập mã OTP và nhấn nút Xác nhận.<br>8. Hệ thống tạo tài khoản mới, tự động đăng nhập và hiển thị thông báo "Đăng ký thành công!". |
-| **Ngoại lệ** | 4. Hệ thống thông báo "SĐT hoặc Email đã được sử dụng".<br>4.1 Người dùng nhập lại thông tin khác (quay về Bước 4).<br><br>7. Hệ thống thông báo "Mã OTP không hợp lệ hoặc đã hết hạn".<br>7.1 Người dùng nhấn nút Gửi lại mã (quay về Bước 6). |
+| **Kịch bản chính** | 1. Người dùng chọn liên kết "Đăng ký" từ giao diện đăng nhập.<br>2. Hệ thống hiển thị giao diện đăng ký có ô nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu, nút Tiếp tục.<br>3. Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu.<br>4. Người dùng nhấn nút Tiếp tục.<br>5. Hệ thống kiểm tra thông tin hợp lệ, gửi mã OTP 6 chữ số đến SĐT.<br>6. Hệ thống hiển thị giao diện xác nhận OTP có ô nhập mã OTP, nút Xác nhận, nút Gửi lại mã.<br>7. Người dùng nhập mã OTP và nhấn nút Xác nhận.<br>8. Hệ thống tạo tài khoản mới, tự động đăng nhập và hiển thị thông báo "Đăng ký thành công!". |
+| **Ngoại lệ** | 5. Hệ thống thông báo "SĐT hoặc Email đã được sử dụng".<br>5.1 Người dùng nhập lại thông tin khác (quay về Bước 4).<br><br>7. Hệ thống thông báo "Mã OTP không hợp lệ hoặc đã hết hạn".<br>7.1 Người dùng nhấn nút Gửi lại mã (quay về Bước 6). |
 
 #### UC03 – Đổi mật khẩu
 
@@ -54,8 +54,8 @@
 | **Actor** | Chủ Doanh nghiệp (Admin) |
 | **Tiền điều kiện** | Admin đã đăng nhập với quyền quản lý nhân viên. |
 | **Hậu điều kiện** | Tài khoản nhân viên được tạo/sửa/xóa. |
-| **Kịch bản chính** | 1. Admin chọn chức năng "Quản lý nhân viên".<br>2. Hệ thống hiển thị danh sách nhân viên:<br><table><tr><th>Họ tên</th><th>Vai trò</th><th>Chi nhánh</th><th>Trạng thái</th></tr><tr><td>Nguyễn Minh Tuấn</td><td>Lễ tân</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr><tr><td>Trần Thị Hương</td><td>Phục vụ</td><td>Karaoke Star - CN2</td><td>Đang làm</td></tr><tr><td>Lê Văn Khánh</td><td>Quản lý</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr></table><br>3. Admin nhấn nút Thêm nhân viên.<br>4. Hệ thống hiển thị giao diện nhập Họ tên, SĐT, Vai trò, Chi nhánh.<br>5. Admin nhập thông tin và nhấn nút Lưu.<br>6. Hệ thống hiển thị thông báo "Thêm nhân viên thành công!" và cập nhật danh sách.<br>7. Admin nhấn nút Sửa trên dòng nhân viên Nguyễn Minh Tuấn.<br>8. Hệ thống hiển thị giao diện chỉnh sửa với thông tin hiện tại.<br>9. Admin cập nhật thông tin và nhấn nút Lưu.<br>10. Hệ thống hiển thị thông báo "Cập nhật thành công!".<br>11. Admin nhấn nút Xóa trên dòng nhân viên Lê Văn Khánh.<br>12. Hệ thống yêu cầu xác nhận xóa.<br>13. Admin xác nhận xóa.<br>14. Hệ thống hiển thị thông báo "Xóa nhân viên thành công!". |
-| **Ngoại lệ** | 5. Hệ thống thông báo "SĐT đã được sử dụng".<br>5.1 Admin nhập lại SĐT khác (quay về Bước 5).<br><br>13. Hệ thống thông báo "Không thể xóa nhân viên đang xử lý order".<br>13.1 Admin hủy thao tác xóa. |
+| **Kịch bản chính** | 1. Admin chọn chức năng "Quản lý nhân viên".<br>2. Hệ thống hiển thị danh sách nhân viên:<br><table><tr><th>Họ tên</th><th>Vai trò</th><th>Chi nhánh</th><th>Trạng thái</th></tr><tr><td>Nguyễn Minh Tuấn</td><td>Lễ tân</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr><tr><td>Trần Thị Hương</td><td>Phục vụ</td><td>Karaoke Star - CN2</td><td>Đang làm</td></tr><tr><td>Lê Văn Khánh</td><td>Quản lý</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr></table><br>3. Admin nhấn nút Thêm nhân viên.<br>4. Hệ thống hiển thị giao diện nhập Họ tên, SĐT, Vai trò, Chi nhánh.<br>5. Admin nhập thông tin và nhấn nút Lưu.<br>6. Hệ thống kiểm tra thông tin hợp lệ, tạo tài khoản nhân viên mới.<br>7. Hệ thống hiển thị thông báo "Thêm nhân viên thành công!" và cập nhật danh sách.<br>8. Admin nhấn nút Sửa trên dòng nhân viên Nguyễn Minh Tuấn.<br>9. Hệ thống hiển thị giao diện chỉnh sửa với thông tin hiện tại.<br>10. Admin cập nhật thông tin và nhấn nút Lưu.<br>11. Hệ thống hiển thị thông báo "Cập nhật thành công!".<br>12. Admin nhấn nút Xóa trên dòng nhân viên Lê Văn Khánh.<br>13. Hệ thống yêu cầu xác nhận xóa.<br>14. Admin xác nhận xóa, hệ thống hiển thị thông báo "Xóa nhân viên thành công!". |
+| **Ngoại lệ** | 6. Hệ thống thông báo "SĐT đã được sử dụng".<br>6.1 Admin nhập lại SĐT khác (quay về Bước 5).<br><br>14. Hệ thống thông báo "Không thể xóa nhân viên đang xử lý order".<br>14.1 Admin hủy thao tác xóa. |
 
 ### 2. Mô hình hóa lớp
 
@@ -66,21 +66,21 @@ Hệ thống cho phép khách hàng đăng ký tài khoản hội viên mới b�
 **Bước 2 + 3 – Trích danh từ và đánh giá**
 
 ▪ Hệ thống → loại: quá chung, không phải thực thể nghiệp vụ
-▪ Khách hàng → lớp User: hoTen, soDienThoai, email, matKhau, ngayTao
+▪ Khách hàng → lớp User: fullName, phoneNumber, email, password, loyaltyPoints, createdAt
 ▪ Tài khoản → thuộc về User (gộp vào User, tránh tách thừa)
-▪ Họ tên → thuộc tính của User
-▪ Số điện thoại → thuộc tính của User (dùng làm username đăng nhập)
-▪ Email → thuộc tính của User
-▪ Mật khẩu → thuộc tính của User (lưu dạng mã hóa)
-▪ Ngày tham gia → thuộc tính ngayTao của User
-▪ Hạng hội viên → lớp MembershipTier: tenHang, diemToiThieu, moTa, heSoUuDai
-▪ Điểm tích lũy → thuộc tính diemTichLuy của User
-▪ Mã OTP → lớp OTP: maOTP, loai, thoiHanHetHan, daXacMinh
-▪ Phiên đăng nhập → lớp LoginSession: tokenPhien, thoiGianDangNhap, thoiGianHetHan, thietBi
+▪ Họ tên → thuộc tính fullName của User
+▪ Số điện thoại → thuộc tính phoneNumber của User (dùng làm username đăng nhập)
+▪ Email → thuộc tính email của User
+▪ Mật khẩu → thuộc tính password của User (lưu dạng mã hóa)
+▪ Ngày tham gia → thuộc tính createdAt của User
+▪ Hạng hội viên → lớp MembershipTier: tierName, minPoints, description, discountRate
+▪ Điểm tích lũy → thuộc tính loyaltyPoints của User
+▪ Mã OTP → lớp OTP: otpCode, type, expiresAt, verified
+▪ Phiên đăng nhập → lớp LoginSession: sessionToken, loginTime, expiresAt, device
 ▪ Lịch sử → loại: quá chung → cụ thể là LoginSession đã đủ
 ▪ Danh sách → loại: không phải thực thể
 ▪ Giao diện → loại: là Boundary, không phải Entity
-▪ Nhân viên → lớp Employee: hoTen, vaiTro, chiNhanh, trangThai
+▪ Nhân viên → lớp Employee: fullName, role, branch, status
 ▪ Chủ doanh nghiệp → loại: actor, không phải thực thể dữ liệu
 
 **Bước 4 – Xác định quan hệ số lượng**
@@ -91,6 +91,8 @@ Hệ thống cho phép khách hàng đăng ký tài khoản hội viên mới b�
 (mỗi lần đăng ký/đổi SĐT tạo 1 OTP mới)
 ▪ 1 User có nhiều LoginSession → User – LoginSession: 1 – n
 (người dùng có thể đăng nhập trên nhiều thiết bị)
+▪ Employee là lớp độc lập, không có quan hệ với User
+(branch là thuộc tính text, không cần tách riêng vì Chi nhánh thuộc module khác)
 
 **Bước 5 – Bổ sung quan hệ**
 
@@ -102,6 +104,10 @@ User gắn composition với OTP: một OTP không tồn tại độc lập nế
 
 ```plantuml
 @startuml
+skinparam classBackgroundColor #7AD2FF
+skinparam classBorderColor #000000
+skinparam classFontColor #000000
+skinparam linetype ortho
 title Biểu đồ thực thể – Module Tài khoản & Thành viên
 
 class User {
@@ -234,6 +240,12 @@ skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
 title Biểu đồ lớp phân tích – Module Tài khoản & Thành viên
 
+skinparam classBackgroundColor #7AD2FF
+skinparam classBorderColor #000000
+skinparam classFontColor #000000
+skinparam packageBackgroundColor #DDEEFF
+skinparam packageBorderColor #000000
+
 package "Boundary" #DDEEFF {
   together {
     class LoginView {
@@ -346,15 +358,19 @@ User "1" *-- "n" LoginSession
 
 ### 4. Biểu đồ tuần tự phân tích
 
-#### UC01 – Đăng nhập
+#### UC01 – Đăng nhập (5 bước)
 
 ```plantuml
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceParticipantBackgroundColor #7AD2FF
+skinparam sequenceParticipantBorderColor #000000
+skinparam sequenceParticipantFontColor #000000
+skinparam sequenceArrowColor #000000
+skinparam sequenceArrowFontColor #000000
 
 <style>
 sequenceDiagram {
@@ -363,87 +379,57 @@ sequenceDiagram {
   FontName "Arial"
   FontSize 10
   FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
+  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
+  actor { BackgroundColor transparent LineColor #000000 }
+  boundary { BackgroundColor #7AD2FF LineColor #000000 }
+  control { BackgroundColor #7AD2FF LineColor #000000 }
+  entity { BackgroundColor #7AD2FF LineColor #000000 }
+  lifeline { LineColor #000000 LineStyle 5-5 }
+  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
 }
 </style>
-title Đăng nhập – Tuần tự Phân tích
+title Đăng nhập – Tuần tự Phân tích (5 bước)
 
-actor "Khách hàng" as KH
+actor "Người dùng" as Actor
 boundary LoginView as B1
 entity User as E1
 
-KH -> B1 : 1: truy cập chức năng Đăng nhập
+Actor -> B1 : 1: chọn chức năng Đăng nhập
 activate B1
-B1 --> KH : 2: hiển thị giao diện đăng nhập
-KH -> B1 : 3: nhập SĐT + Mật khẩu + nhấn Đăng nhập
-B1 -> E1 : 4: checkLogin(phoneNumber, password)
+B1 --> Actor : 2: hiển thị giao diện đăng nhập
+Actor -> B1 : 3: nhập SĐT/Email + Mật khẩu, nhấn Đăng nhập
+B1 -> E1 : 4: gọi checkLogin(phoneNumber, password)
 activate E1
-E1 -> E1 : 5: findByPhoneNumber(phoneNumber)
-E1 -> E1 : 6: checkPassword(password, hash)
-E1 --> B1 : 7: trả về User + LoginSession
+E1 --> B1 : trả kết quả xác thực
 deactivate E1
-B1 --> KH : 8: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
+B1 --> Actor : 5: chuyển hướng trang chủ, "Đăng nhập thành công"
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_login_analysis -->
-<!-- File: output/diagrams/account_seq_login_analysis.png -->
 
-**Kịch bản phiên bản 2 – UC01 Đăng nhập**
+**Kịch bản phiên bản 2 – UC01 Đăng nhập (5 bước)**
 
-1. Khách hàng truy cập chức năng Đăng nhập.
-2. Lớp LoginView hiển thị giao diện yêu cầu nhập thông tin đăng nhập.
-3. Khách hàng nhập SĐT và Mật khẩu.
-4. Khách hàng nhấn nút Đăng nhập.
-5. Lớp LoginView gọi hàm `checkLogin()` của đối tượng User.
-6. Lớp User gọi hàm `findBySDT()` để tìm tài khoản theo SĐT.
-7. Lớp User gọi hàm `checkPassword()` để so sánh mật khẩu.
-8. Lớp User trả kết quả về cho LoginView.
-9. Lớp LoginView hiển thị "Đăng nhập thành công" và chuyển hướng trang chủ.
+1. Người dùng chọn chức năng Đăng nhập.
+2. Lớp LoginView hiển thị giao diện đăng nhập.
+3. Người dùng nhập SĐT/Email và Mật khẩu, nhấn nút Đăng nhập.
+4. Lớp LoginView gọi hàm `checkLogin()` của đối tượng User để xác thực.
+5. Lớp LoginView chuyển hướng trang chủ, hiển thị "Đăng nhập thành công".
 
-#### UC02 – Đăng ký
+#### UC02 – Đăng ký (8 bước)
 
 ```plantuml
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceParticipantBackgroundColor #7AD2FF
+skinparam sequenceParticipantBorderColor #000000
+skinparam sequenceParticipantFontColor #000000
+skinparam sequenceArrowColor #000000
+skinparam sequenceArrowFontColor #000000
 
 <style>
 sequenceDiagram {
@@ -452,113 +438,79 @@ sequenceDiagram {
   FontName "Arial"
   FontSize 10
   FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
+  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
+  actor { BackgroundColor transparent LineColor #000000 }
+  boundary { BackgroundColor #7AD2FF LineColor #000000 }
+  control { BackgroundColor #7AD2FF LineColor #000000 }
+  entity { BackgroundColor #7AD2FF LineColor #000000 }
+  lifeline { LineColor #000000 LineStyle 5-5 }
+  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
 }
 </style>
-title Đăng ký – Tuần tự Phân tích
+title Đăng ký – Tuần tự Phân tích (8 bước)
 
-actor "Khách hàng" as KH
+actor "Khách hàng" as Actor
 boundary RegisterView as B1
 boundary OTPVerifyView as B2
 entity User as E1
 entity OTP as E2
 
-KH -> B1 : 1: chọn chức năng Đăng ký
+Actor -> B1 : 1: chọn liên kết Đăng ký
 activate B1
-B1 --> KH : 2: hiển thị giao diện đăng ký
-KH -> B1 : 3: nhập thông tin + nhấn Tiếp tục
-B1 -> E1 : 4: register(fullName, phoneNumber, email, password)
+B1 --> Actor : 2: hiển thị giao diện đăng ký
+Actor -> B1 : 3: nhập Họ tên, SĐT, Email, Mật khẩu, nhấn Tiếp tục
+B1 -> E1 : 4: gọi register(fullName, phoneNumber, email, password)
 activate E1
-E1 -> E1 : 5: existsByPhoneNumber(phoneNumber)
-E1 -> E1 : 6: existsByEmail(email)
-E1 -> E2 : 7: sendOTP(phoneNumber, REGISTER)
+E1 -> E2 : gọi sendOTP(phoneNumber, REGISTER)
 activate E2
-E2 --> E1 : 8: OTP đã gửi
+E2 --> E1 : OTP đã gửi
 deactivate E2
-E1 --> B1 : 9: trả về User
+E1 --> B1 : trả kết quả
 deactivate E1
-B1 --> KH : 10: hiển thị giao diện xác nhận OTP
-deactivate B1
-
-KH -> B2 : 11: nhập mã OTP
+B1 --> Actor : 5: kiểm tra hợp lệ, gửi mã OTP
+B1 --> Actor : 6: hiển thị giao diện xác nhận OTP
+Actor -> B2 : 7: nhập mã OTP, nhấn Xác nhận
 activate B2
-B2 -> E2 : 12: verifyOTP(otp)
+B2 -> E2 : gọi verifyOTP(otpCode)
 activate E2
-E2 -> E2 : 13: verify(otp)
-E2 --> B2 : 14: xác minh thành công
+E2 --> B2 : xác minh thành công
 deactivate E2
-B2 -> E1 : 15: saveUser()
+B2 -> E1 : gọi saveUser()
 activate E1
-E1 --> B2 : 16: tạo tài khoản thành công
+E1 --> B2 : tạo tài khoản thành công
 deactivate E1
-B2 --> KH : 17: "Đăng ký thành công!"
+B2 --> Actor : 8: "Đăng ký thành công!", tự động đăng nhập
 deactivate B2
+deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_register_analysis -->
-<!-- File: output/diagrams/account_seq_register_analysis.png -->
 
-**Kịch bản phiên bản 2 – UC02 Đăng ký**
+**Kịch bản phiên bản 2 – UC02 Đăng ký (8 bước)**
 
-1. Khách hàng chọn chức năng Đăng ký từ giao diện đăng nhập.
-2. Lớp RegisterView hiển thị giao diện yêu cầu nhập thông tin đăng ký.
-3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu.
-4. Khách hàng nhấn nút Tiếp tục.
-5. Lớp RegisterView gọi hàm `register()` của đối tượng User.
-6. Lớp User gọi hàm `existsBySDT()` để kiểm tra SĐT chưa tồn tại.
-7. Lớp User gọi hàm `existsByEmail()` để kiểm tra Email chưa tồn tại.
-8. Lớp User gọi hàm `sendOTP()` của đối tượng OTP để gửi mã xác minh.
-9. Lớp User trả kết quả về cho RegisterView.
-10. Lớp RegisterView hiển thị giao diện xác nhận OTP.
-11. Khách hàng nhập mã OTP và nhấn nút Xác nhận.
-12. Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
-13. Lớp OTP gọi hàm `verify()` để kiểm tra mã đúng và còn hiệu lực.
-14. Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User để hoàn tất đăng ký.
-15. Lớp OTPVerifyView hiển thị "Đăng ký thành công!"
+1. Khách hàng chọn liên kết Đăng ký từ giao diện đăng nhập.
+2. Lớp RegisterView hiển thị giao diện đăng ký.
+3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu, nhấn Tiếp tục.
+4. Lớp RegisterView gọi hàm `register()` của đối tượng User.
+5. Lớp User kiểm tra thông tin hợp lệ, gọi hàm `sendOTP()` của đối tượng OTP.
+6. Lớp RegisterView hiển thị giao diện xác nhận OTP.
+7. Khách hàng nhập mã OTP, nhấn Xác nhận. Lớp OTPVerifyView gọi hàm `verifyOTP()` của đối tượng OTP.
+8. Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User, hiển thị "Đăng ký thành công!".
 
-#### UC03 – Đổi mật khẩu
+#### UC03 – Đổi mật khẩu (5 bước)
 
 ```plantuml
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceParticipantBackgroundColor #7AD2FF
+skinparam sequenceParticipantBorderColor #000000
+skinparam sequenceParticipantFontColor #000000
+skinparam sequenceArrowColor #000000
+skinparam sequenceArrowFontColor #000000
 
 <style>
 sequenceDiagram {
@@ -567,93 +519,57 @@ sequenceDiagram {
   FontName "Arial"
   FontSize 10
   FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
+  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
+  actor { BackgroundColor transparent LineColor #000000 }
+  boundary { BackgroundColor #7AD2FF LineColor #000000 }
+  control { BackgroundColor #7AD2FF LineColor #000000 }
+  entity { BackgroundColor #7AD2FF LineColor #000000 }
+  lifeline { LineColor #000000 LineStyle 5-5 }
+  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
 }
 </style>
-title Đổi mật khẩu – Tuần tự Phân tích
+title Đổi mật khẩu – Tuần tự Phân tích (5 bước)
 
-actor "Người dùng" as ND
+actor "Người dùng" as Actor
 boundary ChangePasswordView as B1
 entity User as E1
 
-ND -> B1 : 1: truy cập chức năng Đổi mật khẩu
+Actor -> B1 : 1: chọn chức năng Đổi mật khẩu
 activate B1
-B1 --> ND : 2: hiển thị giao diện đổi mật khẩu
-ND -> B1 : 3: nhập MK hiện tại, MK mới + nhấn Lưu
-B1 -> E1 : 4: changePassword(currentPassword, newPassword)
+B1 --> Actor : 2: hiển thị giao diện đổi mật khẩu
+Actor -> B1 : 3: nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn Lưu
+B1 -> E1 : 4: gọi changePassword(currentPassword, newPassword)
 activate E1
-E1 -> E1 : 5: findByToken(session)
-E1 -> E1 : 6: checkPassword(currentPassword, hash)
-E1 -> E1 : 7: hashPassword(newPassword)
-E1 -> E1 : 8: updatePassword(hash)
-E1 -> E1 : 9: revokeAllSessions()
-E1 --> B1 : 10: đổi mật khẩu thành công
+E1 --> B1 : đổi mật khẩu thành công
 deactivate E1
-B1 --> ND : 11: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
+B1 --> Actor : 5: "Đổi mật khẩu thành công", chuyển hướng về đăng nhập
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_changepw_analysis -->
-<!-- File: output/diagrams/account_seq_changepw_analysis.png -->
 
-**Kịch bản phiên bản 2 – UC03 Đổi mật khẩu**
+**Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (5 bước)**
 
-1. Người dùng truy cập chức năng Đổi mật khẩu.
-2. Lớp ChangePasswordView hiển thị giao diện yêu cầu nhập mật khẩu hiện tại và mật khẩu mới.
-3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới.
-4. Người dùng nhấn nút Lưu thay đổi.
-5. Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
-6. Lớp User gọi hàm `findBySessionToken()` để tìm thông tin người dùng.
-7. Lớp User gọi hàm `verifyPassword()` để xác minh mật khẩu hiện tại.
-8. Lớp User gọi hàm `hashPassword()` để mã hóa mật khẩu mới.
-9. Lớp User gọi hàm `updatePassword()` để cập nhật mật khẩu.
-10. Lớp User gọi hàm `revokeAllSessions()` để thu hồi tất cả phiên đăng nhập khác.
-11. Lớp User trả kết quả về cho ChangePasswordView.
-12. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
+1. Người dùng chọn chức năng Đổi mật khẩu.
+2. Lớp ChangePasswordView hiển thị giao diện đổi mật khẩu.
+3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới, nhấn Lưu.
+4. Lớp ChangePasswordView gọi hàm `changePassword()` của đối tượng User.
+5. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công", chuyển hướng về đăng nhập.
 
-#### UC04 – Quản lý thông tin cá nhân
+#### UC04 – Quản lý thông tin cá nhân (7 bước)
 
 ```plantuml
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceParticipantBackgroundColor #7AD2FF
+skinparam sequenceParticipantBorderColor #000000
+skinparam sequenceParticipantFontColor #000000
+skinparam sequenceArrowColor #000000
+skinparam sequenceArrowFontColor #000000
 
 <style>
 sequenceDiagram {
@@ -662,94 +578,65 @@ sequenceDiagram {
   FontName "Arial"
   FontSize 10
   FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
+  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
+  actor { BackgroundColor transparent LineColor #000000 }
+  boundary { BackgroundColor #7AD2FF LineColor #000000 }
+  control { BackgroundColor #7AD2FF LineColor #000000 }
+  entity { BackgroundColor #7AD2FF LineColor #000000 }
+  lifeline { LineColor #000000 LineStyle 5-5 }
+  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
 }
 </style>
-title Quản lý TTCN – Tuần tự Phân tích
+title Quản lý TTCN – Tuần tự Phân tích (7 bước)
 
-actor "Khách hàng" as KH
+actor "Khách hàng" as Actor
 boundary ProfileView as B1
 entity User as E1
 
-KH -> B1 : 1: chọn chức năng Hồ sơ cá nhân
+Actor -> B1 : 1: chọn chức năng Hồ sơ cá nhân
 activate B1
-B1 -> E1 : 2: getProfile(userId)
+B1 -> E1 : 2: gọi getProfile(userId)
 activate E1
-E1 -> E1 : 3: findById(userId)
-E1 --> B1 : 4: trả về User
+E1 --> B1 : trả về thông tin User
 deactivate E1
-B1 --> KH : 5: hiển thị hồ sơ cá nhân
-KH -> B1 : 6: nhấn Chỉnh sửa + cập nhật + nhấn Lưu
-B1 -> E1 : 7: updateProfile(userId, fullName, email)
+B1 --> Actor : 3: hiển thị trang hồ sơ cá nhân
+Actor -> B1 : 4: nhấn nút Chỉnh sửa
+B1 --> Actor : 5: chuyển sang chế độ chỉnh sửa
+Actor -> B1 : 6: cập nhật Họ tên, Email, nhấn Lưu
+B1 -> E1 : 7: gọi updateProfile(userId, fullName, email)
 activate E1
-E1 -> E1 : 8: checkEmail(email)
-E1 -> E1 : 9: update()
-E1 --> B1 : 10: cập nhật thành công
+E1 --> B1 : cập nhật thành công
 deactivate E1
-B1 --> KH : 11: "Cập nhật thành công!"
+B1 --> Actor : "Cập nhật thành công!", quay về chế độ xem
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_profile_analysis -->
-<!-- File: output/diagrams/account_seq_profile_analysis.png -->
 
-**Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân**
+**Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân (7 bước)**
 
 1. Khách hàng chọn chức năng Hồ sơ cá nhân.
 2. Lớp ProfileView gọi hàm `getProfile()` của đối tượng User.
-3. Lớp User gọi hàm `findById()` để tìm thông tin người dùng.
-4. Lớp User trả kết quả về cho ProfileView.
-5. Lớp ProfileView hiển thị hồ sơ: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
-6. Khách hàng nhấn nút Chỉnh sửa thông tin, cập nhật thông tin và nhấn nút Lưu.
-7. Lớp ProfileView gọi hàm `updateProfile()` của đối tượng User.
-8. Lớp User gọi hàm `checkEmail()` để kiểm tra email hợp lệ và chưa được dùng.
-9. Lớp User gọi hàm `update()` để cập nhật thông tin.
-10. Lớp User trả kết quả về cho ProfileView.
-11. Lớp ProfileView hiển thị "Cập nhật thành công!"
+3. Lớp ProfileView hiển thị trang hồ sơ cá nhân.
+4. Khách hàng nhấn nút Chỉnh sửa.
+5. Lớp ProfileView chuyển sang chế độ chỉnh sửa.
+6. Khách hàng cập nhật Họ tên, Email, nhấn Lưu. Lớp ProfileView gọi hàm `updateProfile()` của đối tượng User.
+7. Lớp ProfileView hiển thị "Cập nhật thành công!", quay về chế độ xem.
 
-#### UC20 – Quản lý tài khoản nhân viên
+#### UC20 – Quản lý tài khoản nhân viên (14 bước)
 
 ```plantuml
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
-
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
+skinparam sequenceParticipantBackgroundColor #7AD2FF
+skinparam sequenceParticipantBorderColor #000000
+skinparam sequenceParticipantFontColor #000000
+skinparam sequenceArrowColor #000000
+skinparam sequenceArrowFontColor #000000
 
 <style>
 sequenceDiagram {
@@ -758,80 +645,65 @@ sequenceDiagram {
   FontName "Arial"
   FontSize 10
   FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
+  participant { BackgroundColor #7AD2FF LineColor #000000 LineThickness 1 }
+  actor { BackgroundColor transparent LineColor #000000 }
+  boundary { BackgroundColor #7AD2FF LineColor #000000 }
+  control { BackgroundColor #7AD2FF LineColor #000000 }
+  entity { BackgroundColor #7AD2FF LineColor #000000 }
+  lifeline { LineColor #000000 LineStyle 5-5 }
+  arrow { LineColor #000000 LineThickness 1 FontSize 10 }
 }
 </style>
-title Quản lý tài khoản nhân viên – Tuần tự Phân tích
+title Quản lý nhân viên – Tuần tự Phân tích (14 bước)
 
-actor "Admin" as Admin
+actor "Admin" as Actor
 boundary StaffManageView as B1
 entity Employee as E1
 
-Admin -> B1 : 1: truy cập chức năng Quản lý nhân viên
+Actor -> B1 : 1: chọn chức năng Quản lý nhân viên
 activate B1
-B1 -> E1 : 2: getAllStaff()
+B1 -> E1 : 2: gọi getAllStaff()
 activate E1
-E1 -> E1 : 3: findAll()
-E1 --> B1 : 4: trả về danh sách Employee
+E1 --> B1 : trả về danh sách Employee
 deactivate E1
-B1 --> Admin : 5: hiển thị danh sách nhân viên
-
-Admin -> B1 : 6: nhấn Thêm + nhập thông tin + nhấn Lưu
-B1 -> E1 : 7: addStaff(fullName, role)
+B1 --> Actor : 3: hiển thị danh sách nhân viên
+Actor -> B1 : 4: nhấn nút Thêm nhân viên
+B1 --> Actor : 5: hiển thị giao diện nhập thông tin
+Actor -> B1 : 6: nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu
+B1 -> E1 : 7: gọi addStaff(fullName, role)
 activate E1
-E1 -> E1 : 8: save()
-E1 --> B1 : 9: trả về Employee vừa tạo
+E1 --> B1 : tạo thành công
 deactivate E1
-B1 --> Admin : 10: "Thêm nhân viên thành công!"
+B1 --> Actor : 8: "Thêm nhân viên thành công!"
+Actor -> B1 : 9: nhấn nút Sửa trên dòng Nguyễn Minh Tuấn
+B1 --> Actor : 10: hiển thị giao diện chỉnh sửa
+Actor -> B1 : 11: cập nhật thông tin, nhấn Lưu
+B1 -> E1 : 12: gọi updateStaff(id, data)
+activate E1
+E1 --> B1 : cập nhật thành công
+deactivate E1
+B1 --> Actor : "Cập nhật thành công!"
+Actor -> B1 : 13: nhấn nút Xóa trên dòng Lê Văn Khánh
+B1 --> Actor : 14: yêu cầu xác nhận xóa, "Xóa nhân viên thành công!"
 deactivate B1
 @enduml
 ```
 
 <!-- PLACEHOLDER: account_seq_staff_analysis -->
-<!-- File: output/diagrams/account_seq_staff_analysis.png -->
 
-**Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên**
+**Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên (14 bước)**
 
-1. Admin truy cập chức năng Quản lý nhân viên từ trang quản trị.
+1. Admin chọn chức năng Quản lý nhân viên.
 2. Lớp StaffManageView gọi hàm `getAllStaff()` của đối tượng Employee.
-3. Lớp Employee gọi hàm `findAll()` để tải danh sách nhân viên.
-4. Lớp Employee trả kết quả về cho StaffManageView.
-5. Lớp StaffManageView hiển thị bảng danh sách nhân viên.
-6. Admin nhấn nút Thêm, nhập thông tin nhân viên và nhấn nút Lưu.
+3. Lớp StaffManageView hiển thị danh sách nhân viên.
+4. Admin nhấn nút Thêm nhân viên.
+5. Lớp StaffManageView hiển thị giao diện nhập thông tin.
+6. Admin nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu.
 7. Lớp StaffManageView gọi hàm `addStaff()` của đối tượng Employee.
-8. Lớp Employee gọi hàm `save()` để lưu nhân viên mới.
-9. Lớp Employee trả kết quả về cho StaffManageView.
-10. Lớp StaffManageView hiển thị "Thêm nhân viên thành công!"
+8. Lớp StaffManageView hiển thị "Thêm nhân viên thành công!".
+9. Admin nhấn nút Sửa trên dòng Nguyễn Minh Tuấn.
+10. Lớp StaffManageView hiển thị giao diện chỉnh sửa.
+11. Admin cập nhật thông tin, nhấn Lưu.
+12. Lớp StaffManageView gọi hàm `updateStaff()` của đối tượng Employee.
+13. Admin nhấn nút Xóa trên dòng Lê Văn Khánh.
+14. Lớp StaffManageView yêu cầu xác nhận, hiển thị "Xóa nhân viên thành công!".

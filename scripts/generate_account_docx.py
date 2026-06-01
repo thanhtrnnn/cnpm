@@ -15,7 +15,7 @@ from docx.shared import Pt, Cm, Inches, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import nsdecls
-from docx.oxml import parse_xml
+from docx.oxml import parse_xml, OxmlElement
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DOCS_DIR = os.path.join(SCRIPT_DIR, '..', 'docs', 'tabs')
@@ -493,12 +493,16 @@ def process_file(doc, md_file):
             text = bm.group(2).strip()
             level = min(indent // 2, 2)  # 0, 1, 2
             p = add_formatted_paragraph(doc, text, style='Normal')
-            p.paragraph_format.left_indent = Pt(18 * (level + 1))
-            p.paragraph_format.first_line_indent = Pt(-12)
-            # Add bullet character
-            first_run = p.runs[0] if p.runs else p.add_run('')
-            first_run_text = first_run.text
-            first_run.text = '•  ' + first_run_text if level == 0 else ('◦  ' + first_run_text if level == 1 else ('▪  ' + first_run_text))
+            # Use native DOCX numbering
+            pPr = p._element.get_or_add_pPr()
+            numPr = OxmlElement('w:numPr')
+            ilvl = OxmlElement('w:ilvl')
+            ilvl.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(level))
+            numPr.append(ilvl)
+            numId = OxmlElement('w:numId')
+            numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
+            numPr.append(numId)
+            pPr.append(numPr)
             i += 1
             continue
 
@@ -509,13 +513,16 @@ def process_file(doc, md_file):
             text = nm.group(2).strip()
             level = min(indent // 2, 2)
             p = add_formatted_paragraph(doc, text, style='Normal')
-            p.paragraph_format.left_indent = Pt(18 * (level + 1))
-            p.paragraph_format.first_line_indent = Pt(-12)
-            # Add number
-            num_match = re.match(r'^(\d+[.)])\s', line.strip())
-            if num_match:
-                first_run = p.runs[0] if p.runs else p.add_run('')
-                first_run.text = num_match.group(1) + '  ' + first_run.text
+            # Use native DOCX numbering
+            pPr = p._element.get_or_add_pPr()
+            numPr = OxmlElement('w:numPr')
+            ilvl = OxmlElement('w:ilvl')
+            ilvl.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(level))
+            numPr.append(ilvl)
+            numId = OxmlElement('w:numId')
+            numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '2')
+            numPr.append(numId)
+            pPr.append(numPr)
             i += 1
             continue
 
@@ -541,7 +548,6 @@ def main():
     nsmap = {'w': 'http://schemas.openxmlformats.org/wordprocessingml/2006/main'}
 
     # Bullet list definition
-    from docx.oxml import OxmlElement
     abstract_num_bullet = OxmlElement('w:abstractNum')
     abstract_num_bullet.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}abstractNumId', '1')
     multi_level = OxmlElement('w:multiLevelType')
