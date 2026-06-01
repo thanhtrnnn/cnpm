@@ -169,7 +169,7 @@ def set_cell_shading(cell, color):
 
 
 def parse_inline_html_table(text):
-    """Extract <table>...</table> and convert to formatted text lines."""
+    """Extract <table>...</table> and return structured rows for native DOCX table."""
     import re as _re
     match = _re.search(r'<table>(.*?)</table>', text, _re.DOTALL)
     if not match:
@@ -182,24 +182,55 @@ def parse_inline_html_table(text):
             cells.append(td_match.group(1).strip())
         if cells:
             rows.append(cells)
-    # Calculate column widths
-    if not rows:
-        return text.replace(match.group(0), ''), []
-    col_widths = [max(len(row[i]) if i < len(row) else 0 for row in rows) for i in range(len(rows[0]))]
-    # Build formatted lines
-    lines = []
-    for ri, row in enumerate(rows):
-        parts = []
-        for ci, cell in enumerate(row):
-            w = col_widths[ci] if ci < len(col_widths) else 10
-            parts.append(cell.ljust(w))
-        line = ' | '.join(parts)
-        lines.append(line)
-        if ri == 0:
-            lines.append('-+-'.join('-' * w for w in col_widths))
     # Remove the <table>...</table> from text
     clean_text = text[:match.start()].rstrip() + text[match.end():].lstrip()
-    return clean_text, lines
+    return clean_text, rows
+
+
+def add_native_table_in_cell(parent_cell, rows, header_row=True):
+    """Add a native DOCX table inside a parent cell."""
+    if not rows:
+        return
+    num_cols = max(len(r) for r in rows)
+    # Calculate available width (parent cell is ~12cm, leave some margin)
+    available_width = Cm(11)
+    col_width = int(available_width / num_cols)
+    # Create nested table
+    nested = parent_cell.add_table(rows=len(rows), cols=num_cols)
+    nested.style = 'Table Grid'
+    nested.alignment = WD_TABLE_ALIGNMENT.CENTER
+    for ri, row_data in enumerate(rows):
+        for ci in range(num_cols):
+            cell = nested.cell(ri, ci)
+            cell.text = ''
+            p = cell.paragraphs[0]
+            cell_text = row_data[ci] if ci < len(row_data) else ''
+            segments = extract_inline_formatting(cell_text)
+            for seg_text, is_bold, is_code in segments:
+                run = p.add_run(seg_text)
+                run.font.size = Pt(9)
+                if is_bold or (header_row and ri == 0):
+                    run.bold = True
+                if is_code:
+                    run.font.name = 'Courier New'
+                    run.font.size = Pt(8)
+            # Set cell width
+            cell.width = col_width
+            # Header row shading
+            if header_row and ri == 0:
+                set_cell_shading(cell, 'D9E2F3')
+            # Cell margins
+            tc = cell._tc
+            tcPr = tc.get_or_add_tcPr()
+            tcMar = parse_xml(
+                f'<w:tcMar {nsdecls("w")}>'
+                '<w:top w:w="40" w:type="dxa"/>'
+                '<w:bottom w:w="40" w:type="dxa"/>'
+                '<w:left w:w="80" w:type="dxa"/>'
+                '<w:right w:w="80" w:type="dxa"/>'
+                '</w:tcMar>'
+            )
+            tcPr.append(tcMar)
 
 
 def add_scenario_table(doc, rows):
@@ -226,7 +257,7 @@ def add_scenario_table(doc, rows):
             p.style = doc.styles['Normal']
             cell_text = row[ci] if ci < len(row) else ''
             # Extract inline HTML tables
-            clean_text, inline_table_lines = parse_inline_html_table(cell_text)
+            clean_text, inline_rows = parse_inline_html_table(cell_text)
             parts = clean_text.split('<br>')
             for pi, part in enumerate(parts):
                 part = part.strip()
@@ -243,15 +274,9 @@ def add_scenario_table(doc, rows):
                         run.font.size = Pt(9)
                 if pi < len(parts) - 1:
                     p.add_run('\n')
-            # Add inline table as monospace block
-            if inline_table_lines:
-                p.add_run('\n')
-                for li, line in enumerate(inline_table_lines):
-                    run = p.add_run(line)
-                    run.font.name = 'Courier New'
-                    run.font.size = Pt(8)
-                    if li < len(inline_table_lines):
-                        p.add_run('\n')
+            # Add inline table as native DOCX table
+            if inline_rows:
+                add_native_table_in_cell(cell, inline_rows)
             if ri == 0:
                 set_cell_shading(cell, 'D9E2F3')
     return table
