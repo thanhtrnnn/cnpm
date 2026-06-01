@@ -1,6 +1,8 @@
-## 4.1. Chức năng "Đặt phòng" — Thiết kế
+## 4. Biểu đồ tuần tự thiết kế
 
-### Biểu đồ tuần tự
+### 4.1. Chức năng "Đặt phòng"
+
+#### a) Biểu đồ tuần tự
 
 <!-- PLACEHOLDER: Chèn ảnh tuần tự Đặt phòng tại đây -->
 <!-- File: output/diagrams/booking_seq_datphong.png -->
@@ -8,6 +10,7 @@
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -110,7 +113,7 @@ deactivate Home
 @enduml
 ```
 
-### Kịch bản phiên bản 3
+#### b) Kịch bản phiên bản 3
 
 **Kịch bản phiên bản 3 - Đặt phòng**
 
@@ -171,9 +174,9 @@ deactivate Home
 
 ---
 
-## 4.2. Chức năng "Check-in" — Thiết kế
+### 4.2. Chức năng "Check-in"
 
-### Biểu đồ tuần tự
+#### a) Biểu đồ tuần tự
 
 <!-- PLACEHOLDER: Chèn ảnh tuần tự Check-in tại đây -->
 <!-- File: output/diagrams/booking_seq_checkin.png -->
@@ -181,6 +184,7 @@ deactivate Home
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -247,7 +251,7 @@ deactivate Home
 @enduml
 ```
 
-### Kịch bản phiên bản 3
+#### b) Kịch bản phiên bản 3
 
 **Kịch bản phiên bản 3 - Check-in**
 
@@ -287,9 +291,9 @@ deactivate Home
 
 ---
 
-## 4.3. Chức năng "Check-out" — Thiết kế
+### 4.3. Chức năng "Check-out"
 
-### Biểu đồ tuần tự
+#### a) Biểu đồ tuần tự
 
 <!-- PLACEHOLDER: Chèn ảnh tuần tự Check-out tại đây -->
 <!-- File: output/diagrams/booking_seq_checkout.png -->
@@ -297,6 +301,7 @@ deactivate Home
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -403,7 +408,7 @@ deactivate Home
 @enduml
 ```
 
-### Kịch bản phiên bản 3
+#### b) Kịch bản phiên bản 3
 
 **Kịch bản phiên bản 3 - Check-out**
 
@@ -460,9 +465,9 @@ deactivate Home
 
 ---
 
-## 4.4. Chức năng "Huỷ phòng" — Thiết kế
+### 4.4. Chức năng "Huỷ phòng"
 
-### Biểu đồ tuần tự
+#### a) Biểu đồ tuần tự
 
 <!-- PLACEHOLDER: Chèn ảnh tuần tự Huỷ phòng tại đây -->
 <!-- File: output/diagrams/booking_seq_huyphong.png -->
@@ -470,6 +475,7 @@ deactivate Home
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -548,7 +554,7 @@ deactivate Home
 @enduml
 ```
 
-### Kịch bản phiên bản 3
+#### b) Kịch bản phiên bản 3
 
 **Kịch bản phiên bản 3 - Huỷ phòng**
 

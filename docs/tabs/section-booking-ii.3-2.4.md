@@ -316,13 +316,17 @@ PaymentView --> KhuyenMai
 
 ---
 
-## 2.6. Biểu đồ tuần tự pha phân tích
+## 4. Mô hình hóa động
 
-### 4.1. Chức năng "Đặt phòng"
+### 4.1. Biểu đồ tuần tự phân tích
+
+#### a) Chức năng "Đặt phòng"
 
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -439,11 +443,13 @@ deactivate Home
 
 ---
 
-### 4.2. Chức năng "Huỷ phòng"
+#### b) Chức năng "Huỷ phòng"
 
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -530,11 +536,13 @@ deactivate Home
 
 ---
 
-### 4.3. Chức năng "Check-in"
+#### c) Chức năng "Check-in"
 
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
@@ -608,11 +616,13 @@ deactivate Home
 
 ---
 
-### 4.4. Chức năng "Check-out"
+#### d) Chức năng "Check-out"
 
 ```plantuml
 @startuml
 skinparam shadowing false
+skinparam defaultFontSize 11
+skinparam defaultFontSize 11
 skinparam SequenceMessageAlign left
 skinparam SequenceArrowThickness 2
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
