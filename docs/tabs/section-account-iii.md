@@ -451,7 +451,7 @@ User "n" o-- "1" MembershipTier
 
 ### Đăng nhập
 
-<!-- PLACEHOLDER: account_seq_login -->
+<!-- PLACEHOLDER: account_seq_login_design -->
 <!-- File: output/diagrams/account_seq_login.png -->
 
 ```plantuml
@@ -521,7 +521,7 @@ end
 
 ### Đăng ký
 
-<!-- PLACEHOLDER: account_seq_register -->
+<!-- PLACEHOLDER: account_seq_register_design -->
 <!-- File: output/diagrams/account_seq_register.png -->
 
 ```plantuml
@@ -629,7 +629,7 @@ end
 
 ### Đổi mật khẩu
 
-<!-- PLACEHOLDER: account_seq_changepw -->
+<!-- PLACEHOLDER: account_seq_changepw_design -->
 <!-- File: output/diagrams/account_seq_changepw.png -->
 
 ```plantuml
@@ -707,7 +707,7 @@ end
 
 ### Quản lý TTCN
 
-<!-- PLACEHOLDER: account_seq_profile -->
+<!-- PLACEHOLDER: account_seq_profile_design -->
 <!-- File: output/diagrams/account_seq_profile.png -->
 
 ```plantuml
@@ -787,7 +787,7 @@ end
 
 ### Quản lý nhân viên
 
-<!-- PLACEHOLDER: account_seq_staff -->
+<!-- PLACEHOLDER: account_seq_staff_design -->
 <!-- File: output/diagrams/account_seq_staff.png -->
 
 ```plantuml

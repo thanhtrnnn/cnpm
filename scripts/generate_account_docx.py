@@ -35,18 +35,30 @@ FILES = [
 ]
 
 DIAGRAM_MAP = {
+    # Phase I
     'account_uc_overview': 'output/diagrams/account_uc_overview.png',
+    # Phase II — Analysis
+    'account_entity_analysis': 'output/diagrams/account_entity_analysis.png',
+    'account_bce_login': 'output/diagrams/account_bce_login.png',
+    'account_bce_register': 'output/diagrams/account_bce_register.png',
+    'account_bce_changepw': 'output/diagrams/account_bce_changepw.png',
+    'account_bce_profile': 'output/diagrams/account_bce_profile.png',
+    'account_bce_staff': 'output/diagrams/account_bce_staff.png',
+    'account_seq_login_analysis': 'output/diagrams/account_seq_login_analysis.png',
+    'account_seq_register_analysis': 'output/diagrams/account_seq_register_analysis.png',
+    'account_seq_changepw_analysis': 'output/diagrams/account_seq_changepw_analysis.png',
+    'account_seq_profile_analysis': 'output/diagrams/account_seq_profile_analysis.png',
+    'account_seq_staff_analysis': 'output/diagrams/account_seq_staff_analysis.png',
+    # Phase III — Design
     'account_entity_class': 'output/diagrams/account_entity_class.png',
     'account_erd': 'output/diagrams/account_erd.png',
-    'account_entity_analysis': 'output/diagrams/account_entity_analysis.png',
-    'account_bce_analysis': 'output/diagrams/account_bce_analysis.png',
     'account_dao_class': 'output/diagrams/account_mvc_class.png',
     'account_mvc_class': 'output/diagrams/account_mvc_class.png',
-    'account_seq_login': 'output/diagrams/account_seq_login.png',
-    'account_seq_register': 'output/diagrams/account_seq_register.png',
-    'account_seq_changepw': 'output/diagrams/account_seq_changepw.png',
-    'account_seq_profile': 'output/diagrams/account_seq_profile.png',
-    'account_seq_staff': 'output/diagrams/account_seq_staff.png',
+    'account_seq_login_design': 'output/diagrams/account_seq_login_design.png',
+    'account_seq_register_design': 'output/diagrams/account_seq_register_design.png',
+    'account_seq_changepw_design': 'output/diagrams/account_seq_changepw_design.png',
+    'account_seq_profile_design': 'output/diagrams/account_seq_profile_design.png',
+    'account_seq_staff_design': 'output/diagrams/account_seq_staff_design.png',
 }
 
 

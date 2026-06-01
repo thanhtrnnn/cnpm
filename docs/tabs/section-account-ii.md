@@ -209,7 +209,11 @@ Input: id
 Output: boolean (thành công/thất bại)
 Lớp chủ thể: Employee
 
-<!-- PLACEHOLDER: account_bce_analysis -->
+<!-- PLACEHOLDER: account_bce_login -->
+<!-- PLACEHOLDER: account_bce_register -->
+<!-- PLACEHOLDER: account_bce_changepw -->
+<!-- PLACEHOLDER: account_bce_profile -->
+<!-- PLACEHOLDER: account_bce_staff -->
 
 ### 4. Biểu đồ tuần tự phân tích
 
@@ -247,6 +251,9 @@ alt Ngoại lệ: mật khẩu sai
 end
 @enduml
 ```
+
+<!-- PLACEHOLDER: account_seq_login_analysis -->
+<!-- File: output/diagrams/account_seq_login_analysis.png -->
 
 **Kịch bản phiên bản 2 – UC01 Đăng nhập**
 
@@ -313,6 +320,9 @@ deactivate B2
 @enduml
 ```
 
+<!-- PLACEHOLDER: account_seq_register_analysis -->
+<!-- File: output/diagrams/account_seq_register_analysis.png -->
+
 **Kịch bản phiên bản 2 – UC02 Đăng ký**
 
 1. Khách hàng nhấn liên kết "Đăng ký" từ màn hình đăng nhập.
@@ -367,6 +377,9 @@ deactivate B1
 @enduml
 ```
 
+<!-- PLACEHOLDER: account_seq_changepw_analysis -->
+<!-- File: output/diagrams/account_seq_changepw_analysis.png -->
+
 **Kịch bản phiên bản 2 – UC03 Đổi mật khẩu**
 
 1. Người dùng truy cập mục "Bảo mật" trong cài đặt tài khoản.
@@ -419,6 +432,9 @@ deactivate B1
 @enduml
 ```
 
+<!-- PLACEHOLDER: account_seq_profile_analysis -->
+<!-- File: output/diagrams/account_seq_profile_analysis.png -->
+
 **Kịch bản phiên bản 2 – UC04 Quản lý TTCN**
 
 1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản ở góc trên phải.
@@ -465,6 +481,9 @@ B1 --> Admin : 10: "Thêm nhân viên thành công!"
 deactivate B1
 @enduml
 ```
+
+<!-- PLACEHOLDER: account_seq_staff_analysis -->
+<!-- File: output/diagrams/account_seq_staff_analysis.png -->
 
 **Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên**
 
