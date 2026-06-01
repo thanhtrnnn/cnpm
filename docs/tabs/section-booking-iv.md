@@ -38,55 +38,60 @@
 
 **TC01: Đặt phòng thành công**
 
-CSDL trước khi test:
-```
-tblBranch:
-| branchID | name               | address                    |
-|----------|--------------------|-----------------------------|
-| 1        | Karaoke Quận 1     | 123 Lê Lợi, Q1, TP.HCM    |
-| 2        | Karaoke Quận 3     | 456 Nguyễn Đình Chiểu, Q3  |
+**CSDL trước khi test:**
 
-tblRoom:
-| roomID | name   | type      | hourly_pricing | status | branchID |
-|--------|--------|-----------|----------------|--------|----------|
-| 1      | P.VIP1 | VIP       | 150000         | Trống  | 1        |
-| 2      | P.Std3 | Standard  | 80000          | Trống  | 1        |
-| 3      | P.SVIP1| Super VIP | 250000         | Trống  | 1        |
-| 4      | P.VIP2 | VIP       | 150000         | Trống  | 2        |
+*tblBranch:*
 
-tblClient:
-| clientID | name           | phone_number | account_status | rankingID |
-|----------|----------------|--------------|----------------|-----------|
-| 1        | Nguyễn Văn An  | 0912345678   | active         | 2         |
-| 2        | Trần Thị Bình  | 0987654321   | active         | 1         |
-| 3        | Lê Minh Châu    | 0901122334   | active         | 3         |
+| branchID | name | address |
+|----------|------|---------|
+| 1 | Karaoke Quận 1 | 123 Lê Lợi, Q1, TP.HCM |
+| 2 | Karaoke Quận 3 | 456 Nguyễn Đình Chiểu, Q3 |
 
-tblEmployee:
-| employeeID | name           | role    | branchID |
-|------------|----------------|---------|----------|
-| 1          | Phạm Thị Dung  | Lễ tân  | 1        |
-| 2          | Hoàng Văn Em   | Lễ tân  | 2        |
+*tblRoom:*
 
-tblMemberRanking:
-| rankingID | name   | base_score | coupon |
-|-----------|--------|------------|--------|
-| 1         | Thường | 0          | 0      |
-| 2         | Bạc    | 1000       | 10     |
-| 3         | Vàng   | 5000       | 15     |
-```
+| roomID | name | type | hourly_pricing | status | branchID |
+|--------|------|------|----------------|--------|----------|
+| 1 | P.VIP1 | VIP | 150000 | Trống | 1 |
+| 2 | P.Std3 | Standard | 80000 | Trống | 1 |
+| 3 | P.SVIP1 | Super VIP | 250000 | Trống | 1 |
+| 4 | P.VIP2 | VIP | 150000 | Trống | 2 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status   |
-|--------|--------|----------|
-| 1      | P.VIP1 | Chờ nhận |
+*tblClient:*
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | checkout_time | room_fee | service_fee | discount | status   | payment_method | clientID | employeeID | roomID |
-|-----------------|---------------------|---------------|----------|-------------|----------|----------|----------------|----------|------------|--------|
-| 1               | 2026-06-01 14:00:00 | NULL          | NULL     | NULL        | NULL     | Chờ nhận | NULL           | 1        | 1          | 1      |
-```
+| clientID | name | phone_number | account_status | rankingID |
+|----------|------|--------------|----------------|-----------|
+| 1 | Nguyễn Văn An | 0912345678 | active | 2 |
+| 2 | Trần Thị Bình | 0987654321 | active | 1 |
+| 3 | Lê Minh Châu | 0901122334 | active | 3 |
+
+*tblEmployee:*
+
+| employeeID | name | role | branchID |
+|------------|------|------|----------|
+| 1 | Phạm Thị Dung | Lễ tân | 1 |
+| 2 | Hoàng Văn Em | Lễ tân | 2 |
+
+*tblMemberRanking:*
+
+| rankingID | name | base_score | coupon |
+|-----------|------|------------|--------|
+| 1 | Thường | 0 | 0 |
+| 2 | Bạc | 1000 | 10 |
+| 3 | Vàng | 5000 | 15 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 1 | P.VIP1 | Chờ nhận |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | checkout_time | room_fee | service_fee | discount | status | payment_method | clientID | employeeID | roomID |
+|-----------------|--------------|---------------|----------|-------------|----------|--------|----------------|----------|------------|--------|
+| 1 | 2026-06-01 14:00:00 | NULL | NULL | NULL | NULL | Chờ nhận | NULL | 1 | 1 | 1 |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -102,17 +107,17 @@ tblRoom_receipt:
 
 **TC02: Không tìm thấy phòng trống theo thời gian yêu cầu**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | type      | hourly_pricing | status         | branchID |
-|--------|--------|-----------|----------------|----------------|----------|
-| 1      | P.VIP1 | VIP       | 150000         | Đang hoạt động | 1        |
-| 2      | P.Std3 | Standard  | 80000          | Chờ nhận       | 1        |
-| 3      | P.SVIP1| Super VIP | 250000         | Đang dọn dẹp   | 1        |
-```
+**CSDL trước khi test:**
 
-CSDL sau khi test: Không thay đổi.
+*tblRoom:*
+
+| roomID | name | type | hourly_pricing | status | branchID |
+|--------|------|------|----------------|--------|----------|
+| 1 | P.VIP1 | VIP | 150000 | Đang hoạt động | 1 |
+| 2 | P.Std3 | Standard | 80000 | Chờ nhận | 1 |
+| 3 | P.SVIP1 | Super VIP | 250000 | Đang dọn dẹp | 1 |
+
+**CSDL sau khi test:** Không thay đổi.
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -124,26 +129,27 @@ CSDL sau khi test: Không thay đổi.
 
 **TC03: Khách hàng chưa có trong CSDL**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status | branchID |
-|--------|--------|--------|----------|
-| 1      | P.VIP1 | Trống  | 1        |
+**CSDL trước khi test:**
 
-tblClient:
-| clientID | name           | phone_number | account_status | rankingID |
-|----------|----------------|--------------|----------------|-----------|
-| 1        | Nguyễn Văn An  | 0912345678   | active         | 2         |
-```
+*tblRoom:*
 
-CSDL sau khi test:
-```
-tblClient:
-| clientID | name           | phone_number | account_status | rankingID |
-|----------|----------------|--------------|----------------|-----------|
-| 4        | Phạm Văn Phúc  | 0999999999   | active         | 1         |
-```
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Trống | 1 |
+
+*tblClient:*
+
+| clientID | name | phone_number | account_status | rankingID |
+|----------|------|--------------|----------------|-----------|
+| 1 | Nguyễn Văn An | 0912345678 | active | 2 |
+
+**CSDL sau khi test:**
+
+*tblClient (mới tạo):*
+
+| clientID | name | phone_number | account_status | rankingID |
+|----------|------|--------------|----------------|-----------|
+| 4 | Phạm Văn Phúc | 0999999999 | active | 1 |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -157,31 +163,33 @@ tblClient:
 
 **TC04: Đặt phòng trực tuyến thành công**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | type | hourly_pricing | status | branchID |
-|--------|--------|------|----------------|--------|----------|
-| 5      | P.VIP3 | VIP  | 150000         | Trống  | 2        |
+**CSDL trước khi test:**
 
-tblClient:
-| clientID | name          | phone_number | account_status | rankingID |
-|----------|---------------|--------------|----------------|-----------|
-| 5        | Vũ Thị Giang  | 0911223344   | active         | 1         |
-```
+*tblRoom:*
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status   |
-|--------|--------|----------|
-| 5      | P.VIP3 | Chờ nhận |
+| roomID | name | type | hourly_pricing | status | branchID |
+|--------|------|------|----------------|--------|----------|
+| 5 | P.VIP3 | VIP | 150000 | Trống | 2 |
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | checkout_time | status   | clientID | roomID |
-|-----------------|---------------------|---------------|----------|----------|--------|
-| 5               | 2026-06-02 19:00:00 | NULL          | Chờ nhận | 5        | 5      |
-```
+*tblClient:*
+
+| clientID | name | phone_number | account_status | rankingID |
+|----------|------|--------------|----------------|-----------|
+| 5 | Vũ Thị Giang | 0911223344 | active | 1 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 5 | P.VIP3 | Chờ nhận |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | checkout_time | status | clientID | roomID |
+|-----------------|--------------|---------------|--------|----------|--------|
+| 5 | 2026-06-02 19:00:00 | NULL | Chờ nhận | 5 | 5 |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -198,36 +206,39 @@ tblRoom_receipt:
 
 **TC05: Check-in thành công**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status   | branchID |
-|--------|--------|----------|----------|
-| 1      | P.VIP1 | Chờ nhận | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status   | roomID | clientID | employeeID |
-|-----------------|---------------------|----------|--------|----------|------------|
-| 1               | 2026-06-01 14:00:00 | Chờ nhận | 1      | 1        | 1          |
+*tblRoom:*
 
-tblClient:
-| clientID | name           | phone_number | rankingID |
-|----------|----------------|--------------|-----------|
-| 1        | Nguyễn Văn An  | 0912345678   | 2         |
-```
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Chờ nhận | 1 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status         |
-|--------|--------|----------------|
-| 1      | P.VIP1 | Đang hoạt động |
+*tblRoom_receipt:*
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         |
-|-----------------|---------------------|----------------|
-| 1               | 2026-06-01 14:05:00 | Đang hoạt động |
-```
+| room_receipt_ID | checkin_time | status | roomID | clientID | employeeID |
+|-----------------|--------------|--------|--------|----------|------------|
+| 1 | 2026-06-01 14:00:00 | Chờ nhận | 1 | 1 | 1 |
+
+*tblClient:*
+
+| clientID | name | phone_number | rankingID |
+|----------|------|--------------|-----------|
+| 1 | Nguyễn Văn An | 0912345678 | 2 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 1 | P.VIP1 | Đang hoạt động |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status |
+|-----------------|--------------|--------|
+| 1 | 2026-06-01 14:05:00 | Đang hoạt động |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -240,20 +251,21 @@ tblRoom_receipt:
 
 **TC06: Phòng đang dọn dẹp, không thể check-in**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status        |
-|--------|--------|---------------|
-| 1      | P.VIP1 | Đang dọn dẹp  |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status   | roomID |
-|-----------------|---------------------|----------|--------|
-| 1               | 2026-06-01 14:00:00 | Chờ nhận | 1      |
-```
+*tblRoom:*
 
-CSDL sau khi test: Không thay đổi.
+| roomID | name | status |
+|--------|------|--------|
+| 1 | P.VIP1 | Đang dọn dẹp |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status | roomID |
+|-----------------|--------------|--------|--------|
+| 1 | 2026-06-01 14:00:00 | Chờ nhận | 1 |
+
+**CSDL sau khi test:** Không thay đổi.
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -265,36 +277,39 @@ CSDL sau khi test: Không thay đổi.
 
 **TC07: Check-in phòng Super VIP**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name    | type       | hourly_pricing | status   | branchID |
-|--------|---------|------------|----------------|----------|----------|
-| 3      | P.SVIP1 | Super VIP  | 250000         | Chờ nhận | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status   | roomID | clientID |
-|-----------------|---------------------|----------|--------|----------|
-| 2               | 2026-06-01 20:00:00 | Chờ nhận | 3      | 3        |
+*tblRoom:*
 
-tblClient:
-| clientID | name          | phone_number | rankingID |
-|----------|---------------|--------------|-----------|
-| 3        | Lê Minh Châu   | 0901122334   | 3         |
-```
+| roomID | name | type | hourly_pricing | status | branchID |
+|--------|------|------|----------------|--------|----------|
+| 3 | P.SVIP1 | Super VIP | 250000 | Chờ nhận | 1 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name    | status         |
-|--------|---------|----------------|
-| 3      | P.SVIP1 | Đang hoạt động |
+*tblRoom_receipt:*
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         |
-|-----------------|---------------------|----------------|
-| 2               | 2026-06-01 20:05:00 | Đang hoạt động |
-```
+| room_receipt_ID | checkin_time | status | roomID | clientID |
+|-----------------|--------------|--------|--------|----------|
+| 2 | 2026-06-01 20:00:00 | Chờ nhận | 3 | 3 |
+
+*tblClient:*
+
+| clientID | name | phone_number | rankingID |
+|----------|------|--------------|-----------|
+| 3 | Lê Minh Châu | 0901122334 | 3 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 3 | P.SVIP1 | Đang hoạt động |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status |
+|-----------------|--------------|--------|
+| 2 | 2026-06-01 20:05:00 | Đang hoạt động |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -309,48 +324,53 @@ tblRoom_receipt:
 
 **TC08: Check-out thành công, thanh toán tiền mặt**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status         | branchID |
-|--------|--------|----------------|----------|
-| 1      | P.VIP1 | Đang hoạt động | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | checkout_time | room_fee | service_fee | discount | status         | payment_method | clientID | employeeID | roomID |
-|-----------------|---------------------|---------------|----------|-------------|----------|----------------|----------------|----------|------------|--------|
-| 1               | 2026-06-01 14:05:00 | NULL          | NULL     | NULL        | NULL     | Đang hoạt động | NULL           | 1        | 1          | 1      |
+*tblRoom:*
 
-tblRoom_receipt_detail:
-| room_receipt_detail_ID | service_name     | quantity | base_price | room_receipt_ID |
-|------------------------|------------------|----------|------------|-----------------|
-| 1                      | Lon bia Heineken | 3        | 45000      | 1               |
-| 2                      | Đĩa trái cây     | 1        | 120000     | 1               |
-| 3                      | Khoai tây chiên   | 2        | 65000      | 1               |
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Đang hoạt động | 1 |
 
-tblClient:
-| clientID | name           | rankingID |
-|----------|----------------|-----------|
-| 1        | Nguyễn Văn An  | 2         |
+*tblRoom_receipt:*
 
-tblMemberRanking:
+| room_receipt_ID | checkin_time | checkout_time | room_fee | service_fee | discount | status | payment_method | clientID | employeeID | roomID |
+|-----------------|--------------|---------------|----------|-------------|----------|--------|----------------|----------|------------|--------|
+| 1 | 2026-06-01 14:05:00 | NULL | NULL | NULL | NULL | Đang hoạt động | NULL | 1 | 1 | 1 |
+
+*tblRoom_receipt_detail:*
+
+| room_receipt_detail_ID | service_name | quantity | base_price | room_receipt_ID |
+|------------------------|-------------|----------|------------|-----------------|
+| 1 | Lon bia Heineken | 3 | 45000 | 1 |
+| 2 | Đĩa trái cây | 1 | 120000 | 1 |
+| 3 | Khoai tây chiên | 2 | 65000 | 1 |
+
+*tblClient:*
+
+| clientID | name | rankingID |
+|----------|------|-----------|
+| 1 | Nguyễn Văn An | 2 |
+
+*tblMemberRanking:*
+
 | rankingID | name | coupon |
 |-----------|------|--------|
-| 2         | Bạc  | 10     |
-```
+| 2 | Bạc | 10 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status |
-|--------|--------|--------|
-| 1      | P.VIP1 | Trống  |
+**CSDL sau khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | room_fee | service_fee | discount | status         | payment_method |
-|-----------------|----------|-------------|----------|----------------|----------------|
-| 1               | 450000   | 340000      | 79000    | Đã thanh toán  | Tiền mặt       |
-```
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 1 | P.VIP1 | Trống |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | room_fee | service_fee | discount | status | payment_method |
+|-----------------|----------|-------------|----------|--------|----------------|
+| 1 | 450000 | 340000 | 79000 | Đã thanh toán | Tiền mặt |
 
 *(Điểm tích lũy được cộng: 711.000 / 10.000 = 71 điểm)*
 
@@ -368,41 +388,45 @@ tblRoom_receipt:
 
 **TC09: Check-out với voucher giảm giá**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name    | status         | branchID |
-|--------|---------|----------------|----------|
-| 3      | P.SVIP1 | Đang hoạt động | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         | roomID | clientID |
-|-----------------|---------------------|----------------|--------|----------|
-| 2               | 2026-06-01 20:05:00 | Đang hoạt động | 3      | 3        |
+*tblRoom:*
 
-tblPromotion:
-| promotionID | name     | type    | redeem      | discount_type | discount_value | valid_until |
-|-------------|----------|---------|-------------|---------------|----------------|-------------|
-| 1           | GIẢM 50K | Voucher | VOUCHER50K  | fixed         | 50000          | 2026-12-31  |
-```
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 3 | P.SVIP1 | Đang hoạt động | 1 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name    | status |
-|--------|---------|--------|
-| 3      | P.SVIP1 | Trống  |
+*tblRoom_receipt:*
 
-tblRoom_receipt:
-| room_receipt_ID | discount | status         | payment_method |
-|-----------------|----------|----------------|----------------|
-| 2               | 50000    | Đã thanh toán  | Tiền mặt       |
+| room_receipt_ID | checkin_time | status | roomID | clientID |
+|-----------------|--------------|--------|--------|----------|
+| 2 | 2026-06-01 20:05:00 | Đang hoạt động | 3 | 3 |
 
-tblApply_promotion:
+*tblPromotion:*
+
+| promotionID | name | type | redeem | discount_type | discount_value | valid_until |
+|-------------|------|------|--------|---------------|----------------|-------------|
+| 1 | GIẢM 50K | Voucher | VOUCHER50K | fixed | 50000 | 2026-12-31 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 3 | P.SVIP1 | Trống |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | discount | status | payment_method |
+|-----------------|----------|--------|----------------|
+| 2 | 50000 | Đã thanh toán | Tiền mặt |
+
+*tblApply_promotion:*
+
 | apply_promotion_ID | room_receipt_ID | promotionID | discount |
 |--------------------|-----------------|-------------|----------|
-| 1                  | 2               | 1           | 50000    |
-```
+| 1 | 2 | 1 | 50000 |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -415,41 +439,45 @@ tblApply_promotion:
 
 **TC10: Check-out với hội viên Vàng**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status         | branchID |
-|--------|--------|----------------|----------|
-| 1      | P.VIP1 | Đang hoạt động | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         | roomID | clientID |
-|-----------------|---------------------|----------------|--------|----------|
-| 3               | 2026-06-01 18:00:00 | Đang hoạt động | 1      | 3        |
+*tblRoom:*
 
-tblClient:
-| clientID | name          | rankingID |
-|----------|---------------|-----------|
-| 3        | Lê Minh Châu   | 3         |
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Đang hoạt động | 1 |
 
-tblMemberRanking:
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status | roomID | clientID |
+|-----------------|--------------|--------|--------|----------|
+| 3 | 2026-06-01 18:00:00 | Đang hoạt động | 1 | 3 |
+
+*tblClient:*
+
+| clientID | name | rankingID |
+|----------|------|-----------|
+| 3 | Lê Minh Châu | 3 |
+
+*tblMemberRanking:*
+
 | rankingID | name | base_score | coupon |
 |-----------|------|------------|--------|
-| 3         | Vàng | 5000       | 15     |
-```
+| 3 | Vàng | 5000 | 15 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status |
-|--------|--------|--------|
-| 1      | P.VIP1 | Trống  |
+**CSDL sau khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | room_fee | discount | status         | payment_method |
-|-----------------|----------|----------|----------------|----------------|
-| 3               | 450000   | 67500    | Đã thanh toán  | Tiền mặt       |
-```
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 1 | P.VIP1 | Trống |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | room_fee | discount | status | payment_method |
+|-----------------|----------|----------|--------|----------------|
+| 3 | 450000 | 67500 | Đã thanh toán | Tiền mặt |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -462,20 +490,21 @@ tblRoom_receipt:
 
 **TC11: Voucher không hợp lệ**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status         | branchID |
-|--------|--------|----------------|----------|
-| 1      | P.VIP1 | Đang hoạt động | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         | roomID |
-|-----------------|---------------------|----------------|--------|
-| 1               | 2026-06-01 14:05:00 | Đang hoạt động | 1      |
-```
+*tblRoom:*
 
-CSDL sau khi test: Không thay đổi.
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Đang hoạt động | 1 |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status | roomID |
+|-----------------|--------------|--------|--------|
+| 1 | 2026-06-01 14:05:00 | Đang hoạt động | 1 |
+
+**CSDL sau khi test:** Không thay đổi.
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -487,36 +516,39 @@ CSDL sau khi test: Không thay đổi.
 
 **TC12: Check-out chuyển khoản**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status         | branchID |
-|--------|--------|----------------|----------|
-| 4      | P.VIP2 | Đang hoạt động | 2        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         | roomID | clientID | employeeID |
-|-----------------|---------------------|----------------|--------|----------|------------|
-| 4               | 2026-06-01 19:00:00 | Đang hoạt động | 4      | 2        | 2          |
+*tblRoom:*
 
-tblClient:
-| clientID | name           | rankingID |
-|----------|----------------|-----------|
-| 2        | Trần Thị Bình   | 1         |
-```
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 4 | P.VIP2 | Đang hoạt động | 2 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status |
-|--------|--------|--------|
-| 4      | P.VIP2 | Trống  |
+*tblRoom_receipt:*
 
-tblRoom_receipt:
-| room_receipt_ID | status         | payment_method |
-|-----------------|----------------|----------------|
-| 4               | Đã thanh toán  | Chuyển khoản   |
-```
+| room_receipt_ID | checkin_time | status | roomID | clientID | employeeID |
+|-----------------|--------------|--------|--------|----------|------------|
+| 4 | 2026-06-01 19:00:00 | Đang hoạt động | 4 | 2 | 2 |
+
+*tblClient:*
+
+| clientID | name | rankingID |
+|----------|------|-----------|
+| 2 | Trần Thị Bình | 1 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 4 | P.VIP2 | Trống |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | status | payment_method |
+|-----------------|--------|----------------|
+| 4 | Đã thanh toán | Chuyển khoản |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -531,36 +563,39 @@ tblRoom_receipt:
 
 **TC13: Hủy đặt phòng thành công**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status   | branchID |
-|--------|--------|----------|----------|
-| 1      | P.VIP1 | Chờ nhận | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status   | roomID | clientID | employeeID |
-|-----------------|---------------------|----------|--------|----------|------------|
-| 1               | 2026-06-01 14:00:00 | Chờ nhận | 1      | 1        | 1          |
+*tblRoom:*
 
-tblClient:
-| clientID | name           | phone_number | rankingID |
-|----------|----------------|--------------|-----------|
-| 1        | Nguyễn Văn An  | 0912345678   | 2         |
-```
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Chờ nhận | 1 |
 
-CSDL sau khi test:
-```
-tblRoom:
-| roomID | name   | status |
-|--------|--------|--------|
-| 1      | P.VIP1 | Trống  |
+*tblRoom_receipt:*
 
-tblRoom_receipt:
-| room_receipt_ID | status  |
-|-----------------|---------|
-| 1               | Đã hủy  |
-```
+| room_receipt_ID | checkin_time | status | roomID | clientID | employeeID |
+|-----------------|--------------|--------|--------|----------|------------|
+| 1 | 2026-06-01 14:00:00 | Chờ nhận | 1 | 1 | 1 |
+
+*tblClient:*
+
+| clientID | name | phone_number | rankingID |
+|----------|------|--------------|-----------|
+| 1 | Nguyễn Văn An | 0912345678 | 2 |
+
+**CSDL sau khi test:**
+
+*tblRoom:*
+
+| roomID | name | status |
+|--------|------|--------|
+| 1 | P.VIP1 | Trống |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | status |
+|-----------------|--------|
+| 1 | Đã hủy |
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -574,15 +609,15 @@ tblRoom_receipt:
 
 **TC14: Không tìm thấy booking**
 
-CSDL trước khi test:
-```
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status   | roomID | clientID |
-|-----------------|---------------------|----------|--------|----------|
-| 1               | 2026-06-01 14:00:00 | Chờ nhận | 1      | 1        |
-```
+**CSDL trước khi test:**
 
-CSDL sau khi test: Không thay đổi.
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status | roomID | clientID |
+|-----------------|--------------|--------|--------|----------|
+| 1 | 2026-06-01 14:00:00 | Chờ nhận | 1 | 1 |
+
+**CSDL sau khi test:** Không thay đổi.
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
@@ -594,20 +629,21 @@ CSDL sau khi test: Không thay đổi.
 
 **TC15: Booking đã quá thời gian hủy**
 
-CSDL trước khi test:
-```
-tblRoom:
-| roomID | name   | status         | branchID |
-|--------|--------|----------------|----------|
-| 1      | P.VIP1 | Đang hoạt động | 1        |
+**CSDL trước khi test:**
 
-tblRoom_receipt:
-| room_receipt_ID | checkin_time        | status         | roomID |
-|-----------------|---------------------|----------------|--------|
-| 1               | 2026-06-01 13:00:00 | Đang hoạt động | 1      |
-```
+*tblRoom:*
 
-CSDL sau khi test: Không thay đổi.
+| roomID | name | status | branchID |
+|--------|------|--------|----------|
+| 1 | P.VIP1 | Đang hoạt động | 1 |
+
+*tblRoom_receipt:*
+
+| room_receipt_ID | checkin_time | status | roomID |
+|-----------------|--------------|--------|--------|
+| 1 | 2026-06-01 13:00:00 | Đang hoạt động | 1 |
+
+**CSDL sau khi test:** Không thay đổi.
 
 | Các bước thực hiện | Kết quả mong đợi |
 |---------------------|------------------|
