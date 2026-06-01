@@ -20,11 +20,7 @@ Hoàn tất, hệ thống [kết quả].
 - Khi xuất hiện giao diện mới → `đề xuất lớp [TênView], có [mô tả UI]`
 - Khi cần logic nghiệp vụ → `cần chức năng [method()] của đối tượng [Entity]`
 - Tên class hậu tố `View` (LoginView, SearchRoomView, CreateOrderView...)
-<<<<<<< Updated upstream
-- Tên method tiếng Anh đơn giản, không tham số (checkLogin, searchProduct, addOrder...)
-=======
 - **Tên method PHẢI tiếng Anh (BẮT BUỘC):** MỌI phương thức/hàm trong MỌI pha PHẢI dùng tiếng Anh đơn giản, không tham số (checkLogin, searchProduct, addOrder, updateQuantity...). KHÔNG dùng tên tiếng Việt.
->>>>>>> Stashed changes
 
 **Ví dụ (module Quản lý kho):**
 ```
