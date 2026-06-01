@@ -27,40 +27,51 @@ Hệ thống lưu xong báo lại lớp ConfirmView, lớp ConfirmView báo thà
 @startuml
 skinparam classAttributeIconSize 0
 
-class ReceptionistHomeView {
-  +hienThi()
+package "Boundary" #DDEEFF {
+  class ReceptionistHomeView <<Component>> {
+    -subDatPhong
+    -subCheckIn
+    -subCheckOut
+    -outsubDanhSachBooking
+  }
+
+  class SearchFreeRoomView <<Component>> {
+    -inThoiGianCheckIn
+    -inThoiGianCheckOut
+    -subTim
+    -outsubDanhSachPhong
+  }
+
+  class SearchClientView <<Component>> {
+    -inHoTen
+    -inSoDienThoai
+    -subTim
+    -outsubDanhSachKH
+  }
+
+  class ConfirmView <<Component>> {
+    -outThongTinPhong
+    -outThongTinKH
+    -subXacNhan
+    -subHuy
+  }
 }
 
-class SearchFreeRoomView {
-  +nhapThoiGian()
-  +searchFreeRoom()
-  +hienThiKetQua()
-}
+package "Entity" #FFF3CD {
+  class Phong {
+    +maPhong : int
+    +tenPhong : String
+    +trangThai : String
+    +searchFreeRoom(thoiGianBD, thoiGianKT) : List
+    +changeStatus(trangThaiMoi)
+  }
 
-class SearchClientView {
-  +nhapThongTinKH()
-  +searchClient()
-  +hienThiKH()
-}
-
-class ConfirmView {
-  +hienThiXacNhan()
-  +xacNhan()
-}
-
-class Phong {
-  +maPhong : int
-  +tenPhong : String
-  +trangThai : String
-  +searchFreeRoom(thoiGianBD, thoiGianKT) : List
-  +changeStatus(trangThaiMoi)
-}
-
-class KhachHang {
-  +maKH : int
-  +hoTen : String
-  +soDienThoai : String
-  +searchClient(keyword) : List
+  class KhachHang {
+    +maKH : int
+    +hoTen : String
+    +soDienThoai : String
+    +searchClient(keyword) : List
+  }
 }
 
 ReceptionistHomeView --> SearchFreeRoomView
@@ -92,31 +103,40 @@ Hệ thống lưu xong báo lại ConfirmCancelView, ConfirmCancelView báo thà
 @startuml
 skinparam classAttributeIconSize 0
 
-class ReceptionistHomeView {
-  +hienThi()
+package "Boundary" #DDEEFF {
+  class ReceptionistHomeView <<Component>> {
+    -subDatPhong
+    -subCheckIn
+    -subCheckOut
+    -outsubDanhSachBooking
+  }
+
+  class SearchBookingView <<Component>> {
+    -inTimKiem
+    -subTim
+    -outsubDanhSachBooking
+  }
+
+  class ConfirmCancelView <<Component>> {
+    -outThongTinBooking
+    -outThongTinPhong
+    -subXacNhanHuy
+    -subQuayLai
+  }
 }
 
-class SearchBookingView {
-  +nhapThongTin()
-  +searchBooking()
-  +hienThiKetQua()
-}
+package "Entity" #FFF3CD {
+  class Phong {
+    +maPhong : int
+    +trangThai : String
+    +searchBooking(keyword) : List
+    +changeStatus(trangThaiMoi)
+  }
 
-class ConfirmCancelView {
-  +hienThiXacNhan()
-  +xacNhanHuy()
-}
-
-class Phong {
-  +maPhong : int
-  +trangThai : String
-  +searchBooking(keyword) : List
-  +changeStatus(trangThaiMoi)
-}
-
-class KhachHang {
-  +maKH : int
-  +hoTen : String
+  class KhachHang {
+    +maKH : int
+    +hoTen : String
+  }
 }
 
 ReceptionistHomeView --> SearchBookingView
@@ -147,31 +167,38 @@ Hệ thống lưu xong báo lại ConfirmCheckInView, ConfirmCheckInView báo th
 @startuml
 skinparam classAttributeIconSize 0
 
-class ReceptionistHomeView {
-  +hienThi()
+package "Boundary" #DDEEFF {
+  class ReceptionistHomeView <<Component>> {
+    -subDatPhong
+    -subCheckIn
+    -subCheckOut
+    -outsubDanhSachBooking
+  }
+
+  class CheckInView <<Component>> {
+    -outsubDanhSachBookingChoNhan
+  }
+
+  class ConfirmCheckInView <<Component>> {
+    -outThongTinBooking
+    -outThongTinPhong
+    -subXacNhanCheckIn
+    -subQuayLai
+  }
 }
 
-class CheckInView {
-  +hienThiDanhSach()
-  +chonBooking()
-  +xacNhanCheckIn()
-}
+package "Entity" #FFF3CD {
+  class Phong {
+    +maPhong : int
+    +trangThai : String
+    +changeStatus(trangThaiMoi)
+    +startTimer()
+  }
 
-class ConfirmCheckInView {
-  +hienThiXacNhan()
-  +xacNhan()
-}
-
-class Phong {
-  +maPhong : int
-  +trangThai : String
-  +changeStatus(trangThaiMoi)
-  +startTimer()
-}
-
-class KhachHang {
-  +maKH : int
-  +hoTen : String
+  class KhachHang {
+    +maKH : int
+    +hoTen : String
+  }
 }
 
 ReceptionistHomeView --> CheckInView
@@ -208,60 +235,72 @@ Nếu khách là hội viên, hệ thống cộng điểm tích lũy → Cần c
 @startuml
 skinparam classAttributeIconSize 0
 
-class ReceptionistHomeView {
-  +hienThi()
+package "Boundary" #DDEEFF {
+  class ReceptionistHomeView <<Component>> {
+    -subDatPhong
+    -subCheckIn
+    -subCheckOut
+    -outsubDanhSachBooking
+  }
+
+  class CheckOutView <<Component>> {
+    -outsubDanhSachPhongDangHD
+  }
+
+  class InvoiceView <<Component>> {
+    -outThongTinPhong
+    -outThoiGianSuDung
+    -outTongTien
+    -outUuDai
+    -inMaVoucher
+    -subApDung
+    -subXacNhanThanhToan
+  }
+
+  class PaymentView <<Component>> {
+    -outHoaDon
+    -outPhuongThuc
+    -subXacNhan
+    -subInHoaDon
+  }
 }
 
-class CheckOutView {
-  +hienThiDanhSach()
-  +chonPhong()
-}
+package "Entity" #FFF3CD {
+  class Phong {
+    +maPhong : int
+    +trangThai : String
+    +changeStatus(trangThaiMoi)
+  }
 
-class InvoiceView {
-  +tinhHoaDon()
-  +hienThiHoaDon()
-}
+  class HoaDon {
+    +maHD : int
+    +tongTien : double
+    +trangThai : String
+    +tinhTien()
+    +updateStatus(trangThaiMoi)
+  }
 
-class PaymentView {
-  +chonPhuongThuc()
-  +xuLyThanhToan()
-  +inHoaDon()
-}
+  class ChiTietHoaDon {
+    +maCTHD : int
+    +tenDichVu : String
+    +soLuong : int
+    +donGia : double
+  }
 
-class Phong {
-  +maPhong : int
-  +trangThai : String
-  +changeStatus(trangThaiMoi)
-}
+  class KhachHang {
+    +maKH : int
+    +hoTen : String
+    +hangHoiVien : String
+    +checkMember() : boolean
+    +addPoints(diem)
+  }
 
-class HoaDon {
-  +maHD : int
-  +tongTien : double
-  +trangThai : String
-  +tinhTien()
-  +updateStatus(trangThaiMoi)
-}
-
-class ChiTietHoaDon {
-  +maCTHD : int
-  +tenDichVu : String
-  +soLuong : int
-  +donGia : double
-}
-
-class KhachHang {
-  +maKH : int
-  +hoTen : String
-  +hangHoiVien : String
-  +checkMember() : boolean
-  +addPoints(diem)
-}
-
-class KhuyenMai {
-  +maKM : int
-  +tenKM : String
-  +giaTri : double
-  +applyVoucher(maHD) : double
+  class KhuyenMai {
+    +maKM : int
+    +tenKM : String
+    +giaTri : double
+    +applyVoucher(maHD) : double
+  }
 }
 
 ReceptionistHomeView --> CheckOutView
