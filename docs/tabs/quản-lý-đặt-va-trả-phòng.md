@@ -1,63 +1,17 @@
 # Quản lý đặt & trả phòng
 
-PHẠM TUẤN ANH - B23DCDT018 - D23CQCE01-B
+
+
+
+MỤC LỤC
+
 PHA XÁC ĐỊNH YÊU CẦU
-Bảng thuật ngữ
-Bảng thuật ngữ dưới đây định nghĩa các khái niệm nghiệp vụ chính trong mô-đun quản lý đặt và trả phòng trong hệ thống quản lý chuỗi nhà hàng karaoke, giúp toàn nhóm hiểu thống nhất các thuật ngữ sẽ sử dụng
-Mô hình nghiệp vụ bằng ngôn ngữ tự nhiên
-2.1. Mục tiêu mô-đun
-Thực hiện chức năng quản lý đặt phòng, huỷ phòng để tham gia vào xây dựng hệ thống phần mềm quản lý tập trung cho chuỗi nhà hàng karaoke.
-2.2. Phạm vi mô-đun
-Mô-đun sẽ bao phủ toàn bộ quy trình vận hành từ khi khách hàng đặt phòng đến khi thanh toán.
-2.3. Ai có thể sử dụng mô-đun?
-	Mô-đun sẽ phục vụ 2 nhóm người chính:
-Khánh hàng là nhóm người sẽ tham gia vào các thao tác đặt phòng, huỷ phòng, thanh toán.
-Nhân viên lễ tân là người trực tiếp tham gia vào tác đặt phòng, check-in/ check-out, tổng hợp hoá đơn và thu tiền của khách.
-2.4. Người dùng có những chức năng gì?
-	Khách hàng:
-Đặt phòng trực tuyến hoặc đặt phòng tại chi nhánh.
-Huỷ phòng trực tuyến hoặc huỷ phòng tại chi nhánh.
-Check-in/ check-out
-Thanh toán
-	Nhân viên lễ tân:
-Đặt phòng
-Huỷ phòng
-Check-in/ check-out
-Tổng hợp hoá đơn
-Áp dụng ưu đãi hội viên
-Thu tiền
-In hoá đơn
-2.5. Mỗi chức năng hoạt động như thế nào?
-Đặt phòng trực tuyến: Khách hàng đăng nhập vào hệ thống web/app → Khách hàng chọn chi nhánh →  Khách hàng xem danh sách phòng trống theo khung giờ mong muốn →  Khách hàng chọn phòng và thời gian → Khách hàng xác nhận đặt phòng → Hệ thống ghi nhận booking với trạng thái "Chờ nhận" trên hệ thống.
-Đặt phòng tại chi nhánh: Khách hàng đến trực tiếp chi nhánh → Lễ tân kiểm tra phòng trống → Lễ tân chọn chi nhánh →  Lễ tân xem danh sách phòng trống theo khung giờ mong muốn → Lễ tân chọn phòng và thời gian → Lễ tân ghi nhận thông tin khách (hoặc tra cứu hội viên qua số điện thoại) → Lễ tân xác nhận đặt phòng với khách hàng → Lễ tân tạo booking với trạng thái “Chờ nhận” trên hệ thống.
-Check-in: Khách hàng yêu cầu nhận phòng → Lễ tân kiểm tra thông tin khách hàng và phòng đặt → Lễ tân xác nhận đúng thông tin → Hệ thống chuyển trạng thái phòng được đặt từ “Chờ nhận” sang “Đang hoạt động”.
-Check-out: Khách hàng yêu cầu trả phòng → Lễ tân chọn phòng trên hệ thống → Hệ thống tự động tính tiền phòng (giờ sử dụng × đơn giá) cộng tổng tiền order gọi món → Nếu khách là hội viên, lễ tân áp dụng ưu đãi hoặc voucher →  Hệ thống hiển thị tổng tiền →  Khách hàng thanh toán (tiền mặt/chuyển khoản) → Lễ tân in hóa đơn → Hệ thống đóng phòng → Hệ thống chuyển trạng thái về "Trống" → Hệ thống cộng điểm hội viên tự động.
-Huỷ phòng trực tuyến: Khách hàng ấn nút Huỷ đặt phòng trên hệ thống → Hệ thống hỏi người dùng xác nhận chắc chắn huỷ → Hệ thống chuyển trạng thái “Chờ nhận” ở ghi nhận booking sang “Trống” → Lễ tân bấm xác nhận “Huỷ đặt phòng”.
-Huỷ phòng tại chi nhánh: Khách hàng huỷ đặt phòng trực tiếp tại chi nhánh → Lễ tân chuyển trạng thái “chờ nhận” ở ghi nhận booking sang “huỷ đặt”. Lễ tân bấm xác nhận “huỷ đặt phòng” và không hoàn tiền cọc cho khách hàng.
-
-2.6. Những thông tin/ đối tượng mà mô-đun cần xử lý
-Mô-đun cần quản lý và xử lý các đối tượng thông tin chính sau:
-Chi nhánh: Mã chi nhánh, tên, địa chỉ, số điện thoại.
-Khách hàng: Mã khách hàng, họ tên, số điện thoại, địa chỉ, hạng hội viên (Thường, Bạc, Vàng), trạng thái tài khoản.
-Nhân viên: Mã nhân viên, họ tên, vai trò, chi nhánh làm việc, trạng thái (đang làm/ đã nghỉ).
-Hạng hội viên: Mã hạng, tên hạng, ngưỡng điểm tối thiểu, ưu đãi (% giảm giá, điểm thưởng nhận).
-Phòng hát: Mã phòng, tên phòng, loại phòng, sức chứa, giá theo giờ, trạng thái, thuộc chi nhánh.
-Khuyến mãi: Mã khuyến mãi, tên, loại (voucher/ giảm giá %), điều kiện áp dụng, thời gian hiệu lực.
-Hoá đơn: Mã hoá đơn, liên kết đặt phòng, tiền phòng, thời gian sử dụng thực tế, tiền dịch vụ, phụ phí, giảm giá, tổng tiền, trạng thái thanh toán, phương thức thanh toán.
-2.7. Quan hệ giữa các đối tượng
-	Các đối tượng trong mô-đun có mối quan hệ chặt chẽ với nhau:
-Một chi nhánh có nhiều phòng hát.
-Một khách hàng thuộc một hạng hội viên.
-Một hạng hội viên định nghĩa ngưỡng điểm và áp dụng cho nhiều khách hàng.
-Một nhân viên thuộc một chi nhánh.
-Một hoá đơn có thể áp dụng nhiều khuyến mãi.
 Mô hình nghiệp vụ bằng UML
-3.1. Danh sách Actor
-3.2. Các Use Case cho từng Actor
+1.1. Danh sách Actor
+1.2. Các Use Case cho từng Actor
+1.3. Biểu đồ Use Case tổng quan của mô-đun	
 
-3.3. Biểu đồ Use Case tổng quan của mô-đun	
-	
-3.4. Biểu đồ Use Case phân rã của mô-đun
+1.4. Biểu đồ Use Case phân rã của mô-đun
 Use case đặt phòng
 
 Use case huỷ phòng
@@ -69,15 +23,23 @@ Use case check-out
 II. PHA PHÂN TÍCH
 Mô hình hóa chức năng
 1.1. Kịch bản “Đặt phòng tại chi nhánh”
+
+
 1.2. Kịch bản "Check-in"
+
+
+
+
 1.3. Kịch bản "Check-out"
+
 1.4. Kịch bản "Huỷ phòng"
 
 Mô hình hóa lớp
 2.1. Mô tả module
 “Trong mô-đun Đặt phòng và trả phòng, khách hàng có thể đặt phòng trực tuyến hoặc đặt phòng tại chi nhánh. Nếu khách hàng đặt phòng trực tuyến, khách hàng sẽ cần chọn chi nhánh muốn đặt, sau đó hệ thống sẽ hiển thị các phòng cùng các khung giờ còn trống. Sau khi khách hàng chọn được phòng cùng với khung giờ mong muốn, khách hàng sẽ bấm xác nhận đặt phòng. Ngay lập tức, hệ thống sẽ ghi nhận booking với trạng thái “Đang chờ”. Nếu khách hàng đặt phòng tại chi nhánh, nhân viên lễ tân sẽ đưa ra các phòng cùng với các khung giờ còn trống cho khách hàng chọn. Sau khi khách hàng chọn được phòng cùng với khung giờ mong muốn. Khách hàng sẽ xác nhận đặt phòng lại với nhân viên lễ tân. Nhân viên lễ tân sẽ thao tác trên hệ thống để ghi nhận booking với trạng thái “Đang chờ”. Khi khách hàng muốn nhận phòng, khách hàng sẽ cần check-in với nhân viên lễ tân. Sau khi trải nghiệm xong, khách hàng muốn trả phòng, khách hàng tiếp tục quay trở lại chỗ nhân viên lễ tân để làm thủ tục check-out. Nhân viên lễ tân sẽ tổng hợp lại hoá đơn, trừ đi ưu đãi của hạng hội viên và các khuyến mãi khác (nếu có). Khách hàng sẽ chọn phương thức thanh toán bằng tiền mặt hoặc chuyển khoản cho lễ tân. Lễ tân sẽ in chi tiết hoá đơn đưa lại cho khách hàng. Ngay lập tức, hệ thống sẽ ghi nhận giao dịch.”
 2.2. Xác định lớp thực thể
-	
+
+
 => Các lớp thực thể: Khách hàng (KhachHang), Chi nhánh (ChiNhanh), Phòng (Phong), Nhân viên (NhanVien), Hoá đơn (HoaDon) Chi tiết hoá đơn (ChiTietHoaDon), Hạng hội viên (HangHoiVien), Khuyến mãi (KhuyenMai).
 2.3. Xác định lực lượng quan giữa các thực thể
 Một chi nhánh có thể có nhiều phòng => ChiNhanh và Phong có quan hệ 1-n
@@ -177,7 +139,7 @@ Lớp ConfirmView hiện thông báo.
 Nhân viên ấn OK.
 Lớp ConfirmView gọi lại về lớp ReceptionistHomeView.
 Lớp ReceptionistHomeView hiển thị.
-		
+
 4.2. Chức năng “Huỷ phòng”
 Nhân viên click chức năng quản lý đặt phòng trên giao diện ReceptionistHomeView.
 Lớp ReceptionistHomeView gọi sang lớp SearchBookingView.
@@ -185,9 +147,12 @@ Lớp SearchBookingView hiển thị cho nhân viên.
 Nhân viên hỏi khách hàng thông tin tra cứu (họ tên, số điện thoại hoặc mã phòng đã đặt).
 Khách hàng trả lời.
 Nhân viên nhập thông tin và ấn nút tìm kiếm.
-Lớp SearchBookingView gọi đến lớp Client (để tra cứu khách) và lớp Room (để tra cứu phòng).
-Lớp Client gọi hàm searchClient() và lớp Room gọi hàm searchBooking().
-Lớp Client và lớp Room trả kết quả về cho SearchBookingView.
+Lớp SearchBookingView gọi đến lớp Client (để tra cứu khách).
+Lớp Client gọi hàm searchClient().
+Lớp Client trả kết quả về cho SearchBookingView.
+Lớp SearchBookingView gọi đến lớp Room (để tra cứu phòng).
+Lớp Room gọi hàm searchBooking().
+Lớp Room trả kết quả về cho SearchBookingView.
 Lớp SearchBookingView hiển thị danh sách các booking tương ứng.
 Nhân viên ấn chọn bản ghi booking cần hủy.
 Lớp SearchBookingView gọi sang lớp ConfirmCancelView.
@@ -205,9 +170,12 @@ Lớp ReceptionistHomeView hiển thị.
 4.3. Chức năng “Check-in”
 Nhân viên click chức năng "Check-in" trên giao diện ReceptionistHomeView.
 Lớp ReceptionistHomeView gọi sang lớp CheckInView.
-Lớp CheckInView gọi đến lớp Room (tìm phòng "Chờ nhận") và lớp Client (lấy thông tin khách hàng).
-Lớp Room gọi hàm searchBooking(), lớp Client gọi hàm searchClient().
-Lớp Room và lớp Client trả kết quả dữ liệu về cho CheckInView.
+Lớp CheckInView gọi đến lớp Room (tìm phòng "Chờ nhận").
+Lớp Room gọi hàm searchBooking().
+Lớp Room trả kết quả dữ liệu về cho CheckInView.
+Lớp CheckInView gọi đến lớp Client (lấy thông tin khách hàng).
+Lớp Client gọi hàm searchClient().
+Lớp Client trả kết quả dữ liệu về cho CheckInView.
 Lớp CheckInView hiển thị danh sách chờ nhận lên màn hình cho nhân viên.
 Nhân viên hỏi khách hàng thông tin (tên hoặc số điện thoại) để đối chiếu.
 Khách hàng trả lời.
@@ -215,47 +183,68 @@ Nhân viên ấn chọn bản ghi tương ứng cần check-in trên danh sách.
 Lớp CheckInView gọi sang lớp ConfirmCheckInView.
 Lớp ConfirmCheckInView hiển thị thông tin chi tiết của phòng và khách hàng.
 Nhân viên ấn nút xác nhận check-in.
-Lớp ConfirmCheckInView gọi đến lớp Room và lớp Room_receipt để xử lý.
+Lớp ConfirmCheckInView gọi đến lớp Room để xử lý.
 Lớp Room gọi hàm changeStatus() (chuyển sang "Đang hoạt động").
+Lớp Room trả kết quả lưu dữ liệu về lớp ConfirmCheckInView.
+Lớp ConfirmCheckInView gọi đến lớp Room_receipt để xử lý.
 Lớp Room_receipt gọi hàm startTimer() (ghi nhận thời gian bắt đầu sử dụng).
-Lớp Room và Room_receipt trả kết quả lưu dữ liệu về lớp ConfirmCheckInView.
+Lớp Room_receipt trả kết quả lưu dữ liệu về lớp ConfirmCheckInView.
 Lớp ConfirmCheckInView hiện thông báo thành công.
 Nhân viên ấn nút quay lại.
 Lớp ConfirmCheckInView gọi lại về lớp ReceptionistHomeView.
 Lớp ReceptionistHomeView hiển thị.
 
+
 4.4. Chức năng “Check-out”
 Nhân viên click chức năng "Check-out" trên giao diện ReceptionistHomeView.
 Lớp ReceptionistHomeView gọi sang lớp CheckOutView.
-Lớp CheckOutView gọi đến lớp Room để lấy dữ liệu và hiển thị danh sách phòng "Đang hoạt động" cho nhân viên.
+Lớp CheckOutView gọi đến lớp Room để lấy dữ liệu 
+Lớp room gọi hàm searchRoom().
+Lớp room trả kết quả về lớp CheckOutView.
+Lớp CheckOutView hiển thị danh sách phòng "Đang hoạt động" cho nhân viên.
 Nhân viên hỏi khách hàng số phòng cần trả.
 Khách hàng trả lời.
 Nhân viên chọn phòng tương ứng trên danh sách.
 Lớp CheckOutView gọi sang lớp InvoiceView.
-Lớp InvoiceView gọi hàm CalculateTotalAmount() của đối tượng Room_receipt (để tính tổng tiền).
-Lớp InvoiceView gọi hàm checkMember() của đối tượng MemberRanking (để kiểm tra hạng thành viên).
-Lớp Room_receipt và MemberRanking trả kết quả về InvoiceView.
+Lớp InvoiceView gọi đến đối tượng Room_receipt (để tính tổng tiền).
+Lớp Room_receipt gọi hàm CalculateTotalAmount().
+Lớp Room_receipt trả kết quả về lớp InvoiceView.
+Lớp InvoiceView gọi đến đối tượng MemberRanking (để kiểm tra hạng thành viên).
+Lớp MemberRanking gọi hàm checkMember().
+Lớp MemberRanking trả kết quả về lớp InvoiceView.
 Lớp InvoiceView hiển thị chi tiết hóa đơn.
 Nhân viên thông báo tổng tiền cho khách hàng.
 Khách hàng cung cấp mã ưu đãi (nếu có).
 Nhân viên nhập mã và ấn áp dụng.
-Lớp InvoiceView gọi hàm applyPromotion() của đối tượng Promotion.
-Lớp Promotion trả kết quả về InvoiceView, giao diện cập nhật lại tổng tiền.
-Khách hàng đưa tiền mặt cho nhân viên.
+Lớp InvoiceView gọi đến đối tượng Promotion.
+Lớp Promotion gọi hàm applyPromotion().
+Lớp Promotion trả kết quả về InvoiceView.
+Lớp InvoiceView gọi lại đến lớp Room_receip (cập nhật lại tổng tiền).
+Lớp Room_receipt gọi hàm CalculateTotalAmount().
+Lớp Room_receipt trả kết quả về lớp InvoiceView.
+Lớp InvoiceView hiển thị chi tiết hoá đơn lại lần nữa cho nhân viên lễ tân.
+Nhân viên lễ tân thông báo lại tổng tiền cho khách hàng và hỏi khách hàng muốn thanh toán theo phương thức nào.
+Khách hàng trả lời. 
 Nhân viên chọn phương thức thanh toán và click nút xác nhận thanh toán.
 Lớp InvoiceView gọi sang lớp PaymentView.
-Lớp PaymentView gọi hàm updateStatus() của lớp Room_receipt (cập nhật trạng thái "Đã thanh toán").
-Lớp PaymentView gọi hàm changeStatus() của lớp Room (chuyển về trạng thái "Trống").
-Lớp PaymentView gọi hàm addPoints() của lớp MemberRanking (cộng điểm tích lũy).
-Các đối tượng thực thể trả kết quả lưu trữ về lớp PaymentView.
+Lớp PaymentView gọi sang lớp Room_receipt (cập nhật trạng thái "Đã thanh toán").
+Lớp Room_receipt  gọi hàm updateStatus().
+Lớp Room_receipt trả kết quả về lớp PaymentView.
+Lớp PaymentView gọi đến lớp Room (chuyển về trạng thái “Trống”).
+Lớp Room gọi hàm changeStatus().
+Lớp Room trả kết quả về lớp PaymentView.
+Lớp PaymentView gọi đến lớp MemberRanking (cộng điểm tích luỹ).
+Lớp MemberRanking gọi hàm addPoints().
+Lớp MemberRanking trả kết quả về lớp PaymentView.
 Lớp PaymentView hiển thị thông báo thanh toán thành công.
 Nhân viên click nút in hóa đơn (để đưa cho khách hàng) và ấn hoàn tất.
 Lớp PaymentView gọi lại về lớp ReceptionistHomeView.
 Lớp ReceptionistHomeView hiển thị.
 
+
 III. PHA THIẾT KẾ
 Thiết kế lớp thực thể
-
+	
 Thiết kế CSDL
 
 Thiết kế tĩnh
@@ -279,9 +268,8 @@ Mô hình MVC được thiết kế theo kiến trúc BCE (Boundary – Control 
  Boundary (Giao diện): React components xử lý giao diện người dùng.
 Control (Điều khiển): Spring Boot Controllers xử lý nghiệp vụ.
 Entity (Thực thể): JPA Entities biểu diễn dữ liệu lưu trữ.
-a) Chức năng Đặt phòng
+3.2.1. Chức năng Đặt phòng
 1. Tầng giao diện (Boundary)
-
 2. Tầng điều khiển (Control)
 a) Tìm phòng trống => searchFreeRoom()
  Input: thời gian bắt đầu, thời gian kết thúc, mã chi nhánh.
@@ -307,7 +295,7 @@ changeStatus(roomID: int, status: String) → chọn
  Ứng viên tham số ra:
 changeStatus(): Room → chọn
 3. Tầng thực thể (Entity)
-b) Chức năng Check-in
+3.2.2. Chức năng Check-in
 1. Tầng giao diện (Boundary)
 2. Tầng điều khiển (Control)
 a) Lấy danh sách booking chờ => getPendingBookings()
@@ -325,7 +313,7 @@ checkIn(bookingId: int) → chọn
 Ứng viên tham số ra:
 checkIn(): BookingResponse → chọn
 3. Tầng thực thể (Entity)
-c) Chức năng Check-out
+3.2.3. Chức năng Check-out
 1. Tầng giao diện (Boundary)
 2. Tầng điều khiển (Control)
 a) Lấy danh sách phòng đang hoạt động => getActiveRooms()
@@ -350,7 +338,7 @@ confirmPayment(Room_receip_ID: int, payment_method: String, promotion_ID: String
 Ứng viên tham số ra:
  confirmPayment(): Room_receipt → chọn
 3. Tầng thực thể (Entity)
-d) Chức năng Huỷ phòng
+3.2.4. Chức năng Huỷ phòng
 1. Tầng giao diện (Boundary)
 2. Tầng điều khiển (Control)
 a) Tìm booking => searchBooking()
@@ -372,8 +360,298 @@ cancelBooking(): BookingResponse → chọn
 3.3. Sơ đồ lớp thiết kế
 	
 Thiết kế động
-4.1. Chức năng quản lý
+4.1. Chức năng "Đặt phòng"
+a) Biểu đồ tuần tự
+
+b) Kịch bản phiên bản 3
+1. Nhân viên lễ tân click chức năng "Đặt phòng" trên giao diện ReceptionistHomePage.
+2. Phương thức btnDatPhongClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnDatPhongClick() gọi phương thức navigate() của lớp SearchFreeRoomForm.
+4. Lớp SearchFreeRoomForm hiển thị form tìm phòng trống cho nhân viên.
+5. Nhân viên nhập thời gian bắt đầu (startTime), thời gian kết thúc (endTime) và chọn chi nhánh (branchId).
+6. Nhân viên click nút [Tìm phòng trống].
+7. Phương thức btnSearchClick() của lớp SearchFreeRoomForm được gọi.
+8. Phương thức btnSearchClick() gọi phương thức searchFreeRoom(startTime: Date, endTime: Date, branchId: int) của lớp BookingController.
+9. Phương thức searchFreeRoom() gọi phương thức findByTimeAndBranch(startTime, endTime, branchId) của lớp Entity Room.
+10. Lớp Room trả kết quả danh sách phòng trống về cho phương thức searchFreeRoom().
+11. Phương thức searchFreeRoom() trả kết quả về cho phương thức btnSearchClick().
+12. Lớp SearchFreeRoomForm hiển thị danh sách phòng trống cho nhân viên.
+13. Nhân viên ấn vào phòng trống.
+14. Phương thức tblRoomsClick(selectedRow: int) của lớp SearchFreeRoomForm được gọi.
+15. Phương thức tblRoomsClick() gọi phương thức navigate(roomId) của lớp SearchClientForm.
+16. Lớp SearchClientForm hiển thị form tìm khách hàng cho nhân viên.
+17. Nhân viên nhập thông tin khách hàng (tên hoặc số điện thoại).
+18. Nhân viên click [Tìm kiếm].
+19. Phương thức btnSearchClick() của lớp SearchClientForm được gọi.
+20. Phương thức btnSearchClick() gọi phương thức searchClient(keyword: String) của lớp BookingController.
+21. Phương thức searchClient() gọi phương thức findByKeyword(keyword) của lớp Entity Client.
+22. Lớp Client trả kết quả danh sách khách hàng về cho phương thức searchClient().
+23. Phương thức searchClient() trả kết quả về cho phương thức btnSearchClick().
+24. Lớp SearchClientForm hiển thị danh sách khách hàng khớp.
+25. Nhân viên chọn thông tin khách hàng tương ứng.
+26. Phương thức tblClientsClick(selectedRow: int) của lớp SearchClientForm được gọi.
+27. Phương thức tblClientsClick() gọi phương thức navigate(roomId, clientId, timeRange) của lớp ConfirmBookingModal.
+28. Lớp ConfirmBookingModal hiển thị thông tin xác nhận đặt phòng.
+29. Nhân viên ấn nút xác nhận.
+30. Phương thức btnConfirmClick() của lớp ConfirmBookingModal được gọi.
+31. Phương thức btnConfirmClick() gọi phương thức createBooking(clientId: int, roomId: int, startTime: Date, endTime: Date, staffId: int) của lớp BookingController.
+32. Phương thức createBooking() gọi phương thức updateStatus(roomId, "Chờ nhận") của lớp Entity Room_receipt.
+33. Lớp Room_receipt cập nhật trạng thái và trả kết quả về cho phương thức createBooking().
+34. Phương thức createBooking() lưu booking vào CSDL và trả BookingResponse về cho phương thức btnConfirmClick().
+35. Lớp ConfirmBookingModal hiển thị thông báo "Đặt phòng thành công!".
+36. Nhân viên ấn nút OK.
+37. Phương thức showMessage() của lớp ConfirmBookingModal được gọi.
+38. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+39. Hệ thống quay về giao diện chính ReceptionistHomePage.
+4.2. Chức năng "Check-in"
+a) Biểu đồ tuần tự
+
+b) Kịch bản phiên bản 3
+1. Nhân viên lễ tân click chức năng "Check-in" trên giao diện ReceptionistHomePage.
+2. Phương thức btnCheckInClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnCheckInClick() gọi phương thức navigate() của lớp CheckInPage.
+4. Phương thức formLoad() của lớp CheckInPage được gọi.
+5. Phương thức formLoad() gọi phương thức getPendingBookings(branchId: int, date: Date) của lớp BookingController.
+6. Phương thức getPendingBookings() gọi phương thức findByStatus("Chờ nhận") của lớp Entity Room.
+7. Lớp Room trả kết quả danh sách booking về cho phương thức getPendingBookings().
+8. Phương thức getPendingBookings() trả kết quả về cho phương thức formLoad().
+9. Lớp CheckInPage hiển thị danh sách booking "Chờ nhận" hôm nay cho nhân viên.
+10. Nhân viên ấn chọn booking tương ứng cần check-in trên danh sách.
+11. Phương thức tblPendingBookingsClick(selectedRow: int) của lớp CheckInPage được gọi.
+12. Phương thức tblPendingBookingsClick() gọi phương thức navigate(bookingId) của lớp ConfirmCheckInView.
+13. Lớp ConfirmCheckInView hiển thị thông tin chi tiết của phòng và khách hàng.
+14. Nhân viên ấn nút xác nhận check-in.
+15. Phương thức btnCheckInClick() của lớp ConfirmCheckInView được gọi.
+16. Phương thức btnCheckInClick() gọi phương thức checkIn(bookingId: int) của lớp BookingController.
+17. Phương thức checkIn() gọi phương thức updateStatus(roomId, "Đang hoạt động") của lớp Entity Room.
+18. Lớp Room cập nhật trạng thái và trả kết quả về cho phương thức checkIn().
+19. Phương thức checkIn() gọi phương thức setStartTime(now) của lớp Entity Room_receipt.
+20. Lớp Room_receipt ghi nhận thời gian bắt đầu và trả kết quả về cho phương thức checkIn().
+21. Phương thức checkIn() trả BookingResponse về cho phương thức btnCheckInClick().
+22. Lớp ConfirmCheckInView hiển thị thông báo "Check-in thành công! Phòng [tên phòng] đã sẵn sàng."
+23. Nhân viên ấn nút quay lại.
+24. Phương thức showMessage() của lớp ConfirmCheckInView được gọi.
+25. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+26. Hệ thống quay về giao diện chính ReceptionistHomePage.
+4.3. Chức năng "Check-out"
+a) Biểu đồ tuần tự
+
+b) Kịch bản phiên bản 3
+1. Nhân viên lễ tân click chức năng "Check-out" trên giao diện ReceptionistHomePage.
+2. Phương thức btnCheckOutClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnCheckOutClick() gọi phương thức navigate() của lớp CheckOutPage.
+4. Phương thức formLoad() của lớp CheckOutPage được gọi.
+5. Phương thức formLoad() gọi phương thức getActiveRooms(branchId: int) của lớp BookingController.
+6. Phương thức getActiveRooms() gọi phương thức findByStatus("Đang hoạt động") của lớp Entity Room.
+7. Lớp Room trả kết quả danh sách phòng về cho phương thức getActiveRooms().
+8. Phương thức getActiveRooms() trả kết quả về cho phương thức formLoad().
+9. Lớp CheckOutPage hiển thị danh sách phòng đang sử dụng cho nhân viên.
+10. Nhân viên chọn phòng tương ứng trên danh sách.
+11. Phương thức tblActiveRoomsClick(selectedRow: int) của lớp CheckOutPage được gọi.
+12. Phương thức tblActiveRoomsClick() gọi phương thức navigate(room_receipt_ID) của lớp InvoicePanel.
+13. Phương thức formLoad(invoice: Room_receipt) của lớp InvoicePanel được gọi.
+14. Phương thức formLoad() gọi phương thức calculateInvoice(room_receipt_ID: int) của lớp BookingController.
+15. Phương thức calculateInvoice() gọi phương thức calculateTimeFee() + calculateServiceFee() của lớp Entity Room_receipt.
+16. Lớp Room_receipt trả kết quả hóa đơn về cho phương thức calculateInvoice().
+17. Phương thức calculateInvoice() trả Room_receipt về cho phương thức formLoad().
+18. Lớp InvoicePanel hiển thị chi tiết tiền phòng, dịch vụ, thời gian sử dụng và tổng tiền.
+19. Nhân viên thông báo tổng tiền cho khách hàng.
+20. Khách hàng cung cấp mã ưu đãi (nếu có).
+21. Nhân viên nhập mã và ấn áp dụng.
+22. Phương thức btnApply() của lớp InvoicePanel được gọi.
+23. Phương thức btnApply() gọi phương thức applyPromotion(room_receipt_ID: int) của lớp BookingController.
+24. Phương thức applyPromotion() gọi phương thức applyVoucher() của lớp Entity Promotion.
+25. Lớp Promotion trả kết quả giảm giá về cho phương thức applyPromotion().
+26. Phương thức applyPromotion() trả kết quả về cho phương thức btnApply().
+27. Lớp InvoicePanel cập nhật lại tổng tiền sau giảm giá.
+28. Khách hàng đưa tiền mặt cho nhân viên.
+29. Nhân viên chọn phương thức thanh toán và click nút xác nhận thanh toán.
+30. Phương thức btnThanhToanClick() của lớp InvoicePanel được gọi.
+31. Phương thức btnThanhToanClick() gọi phương thức confirmPayment(room_receipt_ID: int, paymentMethod: String, voucherCode: String) của lớp BookingController.
+32. Phương thức confirmPayment() gọi phương thức updateStatus("Đã thanh toán") của lớp Entity Room_receipt.
+33. Phương thức confirmPayment() gọi phương thức updateStatus("Trống") của lớp Entity Room.
+34. Phương thức confirmPayment() gọi phương thức addPoints(base_score) của lớp Entity Client.
+35. Các lớp Entity trả kết quả lưu trữ về cho phương thức confirmPayment().
+36. Phương thức confirmPayment() trả Room_receipt về cho phương thức btnThanhToanClick().
+37. Lớp InvoicePanel hiển thị thông báo "Check-out thành công! Tổng tiền: [X]đ."
+38. Nhân viên click nút in hóa đơn (để đưa cho khách hàng) và ấn hoàn tất.
+39. Phương thức btnInHoaDonClick() của lớp InvoicePanel được gọi.
+40. Phương thức btnInHoaDonClick() gọi phương thức showMessage() của lớp InvoicePanel.
+41. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+42. Hệ thống quay về giao diện chính ReceptionistHomePage.
+4.4. Chức năng "Huỷ phòng"
+a) Biểu đồ tuần tự
+
+b) Kịch bản phiên bản 3
+1. Nhân viên lễ tân click chức năng "Quản lý đặt phòng" trên giao diện ReceptionistHomePage.
+2. Phương thức btnBookingManagementClick() của lớp ReceptionistHomePage được gọi.
+3. Phương thức btnBookingManagementClick() gọi phương thức navigate() của lớp CancelBookingPage.
+4. Lớp CancelBookingPage hiển thị form tìm kiếm booking.
+5. Nhân viên nhập thông tin tìm kiếm (họ tên, số điện thoại hoặc mã phòng đã đặt) và ấn nút tìm kiếm.
+6. Phương thức btnSearchClick() của lớp CancelBookingPage được gọi.
+7. Phương thức btnSearchClick() gọi phương thức searchBooking(keyword: String) của lớp BookingController.
+8. Phương thức searchBooking() gọi phương thức findByKeyword(keyword) của lớp Entity Room.
+9. Lớp Room trả kết quả danh sách phòng về cho phương thức searchBooking().
+10. Phương thức searchBooking() gọi phương thức findByKeyword(keyword) của lớp Entity Room_receipt.
+11. Lớp Room_receipt trả kết quả danh sách hóa đơn về cho phương thức searchBooking().
+12. Phương thức searchBooking() tổng hợp và trả kết quả về cho phương thức btnSearchClick().
+13. Lớp CancelBookingPage hiển thị danh sách các booking tương ứng cho nhân viên.
+14. Nhân viên ấn chọn bản ghi booking cần hủy.
+15. Phương thức tblBookingsClick(selectedRow: int) của lớp CancelBookingPage được gọi.
+16. Lớp CancelBookingPage hiển thị thông tin chi tiết booking và nút [Hủy đặt phòng].
+17. Nhân viên click [Hủy đặt phòng].
+18. Lớp CancelBookingPage hiển thị xác nhận "Bạn có chắc chắn muốn hủy booking này?".
+19. Nhân viên click [Đồng ý].
+20. Phương thức btnCancelClick() của lớp CancelBookingPage được gọi.
+21. Phương thức btnCancelClick() gọi phương thức cancelBooking(bookingId: int) của lớp BookingController.
+22. Phương thức cancelBooking() gọi phương thức updateStatus(roomId, "Trống") của lớp Entity Room.
+23. Lớp Room cập nhật trạng thái và trả kết quả về cho phương thức cancelBooking().
+24. Phương thức cancelBooking() gọi phương thức updateStatus("Đã hủy") của lớp Entity Room_receipt.
+25. Lớp Room_receipt cập nhật trạng thái và trả kết quả về cho phương thức cancelBooking().
+26. Phương thức cancelBooking() trả BookingResponse về cho phương thức btnCancelClick().
+27. Lớp CancelBookingPage hiển thị thông báo "Hủy đặt phòng thành công."
+28. Nhân viên ấn nút quay lại.
+29. Phương thức showMessage() của lớp CancelBookingPage được gọi.
+30. Phương thức showMessage() gọi phương thức navigate() của lớp ReceptionistHomePage.
+31. Hệ thống quay về giao diện chính ReceptionistHomePage.
 IV. PHA CÀI ĐẶT VÀ KIỂM THỬ
-Kiểm thử chức năng
 1.1. Lập kế hoạch test
-1.2. Các test case cho từng có chức năng
+Phạm vi test: Module "Quản lý đặt và trả phòng" — 4 chức năng: Đặt phòng, Check-in, Check-out, Huỷ phòng.
+Loại test: Functional testing (kiểm thử chức năng) — kiểm tra từng chức năng theo kịch bản sử dụng thực tế.
+Nguyên tắc test:
+Test case bao gồm: CSDL trước test → Kịch bản thực hiện → Kết quả mong đợi → CSDL sau test
+CSDL mẫu dùng dữ liệu tiếng Việt, tên riêng Việt Nam
+Dữ liệu trong CSDL phải khớp với ERD (III.2) và Entity class (III.1)
+Kết quả mong đợi PHẢI liệt kê TOÀN BỘ UI elements khi sang giao diện mới
+---
+1.2. Các test case cho từng chức năng
+a) Chức năng "Đặt phòng"
+TC01: Đặt phòng thành công
+CSDL trước khi test:
+*tblBranch:*
+*tblRoom:*
+*tblClient:*
+*tblEmployee:*
+*tblMemberRanking:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+TC02: Không tìm thấy phòng trống theo thời gian yêu cầu
+CSDL trước khi test:
+*tblRoom:*
+CSDL sau khi test: Không thay đổi.
+---
+TC03: Khách hàng chưa có trong CSDL
+CSDL trước khi test:
+*tblRoom:*
+*tblClient:*
+CSDL sau khi test:
+*tblClient (mới tạo):*
+---
+TC04: Đặt phòng trực tuyến thành công
+CSDL trước khi test:
+*tblRoom:*
+*tblClient:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+b) Chức năng "Check-in"
+TC05: Check-in thành công
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblClient:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+TC06: Phòng đang dọn dẹp, không thể check-in
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+CSDL sau khi test: Không thay đổi.
+---
+TC07: Check-in phòng Super VIP
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblClient:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+c) Chức năng "Check-out"
+TC08: Check-out thành công, thanh toán tiền mặt
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblRoom_receipt_detail:*
+*tblClient:*
+*tblMemberRanking:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*(Điểm tích lũy được cộng: 711.000 / 10.000 = 71 điểm)*
+---
+TC09: Check-out với voucher giảm giá
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblPromotion:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblApply_promotion:*
+---
+TC10: Check-out với hội viên Vàng
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblClient:*
+*tblMemberRanking:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+TC11: Voucher không hợp lệ
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+CSDL sau khi test: Không thay đổi.
+---
+TC12: Check-out chuyển khoản
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblClient:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+d) Chức năng "Huỷ phòng"
+TC13: Hủy đặt phòng thành công
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+*tblClient:*
+CSDL sau khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+---
+TC14: Không tìm thấy booking
+CSDL trước khi test:
+*tblRoom_receipt:*
+CSDL sau khi test: Không thay đổi.
+---
+TC15: Booking đã quá thời gian hủy
+CSDL trước khi test:
+*tblRoom:*
+*tblRoom_receipt:*
+CSDL sau khi test: Không thay đổi.
+---
+1.3. Tóm tắt kết quả test
+Tỷ lệ đạt: 15/15 = 100%
+Kết luận: Tất cả các test case đều đạt yêu cầu. Module "Quản lý đặt và trả phòng" hoạt động đúng theo thiết kế.
+
