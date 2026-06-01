@@ -155,6 +155,40 @@ def set_cell_shading(cell, color):
     cell._tc.get_or_add_tcPr().append(shading)
 
 
+def parse_inline_html_table(text):
+    """Extract <table>...</table> and convert to formatted text lines."""
+    import re as _re
+    match = _re.search(r'<table>(.*?)</table>', text, _re.DOTALL)
+    if not match:
+        return text, []
+    table_html = match.group(1)
+    rows = []
+    for tr_match in _re.finditer(r'<tr>(.*?)</tr>', table_html, _re.DOTALL):
+        cells = []
+        for td_match in _re.finditer(r'<t[dh]>(.*?)</t[dh]>', tr_match.group(1)):
+            cells.append(td_match.group(1).strip())
+        if cells:
+            rows.append(cells)
+    # Calculate column widths
+    if not rows:
+        return text.replace(match.group(0), ''), []
+    col_widths = [max(len(row[i]) if i < len(row) else 0 for row in rows) for i in range(len(rows[0]))]
+    # Build formatted lines
+    lines = []
+    for ri, row in enumerate(rows):
+        parts = []
+        for ci, cell in enumerate(row):
+            w = col_widths[ci] if ci < len(col_widths) else 10
+            parts.append(cell.ljust(w))
+        line = ' | '.join(parts)
+        lines.append(line)
+        if ri == 0:
+            lines.append('-+-'.join('-' * w for w in col_widths))
+    # Remove the <table>...</table> from text
+    clean_text = text[:match.start()].rstrip() + text[match.end():].lstrip()
+    return clean_text, lines
+
+
 def add_scenario_table(doc, rows):
     if not rows or len(rows[0]) < 2:
         return
@@ -171,7 +205,9 @@ def add_scenario_table(doc, rows):
             p = cell.paragraphs[0]
             p.style = doc.styles['Normal']
             cell_text = row[ci] if ci < len(row) else ''
-            parts = cell_text.split('<br>')
+            # Extract inline HTML tables
+            clean_text, inline_table_lines = parse_inline_html_table(cell_text)
+            parts = clean_text.split('<br>')
             for pi, part in enumerate(parts):
                 part = part.strip()
                 if not part:
@@ -187,6 +223,15 @@ def add_scenario_table(doc, rows):
                         run.font.size = Pt(9)
                 if pi < len(parts) - 1:
                     p.add_run('\n')
+            # Add inline table as monospace block
+            if inline_table_lines:
+                p.add_run('\n')
+                for li, line in enumerate(inline_table_lines):
+                    run = p.add_run(line)
+                    run.font.name = 'Courier New'
+                    run.font.size = Pt(8)
+                    if li < len(inline_table_lines):
+                        p.add_run('\n')
             if ri == 0:
                 set_cell_shading(cell, 'D9E2F3')
     return table
