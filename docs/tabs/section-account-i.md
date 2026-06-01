@@ -182,19 +182,19 @@ Admin --> UC20
 ### 6. Quy trình nghiệp vụ từng chức năng
 
 Chức năng "Đăng nhập":
-Khách hàng truy cập trang /login → Hệ thống hiển thị form đăng nhập → Khách hàng nhập SĐT/Email và mật khẩu, nhấn [Đăng nhập] → Hệ thống kiểm tra tài khoản và mật khẩu → Hệ thống tạo phiên đăng nhập, chuyển hướng đến trang chủ → Khách hàng thấy thông báo "Đăng nhập thành công"
+Người dùng cung cấp SĐT/Email và mật khẩu → Hệ thống xác thực thông tin đăng nhập → Hệ thống tạo phiên đăng nhập và chuyển người dùng đến trang chủ tương ứng vai trò
 
 Chức năng "Đăng ký":
-Khách hàng nhấn "Đăng ký" từ trang đăng nhập → Hệ thống hiển thị form đăng ký → Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, nhấn [Tiếp tục] → Hệ thống kiểm tra SĐT và email chưa tồn tại, gửi OTP đến SĐT → Hệ thống hiển thị form xác nhận OTP → Khách hàng nhập mã OTP, nhấn [Xác nhận] → Hệ thống tạo tài khoản hạng "Thường", tự động đăng nhập → Khách hàng thấy thông báo "Đăng ký thành công!"
+Khách hàng cung cấp Họ tên, SĐT, Email, Mật khẩu → Hệ thống kiểm tra SĐT và email chưa tồn tại → Hệ thống gửi mã OTP đến SĐT để xác minh → Khách hàng cung cấp mã OTP → Hệ thống tạo tài khoản hạng "Thường" và tự động đăng nhập
 
 Chức năng "Đổi mật khẩu":
-Người dùng truy cập mục "Bảo mật" → Hệ thống hiển thị form đổi mật khẩu → Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn [Lưu thay đổi] → Hệ thống xác minh MK hiện tại, kiểm tra MK mới hợp lệ → Hệ thống cập nhật mật khẩu, thu hồi các session khác → Người dùng thấy thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại." → Hệ thống chuyển về trang đăng nhập
+Người dùng cung cấp mật khẩu hiện tại và mật khẩu mới → Hệ thống xác minh mật khẩu hiện tại → Hệ thống kiểm tra mật khẩu mới hợp lệ → Hệ thống cập nhật mật khẩu và thu hồi tất cả phiên đăng nhập khác
 
 Chức năng "Quản lý thông tin cá nhân":
-Khách hàng nhấn vào ảnh đại diện → Hệ thống hiển thị trang hồ sơ cá nhân → Khách hàng xem thông tin Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy → Khách hàng nhấn [Chỉnh sửa thông tin], sửa Họ tên và Email, nhấn [Lưu] → Hệ thống kiểm tra email hợp lệ, cập nhật hồ sơ → Khách hàng thấy thông báo "Cập nhật thành công!"
+Khách hàng xem thông tin hồ sơ cá nhân (Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy) → Khách hàng cập nhật Họ tên và Email → Hệ thống kiểm tra email hợp lệ → Hệ thống cập nhật hồ sơ
 
 Chức năng "Quản lý tài khoản nhân viên":
-Admin truy cập trang "Quản lý nhân viên" → Hệ thống hiển thị bảng danh sách nhân viên → Admin nhấn [Thêm nhân viên], nhập Họ tên, SĐT, Vai trò, nhấn [Lưu] → Hệ thống tạo tài khoản nhân viên → Admin thấy thông báo "Thêm nhân viên thành công!" → Admin nhấn [Sửa] trên một dòng, sửa thông tin, nhấn [Lưu] → Hệ thống cập nhật, thông báo "Cập nhật thành công!" → Admin nhấn [Xóa] trên một dòng, xác nhận → Hệ thống chuyển trạng thái "Đã nghỉ" → Admin thấy thông báo "Xóa nhân viên thành công!"
+Admin xem danh sách nhân viên → Admin thêm nhân viên mới (Họ tên, SĐT, Vai trò) → Hệ thống tạo tài khoản nhân viên → Admin sửa thông tin nhân viên → Hệ thống cập nhật → Admin xóa nhân viên → Hệ thống chuyển trạng thái "Đã nghỉ"
 
 ### 7. Biểu đồ Use Case chi tiết
 
