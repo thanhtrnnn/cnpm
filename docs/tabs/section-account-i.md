@@ -179,7 +179,42 @@ Admin --> UC20
 
 **UC20 – Quản lý tài khoản nhân viên:** UC này cho phép Chủ doanh nghiệp quản lý tài khoản nhân viên toàn hệ thống: xem danh sách, thêm mới, chỉnh sửa và xóa (chuyển trạng thái "Đã nghỉ"). Không thể xóa nhân viên đang xử lý order.
 
-### 6. Biểu đồ Use Case chi tiết
+### 6. Quy trình nghiệp vụ từng chức năng
+
+Chức năng "Đăng nhập":
+Truy cập trang đăng nhập → Hiển thị form gồm ô SĐT/Email, ô Mật khẩu, nút [Đăng nhập] → Người dùng nhập SĐT và Mật khẩu → Nhấn [Đăng nhập] → Hệ thống kiểm tra định dạng đầu vào → Hệ thống truy vấn CSDL tìm tài khoản theo SĐT/Email → So sánh mật khẩu đã mã hóa → Xác thực thành công → Tạo session → Chuyển hướng đến trang chủ tương ứng vai trò
+
+Chức năng "Quên mật khẩu":
+Nhấn liên kết "Quên mật khẩu?" → Hiển thị form nhập SĐT → Người dùng nhập SĐT → Hệ thống kiểm tra SĐT tồn tại → Gửi OTP 6 chữ số đến SĐT → Hiển thị form xác nhận OTP → Người dùng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực → Hiển thị form nhập mật khẩu mới → Người dùng nhập mật khẩu mới → Hệ thống mã hóa và cập nhật → Thông báo "Đổi mật khẩu thành công" → Chuyển hướng về trang đăng nhập
+
+Chức năng "Đăng ký":
+Nhấn "Đăng ký" từ trang đăng nhập → Hiển thị form gồm Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK → Người dùng nhập thông tin → Nhấn [Tiếp tục] → Hệ thống kiểm tra định dạng → Kiểm tra SĐT chưa tồn tại → Kiểm tra email chưa tồn tại → Gửi OTP 6 chữ số đến SĐT → Hiển thị form xác nhận OTP → Người dùng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực (≤ 5 phút) → Tạo tài khoản mới, hạng "Thường", điểm = 0 → Đăng nhập tự động → Thông báo "Đăng ký thành công!"
+
+Chức năng "Đổi mật khẩu":
+Truy cập mục "Bảo mật" trong cài đặt → Hiển thị form gồm MK hiện tại, MK mới, Xác nhận MK mới → Người dùng nhập thông tin → Nhấn [Lưu thay đổi] → Hệ thống xác minh MK hiện tại khớp CSDL → Kiểm tra MK mới: độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt → Kiểm tra MK mới ≠ MK hiện tại → Mã hóa (bcrypt) và cập nhật → Thu hồi tất cả session khác → Thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại." → Chuyển hướng về trang đăng nhập
+
+Chức năng "Xem hồ sơ cá nhân":
+Nhấn vào ảnh đại diện / tên tài khoản → Hệ thống truy vấn CSDL lấy thông tin người dùng → Hiển thị "Hồ sơ cá nhân": Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, Ngày tham gia
+
+Chức năng "Chỉnh sửa thông tin cá nhân":
+Nhấn [Chỉnh sửa thông tin] → Chuyển sang chế độ chỉnh sửa: Họ tên, Email có thể nhập; SĐT bị khóa → Người dùng cập nhật thông tin → Nhấn [Lưu thay đổi] → Hệ thống kiểm tra email hợp lệ và chưa được dùng → Cập nhật vào CSDL → Thông báo "Cập nhật thành công!" → Quay về chế độ xem
+
+Chức năng "Đổi SĐT" (từ UC04):
+Nhấn "Thay đổi SĐT" → Hiển thị form nhập SĐT mới → Người dùng nhập SĐT mới → Hệ thống gửi OTP đến SĐT hiện tại → Người dùng nhập OTP → Hệ thống xác minh OTP → Gửi OTP mới đến SĐT mới → Người dùng nhập OTP mới → Hệ thống xác minh → Cập nhật SĐT trong CSDL
+
+Chức năng "Xem danh sách nhân viên":
+Truy cập "Quản lý nhân viên" → Hệ thống truy vấn CSDL lấy danh sách nhân viên → Hiển thị bảng danh sách: Họ tên, Vai trò, Trạng thái → Có ô tìm kiếm để lọc
+
+Chức năng "Thêm nhân viên":
+Nhấn [Thêm nhân viên] → Hiển thị form nhập Họ tên, Vai trò → Admin nhập thông tin → Nhấn [Lưu] → Hệ thống kiểm tra SĐT chưa tồn tại → Tạo tài khoản nhân viên trong CSDL → Thông báo "Thêm nhân viên thành công!" → Cập nhật bảng danh sách
+
+Chức năng "Sửa nhân viên":
+Nhấn [Sửa] trên một dòng nhân viên → Hiển thị form chỉnh sửa thông tin → Admin sửa thông tin → Nhấn [Lưu] → Hệ thống cập nhật vào CSDL → Thông báo "Cập nhật thành công!" → Cập nhật bảng danh sách
+
+Chức năng "Xóa nhân viên":
+Nhấn [Xóa] trên một dòng nhân viên → Hiển thị xác nhận "Bạn có chắc muốn xóa?" → Admin xác nhận → Hệ thống kiểm tra nhân viên không đang xử lý order → Chuyển trạng thái "Đã nghỉ" trong CSDL → Thông báo "Xóa nhân viên thành công!" → Cập nhật bảng danh sách
+
+### 7. Biểu đồ Use Case chi tiết
 
 #### UC01 – Đăng nhập
 
