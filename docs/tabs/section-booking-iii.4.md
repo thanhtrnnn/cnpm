@@ -7,74 +7,105 @@
 
 ```plantuml
 @startuml
-left to right direction
-actor "Nhân viên lễ tân" as NV
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam ControlBackgroundColor #7AD2FF
+skinparam ControlBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
+title Dat phong – Tuần tự Thiết kế (React MVC)
+
+actor "Nhan vien le tan" as NV
 participant "ReceptionistHomePage\n<<Boundary>>" as Home
-participant "SearchFreeRoomForm\n<<Boundary>>" as SearchRoom
+participant "SearchFreeRoomForm\n<<Boundary>>" as SRF
 participant "BookingController\n<<Control>>" as Ctrl
-participant "SearchClientForm\n<<Boundary>>" as SearchClient
-participant "ConfirmBookingModal\n<<Boundary>>" as Confirm
-entity "Room\n<<Entity>>" as Room
-entity "Customer\n<<Entity>>" as Cust
-entity "Room_receipt\n<<Entity>>" as RR
+participant "SearchClientForm\n<<Boundary>>" as SCF
+participant "ConfirmBookingModal\n<<Boundary>>" as CBM
+participant "Room\n<<Entity>>" as Room
+participant "Customer\n<<Entity>>" as Cust
+participant "Room_receipt\n<<Entity>>" as RR
 
-NV -> Home: click "Dat phong"
+NV -> Home : 1: click "Dat phong"
 activate Home
-Home -> SearchRoom: navigate()
-activate SearchRoom
-Home -> NV: hien thi SearchFreeRoomForm
+Home -> Home : 2: btnDatPhongClick()
+Home -> SRF : 3: navigate()
+activate SRF
+SRF --> NV : 4: hien thi SearchFreeRoomForm
+deactivate SRF
 
-NV -> SearchRoom: nhap startTime, endTime, branchId
-NV -> SearchRoom: click [Tim phong trong]
-SearchRoom -> Ctrl: searchFreeRoom(startTime, endTime, branchId)
+NV -> SRF : 5: nhap startTime, endTime, branchId
+activate SRF
+NV -> SRF : 6: click [Tim phong trong]
+SRF -> SRF : 7: btnSearchClick()
+SRF -> Ctrl : 8: searchFreeRoom(startTime, endTime, branchId)
 activate Ctrl
-Ctrl -> Room: findByTimeAndBranch(startTime, endTime, branchId)
+Ctrl -> Room : 9: findByTimeAndBranch(startTime, endTime, branchId)
 activate Room
-Room --> Ctrl: List<Room>
+Room --> Ctrl : 10: List<Room>
 deactivate Room
-Ctrl --> SearchRoom: List<Room>
+Ctrl --> SRF : 11: List<Room>
 deactivate Ctrl
-SearchRoom --> NV: hien thi danh sach phong trong
+SRF --> NV : 12: hien thi danh sach phong trong
+deactivate SRF
 
-NV -> SearchRoom: chon phong (roomId)
-SearchRoom -> SearchClient: navigate(roomId)
-activate SearchClient
-SearchRoom -> NV: hien thi SearchClientForm
+NV -> SRF : 13: chon phong (roomId)
+activate SRF
+SRF -> SRF : 14: tblRoomsClick(selectedRow)
+SRF -> SCF : 15: navigate(roomId)
+activate SCF
+SCF --> NV : 16: hien thi SearchClientForm
+deactivate SCF
 
-NV -> SearchClient: nhap keyword (ten/SDT)
-NV -> SearchClient: click [Tim kiem]
-SearchClient -> Ctrl: searchClient(keyword)
+NV -> SCF : 17: nhap keyword (ten/SDT)
+activate SCF
+NV -> SCF : 18: click [Tim kiem]
+SCF -> SCF : 19: btnSearchClick()
+SCF -> Ctrl : 20: searchClient(keyword)
 activate Ctrl
-Ctrl -> Cust: findByKeyword(keyword)
+Ctrl -> Cust : 21: findByKeyword(keyword)
 activate Cust
-Cust --> Ctrl: List<Customer>
+Cust --> Ctrl : 22: List<Customer>
 deactivate Cust
-Ctrl --> SearchClient: List<Customer>
+Ctrl --> SCF : 23: List<Customer>
 deactivate Ctrl
-SearchClient --> NV: hien thi danh sach khach hang
+SCF --> NV : 24: hien thi danh sach khach hang
+deactivate SCF
 
-NV -> SearchClient: chon khach hang (clientId)
-SearchClient -> Confirm: navigate(roomId, clientId, timeRange)
-activate Confirm
-SearchClient -> NV: hien thi ConfirmBookingModal
+NV -> SCF : 25: chon khach hang (clientId)
+activate SCF
+SCF -> SCF : 26: tblClientsClick(selectedRow)
+SCF -> CBM : 27: navigate(roomId, clientId, timeRange)
+activate CBM
+CBM --> NV : 28: hien thi ConfirmBookingModal
+deactivate CBM
 
-NV -> Confirm: click [Xac nhan dat phong]
-Confirm -> Ctrl: createBooking(clientId, roomId, startTime, endTime, staffId)
+NV -> CBM : 29: click [Xac nhan dat phong]
+activate CBM
+CBM -> CBM : 30: btnConfirmClick()
+CBM -> Ctrl : 31: createBooking(clientId, roomId, startTime, endTime, staffId)
 activate Ctrl
-Ctrl -> RR: updateStatus(roomId, "Cho nhan")
+Ctrl -> RR : 32: updateStatus(roomId, "Cho nhan")
 activate RR
-RR --> Ctrl: Room_receipt updated
+RR --> Ctrl : 33: Room_receipt updated
 deactivate RR
-Ctrl -> Ctrl: saveBooking()
-Ctrl --> Confirm: BookingResponse
+Ctrl -> Ctrl : 34: saveBooking()
+Ctrl --> CBM : 35: BookingResponse
 deactivate Ctrl
-Confirm --> NV: hien thi "Dat phong thanh cong!"
-deactivate Confirm
+CBM --> NV : 36: showMessage("Dat phong thanh cong!")
+deactivate CBM
 
-NV -> Confirm: click [OK]
-Confirm -> Home: navigate()
-deactivate SearchRoom
-deactivate SearchClient
+NV -> CBM : 37: click [OK]
+activate CBM
+CBM -> CBM : 38: showMessage()
+CBM -> Home : 39: navigate()
+deactivate CBM
+deactivate Home
 @enduml
 ```
 
@@ -148,34 +179,69 @@ deactivate SearchClient
 
 ```plantuml
 @startuml
-actor "Nhân viên lễ tân" as NV
-participant "CheckInPage\n<<Boundary>>" as CheckIn
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam ControlBackgroundColor #7AD2FF
+skinparam ControlBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
+title Check-in – Tuần tự Thiết kế (React MVC)
+
+actor "Nhan vien le tan" as NV
+participant "ReceptionistHomePage\n<<Boundary>>" as Home
+participant "CheckInPage\n<<Boundary>>" as CIP
 participant "BookingController\n<<Control>>" as Ctrl
-entity "Room\n<<Entity>>" as Room
-entity "Room_receipt\n<<Entity>>" as RR
+participant "Room\n<<Entity>>" as Room
+participant "Room_receipt\n<<Entity>>" as RR
 
-NV -> CheckIn: click "Check-in"
-activate CheckIn
-CheckIn -> Ctrl: getPendingBookings(branchId, today)
+NV -> Home : 1: click "Check-in"
+activate Home
+Home -> Home : 2: btnCheckInClick()
+Home -> CIP : 3: navigate()
+activate CIP
+CIP -> CIP : 4: formLoad()
+CIP -> Ctrl : 5: getPendingBookings(branchId, today)
 activate Ctrl
-Ctrl -> Ctrl: findByStatus("Cho nhan")
-Ctrl --> CheckIn: List<BookingResponse>
-deactivate Ctrl
-CheckIn --> NV: hien thi danh sach booking cho
-
-NV -> CheckIn: chon booking can check-in
-NV -> CheckIn: click [Xac nhan Check-in]
-CheckIn -> Ctrl: checkIn(bookingId)
-activate Ctrl
-Ctrl -> Room: updateStatus(roomId, "Dang hoat dong")
+Ctrl -> Room : 6: findByStatus("Cho nhan")
 activate Room
-Room --> Ctrl: Room updated
+Room --> Ctrl : 7: List<Room>
 deactivate Room
-Ctrl -> RR: setStartTime(now)
-Ctrl --> CheckIn: BookingResponse
+Ctrl --> CIP : 8: List<BookingResponse>
 deactivate Ctrl
-CheckIn --> NV: "Check-in thanh cong!"
-deactivate CheckIn
+CIP --> NV : 9: hien thi danh sach booking cho
+deactivate CIP
+
+NV -> CIP : 10: chon booking can check-in
+activate CIP
+NV -> CIP : 11: click [Xac nhan Check-in]
+CIP -> CIP : 12: tblPendingBookingsClick(selectedRow)
+CIP -> Ctrl : 13: checkIn(bookingId)
+activate Ctrl
+Ctrl -> Room : 14: updateStatus(roomId, "Dang hoat dong")
+activate Room
+Room --> Ctrl : 15: Room updated
+deactivate Room
+Ctrl -> RR : 16: setStartTime(now)
+activate RR
+RR --> Ctrl : 17: Room_receipt updated
+deactivate RR
+Ctrl --> CIP : 18: BookingResponse
+deactivate Ctrl
+CIP --> NV : 19: showMessage("Check-in thanh cong!")
+deactivate CIP
+
+NV -> CIP : 20: click [OK]
+activate CIP
+CIP -> CIP : 21: showMessage()
+CIP -> Home : 22: navigate()
+deactivate CIP
+deactivate Home
 @enduml
 ```
 
@@ -228,56 +294,109 @@ deactivate CheckIn
 
 ```plantuml
 @startuml
-actor "Nhân viên lễ tân" as NV
-participant "CheckOutPage\n<<Boundary>>" as CheckOut
-participant "InvoicePanel\n<<Boundary>>" as Invoice
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam ControlBackgroundColor #7AD2FF
+skinparam ControlBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
+title Check-out – Tuần tự Thiết kế (React MVC)
+
+actor "Nhan vien le tan" as NV
+participant "ReceptionistHomePage\n<<Boundary>>" as Home
+participant "CheckOutPage\n<<Boundary>>" as COP
+participant "InvoicePanel\n<<Boundary>>" as IP
 participant "BookingController\n<<Control>>" as Ctrl
-entity "HoaDon\n<<Entity>>" as HD
-entity "Phong\n<<Entity>>" as Phong
+participant "Room\n<<Entity>>" as Room
+participant "Room_receipt\n<<Entity>>" as RR
+participant "Customer\n<<Entity>>" as Cust
+participant "Promotion\n<<Entity>>" as Promo
 
-NV -> CheckOut: click "Check-out"
-activate CheckOut
-CheckOut -> Ctrl: getActiveRooms(branchId)
+NV -> Home : 1: click "Check-out"
+activate Home
+Home -> Home : 2: btnCheckOutClick()
+Home -> COP : 3: navigate()
+activate COP
+COP -> COP : 4: formLoad()
+COP -> Ctrl : 5: getActiveRooms(branchId)
 activate Ctrl
-Ctrl -> Phong: findByStatus("Đang hoạt động")
-activate Phong
-Phong --> Ctrl: List<Phong>
-deactivate Phong
-Ctrl --> CheckOut: List<Phong>
+Ctrl -> Room : 6: findByStatus("Dang hoat dong")
+activate Room
+Room --> Ctrl : 7: List<Room>
+deactivate Room
+Ctrl --> COP : 8: List<Room>
 deactivate Ctrl
-CheckOut --> NV: hiển thị danh sách phòng đang hoạt động
+COP --> NV : 9: hien thi danh sach phong dang hoat dong
+deactivate COP
 
-NV -> CheckOut: chọn phòng cần check-out
-CheckOut -> Invoice: navigate(bookingId)
-activate Invoice
-CheckOut -> NV: hiển thị InvoicePanel
-
-Invoice -> Ctrl: calculateInvoice(bookingId)
+NV -> COP : 10: chon phong can check-out
+activate COP
+COP -> COP : 11: tblActiveRoomsClick(selectedRow)
+COP -> IP : 12: navigate(room_receipt_ID)
+activate IP
+IP -> IP : 13: formLoad(invoice)
+IP -> Ctrl : 14: calculateInvoice(room_receipt_ID)
 activate Ctrl
-Ctrl -> HD: calculateTimeFee() + calculateServiceFee()
-activate HD
-HD --> Ctrl: HoaDon
-deactivate HD
-Ctrl --> Invoice: HoaDon
+Ctrl -> RR : 15: calculateTimeFee() + calculateServiceFee()
+activate RR
+RR --> Ctrl : 16: Room_receipt
+deactivate RR
+Ctrl --> IP : 17: Room_receipt
 deactivate Ctrl
-Invoice --> NV: hiển thị chi tiết hóa đơn
+IP --> NV : 18: hien thi chi tiet hoa don
+deactivate IP
 
-NV -> Invoice: nhập mã voucher (nếu có)
-NV -> Invoice: chọn phương thức thanh toán
-NV -> Invoice: click [Xác nhận thanh toán]
-Invoice -> Ctrl: confirmPayment(invoiceId, paymentMethod, voucherCode)
+NV -> IP : 19: nhap ma voucher (neu co)
+activate IP
+NV -> IP : 20: click [Ap dung]
+IP -> IP : 21: btnApply()
+IP -> Ctrl : 22: applyPromotion(room_receipt_ID)
 activate Ctrl
-Ctrl -> HD: updateStatus("Đã thanh toán")
-Ctrl -> Phong: updateStatus("Trống")
-Ctrl -> Ctrl: addPoints(clientId, points)
-Ctrl --> Invoice: HoaDon updated
+Ctrl -> Promo : 23: applyVoucher()
+activate Promo
+Promo --> Ctrl : 24: discount
+deactivate Promo
+Ctrl --> IP : 25: discount
 deactivate Ctrl
-Invoice --> NV: "Check-out thành công! Tổng tiền: Xđ"
-deactivate Invoice
+IP --> NV : 26: cap nhat tong tien sau giam gia
+deactivate IP
 
-NV -> Invoice: click [In hóa đơn]
-Invoice -> NV: hiển thị hóa đơn in
-deactivate CheckOut
+NV -> IP : 27: chon phuong thuc thanh toan
+activate IP
+NV -> IP : 28: click [Xac nhan thanh toan]
+IP -> IP : 29: btnThanhToanClick()
+IP -> Ctrl : 30: confirmPayment(room_receipt_ID, paymentMethod, voucherCode)
+activate Ctrl
+Ctrl -> RR : 31: updateStatus("Da thanh toan")
+activate RR
+RR --> Ctrl : 32: Room_receipt updated
+deactivate RR
+Ctrl -> Room : 33: updateStatus("Trong")
+activate Room
+Room --> Ctrl : 34: Room updated
+deactivate Room
+Ctrl -> Cust : 35: addPoints(base_score)
+activate Cust
+Cust --> Ctrl : 36: Customer updated
+deactivate Cust
+Ctrl --> IP : 37: Room_receipt
+deactivate Ctrl
+IP --> NV : 38: showMessage("Check-out thanh cong!")
+deactivate IP
+
+NV -> IP : 39: click [In hoa don]
+activate IP
+IP -> IP : 40: btnInHoaDonClick()
+IP -> IP : 41: showMessage()
+IP -> Home : 42: navigate()
+deactivate IP
+deactivate Home
 @enduml
 ```
 
@@ -347,35 +466,81 @@ deactivate CheckOut
 
 ```plantuml
 @startuml
-actor "Nhân viên lễ tân" as NV
-participant "CancelBookingPage\n<<Boundary>>" as Cancel
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam ControlBackgroundColor #7AD2FF
+skinparam ControlBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
+title Huy phong – Tuần tự Thiết kế (React MVC)
+
+actor "Nhan vien le tan" as NV
+participant "ReceptionistHomePage\n<<Boundary>>" as Home
+participant "CancelBookingPage\n<<Boundary>>" as CBP
 participant "BookingController\n<<Control>>" as Ctrl
-entity "Phong\n<<Entity>>" as Phong
+participant "Room\n<<Entity>>" as Room
 
-NV -> Cancel: click "Quản lý đặt phòng"
-activate Cancel
-Cancel -> Ctrl: searchBooking(keyword)
-activate Ctrl
-Ctrl -> Ctrl: findByKeyword(keyword)
-Ctrl --> Cancel: List<BookingResponse>
-deactivate Ctrl
-Cancel --> NV: hiển thị danh sách booking
+NV -> Home : 1: click "Quan ly dat phong"
+activate Home
+Home -> Home : 2: btnBookingManagementClick()
+Home -> CBP : 3: navigate()
+activate CBP
+CBP --> NV : 4: hien thi form tim kiem booking
+deactivate CBP
 
-NV -> Cancel: chọn booking cần hủy
-NV -> Cancel: click [Hủy đặt phòng]
-Cancel -> NV: hiển thị xác nhận "Bạn có chắc chắn?"
-NV -> Cancel: click [Đồng ý]
-Cancel -> Ctrl: cancelBooking(bookingId)
+NV -> CBP : 5: nhap keyword (ten, SDT, ma booking)
+activate CBP
+NV -> CBP : 6: click [Tim kiem]
+CBP -> CBP : 7: btnSearchClick()
+CBP -> Ctrl : 8: searchBooking(keyword)
 activate Ctrl
-Ctrl -> Phong: updateStatus(roomId, "Trống")
-activate Phong
-Phong --> Ctrl: Phong updated
-deactivate Phong
-Ctrl -> Ctrl: updateBookingStatus("Đã hủy")
-Ctrl --> Cancel: BookingResponse
+Ctrl -> Room : 9: findByKeyword(keyword)
+activate Room
+Room --> Ctrl : 10: List<Room>
+deactivate Room
+Ctrl --> CBP : 11: List<BookingResponse>
 deactivate Ctrl
-Cancel --> NV: "Hủy đặt phòng thành công!"
-deactivate Cancel
+CBP --> NV : 12: hien thi danh sach booking
+deactivate CBP
+
+NV -> CBP : 13: chon booking can huy
+activate CBP
+CBP -> CBP : 14: tblBookingsClick(selectedRow)
+CBP --> NV : 15: hien thi chi tiet booking + nut [Huy]
+deactivate CBP
+
+NV -> CBP : 16: click [Huy dat phong]
+activate CBP
+CBP --> NV : 17: hien thi xac nhan "Ban co chac chan?"
+deactivate CBP
+
+NV -> CBP : 18: click [Dong y]
+activate CBP
+CBP -> CBP : 19: btnCancelClick()
+CBP -> Ctrl : 20: cancelBooking(bookingId)
+activate Ctrl
+Ctrl -> Room : 21: updateStatus(roomId, "Trong")
+activate Room
+Room --> Ctrl : 22: Room updated
+deactivate Room
+Ctrl -> Ctrl : 23: updateBookingStatus("Da huy")
+Ctrl --> CBP : 24: BookingResponse
+deactivate Ctrl
+CBP --> NV : 25: showMessage("Huy dat phong thanh cong!")
+deactivate CBP
+
+NV -> CBP : 26: click [Quay lai]
+activate CBP
+CBP -> CBP : 27: showMessage()
+CBP -> Home : 28: navigate()
+deactivate CBP
+deactivate Home
 @enduml
 ```
 

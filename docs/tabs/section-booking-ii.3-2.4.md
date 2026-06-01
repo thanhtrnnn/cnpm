@@ -322,52 +322,78 @@ PaymentView --> KhuyenMai
 
 ```plantuml
 @startuml
-title Đặt phòng – Tuần tự Phân tích
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
+title Dat phong – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
 participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "SearchFreeRoomView\n<<Boundary>>" as SearchRoom
-participant "SearchClientView\n<<Boundary>>" as SearchClient
-participant "ConfirmView\n<<Boundary>>" as Confirm
-entity "Room\n<<Entity>>" as Room
-entity "Customer\n<<Entity>>" as Cust
+participant "SearchFreeRoomView\n<<Boundary>>" as SRF
+participant "SearchClientView\n<<Boundary>>" as SCF
+participant "ConfirmView\n<<Boundary>>" as CV
+participant "Room\n<<Entity>>" as Room
+participant "Customer\n<<Entity>>" as Cust
 
 NV -> Home : 1: click "Dat phong"
 activate Home
-Home -> SearchRoom : 2: hienThi()
-activate SearchRoom
-SearchRoom --> NV : 3: hien thi form tim phong trong
-NV -> SearchRoom : 4: nhap thoiGian check-in + click Tim
-SearchRoom -> Room : 5: searchFreeRoom(thoiGianBD, thoiGianKT)
+Home -> SRF : 2: hienThi()
+activate SRF
+SRF --> NV : 3: hien thi form tim phong trong
+deactivate SRF
+
+NV -> SRF : 4: nhap thoiGian check-in + click Tim
+activate SRF
+SRF -> Room : 5: searchFreeRoom(thoiGianBD, thoiGianKT)
 activate Room
-Room --> SearchRoom : 6: danhSachPhong
+Room --> SRF : 6: danhSachPhong
 deactivate Room
-SearchRoom --> NV : 7: hienThiKetQua(danhSachPhong)
-NV -> SearchRoom : 8: chonPhong(roomID)
-deactivate SearchRoom
-SearchRoom -> SearchClient : 9: hienThi()
-activate SearchClient
-SearchClient --> NV : 10: hien thi form tim khach hang
-NV -> SearchClient : 11: nhap name, phone_number + click Tim
-SearchClient -> Cust : 12: searchClient(keyword)
+SRF --> NV : 7: hienThiKetQua(danhSachPhong)
+deactivate SRF
+
+NV -> SRF : 8: chonPhong(roomID)
+activate SRF
+SRF -> SCF : 9: hienThi()
+activate SCF
+SCF --> NV : 10: hien thi form tim khach hang
+deactivate SCF
+
+NV -> SCF : 11: nhap name, phone_number + click Tim
+activate SCF
+SCF -> Cust : 12: searchClient(keyword)
 activate Cust
-Cust --> SearchClient : 13: danhSachKH
+Cust --> SCF : 13: danhSachKH
 deactivate Cust
-SearchClient --> NV : 14: hienThiKH(danhSachKH)
-NV -> SearchClient : 15: chonKH(customerID)
-deactivate SearchClient
-SearchClient -> Confirm : 16: hienThiXacNhan(roomID, customerID)
-activate Confirm
-Confirm --> NV : 17: hien thi thong tin xac nhan
-NV -> Confirm : 18: click Xac nhan
-Confirm -> Room : 19: changeStatus("Cho nhan")
+SCF --> NV : 14: hienThiKH(danhSachKH)
+deactivate SCF
+
+NV -> SCF : 15: chonKH(customerID)
+activate SCF
+SCF -> CV : 16: hienThiXacNhan(roomID, customerID)
+activate CV
+CV --> NV : 17: hien thi thong tin xac nhan
+deactivate CV
+
+NV -> CV : 18: click Xac nhan
+activate CV
+CV -> Room : 19: changeStatus("Cho nhan")
 activate Room
-Room --> Confirm : 20: thanhCong
+Room --> CV : 20: thanhCong
 deactivate Room
-Confirm --> NV : 21: hienThi("Dat phong thanh cong")
-NV -> Confirm : 22: click OK
-deactivate Confirm
-Confirm -> Home : 23: hienThi()
+CV --> NV : 21: hienThi("Dat phong thanh cong")
+deactivate CV
+
+NV -> CV : 22: click OK
+activate CV
+CV -> Home : 23: hienThi()
+deactivate CV
 deactivate Home
 @enduml
 ```
@@ -416,39 +442,60 @@ deactivate Home
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
 title Huy phong – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
 participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "SearchBookingView\n<<Boundary>>" as SearchBooking
-participant "ConfirmCancelView\n<<Boundary>>" as Confirm
-entity "Room\n<<Entity>>" as Room
+participant "SearchBookingView\n<<Boundary>>" as SBV
+participant "ConfirmCancelView\n<<Boundary>>" as CCV
+participant "Room\n<<Entity>>" as Room
 
 NV -> Home : 1: click "Quan ly dat phong"
 activate Home
-Home -> SearchBooking : 2: hienThi()
-activate SearchBooking
-SearchBooking --> NV : 3: hien thi form tim booking
-NV -> SearchBooking : 4: nhap keyword + click Tim
-SearchBooking -> Room : 5: searchBooking(keyword)
+Home -> SBV : 2: hienThi()
+activate SBV
+SBV --> NV : 3: hien thi form tim booking
+deactivate SBV
+
+NV -> SBV : 4: nhap keyword + click Tim
+activate SBV
+SBV -> Room : 5: searchBooking(keyword)
 activate Room
-Room --> SearchBooking : 6: danhSachBooking
+Room --> SBV : 6: danhSachBooking
 deactivate Room
-SearchBooking --> NV : 7: hienThiKetQua(danhSachBooking)
-NV -> SearchBooking : 8: chonBooking(room_receipt_ID)
-deactivate SearchBooking
-SearchBooking -> Confirm : 9: hienThiXacNhan(room_receipt_ID)
-activate Confirm
-Confirm --> NV : 10: hien thi thong tin xac nhan huy
-NV -> Confirm : 11: click Xac nhan huy
-Confirm -> Room : 12: changeStatus("Trong")
+SBV --> NV : 7: hienThiKetQua(danhSachBooking)
+deactivate SBV
+
+NV -> SBV : 8: chonBooking(room_receipt_ID)
+activate SBV
+SBV -> CCV : 9: hienThiXacNhan(room_receipt_ID)
+activate CCV
+CCV --> NV : 10: hien thi thong tin xac nhan huy
+deactivate CCV
+
+NV -> CCV : 11: click Xac nhan huy
+activate CCV
+CCV -> Room : 12: changeStatus("Trong")
 activate Room
-Room --> Confirm : 13: thanhCong
+Room --> CCV : 13: thanhCong
 deactivate Room
-Confirm --> NV : 14: hienThi("Huy dat phong thanh cong")
-NV -> Confirm : 15: click OK
-deactivate Confirm
-Confirm -> Home : 16: hienThi()
+CCV --> NV : 14: hienThi("Huy dat phong thanh cong")
+deactivate CCV
+
+NV -> CCV : 15: click OK
+activate CCV
+CCV -> Home : 16: hienThi()
+deactivate CCV
 deactivate Home
 @enduml
 ```
@@ -485,34 +532,52 @@ deactivate Home
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
 title Check-in – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
 participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "CheckInView\n<<Boundary>>" as CheckIn
-participant "ConfirmCheckInView\n<<Boundary>>" as Confirm
-entity "Room\n<<Entity>>" as Room
+participant "CheckInView\n<<Boundary>>" as CIV
+participant "ConfirmCheckInView\n<<Boundary>>" as CCV
+participant "Room\n<<Entity>>" as Room
 
 NV -> Home : 1: click "Check-in"
 activate Home
-Home -> CheckIn : 2: hienThiDanhSach()
-activate CheckIn
-CheckIn --> NV : 3: hien thi danh sach booking "Cho nhan"
-NV -> CheckIn : 4: chonBooking(room_receipt_ID)
-deactivate CheckIn
-CheckIn -> Confirm : 5: hienThiXacNhan(room_receipt_ID)
-activate Confirm
-Confirm --> NV : 6: hien thi thong tin xac nhan
-NV -> Confirm : 7: click Xac nhan Check-in
-Confirm -> Room : 8: changeStatus("Dang hoat dong")
+Home -> CIV : 2: hienThiDanhSach()
+activate CIV
+CIV --> NV : 3: hien thi danh sach booking "Cho nhan"
+deactivate CIV
+
+NV -> CIV : 4: chonBooking(room_receipt_ID)
+activate CIV
+CIV -> CCV : 5: hienThiXacNhan(room_receipt_ID)
+activate CCV
+CCV --> NV : 6: hien thi thong tin xac nhan
+deactivate CCV
+
+NV -> CCV : 7: click Xac nhan Check-in
+activate CCV
+CCV -> Room : 8: changeStatus("Dang hoat dong")
 activate Room
 Room -> Room : 9: startTimer()
-Room --> Confirm : 10: thanhCong
+Room --> CCV : 10: thanhCong
 deactivate Room
-Confirm --> NV : 11: hienThi("Check-in thanh cong")
-NV -> Confirm : 12: click OK
-deactivate Confirm
-Confirm -> Home : 13: hienThi()
+CCV --> NV : 11: hienThi("Check-in thanh cong")
+deactivate CCV
+
+NV -> CCV : 12: click OK
+activate CCV
+CCV -> Home : 13: hienThi()
+deactivate CCV
 deactivate Home
 @enduml
 ```
@@ -544,60 +609,77 @@ deactivate Home
 
 ```plantuml
 @startuml
+skinparam shadowing false
+skinparam SequenceMessageAlign left
+skinparam SequenceArrowThickness 2
+skinparam ParticipantBackgroundColor #7AD2FF
+skinparam ParticipantBorderColor black
+skinparam BoundaryBackgroundColor #7AD2FF
+skinparam BoundaryBorderColor black
+skinparam EntityBackgroundColor #7AD2FF
+skinparam EntityBorderColor black
+
 title Check-out – Tuần tự Phân tích
 
 actor "Nhan vien le tan" as NV
 participant "ReceptionistHomeView\n<<Boundary>>" as Home
-participant "CheckOutView\n<<Boundary>>" as CheckOut
-participant "InvoiceView\n<<Boundary>>" as Invoice
-participant "PaymentView\n<<Boundary>>" as Payment
-entity "Room\n<<Entity>>" as Room
-entity "Room_receipt\n<<Entity>>" as RR
-entity "Customer\n<<Entity>>" as Cust
-entity "Promotion\n<<Entity>>" as Promo
+participant "CheckOutView\n<<Boundary>>" as COV
+participant "InvoiceView\n<<Boundary>>" as IV
+participant "PaymentView\n<<Boundary>>" as PV
+participant "Room\n<<Entity>>" as Room
+participant "Room_receipt\n<<Entity>>" as RR
+participant "Customer\n<<Entity>>" as Cust
+participant "Promotion\n<<Entity>>" as Promo
 
 NV -> Home : 1: click "Check-out"
 activate Home
-Home -> CheckOut : 2: hienThiDanhSach()
-activate CheckOut
-CheckOut --> NV : 3: hien thi danh sach phong "Dang hoat dong"
-NV -> CheckOut : 4: chonPhong(roomID)
-deactivate CheckOut
-CheckOut -> Invoice : 5: tinhHoaDon(roomID)
-activate Invoice
-Invoice -> RR : 6: tinhTien()
+Home -> COV : 2: hienThiDanhSach()
+activate COV
+COV --> NV : 3: hien thi danh sach phong "Dang hoat dong"
+deactivate COV
+
+NV -> COV : 4: chonPhong(roomID)
+activate COV
+COV -> IV : 5: tinhHoaDon(roomID)
+activate IV
+IV -> RR : 6: tinhTien()
 activate RR
-RR --> Invoice : 7: room_receipt
+RR --> IV : 7: room_receipt
 deactivate RR
-Invoice -> Cust : 8: checkMember()
+IV -> Cust : 8: checkMember()
 activate Cust
-Cust --> Invoice : 9: thongTinKH + memberRanking
+Cust --> IV : 9: thongTinKH + memberRanking
 deactivate Cust
-Invoice -> Promo : 10: applyPromotion(room_receipt_ID)
+IV -> Promo : 10: applyPromotion(room_receipt_ID)
 activate Promo
-Promo --> Invoice : 11: discount
+Promo --> IV : 11: discount
 deactivate Promo
-Invoice --> NV : 12: hienThiHoaDon(room_receipt, discount)
-NV -> Invoice : 13: chonPhuongThuc("Tien mat") + click Xac nhan
-deactivate Invoice
-Invoice -> Payment : 14: xuLyThanhToan(room_receipt_ID, paymentMethod)
-activate Payment
-Payment -> RR : 15: updateStatus("Da thanh toan")
+IV --> NV : 12: hienThiHoaDon(room_receipt, discount)
+deactivate IV
+
+NV -> IV : 13: chonPhuongThuc("Tien mat") + click Xac nhan
+activate IV
+IV -> PV : 14: xuLyThanhToan(room_receipt_ID, paymentMethod)
+activate PV
+PV -> RR : 15: updateStatus("Da thanh toan")
 activate RR
-RR --> Payment : 16: thanhCong
+RR --> PV : 16: thanhCong
 deactivate RR
-Payment -> Room : 17: changeStatus("Trong")
+PV -> Room : 17: changeStatus("Trong")
 activate Room
-Room --> Payment : 18: thanhCong
+Room --> PV : 18: thanhCong
 deactivate Room
-Payment -> Cust : 19: addPoints(base_score)
+PV -> Cust : 19: addPoints(base_score)
 activate Cust
-Cust --> Payment : 20: thanhCong
+Cust --> PV : 20: thanhCong
 deactivate Cust
-Payment --> NV : 21: hienThi("Check-out thanh cong")
-NV -> Payment : 22: click In hoa don
-Payment --> NV : 23: hoaDonIn
-deactivate Payment
+PV --> NV : 21: hienThi("Check-out thanh cong")
+deactivate PV
+
+NV -> PV : 22: click In hoa don
+activate PV
+PV --> NV : 23: hoaDonIn
+deactivate PV
 deactivate Home
 @enduml
 ```
