@@ -95,86 +95,116 @@ User gắn composition với OTP: một OTP không tồn tại độc lập nế
 
 ### 3. Biểu đồ lớp phân tích
 
-**Kiến trúc chọn: React** ( Boundary class dùng hậu tố Page. Controller xử lý nghiệp vụ. Method names tiếng Việt ở pha phân tích )
+**Kiến trúc chọn: React** ( Boundary class dùng hậu tố View. Method names tiếng Việt ở pha phân tích, đặt trên Entity. )
 
 **Bước 1 – Lớp Boundary từ giao diện**
 
 | Giao diện | Lớp Boundary | Loại |
 |-----------|-------------|------|
-| Màn hình Đăng nhập | LoginPage | Page |
-| Màn hình Đăng ký | RegisterPage | Page |
-| Màn hình Xác nhận OTP | OTPVerifyPage | Page |
-| Màn hình Đổi mật khẩu | ChangePasswordPage | Page |
-| Trang Hồ sơ cá nhân | ProfilePage | Page |
-| Trang Quản lý nhân viên | StaffManagePage | Page |
+| Màn hình Đăng nhập | LoginView | View |
+| Màn hình Đăng ký | RegisterView | View |
+| Màn hình Xác nhận OTP | OTPVerifyView | View |
+| Màn hình Đổi mật khẩu | ChangePasswordView | View |
+| Trang Hồ sơ cá nhân | ProfileView | View |
+| Trang Quản lý nhân viên | StaffManageView | View |
 
 **Bước 2 – Phân loại thành phần giao diện**
 
-LoginPage: inSDT, inMatKhau, subDangNhap, subQuenMatKhau, subDangKy
-RegisterPage: inHoTen, inSDT, inEmail, inMatKhau, inXacNhanMK, subTiepTuc, subHuy
-OTPVerifyPage: inOTP, subXacNhan, subGuiLai
-ChangePasswordPage: inMKHienTai, inMKMoi, inXacNhanMKMoi, subLuu, subHuy
-ProfilePage: outHoTen, outSDT, outEmail, outHang, outDiem, subChinhSua, subDoiMK
-StaffManagePage: outDSEmployee, outsubChonNV, subThem, subSua, subXoa
+LoginView: txtSDT, txtMatKhau, btnDangNhap, btnQuenMatKhau, btnDangKy
+RegisterView: txtHoTen, txtSDT, txtEmail, txtMatKhau, txtXacNhanMK, btnTiepTuc, btnHuy
+OTPVerifyView: txtOTP, btnXacNhan, btnGuiLai
+ChangePasswordView: txtMKHienTai, txtMKMoi, txtXacNhanMKMoi, btnLuu, btnHuy
+ProfileView: lblHoTen, lblSDT, lblEmail, lblHang, lblDiem, btnChinhSua, btnDoiMK
+StaffManageView: tblEmployee, btnChonNV, btnThem, btnSua, btnXoa
 
 **Bước 3 – Phương thức cho mỗi chức năng**
 
-[1]. Giao diện LoginPage → lớp LoginPage
-Phương thức: `dangNhap()` ← tên tiếng Việt, ngôn ngữ tự nhiên
+[1]. Giao diện LoginView → lớp LoginView
+Phân tích chi tiết chức năng Đăng nhập:
+Người dùng nhập SĐT, Mật khẩu và nhấn [Đăng nhập] -> hệ thống xác thực thông tin -> đề xuất lớp LoginView, có txtSDT, txtMatKhau, btnDangNhap.
+Người dùng nhấn [Đăng nhập] -> hệ thống cần xác thực tài khoản -> cần chức năng `dangNhap(sdt, matKhau)` của đối tượng User.
+Phương thức: `dangNhap(sdt, matKhau)` ← tên tiếng Việt, ngôn ngữ tự nhiên
 Input: sdt, matKhau
 Output: Session (token, vaiTro)
 Lớp chủ thể: User
 
-[2]. Giao diện RegisterPage → lớp RegisterPage
-Phương thức: `dangKy()`
+[2]. Giao diện RegisterView → lớp RegisterView
+Phân tích chi tiết chức năng Đăng ký:
+Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK và nhấn [Tiếp tục] -> hệ thống hiển thị form đăng ký -> đề xuất lớp RegisterView, có txtHoTen, txtSDT, txtEmail, txtMatKhau, txtXacNhanMK, btnTiepTuc.
+Người dùng nhấn [Tiếp tục] -> hệ thống cần tạo tài khoản mới -> cần chức năng `dangKy(hoTen, sdt, email, matKhau)` của đối tượng User.
+Phương thức: `dangKy(hoTen, sdt, email, matKhau)`
 Input: hoTen, sdt, email, matKhau
 Output: User (vừa tạo)
 Lớp chủ thể: User
 
-[3]. Giao diện OTPVerifyPage → lớp OTPVerifyPage
-Phương thức: `xacMinhOTP()`
+[3]. Giao diện OTPVerifyView → lớp OTPVerifyView
+Phân tích chi tiết chức năng Xác nhận OTP:
+Người dùng nhập mã OTP và nhấn [Xác nhận] -> hệ thống hiển thị form OTP -> đề xuất lớp OTPVerifyView, có txtOTP, btnXacNhan, btnGuiLai.
+Người dùng nhấn [Xác nhận] -> hệ thống cần xác minh mã OTP -> cần chức năng `xacMinhOTP(maOTP)` của đối tượng OTP.
+Phương thức: `xacMinhOTP(maOTP)`
 Input: maOTP
 Output: boolean (đúng/sai)
 Lớp chủ thể: OTP
 
-[4]. Giao diện ChangePasswordPage → lớp ChangePasswordPage
-Phương thức: `doiMatKhau()`
+[4]. Giao diện ChangePasswordView → lớp ChangePasswordView
+Phân tích chi tiết chức năng Đổi mật khẩu:
+Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới và nhấn [Lưu] -> hệ thống hiển thị form đổi mật khẩu -> đề xuất lớp ChangePasswordView, có txtMKHienTai, txtMKMoi, txtXacNhanMKMoi, btnLuu.
+Người dùng nhấn [Lưu] -> hệ thống cần đổi mật khẩu -> cần chức năng `doiMatKhau(mkHienTai, mkMoi)` của đối tượng User.
+Phương thức: `doiMatKhau(mkHienTai, mkMoi)`
 Input: mkHienTai, mkMoi
 Output: boolean (thành công/thất bại)
 Lớp chủ thể: User
 
-[5]. Giao diện ProfilePage → lớp ProfilePage
-Phương thức: `xemHoSo()`
+[5]. Giao diện ProfileView → lớp ProfileView
+Phân tích chi tiết chức năng Xem hồ sơ:
+Người dùng nhấn vào ảnh đại diện -> hệ thống hiển thị thông tin cá nhân -> đề xuất lớp ProfileView, có lblHoTen, lblSDT, lblEmail, lblHang, lblDiem.
+Hệ thống cần lấy thông tin hồ sơ -> cần chức năng `xemHoSo(userId)` của đối tượng User.
+Phương thức: `xemHoSo(userId)`
 Input: userId
 Output: User (thông tin hồ sơ)
 Lớp chủ thể: User
 
-[6]. Giao diện ProfilePage → lớp ProfilePage
-Phương thức: `capNhatHoSo()`
+[6]. Giao diện ProfileView → lớp ProfileView
+Phân tích chi tiết chức năng Cập nhật hồ sơ:
+Người dùng chỉnh sửa họ tên, email và nhấn [Lưu] -> hệ thống cập nhật thông tin -> đề xuất lớp ProfileView, có btnChinhSua, btnLuu.
+Người dùng nhấn [Lưu] -> hệ thống cần cập nhật hồ sơ -> cần chức năng `capNhatHoSo(userId, hoTen, email)` của đối tượng User.
+Phương thức: `capNhatHoSo(userId, hoTen, email)`
 Input: userId, hoTen, email
 Output: User (đã cập nhật)
 Lớp chủ thể: User
 
-[7]. Giao diện StaffManagePage → lớp StaffManagePage
+[7]. Giao diện StaffManageView → lớp StaffManageView
+Phân tích chi tiết chức năng Xem danh sách nhân viên:
+Admin truy cập "Quản lý nhân viên" -> hệ thống hiển thị bảng danh sách nhân viên -> đề xuất lớp StaffManageView, có tblEmployee, btnThem, btnSua, btnXoa.
+Hệ thống cần tải danh sách nhân viên -> cần chức năng `xemDanhSachNV()` của đối tượng Employee.
 Phương thức: `xemDanhSachNV()`
 Input: (không có — tải toàn bộ)
 Output: List\<Employee\>
 Lớp chủ thể: Employee
 
-[8]. Giao diện StaffManagePage → lớp StaffManagePage
-Phương thức: `themNV()`
+[8]. Giao diện StaffManageView → lớp StaffManageView
+Phân tích chi tiết chức năng Thêm nhân viên:
+Admin nhấn [Thêm], nhập thông tin và nhấn [Lưu] -> hệ thống tạo tài khoản nhân viên mới -> đề xuất lớp StaffManageView, có btnThem, txtHoTen, txtVaiTro.
+Admin nhấn [Lưu] -> hệ thống cần tạo nhân viên mới -> cần chức năng `themNV(hoTen, vaiTro)` của đối tượng Employee.
+Phương thức: `themNV(hoTen, vaiTro)`
 Input: hoTen, vaiTro
 Output: Employee (vừa tạo)
 Lớp chủ thể: Employee
 
-[9]. Giao diện StaffManagePage → lớp StaffManagePage
-Phương thức: `suaNV()`
+[9]. Giao diện StaffManageView → lớp StaffManageView
+Phân tích chi tiết chức năng Sửa nhân viên:
+Admin chọn nhân viên, chỉnh sửa thông tin và nhấn [Lưu] -> hệ thống cập nhật thông tin nhân viên -> đề xuất lớp StaffManageView, có btnSua, btnChonNV.
+Admin nhấn [Lưu] -> hệ thống cần cập nhật nhân viên -> cần chức năng `suaNV(id, hoTen, vaiTro)` của đối tượng Employee.
+Phương thức: `suaNV(id, hoTen, vaiTro)`
 Input: id, hoTen, vaiTro
 Output: Employee (đã cập nhật)
 Lớp chủ thể: Employee
 
-[10]. Giao diện StaffManagePage → lớp StaffManagePage
-Phương thức: `xoaNV()`
+[10]. Giao diện StaffManageView → lớp StaffManageView
+Phân tích chi tiết chức năng Xóa nhân viên:
+Admin chọn nhân viên và nhấn [Xóa] -> hệ thống chuyển trạng thái "Đã nghỉ" -> đề xuất lớp StaffManageView, có btnXoa, btnChonNV.
+Admin nhấn [Xóa] -> hệ thống cần xóa nhân viên -> cần chức năng `xoaNV(id)` của đối tượng Employee.
+Phương thức: `xoaNV(id)`
 Input: id
 Output: boolean (thành công/thất bại)
 Lớp chủ thể: Employee
@@ -190,34 +220,29 @@ Lớp chủ thể: Employee
 title Đăng nhập – Tuần tự Phân tích
 
 actor "Khách hàng" as KH
-participant "LoginPage\n<<Boundary>>" as B1
-participant "AuthController\n<<Control>>" as C1
+participant "LoginView\n<<Boundary>>" as B1
 entity "User\n<<Entity>>" as E1
 
 KH -> B1 : 1: truy cập màn hình Đăng nhập
 activate B1
 B1 --> KH : 2: hiển thị form đăng nhập
 KH -> B1 : 3: nhập SĐT + Mật khẩu + nhấn [Đăng nhập]
-B1 -> C1 : 4: dangNhap(sdt, matKhau)
-activate C1
-C1 -> E1 : 5: timTheoSDT(sdt)
+B1 -> E1 : 4: dangNhap(sdt, matKhau)
 activate E1
-E1 --> C1 : 6: User
+E1 -> E1 : 5: timTheoSDT(sdt)
+E1 -> E1 : 6: kiemTraMatKhau(matKhau, hash)
+E1 --> B1 : 7: trả về User + Session
 deactivate E1
-C1 -> C1 : 7: kiemTraMatKhau(matKhau, hash)
-C1 --> B1 : 8: trả về User + Session
-deactivate C1
-B1 --> KH : 9: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
+B1 --> KH : 8: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
 deactivate B1
 
 alt Ngoại lệ: tài khoản không tồn tại
-  E1 --> C1 : trả về null
-  C1 --> B1 : trả về null
+  E1 --> B1 : trả về null
   B1 --> KH : hiển thị "Tài khoản không tồn tại"
 end
 
 alt Ngoại lệ: mật khẩu sai
-  C1 --> B1 : trả về sai mật khẩu
+  E1 --> B1 : trả về sai mật khẩu
   B1 --> KH : hiển thị "Mật khẩu không chính xác. Còn [N] lần thử"
 end
 @enduml
@@ -226,24 +251,22 @@ end
 **Kịch bản phiên bản 2 – UC01 Đăng nhập**
 
 1. Khách hàng truy cập URL hệ thống để mở màn hình Đăng nhập.
-2. Lớp LoginPage hiển thị form gồm ô nhập SĐT/Email, ô nhập Mật khẩu, nút [Đăng nhập], liên kết "Quên mật khẩu?" / "Đăng ký".
+2. Lớp LoginView hiển thị form gồm ô nhập SĐT/Email, ô nhập Mật khẩu, nút [Đăng nhập], liên kết "Quên mật khẩu?" / "Đăng ký".
 3. Khách hàng nhập SĐT = "0912345678" và Mật khẩu = "Abc@1234".
 4. Khách hàng nhấn nút [Đăng nhập].
-5. Lớp LoginPage gọi phương thức `dangNhap()` của AuthController với tham số sdt, matKhau.
-6. AuthController gọi phương thức `findBySDT()` của User để tìm tài khoản theo SĐT.
-7. User trả về đối tượng User cho AuthController.
-8. AuthController gọi `checkPassword()` để so sánh mật khẩu.
-9. AuthController trả kết quả về cho LoginPage.
-10. Lớp LoginPage hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
+5. Lớp LoginView gọi phương thức `dangNhap(sdt, matKhau)` của User.
+6. User tìm tài khoản theo SĐT bằng `timTheoSDT(sdt)`.
+7. User so sánh mật khẩu bằng `kiemTraMatKhau(matKhau, hash)`.
+8. User trả kết quả về cho LoginView.
+9. Lớp LoginView hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!" và chuyển hướng trang chủ.
 
 **Ngoại lệ: tài khoản không tồn tại**
 - User trả về null (không tìm thấy tài khoản).
-- AuthController trả về null cho LoginPage.
-- LoginPage hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
+- LoginView hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
 
 **Ngoại lệ: mật khẩu sai**
-- AuthController trả về sai mật khẩu cho LoginPage.
-- LoginPage hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
+- User trả về sai mật khẩu cho LoginView.
+- LoginView hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
 
 #### UC02 – Đăng ký
 
@@ -252,9 +275,8 @@ end
 title Đăng ký – Tuần tự Phân tích
 
 actor "Khách hàng" as KH
-participant "RegisterPage\n<<Boundary>>" as B1
-participant "OTPVerifyPage\n<<Boundary>>" as B2
-participant "AuthController\n<<Control>>" as C1
+participant "RegisterView\n<<Boundary>>" as B1
+participant "OTPVerifyView\n<<Boundary>>" as B2
 entity "User\n<<Entity>>" as E1
 entity "OTP\n<<Entity>>" as E2
 
@@ -262,44 +284,31 @@ KH -> B1 : 1: nhấn "Đăng ký"
 activate B1
 B1 --> KH : 2: hiển thị form đăng ký
 KH -> B1 : 3: nhập thông tin + nhấn [Tiếp tục]
-B1 -> C1 : 4: dangKy(hoTen, sdt, email, matKhau)
-activate C1
-C1 -> E1 : 5: existsBySDT(sdt)
+B1 -> E1 : 4: dangKy(hoTen, sdt, email, matKhau)
 activate E1
-E1 --> C1 : 6: true/false
-deactivate E1
-C1 -> E1 : 7: existsByEmail(email)
-activate E1
-E1 --> C1 : 8: true/false
-deactivate E1
-C1 -> E1 : 9: createUser()
-activate E1
-E1 --> C1 : 10: User
-deactivate E1
-C1 -> E2 : 11: guiOTP(sdt, DANG_KY)
+E1 -> E1 : 5: existsBySDT(sdt)
+E1 -> E1 : 6: existsByEmail(email)
+E1 -> E2 : 7: guiOTP(sdt, DANG_KY)
 activate E2
-E2 --> C1 : 12: OTP đã gửi
+E2 --> E1 : 8: OTP đã gửi
 deactivate E2
-C1 --> B1 : 13: trả về User
-deactivate C1
-B1 --> KH : 14: hiển thị form xác nhận OTP
+E1 --> B1 : 9: trả về User
+deactivate E1
+B1 --> KH : 10: hiển thị form xác nhận OTP
 deactivate B1
 
-KH -> B2 : 15: nhập OTP = "482917"
+KH -> B2 : 11: nhập OTP = "482917"
 activate B2
-B2 -> C1 : 16: xacMinhOTP(otp)
-activate C1
-C1 -> E2 : 17: verify(otp)
+B2 -> E2 : 12: xacMinhOTP(otp)
 activate E2
-E2 --> C1 : 18: true
+E2 -> E2 : 13: verify(otp)
+E2 --> B2 : 14: true
 deactivate E2
-C1 -> E1 : 19: luuTaiKhoan()
+B2 -> E1 : 15: luuTaiKhoan()
 activate E1
-E1 --> C1 : 20: thanh cong
+E1 --> B2 : 16: thanh cong
 deactivate E1
-C1 --> B2 : 21: thanh cong
-deactivate C1
-B2 --> KH : 22: "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
+B2 --> KH : 17: "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
 deactivate B2
 @enduml
 ```
@@ -307,29 +316,28 @@ deactivate B2
 **Kịch bản phiên bản 2 – UC02 Đăng ký**
 
 1. Khách hàng nhấn liên kết "Đăng ký" từ màn hình đăng nhập.
-2. Lớp RegisterPage hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
+2. Lớp RegisterView hiển thị form gồm: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.
 3. Khách hàng nhập: Họ tên = "Nguyễn Thị Bình", SĐT = "0987654321", Email = "binh.nt@email.com", MK = "Pass@2025".
 4. Khách hàng nhấn [Tiếp tục].
-5. RegisterPage gọi `dangKy()` của AuthController với các tham số hoTen, sdt, email, matKhau.
-6. AuthController gọi `existsBySDT()` của User để kiểm tra SĐT chưa tồn tại.
-7. AuthController gọi `existsByEmail()` của User để kiểm tra email chưa tồn tại.
-8. AuthController gọi `createUser()` để tạo tài khoản mới.
-9. AuthController gọi `guiOTP()` để gửi OTP đến SĐT.
-10. AuthController trả kết quả về RegisterPage.
-11. RegisterPage hiển thị form xác nhận OTP.
-12. Khách hàng nhập OTP = "482917" và nhấn [Xác nhận].
-13. OTPVerifyPage gọi `xacMinhOTP(otp)` của AuthController.
-14. AuthController gọi `verify()` của OTP để kiểm tra OTP đúng và còn hiệu lực.
-15. AuthController gọi `luuTaiKhoan()` để hoàn tất đăng ký.
-16. Hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
+5. RegisterView gọi `dangKy(hoTen, sdt, email, matKhau)` của User.
+6. User kiểm tra SĐT chưa tồn tại bằng `existsBySDT(sdt)`.
+7. User kiểm tra email chưa tồn tại bằng `existsByEmail(email)`.
+8. User gọi `guiOTP(sdt, DANG_KY)` của OTP để gửi mã xác minh.
+9. User trả kết quả về RegisterView.
+10. RegisterView hiển thị form xác nhận OTP.
+11. Khách hàng nhập OTP = "482917" và nhấn [Xác nhận].
+12. OTPVerifyView gọi `xacMinhOTP(otp)` của OTP.
+13. OTP kiểm tra mã đúng và còn hiệu lực bằng `verify(otp)`.
+14. OTPVerifyView gọi `luuTaiKhoan()` của User để hoàn tất đăng ký.
+15. Hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình."
 
 **Ngoại lệ: SĐT đã tồn tại**
-- AuthController nhận false từ `existsBySDT()`.
-- RegisterPage hiển thị "SĐT này đã được sử dụng."
+- User trả về false từ `existsBySDT()`.
+- RegisterView hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: OTP sai**
-- AuthController nhận false từ `verify()`.
-- OTPVerifyPage hiển thị "Mã OTP không đúng. Vui lòng thử lại."
+- OTP trả về false từ `verify()`.
+- OTPVerifyView hiển thị "Mã OTP không đúng. Vui lòng thử lại."
 
 #### UC03 – Đổi mật khẩu
 
@@ -337,34 +345,24 @@ deactivate B2
 @startuml
 title Đổi mật khẩu – Tuần tự Phân tích
 
-actor "Người dùng" as User
-participant "ChangePasswordPage\n<<Boundary>>" as B1
-participant "AuthController\n<<Control>>" as C1
+actor "Người dùng" as ND
+participant "ChangePasswordView\n<<Boundary>>" as B1
 entity "User\n<<Entity>>" as E1
 
-User -> B1 : 1: truy cập "Bảo mật"
+ND -> B1 : 1: truy cập "Bảo mật"
 activate B1
-B1 --> User : 2: hiển thị form đổi mật khẩu
-User -> B1 : 3: nhập MK hiện tại, MK mới + nhấn [Lưu]
-B1 -> C1 : 4: doiMatKhau(mkHienTai, mkMoi)
-activate C1
-C1 -> E1 : 5: findByToken(session)
+B1 --> ND : 2: hiển thị form đổi mật khẩu
+ND -> B1 : 3: nhập MK hiện tại, MK mới + nhấn [Lưu]
+B1 -> E1 : 4: doiMatKhau(mkHienTai, mkMoi)
 activate E1
-E1 --> C1 : 6: User
+E1 -> E1 : 5: findByToken(session)
+E1 -> E1 : 6: checkPassword(mkHienTai, hash)
+E1 -> E1 : 7: hashPassword(mkMoi)
+E1 -> E1 : 8: updatePassword(hash)
+E1 -> E1 : 9: revokeAllSessions()
+E1 --> B1 : 10: thanh cong
 deactivate E1
-C1 -> C1 : 7: checkPassword(mkHienTai, hash)
-C1 -> C1 : 8: hashPassword(mkMoi)
-C1 -> E1 : 9: updatePassword(hash)
-activate E1
-E1 --> C1 : 10: thanh cong
-deactivate E1
-C1 -> E1 : 11: revokeAllSessions()
-activate E1
-E1 --> C1 : 12: thanh cong
-deactivate E1
-C1 --> B1 : 13: thanh cong
-deactivate C1
-B1 --> User : 14: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
+B1 --> ND : 11: "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
 deactivate B1
 @enduml
 ```
@@ -372,24 +370,24 @@ deactivate B1
 **Kịch bản phiên bản 2 – UC03 Đổi mật khẩu**
 
 1. Người dùng truy cập mục "Bảo mật" trong cài đặt tài khoản.
-2. Lớp ChangePasswordPage hiển thị form: MK hiện tại, MK mới, Xác nhận MK mới.
+2. Lớp ChangePasswordView hiển thị form: MK hiện tại, MK mới, Xác nhận MK mới.
 3. Người dùng nhập: MK hiện tại = "Abc@1234", MK mới = "NewPass@2025", xác nhận = "NewPass@2025".
 4. Người dùng nhấn [Lưu thay đổi].
-5. ChangePasswordPage gọi `doiMatKhau()` của AuthController với mkHienTai, mkMoi.
-6. AuthController gọi `findByToken()` của User để lấy thông tin người dùng.
-7. AuthController xác minh MK hiện tại khớp CSDL bằng `checkPassword()`.
-8. AuthController mã hóa MK mới bằng `hashPassword()`.
-9. AuthController gọi `updatePassword()` của User để cập nhật mật khẩu.
-10. AuthController gọi `revokeAllSessions()` để thu hồi tất cả session.
-11. ChangePasswordPage hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
+5. ChangePasswordView gọi `doiMatKhau(mkHienTai, mkMoi)` của User.
+6. User tìm thông tin người dùng bằng `findByToken(session)`.
+7. User xác minh MK hiện tại khớp CSDL bằng `checkPassword(mkHienTai, hash)`.
+8. User mã hóa MK mới bằng `hashPassword(mkMoi)`.
+9. User cập nhật mật khẩu bằng `updatePassword(hash)`.
+10. User thu hồi tất cả session bằng `revokeAllSessions()`.
+11. ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
 
 **Ngoại lệ: MK hiện tại sai**
-- AuthController nhận false từ `checkPassword()`.
-- ChangePasswordPage hiển thị "Mật khẩu hiện tại không chính xác."
+- User trả về false từ `checkPassword()`.
+- ChangePasswordView hiển thị "Mật khẩu hiện tại không chính xác."
 
 **Ngoại lệ: MK mới không đủ mạnh**
-- AuthController trả về lỗi validation.
-- ChangePasswordPage highlight ô và hiển thị yêu cầu còn thiếu.
+- User trả về lỗi validation.
+- ChangePasswordView highlight ô và hiển thị yêu cầu còn thiếu.
 
 #### UC04 – Quản lý thông tin cá nhân
 
@@ -398,35 +396,25 @@ deactivate B1
 title Quản lý TTCN – Tuần tự Phân tích
 
 actor "Khách hàng" as KH
-participant "ProfilePage\n<<Boundary>>" as B1
-participant "ProfileController\n<<Control>>" as C1
+participant "ProfileView\n<<Boundary>>" as B1
 entity "User\n<<Entity>>" as E1
 
 KH -> B1 : 1: nhấn vào ảnh đại diện
 activate B1
-B1 -> C1 : 2: xemHoSo(userId)
-activate C1
-C1 -> E1 : 3: findById(userId)
+B1 -> E1 : 2: xemHoSo(userId)
 activate E1
-E1 --> C1 : 4: User
+E1 -> E1 : 3: findById(userId)
+E1 --> B1 : 4: User
 deactivate E1
-C1 --> B1 : 5: trả về User
-deactivate C1
-B1 --> KH : 6: hiển thị hồ sơ cá nhân
-KH -> B1 : 7: nhấn [Chỉnh sửa thông tin] + cập nhật + nhấn [Lưu]
-B1 -> C1 : 8: capNhatHoSo(userId, hoTen, email)
-activate C1
-C1 -> E1 : 9: checkEmail(email)
+B1 --> KH : 5: hiển thị hồ sơ cá nhân
+KH -> B1 : 6: nhấn [Chỉnh sửa thông tin] + cập nhật + nhấn [Lưu]
+B1 -> E1 : 7: capNhatHoSo(userId, hoTen, email)
 activate E1
-E1 --> C1 : 10: true/false
+E1 -> E1 : 8: checkEmail(email)
+E1 -> E1 : 9: update()
+E1 --> B1 : 10: thanh cong
 deactivate E1
-C1 -> E1 : 11: update()
-activate E1
-E1 --> C1 : 12: thanh cong
-deactivate E1
-C1 --> B1 : 13: thanh cong
-deactivate C1
-B1 --> KH : 14: "Cập nhật thành công!"
+B1 --> KH : 11: "Cập nhật thành công!"
 deactivate B1
 @enduml
 ```
@@ -434,20 +422,19 @@ deactivate B1
 **Kịch bản phiên bản 2 – UC04 Quản lý TTCN**
 
 1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản ở góc trên phải.
-2. ProfilePage gọi `xemHoSo(userId)` của ProfileController.
-3. ProfileController gọi `findById(userId)` của User.
-4. User trả về đối tượng User cho ProfileController.
-5. ProfileController trả kết quả về ProfilePage.
-6. ProfilePage hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
-7. Khách hàng nhấn [Chỉnh sửa thông tin], cập nhật họ tên và email, nhấn [Lưu].
-8. ProfilePage gọi `capNhatHoSo()` của ProfileController với userId, hoTen, email.
-9. ProfileController gọi `checkEmail()` của User để kiểm tra email hợp lệ.
-10. ProfileController gọi `update()` của User để cập nhật.
-11. ProfilePage hiển thị "Cập nhật thành công!"
+2. ProfileView gọi `xemHoSo(userId)` của User.
+3. User tìm thông tin bằng `findById(userId)`.
+4. User trả về đối tượng User cho ProfileView.
+5. ProfileView hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy.
+6. Khách hàng nhấn [Chỉnh sửa thông tin], cập nhật họ tên và email, nhấn [Lưu].
+7. ProfileView gọi `capNhatHoSo(userId, hoTen, email)` của User.
+8. User kiểm tra email hợp lệ bằng `checkEmail(email)`.
+9. User cập nhật thông tin bằng `update()`.
+10. ProfileView hiển thị "Cập nhật thành công!"
 
 **Ngoại lệ: Email đã được dùng**
 - User trả về false từ `checkEmail()`.
-- ProfilePage hiển thị "Email này đã được đăng ký bởi tài khoản khác."
+- ProfileView hiển thị "Email này đã được đăng ký bởi tài khoản khác."
 
 #### UC20 – Quản lý tài khoản nhân viên
 
@@ -456,32 +443,25 @@ deactivate B1
 title Quản lý tài khoản nhân viên – Tuần tự Phân tích
 
 actor "Admin" as Admin
-participant "StaffManagePage\n<<Boundary>>" as B1
-participant "StaffController\n<<Control>>" as C1
+participant "StaffManageView\n<<Boundary>>" as B1
 entity "Employee\n<<Entity>>" as E1
 
 Admin -> B1 : 1: truy cập "Quản lý nhân viên"
 activate B1
-B1 -> C1 : 2: xemDanhSachNV()
-activate C1
-C1 -> E1 : 3: findAll()
+B1 -> E1 : 2: xemDanhSachNV()
 activate E1
-E1 --> C1 : 4: List Employee
+E1 -> E1 : 3: findAll()
+E1 --> B1 : 4: List Employee
 deactivate E1
-C1 --> B1 : 5: List Employee
-deactivate C1
-B1 --> Admin : 6: hiển thị danh sách nhân viên
+B1 --> Admin : 5: hiển thị danh sách nhân viên
 
-Admin -> B1 : 7: nhấn [Thêm nhân viên] + nhập thông tin + nhấn [Lưu]
-B1 -> C1 : 8: themNV(hoTen, vaiTro)
-activate C1
-C1 -> E1 : 9: save()
+Admin -> B1 : 6: nhấn [Thêm nhân viên] + nhập thông tin + nhấn [Lưu]
+B1 -> E1 : 7: themNV(hoTen, vaiTro)
 activate E1
-E1 --> C1 : 10: Employee vừa tạo
+E1 -> E1 : 8: save()
+E1 --> B1 : 9: Employee vừa tạo
 deactivate E1
-C1 --> B1 : 11: Employee vừa tạo
-deactivate C1
-B1 --> Admin : 12: "Thêm nhân viên thành công!"
+B1 --> Admin : 10: "Thêm nhân viên thành công!"
 deactivate B1
 @enduml
 ```
@@ -489,20 +469,19 @@ deactivate B1
 **Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên**
 
 1. Admin truy cập "Quản lý nhân viên" từ trang quản trị.
-2. StaffManagePage gọi `xemDanhSachNV()` của StaffController.
-3. StaffController gọi `findAll()` của Employee.
-4. Employee trả về danh sách nhân viên cho StaffController.
-5. StaffController trả kết quả về StaffManagePage.
-6. StaffManagePage hiển thị bảng: họ tên, vai trò, trạng thái.
-7. Admin nhấn [Thêm nhân viên], nhập thông tin, nhấn [Lưu].
-8. StaffManagePage gọi `themNV(hoTen, vaiTro)` của StaffController.
-9. StaffController gọi `save()` của Employee.
-10. StaffManagePage hiển thị "Thêm nhân viên thành công!"
+2. StaffManageView gọi `xemDanhSachNV()` của Employee.
+3. Employee tải danh sách bằng `findAll()`.
+4. Employee trả về danh sách nhân viên cho StaffManageView.
+5. StaffManageView hiển thị bảng: họ tên, vai trò, trạng thái.
+6. Admin nhấn [Thêm nhân viên], nhập thông tin, nhấn [Lưu].
+7. StaffManageView gọi `themNV(hoTen, vaiTro)` của Employee.
+8. Employee lưu bằng `save()`.
+9. StaffManageView hiển thị "Thêm nhân viên thành công!"
 
 **Ngoại lệ: SĐT đã tồn tại**
-- StaffController nhận lỗi từ Employee.
-- StaffManagePage hiển thị "SĐT này đã được sử dụng."
+- Employee trả về lỗi trùng SĐT.
+- StaffManageView hiển thị "SĐT này đã được sử dụng."
 
 **Ngoại lệ: Nhân viên đang xử lý order**
-- StaffController nhận lỗi từ Employee.
-- StaffManagePage hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
+- Employee trả về lỗi không thể xóa.
+- StaffManageView hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
