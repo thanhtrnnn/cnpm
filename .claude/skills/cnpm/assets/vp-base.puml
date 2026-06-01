@@ -1,7 +1,8 @@
 ' VP Base Theme v2 — matches Visual Paradigm default styling
 ' Font: Arial, 10pt
-' Sequence: #7AD2FF blue, dashed lifelines, transparent actor
+' Sequence: #7AD2FF blue, transparent actor
 ' UC: #7ACFF5 blue fill
+' NOTE: skinparam overrides CSS <style> — use skinparam only
 
 skinparam linetype ortho
 skinparam defaultFontName "Arial"
@@ -40,52 +41,32 @@ skinparam package {
   BorderColor #000000
 }
 
-skinparam SequenceMessageAlign left
-skinparam SequenceLifeLineBackgroundColor #7AD2FF
-skinparam SequenceLifeLineBorderColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
+skinparam sequence {
+  ArrowColor Black
+  ArrowThickness 1
+  ArrowFontSize 10
+  MessageFontSize 10
+  MessageAlign left
+  ActorBorderColor Black
+  ActorBackgroundColor transparent
+  ParticipantBorderColor Black
+  ParticipantBackgroundColor #7AD2FF
+  ParticipantFontSize 10
+  LifeLineBorderColor Black
+  LifeLineBackgroundColor #7AD2FF
+  LifeLineThickness 1
+  BoundaryBorderColor Black
+  BoundaryBackgroundColor #7AD2FF
+  ControlBorderColor Black
+  ControlBackgroundColor #7AD2FF
+  EntityBorderColor Black
+  EntityBackgroundColor #7AD2FF
+  DividerFontSize 9
+  GroupFontSize 9
+  GroupingBorderColor Black
+  GroupingBackgroundColor #7AD2FF
+  ReferenceBorderColor Black
+  ReferenceBackgroundColor #7AD2FF
 }
-</style>
 
 hide empty members
