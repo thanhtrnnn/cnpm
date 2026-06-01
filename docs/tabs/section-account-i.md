@@ -23,16 +23,18 @@
 | UC cha | UC con | Quan hệ | Lý do |
 |--------|--------|---------|-------|
 | UC01 – Đăng nhập | Nhập thông tin đăng nhập | include | Bắt buộc – luôn phải nhập tài khoản và mật khẩu |
-| UC01 – Đăng nhập | Xác thực thông tin | include | Bắt buộc – hệ thống kiểm tra sau khi nhập |
+| UC01 – Đăng nhập | Xác thực tài khoản | include | Bắt buộc – hệ thống kiểm tra sau khi nhập |
 | UC01 – Đăng nhập | Quên mật khẩu | extend | Khi người dùng nhấn "Quên mật khẩu?" |
-| UC02 – Đăng ký | Điền thông tin | include | Bắt buộc – không thể đăng ký mà không điền thông tin |
+| UC02 – Đăng ký | Điền thông tin đăng ký | include | Bắt buộc – không thể đăng ký mà không điền thông tin |
 | UC02 – Đăng ký | Xác nhận OTP | include | Bắt buộc – xác minh SĐT trước khi tạo tài khoản |
 | UC03 – Đổi mật khẩu | Xác minh mật khẩu cũ | include | Bắt buộc – phải xác minh MK hiện tại trước khi đổi |
+| UC03 – Đổi mật khẩu | Nhập thông tin đổi mật khẩu | include | Bắt buộc – phải nhập MK mới và xác nhận |
 | UC04 – Quản lý TTCN | Xem hồ sơ cá nhân | include | Bắt buộc – hiển thị hồ sơ khi vào trang |
 | UC04 – Quản lý TTCN | Chỉnh sửa thông tin | extend | Chỉ khi người dùng chọn chỉnh sửa |
-| UC04 – Quản lý TTCN | Xem hạng hội viên | extend | Khi người dùng nhấn vào khu vực thẻ hội viên |
 | UC20 – Quản lý NV | Xem danh sách nhân viên | include | Bắt buộc – hiển thị danh sách trước khi thao tác |
-| UC20 – Quản lý NV | Thêm/sửa/xóa nhân viên | extend | Chỉ khi quản lý chọn thao tác |
+| UC20 – Quản lý NV | Thêm nhân viên | extend | Chỉ khi quản lý chọn thêm |
+| UC20 – Quản lý NV | Sửa nhân viên | extend | Chỉ khi quản lý chọn sửa |
+| UC20 – Quản lý NV | Xóa nhân viên | extend | Chỉ khi quản lý chọn xóa |
 
 ### 4. Biểu đồ Use Case tổng quan
 
@@ -55,10 +57,10 @@
 
 | UC chính | Giao diện → UC con |
 |----------|-------------------|
-| UC01 | Form đăng nhập → Nhập thông tin đăng nhập; Xác thực tài khoản |
-| UC02 | Form đăng ký → Điền thông tin đăng ký; Nhập mã OTP; Xác nhận OTP |
-| UC03 | Form đổi MK → Nhập thông tin đổi MK |
-| UC04 | Trang hồ sơ → Xem hồ sơ; Chỉnh sửa thông tin; Xem hạng hội viên |
+| UC01 | Form đăng nhập → Nhập thông tin đăng nhập; Xác thực tài khoản; Quên mật khẩu |
+| UC02 | Form đăng ký → Điền thông tin đăng ký; Xác nhận OTP |
+| UC03 | Form đổi MK → Xác minh mật khẩu cũ; Nhập thông tin đổi mật khẩu |
+| UC04 | Trang hồ sơ → Xem hồ sơ cá nhân; Chỉnh sửa thông tin |
 | UC20 | Trang quản lý NV → Xem danh sách NV; Thêm NV; Sửa NV; Xóa NV |
 
 **Bước 3 – Xác định quan hệ include/extend:**
@@ -69,12 +71,11 @@
 | UC01 | Xác thực tài khoản | include | Bắt buộc – hệ thống kiểm tra sau khi nhập |
 | UC01 | Quên mật khẩu | extend | Chỉ khi nhấn "Quên mật khẩu?" |
 | UC02 | Điền thông tin đăng ký | include | Bắt buộc – không thể đăng ký mà không điền |
-| UC02 | Nhập mã OTP | include | Bắt buộc – hệ thống luôn gửi OTP |
 | UC02 | Xác nhận OTP | include | Bắt buộc – phải xác minh SĐT |
-| UC03 | Nhập thông tin đổi MK | include | Bắt buộc – phải nhập MK cũ + MK mới |
-| UC04 | Xem hồ sơ | include | Bắt buộc – hiển thị khi vào trang |
+| UC03 | Xác minh mật khẩu cũ | include | Bắt buộc – phải verify MK cũ trước khi đổi |
+| UC03 | Nhập thông tin đổi mật khẩu | include | Bắt buộc – phải nhập MK mới + xác nhận |
+| UC04 | Xem hồ sơ cá nhân | include | Bắt buộc – hiển thị khi vào trang |
 | UC04 | Chỉnh sửa thông tin | extend | Chỉ khi chọn chỉnh sửa |
-| UC04 | Xem hạng hội viên | extend | Chỉ khi nhấn vào khu vực thẻ hội viên |
 | UC20 | Xem danh sách NV | include | Bắt buộc – hiển thị trước khi thao tác |
 | UC20 | Thêm NV | extend | Chỉ khi chọn thêm |
 | UC20 | Sửa NV | extend | Chỉ khi chọn sửa |
@@ -110,16 +111,15 @@ package "Module: Tài khoản & Thành viên" {
 
   ' UC02 sub-UCs
   usecase "Điền thông tin\nđăng ký" as UC02_1
-  usecase "Nhập mã OTP" as UC02_2
-  usecase "Xác nhận OTP" as UC02_3
+  usecase "Xác nhận OTP" as UC02_2
 
   ' UC03 sub-UCs
-  usecase "Nhập thông tin\nđổi mật khẩu" as UC03_1
+  usecase "Xác minh\nmật khẩu cũ" as UC03_1
+  usecase "Nhập thông tin\nđổi mật khẩu" as UC03_2
 
   ' UC04 sub-UCs
   usecase "Xem hồ sơ\ncá nhân" as UC04_1
   usecase "Chỉnh sửa\nthông tin" as UC04_2
-  usecase "Xem hạng\nhội viên" as UC04_3
 
   ' UC20 sub-UCs
   usecase "Xem danh sách\nnhân viên" as UC20_1
@@ -135,15 +135,14 @@ package "Module: Tài khoản & Thành viên" {
   ' UC02 relationships
   UC02 .> UC02_1 : <<include>>
   UC02 .> UC02_2 : <<include>>
-  UC02 .> UC02_3 : <<include>>
 
   ' UC03 relationships
   UC03 .> UC03_1 : <<include>>
+  UC03 .> UC03_2 : <<include>>
 
   ' UC04 relationships
   UC04 .> UC04_1 : <<include>>
   UC04_2 .> UC04 : <<extend>>
-  UC04_3 .> UC04 : <<extend>>
 
   ' UC20 relationships
   UC20 .> UC20_1 : <<include>>
@@ -182,19 +181,22 @@ Admin --> UC20
 ### 6. Quy trình nghiệp vụ từng chức năng
 
 Chức năng "Đăng nhập":
-Người dùng cung cấp SĐT/Email và mật khẩu → Hệ thống xác thực thông tin đăng nhập → Hệ thống tạo phiên đăng nhập và chuyển người dùng đến trang chủ tương ứng vai trò
+Người dùng mở trang đăng nhập → Hệ thống hiển thị form nhập SĐT/Email và Mật khẩu → Người dùng nhập thông tin và nhấn Đăng nhập → Hệ thống kiểm tra tài khoản tồn tại trong CSDL → Hệ thống so sánh mật khẩu đã mã hóa → Hệ thống tạo phiên đăng nhập, chuyển người dùng đến trang chủ tương ứng vai trò
+
+Chức năng "Quên mật khẩu":
+Người dùng nhấn liên kết "Quên mật khẩu?" → Hệ thống hiển thị form nhập SĐT → Người dùng nhập SĐT → Hệ thống kiểm tra SĐT tồn tại → Hệ thống gửi mã OTP 6 chữ số đến SĐT → Người dùng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực → Hệ thống hiển thị form nhập mật khẩu mới → Người dùng nhập mật khẩu mới → Hệ thống mã hóa và cập nhật mật khẩu → Hệ thống thông báo đổi mật khẩu thành công
 
 Chức năng "Đăng ký":
-Khách hàng cung cấp Họ tên, SĐT, Email, Mật khẩu → Hệ thống kiểm tra SĐT và email chưa tồn tại → Hệ thống gửi mã OTP đến SĐT để xác minh → Khách hàng cung cấp mã OTP → Hệ thống tạo tài khoản hạng "Thường" và tự động đăng nhập
+Khách hàng mở trang đăng ký → Hệ thống hiển thị form nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK → Khách hàng nhập đầy đủ thông tin → Hệ thống kiểm tra SĐT và email chưa tồn tại trong CSDL → Hệ thống gửi mã OTP 6 chữ số đến SĐT → Khách hàng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực → Hệ thống tạo tài khoản mới hạng "Thường", điểm tích lũy = 0 → Hệ thống tự động đăng nhập cho khách hàng
 
 Chức năng "Đổi mật khẩu":
-Người dùng cung cấp mật khẩu hiện tại và mật khẩu mới → Hệ thống xác minh mật khẩu hiện tại → Hệ thống kiểm tra mật khẩu mới hợp lệ → Hệ thống cập nhật mật khẩu và thu hồi tất cả phiên đăng nhập khác
+Người dùng mở trang bảo mật → Hệ thống hiển thị form nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới → Người dùng nhập đầy đủ thông tin → Hệ thống xác minh mật khẩu hiện tại khớp CSDL → Hệ thống kiểm tra mật khẩu mới hợp lệ (độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt) → Hệ thống mã hóa mật khẩu mới và cập nhật → Hệ thống thu hồi tất cả phiên đăng nhập khác → Hệ thống thông báo đổi mật khẩu thành công
 
 Chức năng "Quản lý thông tin cá nhân":
-Khách hàng xem thông tin hồ sơ cá nhân (Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy) → Khách hàng cập nhật Họ tên và Email → Hệ thống kiểm tra email hợp lệ → Hệ thống cập nhật hồ sơ
+Khách hàng mở trang hồ sơ cá nhân → Hệ thống truy xuất thông tin từ CSDL và hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, Ngày tham gia → Khách hàng nhấn chỉnh sửa, cập nhật Họ tên và Email → Hệ thống kiểm tra email hợp lệ và chưa được dùng → Hệ thống cập nhật hồ sơ vào CSDL → Hệ thống thông báo cập nhật thành công
 
 Chức năng "Quản lý tài khoản nhân viên":
-Admin xem danh sách nhân viên → Admin thêm nhân viên mới (Họ tên, SĐT, Vai trò) → Hệ thống tạo tài khoản nhân viên → Admin sửa thông tin nhân viên → Hệ thống cập nhật → Admin xóa nhân viên → Hệ thống chuyển trạng thái "Đã nghỉ"
+Admin mở trang quản lý nhân viên → Hệ thống hiển thị danh sách nhân viên với Họ tên, Vai trò, Trạng thái → Admin nhấn thêm nhân viên, nhập Họ tên, SĐT, Vai trò → Hệ thống kiểm tra SĐT chưa tồn tại, tạo tài khoản nhân viên → Admin nhấn sửa trên một dòng nhân viên, cập nhật thông tin → Hệ thống lưu thay đổi vào CSDL → Admin nhấn xóa trên một dòng nhân viên → Hệ thống kiểm tra nhân viên không đang xử lý order → Hệ thống chuyển trạng thái "Đã nghỉ"
 
 ### 7. Biểu đồ Use Case chi tiết
 
@@ -242,13 +244,11 @@ actor "Khách hàng" as KH
 rectangle "UC02 – Đăng ký" {
   usecase "Đăng ký" as UC02
   usecase "Điền thông tin\nđăng ký" as UC02_1
-  usecase "Nhập mã OTP" as UC02_2
-  usecase "Xác nhận OTP" as UC02_3
+  usecase "Xác nhận OTP" as UC02_2
 }
 
 UC02 .> UC02_1 : <<include>>
 UC02 .> UC02_2 : <<include>>
-UC02 .> UC02_3 : <<include>>
 
 KH --> UC02
 @enduml
@@ -269,10 +269,12 @@ actor "Nhân viên" as NV
 
 rectangle "UC03 – Đổi mật khẩu" {
   usecase "Đổi mật khẩu" as UC03
-  usecase "Nhập thông tin\nđổi mật khẩu" as UC03_1
+  usecase "Xác minh\nmật khẩu cũ" as UC03_1
+  usecase "Nhập thông tin\nđổi mật khẩu" as UC03_2
 }
 
 UC03 .> UC03_1 : <<include>>
+UC03 .> UC03_2 : <<include>>
 
 KH --> UC03
 NV --> UC03
@@ -295,12 +297,10 @@ rectangle "UC04 – Quản lý TTCN" {
   usecase "Quản lý TTCN" as UC04
   usecase "Xem hồ sơ\ncá nhân" as UC04_1
   usecase "Chỉnh sửa\nthông tin" as UC04_2
-  usecase "Xem hạng\nhội viên" as UC04_3
 }
 
 UC04 .> UC04_1 : <<include>>
 UC04_2 .> UC04 : <<extend>>
-UC04_3 .> UC04 : <<extend>>
 
 KH --> UC04
 @enduml

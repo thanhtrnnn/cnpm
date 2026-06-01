@@ -9,8 +9,7 @@
 | Actor | Khách hàng, Nhân viên |
 | Tiền điều kiện | Người dùng chưa đăng nhập. Tài khoản đã tồn tại trong hệ thống. |
 | Hậu điều kiện | Người dùng được xác thực thành công, hệ thống tạo session và chuyển hướng đến trang chủ tương ứng. |
-| Kịch bản chính | 1. Người dùng truy cập màn hình "Đăng nhập".<br>2. Hệ thống hiển thị form gồm: Ô nhập SĐT/Email, Ô nhập Mật khẩu, Nút [Đăng nhập], Liên kết "Quên mật khẩu?" / "Đăng ký".<br>3. Người dùng nhập thông tin: SĐT = "0912345678", Mật khẩu = "Abc@1234".<br>4. Người dùng nhấn [Đăng nhập].<br>5. Hệ thống kiểm tra định dạng đầu vào.<br>6. Hệ thống truy vấn CSDL: tìm tài khoản, so sánh mật khẩu đã mã hóa.<br>7. Xác thực thành công, tạo session với vai trò "Khách hàng".<br>8. Chuyển hướng đến trang chủ, hiển thị "Đăng nhập thành công. Xin chào, Nguyễn Văn A!". |
-| Ngoại lệ | 6.1. Tài khoản không tồn tại: Hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."<br>6.2. Mật khẩu không khớp: Hiển thị "Mật khẩu không chính xác. Còn [N] lần thử." Sau 5 lần sai → khóa 15 phút. |
+| Kịch bản chính | 1. Người dùng truy cập màn hình "Đăng nhập".<br>2. Hệ thống hiển thị form gồm: Ô nhập SĐT/Email, Ô nhập Mật khẩu, Nút [Đăng nhập], Liên kết "Quên mật khẩu?" / "Đăng ký".<br>3. Người dùng nhập SĐT/Email và Mật khẩu.<br>4. Người dùng nhấn [Đăng nhập].<br>5. Hệ thống kiểm tra định dạng đầu vào.<br>6. Hệ thống truy vấn CSDL: tìm tài khoản theo SĐT/Email, so sánh mật khẩu đã mã hóa.<br>7. Xác thực thành công, hệ thống tạo session với vai trò tương ứng.<br>8. Hệ thống chuyển hướng đến trang chủ, hiển thị thông báo "Đăng nhập thành công". |
 
 #### UC02 – Đăng ký
 
@@ -19,8 +18,7 @@
 | Actor | Khách hàng |
 | Tiền điều kiện | Người dùng chưa có tài khoản. Hệ thống hoạt động bình thường. |
 | Hậu điều kiện | Tài khoản mới được tạo, hạng "Thường", đăng nhập tự động. |
-| Kịch bản chính | 1. Người dùng nhấn "Đăng ký" từ màn hình đăng nhập.<br>2. Hệ thống hiển thị form: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.<br>3. Người dùng điền: Họ tên, SĐT, Email, Mật khẩu.<br>4. Người dùng nhấn [Tiếp tục].<br>5. Hệ thống kiểm tra định dạng, SĐT và email chưa tồn tại.<br>6. Hệ thống gửi OTP 6 chữ số đến SĐT.<br>7. Hiển thị màn hình "Xác nhận OTP".<br>8. Người dùng nhập mã OTP và nhấn [Xác nhận].<br>9. Hệ thống xác minh OTP đúng và còn hiệu lực (≤ 5 phút).<br>10. Tạo tài khoản mới, hạng "Thường", điểm = 0.<br>11. Đăng nhập tự động, hiển thị "Đăng ký thành công! Chào mừng Nguyễn Thị Bình." |
-| Ngoại lệ | 5.1. SĐT đã tồn tại: "SĐT này đã được sử dụng."<br>5.2. MK không khớp: Highlight ô xác nhận MK, "Mật khẩu không khớp."<br>9.1. OTP sai: "Mã OTP không đúng. Vui lòng thử lại." (tối đa 3 lần)<br>9.2. OTP hết hạn: "Mã OTP đã hết hạn." Nhấn "Gửi lại OTP". |
+| Kịch bản chính | 1. Người dùng nhấn "Đăng ký" từ màn hình đăng nhập.<br>2. Hệ thống hiển thị form: Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK.<br>3. Người dùng nhập Họ tên, SĐT, Email, Mật khẩu.<br>4. Người dùng nhấn [Tiếp tục].<br>5. Hệ thống kiểm tra định dạng, SĐT và email chưa tồn tại trong CSDL.<br>6. Hệ thống gửi OTP 6 chữ số đến SĐT.<br>7. Hệ thống hiển thị màn hình "Xác nhận OTP".<br>8. Người dùng nhập mã OTP và nhấn [Xác nhận].<br>9. Hệ thống xác minh OTP đúng và còn hiệu lực.<br>10. Hệ thống tạo tài khoản mới, hạng "Thường", điểm tích lũy = 0.<br>11. Hệ thống tự động đăng nhập, hiển thị thông báo "Đăng ký thành công!". |
 
 #### UC03 – Đổi mật khẩu
 
@@ -29,8 +27,7 @@
 | Actor | Khách hàng, Nhân viên (đã đăng nhập) |
 | Tiền điều kiện | Người dùng đã đăng nhập thành công. |
 | Hậu điều kiện | Mật khẩu mới được lưu (bcrypt). Tất cả session khác bị thu hồi. |
-| Kịch bản chính | 1. Người dùng truy cập "Bảo mật" trong cài đặt.<br>2. Hiển thị form: MK hiện tại, MK mới, Xác nhận MK mới.<br>3. Người dùng nhập: MK hiện tại = "Abc@1234", MK mới = "NewPass@2025", xác nhận = "NewPass@2025".<br>4. Nhấn [Lưu thay đổi].<br>5. Hệ thống xác minh MK hiện tại khớp CSDL.<br>6. Kiểm tra MK mới: độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt.<br>7. Kiểm tra MK mới ≠ MK hiện tại.<br>8. Mã hóa (bcrypt) và cập nhật.<br>9. Thu hồi tất cả session, hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."<br>10. Chuyển hướng về màn hình Đăng nhập. |
-| Ngoại lệ | 5.1. MK hiện tại sai: "Mật khẩu hiện tại không chính xác."<br>6.1. MK mới không đủ mạnh: Highlight ô, hiển thị yêu cầu còn thiếu.<br>7.1. MK mới trùng MK cũ: "Mật khẩu mới không được trùng mật khẩu hiện tại." |
+| Kịch bản chính | 1. Người dùng truy cập mục "Bảo mật" trong cài đặt.<br>2. Hệ thống hiển thị form: Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới.<br>3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới.<br>4. Người dùng nhấn [Lưu thay đổi].<br>5. Hệ thống xác minh Mật khẩu hiện tại khớp CSDL.<br>6. Hệ thống kiểm tra Mật khẩu mới hợp lệ (độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt).<br>7. Hệ thống kiểm tra Mật khẩu mới khác Mật khẩu hiện tại.<br>8. Hệ thống mã hóa (bcrypt) và cập nhật mật khẩu mới.<br>9. Hệ thống thu hồi tất cả session khác.<br>10. Hệ thống hiển thị thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."<br>11. Hệ thống chuyển hướng về màn hình Đăng nhập. |
 
 #### UC04 – Quản lý thông tin cá nhân
 
@@ -39,8 +36,7 @@
 | Actor | Khách hàng (đã đăng nhập) |
 | Tiền điều kiện | Khách hàng đã đăng nhập. Tài khoản tồn tại trong CSDL. |
 | Hậu điều kiện | Thông tin cập nhật trong CSDL, hiển thị ngay trên giao diện. |
-| Kịch bản chính | 1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản.<br>2. Hệ thống hiển thị "Hồ sơ cá nhân":<br><table><tr><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Hạng hội viên</th><th>Điểm tích lũy</th><th>Ngày tham gia</th></tr><tr><td>Nguyễn Văn An</td><td>0912345678</td><td>vana@email.com</td><td>Bạc</td><td>1.250</td><td>15/03/2024</td></tr></table><br>3. Nhấn [Chỉnh sửa thông tin].<br>4. Chuyển sang chế độ chỉnh sửa: Họ tên, Email có thể nhập; SĐT bị khóa.<br>5. Cập nhật: thông tin.<br>6. Nhấn [Lưu thay đổi].<br>7. Kiểm tra email hợp lệ và chưa được dùng.<br>8. Cập nhật vào CSDL.<br>9. Hiển thị "Cập nhật thành công!" và quay về chế độ xem. |
-| Ngoại lệ | 7.1. Email đã được dùng: "Email này đã được đăng ký bởi tài khoản khác."<br>3.1. Thay đổi SĐT: Yêu cầu xác minh OTP gửi đến SĐT hiện tại → SĐT mới → OTP mới. |
+| Kịch bản chính | 1. Khách hàng nhấn vào ảnh đại diện / tên tài khoản.<br>2. Hệ thống truy xuất thông tin từ CSDL và hiển thị trang "Hồ sơ cá nhân" gồm: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, Ngày tham gia.<br>3. Khách hàng nhấn [Chỉnh sửa thông tin].<br>4. Hệ thống chuyển sang chế độ chỉnh sửa: Họ tên và Email cho phép sửa, SĐT bị khóa.<br>5. Khách hàng cập nhật Họ tên và Email.<br>6. Khách hàng nhấn [Lưu thay đổi].<br>7. Hệ thống kiểm tra email hợp lệ và chưa được dùng bởi tài khoản khác.<br>8. Hệ thống cập nhật thông tin vào CSDL.<br>9. Hệ thống hiển thị thông báo "Cập nhật thành công!" và quay về chế độ xem. |
 
 #### UC20 – Quản lý tài khoản nhân viên
 
@@ -49,8 +45,7 @@
 | Actor | Chủ Doanh nghiệp (Admin) |
 | Tiền điều kiện | Admin đã đăng nhập. Có quyền quản lý tài khoản nhân viên toàn hệ thống. |
 | Hậu điều kiện | Tài khoản nhân viên được tạo/sửa/xóa trong CSDL. |
-| Kịch bản chính | 1. Quản lý truy cập "Quản lý nhân viên".<br>2. Hệ thống hiển thị danh sách nhân viên:<br><table><tr><th>Họ tên</th><th>Vai trò</th><th>Trạng thái</th></tr><tr><td>Trần Văn A</td><td>Lễ tân</td><td>Đang làm việc</td></tr><tr><td>Lê Thị B</td><td>Phục vụ</td><td>Đang làm việc</td></tr><tr><td>Phạm Văn C</td><td>Quản lý</td><td>Đang làm việc</td></tr></table><br>3a. Thêm nhân viên: Nhấn [Thêm] → Nhập thông tin → Lưu.<br>3b. Sửa nhân viên: Chọn nhân viên → Chỉnh sửa → Lưu.<br>3c. Xóa nhân viên: Chọn nhân viên → Xác nhận xóa → Hệ thống chuyển trạng thái "Đã nghỉ". |
-| Ngoại lệ | 3.1. SĐT đã tồn tại: "SĐT này đã được sử dụng."<br>3.2. Nhân viên đang xử lý order: Không thể xóa, hiển thị cảnh báo. |
+| Kịch bản chính | 1. Admin truy cập trang "Quản lý nhân viên".<br>2. Hệ thống hiển thị danh sách nhân viên gồm Họ tên, Vai trò, Trạng thái.<br>3a. Admin nhấn [Thêm nhân viên], nhập Họ tên, SĐT, Vai trò, nhấn [Lưu] → Hệ thống tạo tài khoản nhân viên mới.<br>3b. Admin nhấn [Sửa] trên một dòng nhân viên, cập nhật thông tin, nhấn [Lưu] → Hệ thống cập nhật vào CSDL.<br>3c. Admin nhấn [Xóa] trên một dòng nhân viên, xác nhận → Hệ thống chuyển trạng thái "Đã nghỉ". |
 
 ### 2. Mô hình hóa lớp
 
