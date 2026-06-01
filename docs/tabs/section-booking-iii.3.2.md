@@ -57,7 +57,7 @@ d) Thay đổi trạng thái phòng => `updateRoomStatus()`
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
 | **Room** | roomID, name, type, capacity, hourly_pricing, branchID, status | ManyToOne→Branch |
-| **Customer** | customerID, name, phone_number, account_status, rankingID | ManyToOne→MemberRanking |
+| **Client** | clientID, name, phone_number, account_status, rankingID | ManyToOne→MemberRanking |
 | **Branch** | branchID, name, address, phone_number | — |
 
 ### b) Chức năng Check-in
@@ -132,7 +132,7 @@ c) Xác nhận thanh toán => `confirmPayment()`
 
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
-| **Room_receipt** | room_receipt_ID, room_fee, service_fee, discount, status, payment_method | ManyToOne→Customer, ManyToOne→Room |
+| **Room_receipt** | room_receipt_ID, room_fee, service_fee, discount, status, payment_method | ManyToOne→Client, ManyToOne→Room |
 | **Room_receipt_detail** | room_receipt_detail_ID, service_name, base_price, quantity, duration, total | ManyToOne→Room_receipt |
 | **Promotion** | promotionID, name, type, redeem, valid_until | — |
 
@@ -307,9 +307,9 @@ package "<<Control>>" #E8F5E9 {
     +getPendingBookings(branchId : int, date : Date) : List<BookingResponse>
   }
   class ClientController {
-    +getAll() : List<Customer>
-    +getById(id : int) : Customer
-    +search(keyword : String) : List<Customer>
+    +getAll() : List<Client>
+    +getById(id : int) : Client
+    +search(keyword : String) : List<Client>
   }
   class BookingController {
     +createBooking(clientId : int, roomId : int, startTime : Date, endTime : Date, staffId : int) : BookingResponse
@@ -334,8 +334,8 @@ package "<<Entity>>" #FFF3E0 {
     -branchID: String
     -status: String
   }
-  class Customer {
-    -customerID: int
+  class Client {
+    -clientID: int
     -rankingID: int
     -name: String
     -phone_number: String
@@ -395,7 +395,7 @@ CancelBookingPage --> BookingController
 
 ' Control -> Entity
 RoomController --> Room
-ClientController --> Customer
+ClientController --> Client
 BookingController --> Room_receipt
 BookingController --> Room
 InvoiceController --> Room_receipt
@@ -403,9 +403,9 @@ InvoiceController --> Room_receipt_detail
 
 ' Entity relationships
 Branch *-- "n" Room
-MemberRanking o-- "1" Customer
+MemberRanking o-- "1" Client
 Room_receipt *-- "n" Room_receipt_detail
-Customer o-- "n" Room_receipt
+Client o-- "n" Room_receipt
 Room o-- "n" Room_receipt
 @enduml
 ```

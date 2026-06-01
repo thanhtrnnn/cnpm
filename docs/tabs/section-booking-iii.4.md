@@ -29,7 +29,7 @@ control "BookingController" as Ctrl
 boundary "SearchClientForm" as SCF
 boundary "ConfirmBookingModal" as CBM
 entity "Room" as Room
-entity "Customer" as Cust
+entity "Client" as Cust
 entity "Room_receipt" as RR
 
 NV -> Home : 1: click "Dat phong"
@@ -71,9 +71,9 @@ SCF -> Ctrl : 20: searchClient(keyword)
 activate Ctrl
 Ctrl -> Cust : 21: findByKeyword(keyword)
 activate Cust
-Cust --> Ctrl : 22: List<Customer>
+Cust --> Ctrl : 22: List<Client>
 deactivate Cust
-Ctrl --> SCF : 23: List<Customer>
+Ctrl --> SCF : 23: List<Client>
 deactivate Ctrl
 SCF --> NV : 24: hien thi danh sach khach hang
 deactivate SCF
@@ -137,8 +137,8 @@ deactivate Home
 21. Nhân viên nhập thông tin khách hàng (tên hoặc số điện thoại) và click [Tìm kiếm].
 22. Phương thức btnSearchClick() của lớp SearchClientForm được gọi.
 23. Phương thức btnSearchClick() gọi phương thức searchClient(keyword: String) của lớp BookingController.
-24. Phương thức searchClient() gọi phương thức findByKeyword(keyword) của lớp Entity Customer.
-25. Lớp Customer trả kết quả danh sách khách hàng về cho phương thức searchClient().
+24. Phương thức searchClient() gọi phương thức findByKeyword(keyword) của lớp Entity Client.
+25. Lớp Client trả kết quả danh sách khách hàng về cho phương thức searchClient().
 26. Phương thức searchClient() trả kết quả về cho phương thức btnSearchClick().
 27. Lớp SearchClientForm hiển thị danh sách khách hàng khớp.
 28. Nhân viên chọn thông tin khách hàng tương ứng.
@@ -318,7 +318,7 @@ boundary "InvoicePanel" as IP
 control "BookingController" as Ctrl
 entity "Room" as Room
 entity "Room_receipt" as RR
-entity "Customer" as Cust
+entity "Client" as Cust
 entity "Promotion" as Promo
 
 NV -> Home : 1: click "Check-out"
@@ -386,7 +386,7 @@ Room --> Ctrl : 34: Room updated
 deactivate Room
 Ctrl -> Cust : 35: addPoints(base_score)
 activate Cust
-Cust --> Ctrl : 36: Customer updated
+Cust --> Ctrl : 36: Client updated
 deactivate Cust
 Ctrl --> IP : 37: Room_receipt
 deactivate Ctrl
@@ -444,7 +444,7 @@ deactivate Home
 35. Phương thức btnThanhToanClick() gọi phương thức confirmPayment(room_receipt_ID: int, paymentMethod: String, voucherCode: String) của lớp BookingController.
 36. Phương thức confirmPayment() gọi phương thức updateStatus("Đã thanh toán") của lớp Entity Room_receipt.
 37. Phương thức confirmPayment() gọi phương thức updateStatus("Trống") của lớp Entity Room.
-38. Phương thức confirmPayment() gọi phương thức addPoints(base_score) của lớp Entity Customer.
+38. Phương thức confirmPayment() gọi phương thức addPoints(base_score) của lớp Entity Client.
 39. Các lớp Entity trả kết quả lưu trữ về cho phương thức confirmPayment().
 40. Phương thức confirmPayment() trả Room_receipt về cho phương thức btnThanhToanClick().
 41. Lớp InvoicePanel hiển thị thông báo "Check-out thành công! Tổng tiền: [X]đ."

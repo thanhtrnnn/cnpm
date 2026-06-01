@@ -4,45 +4,45 @@
 
 Thêm thuộc tính `id : int` vào các lớp không kế thừa từ lớp khác:
 
-- KhachHang: `id : int`
-- ChiNhanh: `id : int`
-- Phong: `id : int`
-- NhanVien: `id : int`
-- HoaDon: `id : int`
-- ChiTietHoaDon: `id : int`
-- HangHoiVien: `id : int`
-- KhuyenMai: `id : int`
+- Client: `id : int`
+- Branch: `id : int`
+- Room: `id : int`
+- Employee: `id : int`
+- Room_receipt: `id : int`
+- Room_receipt_detail: `id : int`
+- MemberRanking: `id : int`
+- Promotion: `id : int`
 
 ### Bước 2 – Thêm kiểu dữ liệu
 
 Chuyển tất cả thuộc tính sang kiểu ngôn ngữ lập trình (Java):
 
-- KhachHang: `id : int`, `hoTen : String`, `soDienThoai : String`, `email : String`, `matKhau : String`, `ngayTao : Date`, `diemTichLuy : int`, `trangThai : String`
-- ChiNhanh: `id : int`, `tenChiNhanh : String`, `diaChi : String`, `soDienThoai : String`
-- Phong: `id : int`, `tenPhong : String`, `loaiPhong : String`, `sucChua : int`, `giaTheoGio : double`, `trangThai : String`
-- NhanVien: `id : int`, `hoTen : String`, `vaiTro : String`, `trangThai : String`
-- HoaDon: `id : int`, `ngayLap : Date`, `thoiGianBatDau : Date`, `thoiGianKetThuc : Date`, `tienPhong : double`, `tienDichVu : double`, `giamGia : double`, `tongTien : double`, `trangThaiThanhToan : String`, `phuongThucThanhToan : String`
-- ChiTietHoaDon: `id : int`, `tenDichVu : String`, `soLuong : int`, `donGia : double`, `thanhTien : double`
-- HangHoiVien: `id : int`, `tenHang : String`, `diemToiThieu : int`, `moTa : String`, `heSoUuDai : double`
-- KhuyenMai: `id : int`, `tenKhuyenMai : String`, `loai : String`, `giaTri : double`, `dieuKienApDung : String`, `ngayBatDau : Date`, `ngayKetThuc : Date`
+- Client: `id : int`, `hoTen : String`, `soDienThoai : String`, `email : String`, `matKhau : String`, `ngayTao : Date`, `diemTichLuy : int`, `trangThai : String`
+- Branch: `id : int`, `tenBranch : String`, `diaChi : String`, `soDienThoai : String`
+- Room: `id : int`, `tenRoom : String`, `loaiRoom : String`, `sucChua : int`, `giaTheoGio : double`, `trangThai : String`
+- Employee: `id : int`, `hoTen : String`, `vaiTro : String`, `trangThai : String`
+- Room_receipt: `id : int`, `ngayLap : Date`, `thoiGianBatDau : Date`, `thoiGianKetThuc : Date`, `tienRoom : double`, `tienDichVu : double`, `giamGia : double`, `tongTien : double`, `trangThaiThanhToan : String`, `phuongThucThanhToan : String`
+- Room_receipt_detail: `id : int`, `tenDichVu : String`, `soLuong : int`, `donGia : double`, `thanhTien : double`
+- MemberRanking: `id : int`, `tenHang : String`, `diemToiThieu : int`, `moTa : String`, `heSoUuDai : double`
+- Promotion: `id : int`, `tenPromotion : String`, `loai : String`, `giaTri : double`, `dieuKienApDung : String`, `ngayBatDau : Date`, `ngayKetThuc : Date`
 
 ### Bước 3 – Chuyển quan hệ association thành aggregation/composition
 
-- ChiNhanh `*--` Phong: composition (phòng không tồn tại nếu không có chi nhánh)
-- ChiNhanh `o--` NhanVien: aggregation (nhân viên tồn tại độc lập)
-- KhachHang `o--` HangHoiVien: aggregation (hạng hội viên là danh mục độc lập)
-- HoaDon `*--` ChiTietHoaDon: composition (chi tiết không tồn tại nếu không có hóa đơn)
-- Phong `o--` HoaDon: aggregation (hóa đơn tồn tại độc lập khỏi phòng)
-- KhachHang `o--` HoaDon: aggregation
-- NhanVien `o--` HoaDon: aggregation
+- Branch `*--` Room: composition (phòng không tồn tại nếu không có chi nhánh)
+- Branch `o--` Employee: aggregation (nhân viên tồn tại độc lập)
+- Client `o--` MemberRanking: aggregation (hạng hội viên là danh mục độc lập)
+- Room_receipt `*--` Room_receipt_detail: composition (chi tiết không tồn tại nếu không có hóa đơn)
+- Room `o--` Room_receipt: aggregation (hóa đơn tồn tại độc lập khỏi phòng)
+- Client `o--` Room_receipt: aggregation
+- Employee `o--` Room_receipt: aggregation
 
 ### Bước 4 – Bổ sung thuộc tính kiểu đối tượng
 
-- HoaDon: `khachHang : KhachHang`, `phong : Phong`, `nhanVien : NhanVien`
-- ChiTietHoaDon: `hoaDon : HoaDon`
-- Phong: `chiNhanh : ChiNhanh`
-- NhanVien: `chiNhanh : ChiNhanh`
-- KhachHang: `hangHoiVien : HangHoiVien`
+- Room_receipt: `khachHang : Client`, `phong : Room`, `nhanVien : Employee`
+- Room_receipt_detail: `hoaDon : Room_receipt`
+- Room: `chiNhanh : Branch`
+- Employee: `chiNhanh : Branch`
+- Client: `hangHoiVien : MemberRanking`
 
 ### Biểu đồ lớp thực thể
 
@@ -74,7 +74,7 @@ hide empty members
 
 title Thiết kế lớp thực thể - Module Đặt & trả phòng
 
-class KhachHang {
+class Client {
   -id : int
   -hoTen : String
   -soDienThoai : String
@@ -83,60 +83,60 @@ class KhachHang {
   -ngayTao : Date
   -diemTichLuy : int
   -trangThai : String
-  -hangHoiVien : HangHoiVien
+  -hangHoiVien : MemberRanking
 }
 
-class ChiNhanh {
+class Branch {
   -id : int
-  -tenChiNhanh : String
+  -tenBranch : String
   -diaChi : String
   -soDienThoai : String
 }
 
-class Phong {
+class Room {
   -id : int
-  -tenPhong : String
-  -loaiPhong : String
+  -tenRoom : String
+  -loaiRoom : String
   -sucChua : int
   -giaTheoGio : double
   -trangThai : String
-  -chiNhanh : ChiNhanh
+  -chiNhanh : Branch
 }
 
-class NhanVien {
+class Employee {
   -id : int
   -hoTen : String
   -vaiTro : String
   -trangThai : String
-  -chiNhanh : ChiNhanh
+  -chiNhanh : Branch
 }
 
-class HoaDon {
+class Room_receipt {
   -id : int
   -ngayLap : Date
   -thoiGianBatDau : Date
   -thoiGianKetThuc : Date
-  -tienPhong : double
+  -tienRoom : double
   -tienDichVu : double
   -giamGia : double
   -tongTien : double
   -trangThaiThanhToan : String
   -phuongThucThanhToan : String
-  -khachHang : KhachHang
-  -phong : Phong
-  -nhanVien : NhanVien
+  -khachHang : Client
+  -phong : Room
+  -nhanVien : Employee
 }
 
-class ChiTietHoaDon {
+class Room_receipt_detail {
   -id : int
   -tenDichVu : String
   -soLuong : int
   -donGia : double
   -thanhTien : double
-  -hoaDon : HoaDon
+  -hoaDon : Room_receipt
 }
 
-class HangHoiVien {
+class MemberRanking {
   -id : int
   -tenHang : String
   -diemToiThieu : int
@@ -144,9 +144,9 @@ class HangHoiVien {
   -heSoUuDai : double
 }
 
-class KhuyenMai {
+class Promotion {
   -id : int
-  -tenKhuyenMai : String
+  -tenPromotion : String
   -loai : String
   -giaTri : double
   -dieuKienApDung : String
@@ -154,13 +154,13 @@ class KhuyenMai {
   -ngayKetThuc : Date
 }
 
-ChiNhanh *-- "n" Phong
-ChiNhanh o-- "n" NhanVien
-KhachHang o-- "1" HangHoiVien
-HoaDon *-- "n" ChiTietHoaDon
-KhachHang o-- "n" HoaDon
-Phong o-- "n" HoaDon
-NhanVien o-- "n" HoaDon
-HoaDon o-- "n" KhuyenMai
+Branch *-- "n" Room
+Branch o-- "n" Employee
+Client o-- "1" MemberRanking
+Room_receipt *-- "n" Room_receipt_detail
+Client o-- "n" Room_receipt
+Room o-- "n" Room_receipt
+Employee o-- "n" Room_receipt
+Room_receipt o-- "n" Promotion
 @enduml
 ```

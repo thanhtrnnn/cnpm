@@ -4,14 +4,14 @@
 
 | Lớp thực thể | Tên bảng |
 |--------------|----------|
-| KhachHang | tblKhachHang |
-| ChiNhanh | tblChiNhanh |
-| Phong | tblPhong |
-| NhanVien | tblNhanVien |
-| HoaDon | tblHoaDon |
-| ChiTietHoaDon | tblChiTietHoaDon |
-| HangHoiVien | tblHangHoiVien |
-| KhuyenMai | tblKhuyenMai |
+| Client | tblClient |
+| Branch | tblBranch |
+| Room | tblRoom |
+| Employee | tblEmployee |
+| Room_receipt | tblRoom_receipt |
+| Room_receipt_detail | tblRoom_receipt_detail |
+| MemberRanking | tblMemberRanking |
+| Promotion | tblPromotion |
 
 ### Bước 2 – Chuyển kiểu dữ liệu
 
@@ -24,14 +24,14 @@
 
 ### Bước 3 – Xử lý quan hệ cardinality
 
-- ChiNhanh – Phong (1-n): Giữ riêng, Phong có FK `tblChiNhanhMa`
-- ChiNhanh – NhanVien (1-n): Giữ riêng, NhanVien có FK `tblChiNhanhMa`
-- KhachHang – HangHoiVien (n-1): Giữ riêng, KhachHang có FK `tblHangHoiVienMa`
-- HoaDon – ChiTietHoaDon (1-n): Giữ riêng, ChiTietHoaDon có FK `tblHoaDonMa`
-- HoaDon – KhuyenMai (n-n): Tạo bảng trung gian `tblApDungKhuyenMai`
-- KhachHang – HoaDon (1-n): HoaDon có FK `tblKhachHangMa`
-- Phong – HoaDon (1-n): HoaDon có FK `tblPhongMa`
-- NhanVien – HoaDon (1-n): HoaDon có FK `tblNhanVienMa`
+- Branch – Room (1-n): Giữ riêng, Room có FK `tblBranchMa`
+- Branch – Employee (1-n): Giữ riêng, Employee có FK `tblBranchMa`
+- Client – MemberRanking (n-1): Giữ riêng, Client có FK `tblMemberRankingMa`
+- Room_receipt – Room_receipt_detail (1-n): Giữ riêng, Room_receipt_detail có FK `tblRoom_receiptMa`
+- Room_receipt – Promotion (n-n): Tạo bảng trung gian `tblApply_promotion`
+- Client – Room_receipt (1-n): Room_receipt có FK `tblClientMa`
+- Room – Room_receipt (1-n): Room_receipt có FK `tblRoomMa`
+- Employee – Room_receipt (1-n): Room_receipt có FK `tblEmployeeMa`
 
 ### Bước 4 – Bổ sung PK/FK
 
@@ -59,35 +59,35 @@ skinparam arrowColor #000000
 skinparam lineColor #000000
 hide circle
 
-entity "tblChiNhanh" {
+entity "tblBranch" {
   * ma : integer(10) <<PK>>
   --
-  tenChiNhanh : varchar(255)
+  tenBranch : varchar(255)
   diaChi : varchar(255)
   soDienThoai : varchar(20)
 }
 
-entity "tblPhong" {
+entity "tblRoom" {
   * ma : integer(10) <<PK>>
   --
-  tenPhong : varchar(255)
-  loaiPhong : varchar(50)
+  tenRoom : varchar(255)
+  loaiRoom : varchar(50)
   sucChua : integer(10)
   giaTheoGio : double(10)
   trangThai : varchar(50)
-  * tblChiNhanhMa : integer(10) <<FK>>
+  * tblBranchMa : integer(10) <<FK>>
 }
 
-entity "tblNhanVien" {
+entity "tblEmployee" {
   * ma : integer(10) <<PK>>
   --
   hoTen : varchar(255)
   vaiTro : varchar(50)
   trangThai : varchar(50)
-  * tblChiNhanhMa : integer(10) <<FK>>
+  * tblBranchMa : integer(10) <<FK>>
 }
 
-entity "tblKhachHang" {
+entity "tblClient" {
   * ma : integer(10) <<PK>>
   --
   hoTen : varchar(255)
@@ -97,10 +97,10 @@ entity "tblKhachHang" {
   ngayTao : date
   diemTichLuy : integer(10)
   trangThai : varchar(50)
-  * tblHangHoiVienMa : integer(10) <<FK>>
+  * tblMemberRankingMa : integer(10) <<FK>>
 }
 
-entity "tblHangHoiVien" {
+entity "tblMemberRanking" {
   * ma : integer(10) <<PK>>
   --
   tenHang : varchar(50)
@@ -109,37 +109,37 @@ entity "tblHangHoiVien" {
   heSoUuDai : double(10)
 }
 
-entity "tblHoaDon" {
+entity "tblRoom_receipt" {
   * ma : integer(10) <<PK>>
   --
   ngayLap : date
   thoiGianBatDau : date
   thoiGianKetThuc : date
-  tienPhong : double(10)
+  tienRoom : double(10)
   tienDichVu : double(10)
   giamGia : double(10)
   tongTien : double(10)
   trangThaiThanhToan : varchar(50)
   phuongThucThanhToan : varchar(50)
-  * tblKhachHangMa : integer(10) <<FK>>
-  * tblPhongMa : integer(10) <<FK>>
-  * tblNhanVienMa : integer(10) <<FK>>
+  * tblClientMa : integer(10) <<FK>>
+  * tblRoomMa : integer(10) <<FK>>
+  * tblEmployeeMa : integer(10) <<FK>>
 }
 
-entity "tblChiTietHoaDon" {
+entity "tblRoom_receipt_detail" {
   * ma : integer(10) <<PK>>
   --
   tenDichVu : varchar(255)
   soLuong : integer(10)
   donGia : double(10)
   thanhTien : double(10)
-  * tblHoaDonMa : integer(10) <<FK>>
+  * tblRoom_receiptMa : integer(10) <<FK>>
 }
 
-entity "tblKhuyenMai" {
+entity "tblPromotion" {
   * ma : integer(10) <<PK>>
   --
-  tenKhuyenMai : varchar(255)
+  tenPromotion : varchar(255)
   loai : varchar(50)
   giaTri : double(10)
   dieuKienApDung : varchar(255)
@@ -147,19 +147,19 @@ entity "tblKhuyenMai" {
   ngayKetThuc : date
 }
 
-entity "tblApDungKhuyenMai" {
-  * tblHoaDonMa : integer(10) <<PK,FK>>
-  * tblKhuyenMaiMa : integer(10) <<PK,FK>>
+entity "tblApply_promotion" {
+  * tblRoom_receiptMa : integer(10) <<PK,FK>>
+  * tblPromotionMa : integer(10) <<PK,FK>>
 }
 
-tblChiNhanh ||--o{ tblPhong
-tblChiNhanh ||--o{ tblNhanVien
-tblHangHoiVien ||--o{ tblKhachHang
-tblKhachHang ||--o{ tblHoaDon
-tblPhong ||--o{ tblHoaDon
-tblNhanVien ||--o{ tblHoaDon
-tblHoaDon ||--o{ tblChiTietHoaDon
-tblHoaDon ||--o{ tblApDungKhuyenMai
-tblKhuyenMai ||--o{ tblApDungKhuyenMai
+tblBranch ||--o{ tblRoom
+tblBranch ||--o{ tblEmployee
+tblMemberRanking ||--o{ tblClient
+tblClient ||--o{ tblRoom_receipt
+tblRoom ||--o{ tblRoom_receipt
+tblEmployee ||--o{ tblRoom_receipt
+tblRoom_receipt ||--o{ tblRoom_receipt_detail
+tblRoom_receipt ||--o{ tblApply_promotion
+tblPromotion ||--o{ tblApply_promotion
 @enduml
 ```

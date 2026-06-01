@@ -341,7 +341,7 @@ boundary "SearchFreeRoomView" as SRF
 boundary "SearchClientView" as SCF
 boundary "ConfirmView" as CV
 entity "Room" as Room
-entity "Customer" as Cust
+entity "Client" as Cust
 
 NV -> Home : 1: click "Dat phong"
 activate Home
@@ -417,9 +417,9 @@ deactivate Home
 14. Nhân viên hỏi khách hàng về thông tin khách hàng.
 15. Khách hàng trả lời.
 16. Nhân viên nhập thông tin khách hàng và ấn nút tìm kiếm.
-17. Lớp SearchClientView gọi đến lớp Customer.
-18. Lớp Customer gọi hàm `searchClient()`.
-19. Lớp Customer trả kết quả về cho lớp SearchClientView.
+17. Lớp SearchClientView gọi đến lớp Client.
+18. Lớp Client gọi hàm `searchClient()`.
+19. Lớp Client trả kết quả về cho lớp SearchClientView.
 20. Lớp SearchClientView hiển thị thông tin khách hàng tương ứng.
 21. Nhân viên chọn thông tin khách hàng tương ứng.
 22. Lớp SearchClientView gọi sang lớp ConfirmView.
@@ -632,7 +632,7 @@ boundary "InvoiceView" as IV
 boundary "PaymentView" as PV
 entity "Room" as Room
 entity "Room_receipt" as RR
-entity "Customer" as Cust
+entity "Client" as Cust
 entity "Promotion" as Promo
 
 NV -> Home : 1: click "Check-out"
@@ -697,7 +697,7 @@ deactivate Home
 5. Lớp CheckOutView gọi sang lớp InvoiceView.
 6. Lớp InvoiceView gọi hàm `tinhTien()` trên lớp Room_receipt.
 7. Lớp Room_receipt trả kết quả hóa đơn về InvoiceView.
-8. InvoiceView gọi lớp Customer `checkMember()` để lấy thông tin khách.
+8. InvoiceView gọi lớp Client `checkMember()` để lấy thông tin khách.
 9. InvoiceView gọi lớp Promotion `applyPromotion()` để kiểm tra ưu đãi.
 10. InvoiceView hiển thị hóa đơn cho nhân viên.
 11. Nhân viên chọn phương thức thanh toán "Tiền mặt".
@@ -705,7 +705,7 @@ deactivate Home
 13. InvoiceView gọi lớp Payment.
 14. Payment gọi hàm `updateStatus("Da thanh toan")` trên Room_receipt.
 15. Payment gọi hàm `changeStatus("Trong")` trên Room.
-16. Payment gọi hàm `addPoints(base_score)` trên Customer.
+16. Payment gọi hàm `addPoints(base_score)` trên Client.
 17. Payment hiện thông báo thành công.
 18. Nhân viên ấn [In hóa đơn].
 
