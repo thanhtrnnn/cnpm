@@ -355,13 +355,13 @@ def process_file(doc, md_file):
         elif 'iii.3.2' in base:
             return '<!-- DIAGRAM: booking_mvc_class -->'
         elif 'iii.4' in base:
-            if 'Dat phong' in block_content or 'SearchFreeRoomView' in block_content:
+            if 'SearchFreeRoomView' in block_content or 'SearchFreeRoomForm' in block_content or 'Đặt phòng' in block_content:
                 return '<!-- DIAGRAM: booking_seq_datphong -->'
-            elif 'Check-in' in block_content or 'CheckInView' in block_content:
+            elif 'CheckInView' in block_content or 'Check-in' in block_content:
                 return '<!-- DIAGRAM: booking_seq_checkin -->'
-            elif 'Check-out' in block_content or 'CheckOutView' in block_content:
+            elif 'CheckOutView' in block_content or 'Check-out' in block_content:
                 return '<!-- DIAGRAM: booking_seq_checkout -->'
-            elif 'Huy phong' in block_content or 'SearchBookingView' in block_content:
+            elif 'SearchBookingView' in block_content or 'CancelBookingPage' in block_content or 'Hủy' in block_content:
                 return '<!-- DIAGRAM: booking_seq_huyphong -->'
         return '<!-- DIAGRAM: unknown -->'
 
