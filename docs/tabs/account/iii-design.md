@@ -4,31 +4,33 @@
 
 #### 1.1. Bước 1 – Bổ sung thuộc tính id
 
-- User: `id : int`
-- MembershipTier: `id : int`
-- OTP: `id : int`
-- LoginSession: `id : int`
-- Employee: `id : int`
+- `User`: `id : int` — lớp gốc; `Client` và `Employee` kế thừa `id` này
+- `MembershipTier`: `id : int`
+- `OTP`: `id : int`
+- `LoginSession`: `id : int`
 
 #### 1.2. Bước 2 – Thêm kiểu dữ liệu
 
-- User: `id : int`, `hoTen : String`, `soDienThoai : String`, `email : String`, `matKhau : String`, `ngayTao : Date`, `diemTichLuy : int`, `trangThai : String`
-- MembershipTier: `id : int`, `tenHang : String`, `diemToiThieu : int`, `moTa : String`, `heSoUuDai : double`
-- OTP: `id : int`, `maOTP : String`, `loai : String`, `thoiHanHetHan : Date`, `daXacMinh : boolean`
-- LoginSession: `id : int`, `tokenPhien : String`, `thoiGianDangNhap : DateTime`, `thoiGianHetHan : DateTime`, `thietBi : String`
-- Employee: `id : int`, `hoTen : String`, `vaiTro : String`, `trangThai : String`
+- `User` (lớp cha): `id : int`, `fullName : String`, `phoneNumber : String`, `email : String`, `password : String`, `role : String`, `createdAt : Date`
+- `Client` (kế thừa `User`): `loyaltyPoints : int`, `joinedAt : Date`
+- `Employee` (kế thừa `User`): `staffRole : String`, `branch : String`, `status : String`
+- `MembershipTier`: `id : int`, `tierName : String`, `minPoints : int`, `description : String`, `discountRate : double`
+- `OTP`: `id : int`, `otpCode : String`, `type : String`, `expiresAt : Date`, `verified : boolean`
+- `LoginSession`: `id : int`, `sessionToken : String`, `loginTime : DateTime`, `expiresAt : DateTime`, `device : String`
 
 #### 1.3. Bước 3 – Chuyển quan hệ
 
-- User `o--` MembershipTier: aggregation (hạng hội viên là danh mục độc lập)
-- User `*--` OTP: composition (OTP không tồn tại độc lập)
-- User `*--` LoginSession: composition (phiên không tồn tại độc lập)
+- `Client` kế thừa `User`: generalization (khách hàng là `User` có vai trò CLIENT)
+- `Employee` kế thừa `User`: generalization (nhân viên là `User` có vai trò EMPLOYEE)
+- `Client` `o--` `MembershipTier`: aggregation (hạng hội viên là danh mục độc lập, chỉ khách hàng có)
+- `User` `*--` `OTP`: composition (OTP không tồn tại độc lập)
+- `User` `*--` `LoginSession`: composition (phiên không tồn tại độc lập)
 
 #### 1.4. Bước 4 – Bổ sung thuộc tính kiểu đối tượng
 
-- User: `membershipTier : MembershipTier`
-- LoginSession: `user : User`
-- OTP: `user : User`
+- `Client`: `membershipTier : MembershipTier`
+- `OTP`: `user : User`
+- `LoginSession`: `user : User`
 
 #### 1.5. Biểu đồ lớp thực thể
 
@@ -37,7 +39,7 @@
 
 ```plantuml
 @startuml
-title Biểu đồ lớp thực thể – Module Account
+title Biểu đồ lớp thực thể – Module Tài khoản & Thành viên
 
 left to right direction
 skinparam linetype ortho
@@ -45,50 +47,55 @@ skinparam classAttributeIconSize 0
 
 class User {
   -id : int
-  -hoTen : String
-  -soDienThoai : String
+  -fullName : String
+  -phoneNumber : String
   -email : String
-  -matKhau : String
-  -ngayTao : Date
-  -diemTichLuy : int
-  -trangThai : String
+  -password : String
+  -role : String
+  -createdAt : Date
+}
+
+class Client {
+  -loyaltyPoints : int
+  -joinedAt : Date
   -membershipTier : MembershipTier
+}
+
+class Employee {
+  -staffRole : String
+  -branch : String
+  -status : String
 }
 
 class MembershipTier {
   -id : int
-  -tenHang : String
-  -diemToiThieu : int
-  -moTa : String
-  -heSoUuDai : double
+  -tierName : String
+  -minPoints : int
+  -description : String
+  -discountRate : double
 }
 
 class OTP {
   -id : int
-  -maOTP : String
-  -loai : String
-  -thoiHanHetHan : Date
-  -daXacMinh : boolean
+  -otpCode : String
+  -type : String
+  -expiresAt : Date
+  -verified : boolean
   -user : User
 }
 
 class LoginSession {
   -id : int
-  -tokenPhien : String
-  -thoiGianDangNhap : DateTime
-  -thoiGianHetHan : DateTime
-  -thietBi : String
+  -sessionToken : String
+  -loginTime : DateTime
+  -expiresAt : DateTime
+  -device : String
   -user : User
 }
 
-class Employee {
-  -id : int
-  -hoTen : String
-  -vaiTro : String
-  -trangThai : String
-}
-
-User "n" o-- "1" MembershipTier
+User <|-- Client
+User <|-- Employee
+Client "n" o-- "1" MembershipTier
 User "1" *-- "n" OTP
 User "1" *-- "n" LoginSession
 @enduml
@@ -98,13 +105,14 @@ User "1" *-- "n" LoginSession
 
 #### 2.1. Bước 1 – Tạo bảng
 
+Ánh xạ kế thừa kiểu **single-table**: gộp `User`, `Client`, `Employee` vào một bảng `tblUser`, dùng cột `role` để phân biệt; thuộc tính riêng của `Client`/`Employee` để `NULL` khi không áp dụng.
+
 | Lớp thực thể | Tên bảng |
 |--------------|----------|
-| User | tblUser |
+| User, Client, Employee (kế thừa) | tblUser |
 | MembershipTier | tblMembershipTier |
 | OTP | tblOTP |
 | LoginSession | tblLoginSession |
-| Employee | tblEmployee |
 
 #### 2.2. Bước 2 – Chuyển kiểu dữ liệu
 
@@ -115,17 +123,19 @@ User "1" *-- "n" LoginSession
 | double | double(10) |
 | Date | date |
 | DateTime | datetime |
+| boolean | bit |
 
 #### 2.3. Bước 3 – Xử lý cardinality
 
-- User – MembershipTier (n-1): tblUser có FK `tblMembershipTierMa`
-- User – OTP (1-n): tblOTP có FK `tblUserMa`
-- User – LoginSession (1-n): tblLoginSession có FK `tblUserMa`
+- `Client` – `MembershipTier` (n-1): `tblUser` có FK `tblMembershipTierMa` (chỉ dòng `role = CLIENT` dùng, NULL với dòng khác)
+- `User` – `OTP` (1-n): `tblOTP` có FK `tblUserMa`
+- `User` – `LoginSession` (1-n): `tblLoginSession` có FK `tblUserMa`
 
 #### 2.4. Bước 4 – PK/FK
 
 - PK: `ma : integer(10) <<PK>>`
 - FK: `tbl[TenBangCha]Ma : integer(10) <<FK>>`
+- Cột `role` (`CLIENT` / `EMPLOYEE` / `ADMIN`) phân biệt loại người dùng trong bảng `tblUser` gộp
 
 #### 2.5. Biểu đồ ERD
 
@@ -134,58 +144,54 @@ User "1" *-- "n" LoginSession
 
 ```plantuml
 @startuml
-title ERD – Module Account
+title ERD – Module Tài khoản & Thành viên
 
 skinparam linetype ortho
 
 entity tblMembershipTier {
   + ma : integer(10) <<PK>>
   --
-  tenHang : varchar(255)
-  diemToiThieu : integer(10)
-  moTa : varchar(255)
-  heSoUuDai : double(10)
+  tierName : varchar(255)
+  minPoints : integer(10)
+  description : varchar(255)
+  discountRate : double(10)
 }
 
 entity tblUser {
   + ma : integer(10) <<PK>>
   --
-  hoTen : varchar(255)
-  soDienThoai : varchar(255)
+  fullName : varchar(255)
+  phoneNumber : varchar(255)
   email : varchar(255)
-  matKhau : varchar(255)
-  ngayTao : date
-  diemTichLuy : integer(10)
-  trangThai : varchar(255)
+  password : varchar(255)
+  role : varchar(255)
+  createdAt : date
+  loyaltyPoints : integer(10)
+  joinedAt : date
+  staffRole : varchar(255)
+  branch : varchar(255)
+  status : varchar(255)
   # tblMembershipTierMa : integer(10) <<FK>>
 }
 
 entity tblOTP {
   + ma : integer(10) <<PK>>
   --
-  maOTP : varchar(255)
-  loai : varchar(255)
-  thoiHanHetHan : date
-  daXacMinh : integer(10)
+  otpCode : varchar(255)
+  type : varchar(255)
+  expiresAt : date
+  verified : bit
   # tblUserMa : integer(10) <<FK>>
 }
 
 entity tblLoginSession {
   + ma : integer(10) <<PK>>
   --
-  tokenPhien : varchar(255)
-  thoiGianDangNhap : datetime
-  thoiGianHetHan : datetime
-  thietBi : varchar(255)
+  sessionToken : varchar(255)
+  loginTime : datetime
+  expiresAt : datetime
+  device : varchar(255)
   # tblUserMa : integer(10) <<FK>>
-}
-
-entity tblEmployee {
-  + ma : integer(10) <<PK>>
-  --
-  hoTen : varchar(255)
-  vaiTro : varchar(255)
-  trangThai : varchar(255)
 }
 
 tblUser }o--|| tblMembershipTier
@@ -302,7 +308,7 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 
 **Control:** AuthController, ProfileController, StaffController
 
-**Entity:** User, MembershipTier, OTP, LoginSession, Employee
+**Entity:** User, Client, Employee, MembershipTier, OTP, LoginSession
 
 #### 4.2. Quy trình xác định chữ ký hàm Controller
 
@@ -316,7 +322,7 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
     - `checkLogin(): boolean` → chọn (trả về true/false xác thực thành công)
 
 - **b) Đăng ký** => `register()`
-  - Input: hoTen, sdt, email, matKhau
+  - Input: fullName, phoneNumber, email, password
   - Output: User (vừa tạo)
   - Ứng viên tham số vào:
     - `register()` → chọn
@@ -332,7 +338,7 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
     - `verifyOTP(): boolean` → chọn (cần biết đúng/sai)
 
 - **d) Đổi mật khẩu** => `changePassword()`
-  - Input: mkHienTai, mkMoi
+  - Input: currentPassword, newPassword
   - Output: boolean
   - Ứng viên tham số vào:
     - `changePassword()` → chọn
@@ -348,7 +354,7 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
     - `getProfile(): User` → chọn
 
 - **f) Cập nhật hồ sơ** => `updateProfile()`
-  - Input: userId, hoTen, email
+  - Input: userId, fullName, email
   - Output: User
   - Ứng viên tham số vào:
     - `updateProfile()` → chọn
@@ -405,7 +411,7 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 
 ```plantuml
 @startuml
-title Biểu đồ lớp MVC – Module Account
+title Biểu đồ lớp MVC – Module Tài khoản & Thành viên
 
 left to right direction
 skinparam linetype ortho
@@ -491,14 +497,14 @@ package "Control" <<Rectangle>> #E8F5E9 {
   together {
     class AuthController {
       +checkLogin(username : String, password : String) : boolean
-      +register(hoTen : String, sdt : String, email : String, matKhau : String) : User
+      +register(fullName : String, phoneNumber : String, email : String, password : String) : User
       +verifyOTP(otp : String) : boolean
-      +changePassword(mkHienTai : String, mkMoi : String) : boolean
+      +changePassword(currentPassword : String, newPassword : String) : boolean
     }
 
     class ProfileController {
       +getProfile(userId : int) : User
-      +updateProfile(userId : int, hoTen : String, email : String) : User
+      +updateProfile(userId : int, fullName : String, email : String) : User
     }
 
     class StaffController {
@@ -516,54 +522,59 @@ package "Entity" <<Rectangle>> #FFF3E0 {
   together {
     class User {
       -id : int
-      -hoTen : String
-      -soDienThoai : String
+      -fullName : String
+      -phoneNumber : String
       -email : String
-      -matKhau : String
-      -ngayTao : Date
-      -diemTichLuy : int
-      -trangThai : String
+      -password : String
+      -role : String
+      -createdAt : Date
+    }
+
+    class Client {
+      -loyaltyPoints : int
+      -joinedAt : Date
       -membershipTier : MembershipTier
+    }
+
+    class Employee {
+      -staffRole : String
+      -branch : String
+      -status : String
     }
 
     class MembershipTier {
       -id : int
-      -tenHang : String
-      -diemToiThieu : int
-      -moTa : String
-      -heSoUuDai : double
+      -tierName : String
+      -minPoints : int
+      -description : String
+      -discountRate : double
     }
 
     class OTP {
       -id : int
-      -maOTP : String
-      -loai : String
-      -thoiHanHetHan : Date
-      -daXacMinh : boolean
+      -otpCode : String
+      -type : String
+      -expiresAt : Date
+      -verified : boolean
       -user : User
     }
 
     class LoginSession {
       -id : int
-      -tokenPhien : String
-      -thoiGianDangNhap : DateTime
-      -thoiGianHetHan : DateTime
-      -thietBi : String
+      -sessionToken : String
+      -loginTime : DateTime
+      -expiresAt : DateTime
+      -device : String
       -user : User
-    }
-
-    class Employee {
-      -id : int
-      -hoTen : String
-      -vaiTro : String
-      -trangThai : String
     }
   }
 }
 
+User <|-- Client
+User <|-- Employee
 User "1" *-- "n" OTP
 User "1" *-- "n" LoginSession
-User "n" o-- "1" MembershipTier
+Client "n" o-- "1" MembershipTier
 @enduml
 ```
 

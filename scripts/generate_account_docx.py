@@ -104,10 +104,15 @@ def determine_heading_level(text):
         return 1
     if t in ('II. PHA PHÂN TÍCH', 'III. PHA THIẾT KẾ', 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'):
         return 1
+    # Hệ thống đánh số 3 cấp: N. → H2, N.N. → H3, N.N.N. → H4, a) b) c) → H4
+    if re.match(r'^\d+\.\d+\.\d+\.\s', t):
+        return 4
     if re.match(r'^\d+\.\d+\.\s', t):
-        return 2
+        return 3
     if re.match(r'^\d+\.\s', t):
         return 2
+    if re.match(r'^[a-e]\)\s', t):
+        return 4
     section_names = [
         'Danh sách Use Case', 'Danh sách Actor', 'UC con',
         'Biểu đồ Use Case', 'Kịch bản chuẩn', 'Trích xuất',
@@ -340,6 +345,31 @@ def add_diagram_image(doc, image_path, width=Inches(6)):
     return p
 
 
+W_NS = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+
+
+def new_numbered_list(doc):
+    """Tạo một numId mới (nối abstractNumId=2) restart đánh số về 1.
+    Mỗi numbered list riêng phải dùng numId riêng, nếu không Word đánh số nối tiếp."""
+    numbering_xml = doc.part.numbering_part._element
+    existing = [int(n.get(W_NS + 'numId')) for n in numbering_xml.findall(W_NS + 'num')]
+    new_id = (max(existing) if existing else 0) + 1
+    num = OxmlElement('w:num')
+    num.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numId', str(new_id))
+    ref = OxmlElement('w:abstractNumId')
+    ref.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '2')
+    num.append(ref)
+    for lvl in range(3):
+        ov = OxmlElement('w:lvlOverride')
+        ov.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ilvl', str(lvl))
+        so = OxmlElement('w:startOverride')
+        so.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
+        ov.append(so)
+        num.append(ov)
+    numbering_xml.append(num)
+    return new_id
+
+
 def process_file(doc, md_file):
     with open(md_file, 'r', encoding='utf-8') as f:
         content = f.read()
@@ -355,10 +385,16 @@ def process_file(doc, md_file):
     in_code_block = False
     code_lines = []
     skip_phase_heading = True  # Skip first H1/H2 phase heading per file
+    current_num_id = None  # numId của numbered list đang chạy; None = chưa có list
 
     while i < len(lines):
         line = lines[i]
         stripped = line.strip()
+
+        # Bất kỳ dòng nội dung nào KHÔNG phải mục numbered list sẽ ngắt list
+        # → list kế tiếp sẽ được cấp numId mới (restart về 1).
+        if stripped and not re.match(r'^\s*\d+[.)]\s+', line):
+            current_num_id = None
 
         # PlantUML placeholder — insert diagram
         if stripped == '<!-- PLANTUML_PLACEHOLDER -->':
@@ -511,6 +547,8 @@ def process_file(doc, md_file):
         # Numbered list (1. 2. etc.)
         nm = re.match(r'^(\s*)\d+[.)]\s+(.+)$', line)
         if nm:
+            if current_num_id is None:
+                current_num_id = new_numbered_list(doc)  # list mới → numId mới, restart về 1
             indent = len(nm.group(1))
             text = nm.group(2).strip()
             level = min(indent // 2, 2)
@@ -522,7 +560,7 @@ def process_file(doc, md_file):
             ilvl.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(level))
             numPr.append(ilvl)
             numId = OxmlElement('w:numId')
-            numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '2')
+            numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(current_num_id))
             numPr.append(numId)
             pPr.append(numPr)
             i += 1
