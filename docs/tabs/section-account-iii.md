@@ -2,7 +2,7 @@
 
 ### 1. Thiết kế lớp thực thể
 
-#### Bước 1 – Bổ sung thuộc tính id
+#### 1.1. Bước 1 – Bổ sung thuộc tính id
 
 - User: `id : int`
 - MembershipTier: `id : int`
@@ -10,7 +10,7 @@
 - LoginSession: `id : int`
 - Employee: `id : int`
 
-#### Bước 2 – Thêm kiểu dữ liệu
+#### 1.2. Bước 2 – Thêm kiểu dữ liệu
 
 - User: `id : int`, `hoTen : String`, `soDienThoai : String`, `email : String`, `matKhau : String`, `ngayTao : Date`, `diemTichLuy : int`, `trangThai : String`
 - MembershipTier: `id : int`, `tenHang : String`, `diemToiThieu : int`, `moTa : String`, `heSoUuDai : double`
@@ -18,26 +18,26 @@
 - LoginSession: `id : int`, `tokenPhien : String`, `thoiGianDangNhap : DateTime`, `thoiGianHetHan : DateTime`, `thietBi : String`
 - Employee: `id : int`, `hoTen : String`, `vaiTro : String`, `trangThai : String`
 
-#### Bước 3 – Chuyển quan hệ
+#### 1.3. Bước 3 – Chuyển quan hệ
 
 - User `o--` MembershipTier: aggregation (hạng hội viên là danh mục độc lập)
 - User `*--` OTP: composition (OTP không tồn tại độc lập)
 - User `*--` LoginSession: composition (phiên không tồn tại độc lập)
 
-#### Bước 4 – Bổ sung thuộc tính kiểu đối tượng
+#### 1.4. Bước 4 – Bổ sung thuộc tính kiểu đối tượng
 
 - User: `membershipTier : MembershipTier`
 - LoginSession: `user : User`
 - OTP: `user : User`
 
-#### Biểu đồ lớp thực thể
+#### 1.5. Biểu đồ lớp thực thể
 
 <!-- PLACEHOLDER: account_entity_class -->
 <!-- File: output/diagrams/account_entity_class.png -->
 
 ### 2. Thiết kế CSDL
 
-#### Bước 1 – Tạo bảng
+#### 2.1. Bước 1 – Tạo bảng
 
 | Lớp thực thể | Tên bảng |
 |--------------|----------|
@@ -47,7 +47,7 @@
 | LoginSession | tblLoginSession |
 | Employee | tblEmployee |
 
-#### Bước 2 – Chuyển kiểu dữ liệu
+#### 2.2. Bước 2 – Chuyển kiểu dữ liệu
 
 | Kiểu Java | Kiểu SQL |
 |-----------|----------|
@@ -57,121 +57,123 @@
 | Date | date |
 | DateTime | datetime |
 
-#### Bước 3 – Xử lý cardinality
+#### 2.3. Bước 3 – Xử lý cardinality
 
 - User – MembershipTier (n-1): tblUser có FK `tblMembershipTierMa`
 - User – OTP (1-n): tblOTP có FK `tblUserMa`
 - User – LoginSession (1-n): tblLoginSession có FK `tblUserMa`
 
-#### Bước 4 – PK/FK
+#### 2.4. Bước 4 – PK/FK
 
 - PK: `ma : integer(10) <<PK>>`
 - FK: `tbl[TenBangCha]Ma : integer(10) <<FK>>`
 
-#### Biểu đồ ERD
+#### 2.5. Biểu đồ ERD
 
 <!-- PLACEHOLDER: account_erd -->
 <!-- File: output/diagrams/account_erd.png -->
 
 ### 3. Wireframe
 
+#### 3.1. Màn hình đăng nhập
+
 <!-- PLACEHOLDER: WIREFRAMES -->
 <!-- Wireframes sẽ được render thành monospace frames trong DOCX -->
-
-#### Màn hình 1: LoginView
 
 ```
 ┌──────────────────────────────────────────────┐
 │              Đăng nhập                       │
 │                                              │
-│  SĐT / Email: [________________________]     │
-│  Mật khẩu:    [________________________]     │
+│  txtSDT:       [________________________]     │
+│  txtMatKhau:   [________________________]     │
 │                                              │
-│  [Đăng nhập]                                 │
-│  Quên mật khẩu?  |  Đăng ký mới             │
+│  [btnDangNhap]                               │
+│  btnQuenMatKhau  |  btnDangKy                │
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 2: RegisterView
+#### 3.2. Màn hình đăng ký
 
 ```
 ┌──────────────────────────────────────────────┐
 │              Đăng ký tài khoản                │
 │                                              │
-│  Họ và tên:      [________________________]  │
-│  Số điện thoại:   [________________________]  │
-│  Email:           [________________________]  │
-│  Mật khẩu:       [________________________]  │
-│  Xác nhận MK:    [________________________]  │
+│  txtHoTen:           [________________________]  │
+│  txtSoDienThoai:     [________________________]  │
+│  txtEmail:           [________________________]  │
+│  txtMatKhau:         [________________________]  │
+│  txtXacNhanMatKhau:  [________________________]  │
 │                                              │
-│  [Tiếp tục]                 [Hủy]           │
+│  [btnTiepTuc]                [btnHuy]        │
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 3: OTPVerifyView
+#### 3.3. Màn hình xác nhận OTP
 
 ```
 ┌──────────────────────────────────────────────┐
 │           Xác nhận OTP                       │
 │                                              │
-│  Mã OTP đã gửi đến 098****321               │
+│  txtOTP: [__][__][__][__][__][__]            │
 │                                              │
-│  [__][__][__][__][__][__]                    │
-│                                              │
-│  [Xác nhận]                                  │
-│  Gửi lại OTP (60s)                          │
+│  [btnXacNhan]                                │
+│  lblCountdown: Gửi lại OTP (60s)            │
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 4: ChangePasswordView
+#### 3.4. Màn hình đổi mật khẩu
 
 ```
 ┌──────────────────────────────────────────────┐
 │           Đổi mật khẩu                       │
 │                                              │
-│  Mật khẩu hiện tại: [________________________]│
-│  Mật khẩu mới:      [________________________]│
-│  Xác nhận MK mới:   [________________________]│
+│  txtMatKhauHienTai:     [________________________]│
+│  txtMatKhauMoi:         [________________________]│
+│  txtXacNhanMatKhauMoi:  [________________________]│
 │                                              │
-│  [Lưu thay đổi]          [Hủy]              │
+│  [btnLuu]                [btnHuy]            │
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 5: ProfileView
+#### 3.5. Màn hình hồ sơ cá nhân
 
 ```
 ┌──────────────────────────────────────────────┐
 │           Hồ sơ cá nhân                      │
 │                                              │
-│  Họ và tên:      Nguyễn Văn An              │
-│  Số điện thoại:   0912345678                 │
-│  Email:           vana@email.com             │
-│  Hạng hội viên:  Bạc (1.250 điểm)          │
-│  Ngày tham gia:   15/03/2024                 │
+│  txtHoTen:         [________________________]  │
+│  txtSoDienThoai:   [________________________]  │
+│  txtEmail:         [________________________]  │
+│  lblMembershipTier: ........................  │
+│  lblDiemTichLuy:   ........................  │
 │                                              │
-│  [Chỉnh sửa thông tin]  [Đổi mật khẩu]      │
+│  [btnChinhSua]  [btnDoiMatKhau]              │
 └──────────────────────────────────────────────┘
 ```
 
-#### Màn hình 6: StaffManageView
+#### 3.6. Màn hình quản lý nhân viên
 
 ```
 ┌──────────────────────────────────────────────┐
 │        Quản lý tài khoản nhân viên           │
 │                                              │
-│  [Thêm nhân viên]                            │
+│  txtTimKiem: [________________________]      │
+│  [btnThem]                                   │
 │                                              │
 │ ┌──────┬────────┬──────────┬──────────┐      │
 │ │ Họ tên│ Vai trò│ Trạng thái│ ...     │      │
-│ │ Trần A│ Lễ tân │ Đang LD  │         │      │
-│ │ Lê B  │ Phục vụ│ Đang LD  │         │      │
+│ │ ......│ .......│ .........│         │      │
+│ │ ......│ .......│ .........│         │      │
 │ └──────┴────────┴──────────┴──────────┘      │
+│  tblStaff                                    │
 │                                              │
-│  [Sửa]  [Xóa]                               │
+│  [btnSua]  [btnXoa]                          │
 └──────────────────────────────────────────────┘
 ```
 
 ### 4. MVC class diagram
+
+#### 4.1. Tổng quan kiến trúc
 
 Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 
@@ -181,104 +183,104 @@ Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 
 **Entity:** User, MembershipTier, OTP, LoginSession, Employee
 
-**Quy trình xác định chữ ký hàm Controller:**
+#### 4.2. Quy trình xác định chữ ký hàm Controller
 
-a) Đăng nhập => `checkLogin()``
-- Input: username, password
-- Output: boolean
-- Ứng viên tham số vào:
-  - `checkLogin()`` → chọn (gom nhóm tham số)
-- Ứng viên tham số ra:
-  - `checkLogin()`: void` → loại (cần trả về kết quả xác thực)
-  - `checkLogin()`: boolean` → chọn (trả về true/false xác thực thành công)
+- **a) Đăng nhập** => `checkLogin()`
+  - Input: username, password
+  - Output: boolean
+  - Ứng viên tham số vào:
+    - `checkLogin()` → chọn (gom nhóm tham số)
+  - Ứng viên tham số ra:
+    - `checkLogin(): void` → loại (cần trả về kết quả xác thực)
+    - `checkLogin(): boolean` → chọn (trả về true/false xác thực thành công)
 
-b) Đăng ký => `register()``
-- Input: hoTen, sdt, email, matKhau
-- Output: User (vừa tạo)
-- Ứng viên tham số vào:
-  - `register()`` → chọn
-- Ứng viên tham số ra:
-  - `register()`: User` → chọn
+- **b) Đăng ký** => `register()`
+  - Input: hoTen, sdt, email, matKhau
+  - Output: User (vừa tạo)
+  - Ứng viên tham số vào:
+    - `register()` → chọn
+  - Ứng viên tham số ra:
+    - `register(): User` → chọn
 
-c) Xác minh OTP => `verifyOTP()``
-- Input: otp
-- Output: boolean
-- Ứng viên tham số vào:
-  - `verifyOTP()`` → chọn
-- Ứng viên tham số ra:
-  - `verifyOTP()`: boolean` → chọn (cần biết đúng/sai)
+- **c) Xác minh OTP** => `verifyOTP()`
+  - Input: otp
+  - Output: boolean
+  - Ứng viên tham số vào:
+    - `verifyOTP()` → chọn
+  - Ứng viên tham số ra:
+    - `verifyOTP(): boolean` → chọn (cần biết đúng/sai)
 
-d) Đổi mật khẩu => `changePassword()``
-- Input: mkHienTai, mkMoi
-- Output: boolean
-- Ứng viên tham số vào:
-  - `changePassword()`` → chọn
-- Ứng viên tham số ra:
-  - `changePassword()`: boolean` → chọn
+- **d) Đổi mật khẩu** => `changePassword()`
+  - Input: mkHienTai, mkMoi
+  - Output: boolean
+  - Ứng viên tham số vào:
+    - `changePassword()` → chọn
+  - Ứng viên tham số ra:
+    - `changePassword(): boolean` → chọn
 
-e) Xem hồ sơ => `getProfile()``
-- Input: userId
-- Output: User
-- Ứng viên tham số vào:
-  - `getProfile()`` → chọn
-- Ứng viên tham số ra:
-  - `getProfile()`: User` → chọn
+- **e) Xem hồ sơ** => `getProfile()`
+  - Input: userId
+  - Output: User
+  - Ứng viên tham số vào:
+    - `getProfile()` → chọn
+  - Ứng viên tham số ra:
+    - `getProfile(): User` → chọn
 
-f) Cập nhật hồ sơ => `updateProfile()``
-- Input: userId, hoTen, email
-- Output: User
-- Ứng viên tham số vào:
-  - `updateProfile()`` → chọn
-- Ứng viên tham số ra:
-  - `updateProfile()`: User` → chọn
+- **f) Cập nhật hồ sơ** => `updateProfile()`
+  - Input: userId, hoTen, email
+  - Output: User
+  - Ứng viên tham số vào:
+    - `updateProfile()` → chọn
+  - Ứng viên tham số ra:
+    - `updateProfile(): User` → chọn
 
-g) Xem danh sách NV => `getAllStaff()``
-- Input: (không có)
-- Output: List\<Employee\>
-- Ứng viên tham số vào:
-  - `getAllStaff()`` → chọn
-- Ứng viên tham số ra:
-  - `getAllStaff()`: List<Employee>` → chọn
+- **g) Xem danh sách NV** => `getAllStaff()`
+  - Input: (không có)
+  - Output: List\<Employee\>
+  - Ứng viên tham số vào:
+    - `getAllStaff()` → chọn
+  - Ứng viên tham số ra:
+    - `getAllStaff(): List<Employee>` → chọn
 
-h) Tìm kiếm NV => `searchStaff()`
-- Input: keyword
-- Output: List\<Employee\>
-- Ứng viên tham số vào:
-  - `searchStaff(keyword: String)` → chọn
-- Ứng viên tham số ra:
-  - `searchStaff(): List<Employee>` → chọn
+- **h) Tìm kiếm NV** => `searchStaff()`
+  - Input: keyword
+  - Output: List\<Employee\>
+  - Ứng viên tham số vào:
+    - `searchStaff(keyword: String)` → chọn
+  - Ứng viên tham số ra:
+    - `searchStaff(): List<Employee>` → chọn
 
-i) Lấy NV theo id => `getStaffById()`
-- Input: id
-- Output: Employee
-- Ứng viên tham số vào:
-  - `getStaffById(id: int)` → chọn
-- Ứng viên tham số ra:
-  - `getStaffById(): Employee` → chọn
+- **i) Lấy NV theo id** => `getStaffById()`
+  - Input: id
+  - Output: Employee
+  - Ứng viên tham số vào:
+    - `getStaffById(id: int)` → chọn
+  - Ứng viên tham số ra:
+    - `getStaffById(): Employee` → chọn
 
-j) Thêm NV => `saveStaff()`
-- Input: employee
-- Output: boolean
-- Ứng viên tham số vào:
-  - `saveStaff(employee: Employee)` → chọn
-- Ứng viên tham số ra:
-  - `saveStaff(): boolean` → chọn (cần biết thành công/thất bại)
+- **j) Thêm NV** => `saveStaff()`
+  - Input: employee
+  - Output: boolean
+  - Ứng viên tham số vào:
+    - `saveStaff(employee: Employee)` → chọn
+  - Ứng viên tham số ra:
+    - `saveStaff(): boolean` → chọn (cần biết thành công/thất bại)
 
-k) Sửa NV => `updateStaff()``
-- Input: employee
-- Output: boolean
-- Ứng viên tham số vào:
-  - `updateStaff()`` → chọn
-- Ứng viên tham số ra:
-  - `updateStaff()`: boolean` → chọn
+- **k) Sửa NV** => `updateStaff()`
+  - Input: employee
+  - Output: boolean
+  - Ứng viên tham số vào:
+    - `updateStaff()` → chọn
+  - Ứng viên tham số ra:
+    - `updateStaff(): boolean` → chọn
 
-l) Xóa NV => `deleteStaff()``
-- Input: id
-- Output: boolean
-- Ứng viên tham số vào:
-  - `deleteStaff()`` → chọn
-- Ứng viên tham số ra:
-  - `deleteStaff()`: boolean` → chọn (cần biết thành công/thất bại)
+- **l) Xóa NV** => `deleteStaff()`
+  - Input: id
+  - Output: boolean
+  - Ứng viên tham số vào:
+    - `deleteStaff()` → chọn
+  - Ứng viên tham số ra:
+    - `deleteStaff(): boolean` → chọn (cần biết thành công/thất bại)
 
 ```plantuml
 @startuml
@@ -449,7 +451,7 @@ User "n" o-- "1" MembershipTier
 
 ### 5. Biểu đồ tuần tự thiết kế
 
-### Đăng nhập
+#### 5.1. Đăng nhập
 
 <!-- PLACEHOLDER: account_seq_login_design -->
 <!-- File: output/diagrams/account_seq_login.png -->
@@ -531,17 +533,6 @@ deactivate C1
 B1 -> B1 : 11: redirect /home
 B1 --> KH : showMessage("Đăng nhập thành công")
 deactivate B1
-
-alt tài khoản không tồn tại
-  E1 --> C1 : null
-  C1 --> B1 : false
-  B1 --> KH : showMessage("Tài khoản không tồn tại. Vui lòng kiểm tra lại.")
-end
-
-alt mật khẩu sai
-  C1 --> B1 : false
-  B1 --> KH : showMessage("Mật khẩu không chính xác. Còn [N] lần thử.")
-end
 @enduml
 ```
 
@@ -559,17 +550,7 @@ end
 10. Phương thức `checkLogin()`` trả về `true` cho phương thức `btnLoginClick()`.
 11. Phương thức `btnLoginClick()` gọi `redirect /home`, hiển thị showMessage("Đăng nhập thành công").
 
-**Ngoại lệ: tài khoản không tồn tại**
-- Phương thức `findBySDT()`` trả về `null`.
-- Phương thức `checkLogin()`` trả về `false` cho `btnLoginClick()`.
-- Lớp LoginPage hiển thị showMessage("Tài khoản không tồn tại. Vui lòng kiểm tra lại.")
-
-**Ngoại lệ: mật khẩu sai**
-- Phương thức `checkPassword()`` trả về `false`.
-- Phương thức `checkLogin()`` trả về `false` cho `btnLoginClick()`.
-- Lớp LoginPage hiển thị showMessage("Mật khẩu không chính xác. Còn [N] lần thử.")
-
-### Đăng ký
+#### 5.2. Đăng ký
 
 <!-- PLACEHOLDER: account_seq_register_design -->
 <!-- File: output/diagrams/account_seq_register.png -->
@@ -678,18 +659,6 @@ C1 --> B2 : 23: true
 deactivate C1
 B2 --> KH : 24: showMessage("Đăng ký thành công!")
 deactivate B2
-
-alt SĐT đã tồn tại
-  E1 --> C1 : true
-  C1 --> B1 : error
-  B1 --> KH : showMessage("SĐT này đã được sử dụng.")
-end
-
-alt OTP sai
-  E2 --> C1 : false
-  C1 --> B2 : false
-  B2 --> KH : showMessage("Mã OTP không đúng. Vui lòng thử lại.")
-end
 @enduml
 ```
 
@@ -719,17 +688,7 @@ end
 22. Phương thức `verifyOTP()`` trả về `true` cho phương thức `btnXacNhanClick()`.
 23. Phương thức `btnXacNhanClick()` gọi showMessage("Đăng ký thành công!")
 
-**Ngoại lệ: SĐT đã tồn tại**
-- Phương thức `existsBySDT()`` trả về `true`.
-- Phương thức `register()`` trả về lỗi cho `btnTiepTucClick()`.
-- Lớp RegisterPage hiển thị showMessage("SĐT này đã được sử dụng.")
-
-**Ngoại lệ: OTP sai**
-- Phương thức `verify()` trả về `false`.
-- Phương thức `verifyOTP()`` trả về `false` cho `btnXacNhanClick()`.
-- Lớp OTPVerifyPage hiển thị showMessage("Mã OTP không đúng. Vui lòng thử lại.")
-
-### Đổi mật khẩu
+#### 5.3. Đổi mật khẩu
 
 <!-- PLACEHOLDER: account_seq_changepw_design -->
 <!-- File: output/diagrams/account_seq_changepw.png -->
@@ -819,11 +778,6 @@ C1 --> B1 : 15: true
 deactivate C1
 B1 --> User : showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.")
 deactivate B1
-
-alt MK hiện tại sai
-  C1 --> B1 : false
-  B1 --> User : showMessage("Mật khẩu hiện tại không chính xác.")
-end
 @enduml
 ```
 
@@ -845,17 +799,7 @@ end
 14. Phương thức `changePassword()`` trả về `true` cho phương thức `btnLuuClick()`.
 15. Phương thức `btnLuuClick()` gọi showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.")
 
-**Ngoại lệ: MK hiện tại sai**
-- Phương thức `checkPassword()`` trả về `false`.
-- Phương thức `changePassword()`` trả về `false` cho `btnLuuClick()`.
-- Lớp ChangePasswordPage hiển thị showMessage("Mật khẩu hiện tại không chính xác.")
-
-**Ngoại lệ: MK mới trùng MK cũ**
-- Phương thức `changePassword()`` kiểm tra MK mới trùng MK hiện tại.
-- Phương thức `changePassword()`` trả về lỗi cho `btnLuuClick()`.
-- Lớp ChangePasswordPage hiển thị showMessage("Mật khẩu mới không được trùng mật khẩu hiện tại.")
-
-### Quản lý TTCN
+#### 5.4. Quản lý TTCN
 
 <!-- PLACEHOLDER: account_seq_profile_design -->
 <!-- File: output/diagrams/account_seq_profile.png -->
@@ -951,12 +895,6 @@ deactivate C1
 B1 -> B1 : 18: displayProfile()
 B1 --> KH : showMessage("Cập nhật thành công!")
 deactivate B1
-
-alt Email đã được dùng
-  E1 --> C1 : false
-  C1 --> B1 : error
-  B1 --> KH : showMessage("Email này đã được đăng ký bởi tài khoản khác.")
-end
 @enduml
 ```
 
@@ -981,12 +919,7 @@ end
 17. Phương thức `updateProfile()`` trả về đối tượng User cho phương thức `btnChinhSuaClick()`.
 18. Phương thức `btnChinhSuaClick()` gọi `displayProfile()`, hiển thị showMessage("Cập nhật thành công!")
 
-**Ngoại lệ: Email đã được dùng**
-- Phương thức `checkEmail()`` trả về `false`.
-- Phương thức `updateProfile()`` trả về lỗi cho `btnChinhSuaClick()`.
-- Lớp ProfilePage hiển thị showMessage("Email này đã được đăng ký bởi tài khoản khác.")
-
-### Quản lý nhân viên
+#### 5.5. Quản lý nhân viên
 
 <!-- PLACEHOLDER: account_seq_staff_design -->
 <!-- File: output/diagrams/account_seq_staff.png -->
@@ -1093,16 +1026,6 @@ deactivate C1
 B1 -> B1 : 23: displayStaffList()
 B1 --> Admin : showMessage("Xóa nhân viên thành công!")
 deactivate B1
-
-alt thêm nhân viên thất bại
-  C1 --> B1 : false
-  B1 --> Admin : showMessage("Thêm nhân viên thất bại.")
-end
-
-alt nhân viên đang xử lý order
-  C1 --> B1 : false
-  B1 --> Admin : showMessage("Nhân viên đang xử lý order, không thể xóa.")
-end
 @enduml
 ```
 
@@ -1131,11 +1054,3 @@ end
 21. Lớp Employee trả về `true` cho phương thức `deleteStaff()``.
 22. Phương thức `deleteStaff()`` trả về `true` cho phương thức `btnXoaClick()`.
 23. Phương thức `btnXoaClick()` gọi `displayStaffList()`, hiển thị showMessage("Xóa nhân viên thành công!")
-
-**Ngoại lệ: thêm nhân viên thất bại**
-- Phương thức `saveStaff()` trả về `false` cho `btnThemClick()`.
-- Lớp StaffManagePage hiển thị showMessage("Thêm nhân viên thất bại.")
-
-**Ngoại lệ: nhân viên đang xử lý order**
-- Phương thức `deleteStaff()`` trả về `false` cho `btnXoaClick()`.
-- Lớp StaffManagePage hiển thị showMessage("Nhân viên đang xử lý order, không thể xóa.")

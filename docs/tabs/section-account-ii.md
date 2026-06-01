@@ -236,16 +236,6 @@ E1 --> B1 : 7: trả về User + Session
 deactivate E1
 B1 --> KH : 8: chuyển hướng trang chủ, hiển thị "Đăng nhập thành công"
 deactivate B1
-
-alt Ngoại lệ: tài khoản không tồn tại
-  E1 --> B1 : trả về null
-  B1 --> KH : hiển thị "Tài khoản không tồn tại"
-end
-
-alt Ngoại lệ: mật khẩu sai
-  E1 --> B1 : trả về sai mật khẩu
-  B1 --> KH : hiển thị "Mật khẩu không chính xác. Còn [N] lần thử"
-end
 @enduml
 ```
 
@@ -263,16 +253,6 @@ end
 7. Lớp User gọi hàm `checkPassword()` để so sánh mật khẩu.
 8. Lớp User trả kết quả về cho LoginView.
 9. Lớp LoginView hiển thị "Đăng nhập thành công" và chuyển hướng trang chủ.
-
-**Ngoại lệ: tài khoản không tồn tại**
-
-- Lớp User trả về null.
-- Lớp LoginView hiển thị "Tài khoản không tồn tại. Vui lòng kiểm tra lại."
-
-**Ngoại lệ: mật khẩu sai**
-
-- Lớp User trả về mật khẩu không khớp.
-- Lớp LoginView hiển thị "Mật khẩu không chính xác. Còn [N] lần thử."
 
 #### UC02 – Đăng ký
 
@@ -389,16 +369,6 @@ deactivate B2
 14. Lớp OTPVerifyView gọi hàm `saveUser()` của đối tượng User để hoàn tất đăng ký.
 15. Lớp OTPVerifyView hiển thị "Đăng ký thành công!"
 
-**Ngoại lệ: SĐT đã tồn tại**
-
-- Lớp User trả về SĐT đã tồn tại.
-- Lớp RegisterView hiển thị "SĐT này đã được sử dụng."
-
-**Ngoại lệ: OTP sai**
-
-- Lớp OTP trả về mã không hợp lệ.
-- Lớp OTPVerifyView hiển thị "Mã OTP không đúng. Vui lòng thử lại."
-
 #### UC03 – Đổi mật khẩu
 
 ```plantuml
@@ -493,16 +463,6 @@ deactivate B1
 10. Lớp User gọi hàm `revokeAllSessions()` để thu hồi tất cả session.
 11. Lớp User trả kết quả về cho ChangePasswordView.
 12. Lớp ChangePasswordView hiển thị "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."
-
-**Ngoại lệ: MK hiện tại sai**
-
-- Lớp User trả về mật khẩu không khớp.
-- Lớp ChangePasswordView hiển thị "Mật khẩu hiện tại không chính xác."
-
-**Ngoại lệ: MK mới không đủ mạnh**
-
-- Lớp User trả về lỗi validation.
-- Lớp ChangePasswordView highlight ô và hiển thị yêu cầu còn thiếu.
 
 #### UC04 – Quản lý thông tin cá nhân
 
@@ -600,11 +560,6 @@ deactivate B1
 10. Lớp User trả kết quả về cho ProfileView.
 11. Lớp ProfileView hiển thị "Cập nhật thành công!"
 
-**Ngoại lệ: Email đã được dùng**
-
-- Lớp User trả về email đã tồn tại.
-- Lớp ProfileView hiển thị "Email này đã được đăng ký bởi tài khoản khác."
-
 #### UC20 – Quản lý tài khoản nhân viên
 
 ```plantuml
@@ -699,13 +654,3 @@ deactivate B1
 8. Lớp Employee gọi hàm `save()` để lưu nhân viên mới.
 9. Lớp Employee trả kết quả về cho StaffManageView.
 10. Lớp StaffManageView hiển thị "Thêm nhân viên thành công!"
-
-**Ngoại lệ: SĐT đã tồn tại**
-
-- Lớp Employee trả về lỗi trùng SĐT.
-- Lớp StaffManageView hiển thị "SĐT này đã được sử dụng."
-
-**Ngoại lệ: Nhân viên đang xử lý order**
-
-- Lớp Employee trả về lỗi không thể xóa.
-- Lớp StaffManageView hiển thị cảnh báo "Nhân viên đang xử lý order, không thể xóa."
