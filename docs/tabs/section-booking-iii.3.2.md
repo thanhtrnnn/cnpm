@@ -26,7 +26,7 @@ a) Tìm phòng trống => `searchFreeRoom()`
   - `searchFreeRoom(startTime: Date, endTime: Date, branchId: int, roomType: String)` → chọn (thêm filter loại phòng)
 - Ứng viên tham số ra:
   - `searchFreeRoom(): void` → loại (cần trả về danh sách)
-  - `searchFreeRoom(): List<Phong>` → chọn (trả về danh sách phòng)
+  - `searchFreeRoom(): List<Room>` → chọn (trả về danh sách phòng)
 
 b) Tìm khách hàng => `searchClient()`
 - Input: tên hoặc số điện thoại
@@ -34,7 +34,7 @@ b) Tìm khách hàng => `searchClient()`
 - Ứng viên tham số vào:
   - `searchClient(keyword: String)` → chọn (tìm theo cả tên và SĐT)
 - Ứng viên tham số ra:
-  - `searchClient(): List<KhachHang>` → chọn
+  - `searchClient(): List<Client>` → chọn
 
 c) Tạo booking => `createBooking()`
 - Input: mã khách hàng, mã phòng, thời gian bắt đầu, thời gian kết thúc, mã nhân viên
@@ -50,7 +50,7 @@ d) Thay đổi trạng thái phòng => `updateRoomStatus()`
 - Ứng viên tham số vào:
   - `updateRoomStatus(roomId: int, status: String)` → chọn
 - Ứng viên tham số ra:
-  - `updateRoomStatus(): Phong` → chọn
+  - `updateRoomStatus(): Room` → chọn
 
 **3. Tầng thực thể (Entity)**
 
@@ -91,7 +91,7 @@ b) Xác nhận check-in => `checkIn()`
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
 | **Room** | roomID, name, status | ManyToOne→Branch |
-| **Customer** | customerID, name, phone_number | — |
+| **Client** | clientID, name, phone_number, account_status, rankingID | ManyToOne→MemberRanking |
 
 ### c) Chức năng Check-out
 
@@ -110,7 +110,7 @@ a) Lấy danh sách phòng đang hoạt động => `getActiveRooms()`
 - Ứng viên tham số vào:
   - `getActiveRooms(branchId: int)` → chọn
 - Ứng viên tham số ra:
-  - `getActiveRooms(): List<Phong>` → chọn
+  - `getActiveRooms(): List<Room>` → chọn
 
 b) Tính tiền hóa đơn => `calculateInvoice()`
 - Input: mã booking
@@ -118,7 +118,7 @@ b) Tính tiền hóa đơn => `calculateInvoice()`
 - Ứng viên tham số vào:
   - `calculateInvoice(bookingId: int)` → chọn
 - Ứng viên tham số ra:
-  - `calculateInvoice(): HoaDon` → chọn
+  - `calculateInvoice(): Room_receipt` → chọn
 
 c) Xác nhận thanh toán => `confirmPayment()`
 - Input: mã hóa đơn, phương thức thanh toán, mã voucher (nếu có)
@@ -126,7 +126,7 @@ c) Xác nhận thanh toán => `confirmPayment()`
 - Ứng viên tham số vào:
   - `confirmPayment(invoiceId: int, paymentMethod: String, voucherCode: String)` → chọn
 - Ứng viên tham số ra:
-  - `confirmPayment(): HoaDon` → chọn
+  - `confirmPayment(): Room_receipt` → chọn
 
 **3. Tầng thực thể (Entity)**
 
@@ -135,6 +135,7 @@ c) Xác nhận thanh toán => `confirmPayment()`
 | **Room_receipt** | room_receipt_ID, room_fee, service_fee, discount, status, payment_method | ManyToOne→Client, ManyToOne→Room |
 | **Room_receipt_detail** | room_receipt_detail_ID, service_name, base_price, quantity, duration, total | ManyToOne→Room_receipt |
 | **Promotion** | promotionID, name, type, redeem, valid_until | — |
+| **Apply_promotion** | apply_promotion_ID, room_receipt_ID, promotionID, discount | ManyToOne→Room_receipt, ManyToOne→Promotion |
 
 ### d) Chức năng Huỷ phòng
 
@@ -167,7 +168,7 @@ b) Hủy booking => `cancelBooking()`
 | Entity | Thuộc tính chính | Quan hệ |
 |--------|-----------------|---------|
 | **Room** | roomID, name, status | — |
-| **Customer** | customerID, name, phone_number | — |
+| **Client** | clientID, name, phone_number, account_status, rankingID | ManyToOne→MemberRanking |
 
 ### Sơ đồ lớp thiết kế
 
@@ -381,6 +382,12 @@ package "<<Entity>>" #FFF3E0 {
     -base_score: bigint
     -coupon: int
   }
+  class Apply_promotion {
+    -apply_promotion_ID: int
+    -room_receipt_ID: int
+    -promotionID: int
+    -discount: float
+  }
 }
 
 ' Boundary -> Control
@@ -405,6 +412,8 @@ InvoiceController --> Room_receipt_detail
 Branch *-- "n" Room
 MemberRanking o-- "1" Client
 Room_receipt *-- "n" Room_receipt_detail
+Room_receipt o-- "n" Apply_promotion
+Apply_promotion o-- "n" Promotion
 Client o-- "n" Room_receipt
 Room o-- "n" Room_receipt
 @enduml

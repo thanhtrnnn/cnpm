@@ -154,6 +154,13 @@ class Promotion {
   -ngayKetThuc : Date
 }
 
+class Apply_promotion {
+  -id : int
+  -hoaDon : Room_receipt
+  -khuyenMai : Promotion
+  -giamGia : double
+}
+
 Branch *-- "n" Room
 Branch o-- "n" Employee
 Client o-- "1" MemberRanking
@@ -161,6 +168,7 @@ Room_receipt *-- "n" Room_receipt_detail
 Client o-- "n" Room_receipt
 Room o-- "n" Room_receipt
 Employee o-- "n" Room_receipt
-Room_receipt o-- "n" Promotion
+Room_receipt o-- "n" Apply_promotion
+Apply_promotion o-- "n" Promotion
 @enduml
 ```
