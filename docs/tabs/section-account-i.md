@@ -182,37 +182,37 @@ Admin --> UC20
 ### 6. Quy trình nghiệp vụ từng chức năng
 
 Chức năng "Đăng nhập":
-Truy cập trang đăng nhập → Hiển thị form gồm ô SĐT/Email, ô Mật khẩu, nút [Đăng nhập] → Người dùng nhập SĐT và Mật khẩu → Nhấn [Đăng nhập] → Hệ thống kiểm tra định dạng đầu vào → Hệ thống truy vấn CSDL tìm tài khoản theo SĐT/Email → So sánh mật khẩu đã mã hóa → Xác thực thành công → Tạo session → Chuyển hướng đến trang chủ tương ứng vai trò
+Khách hàng truy cập trang /login → Hệ thống hiển thị form đăng nhập gồm ô SĐT/Email, ô Mật khẩu, nút [Đăng nhập] → Khách hàng nhập SĐT và mật khẩu, nhấn [Đăng nhập] → Hệ thống kiểm tra tài khoản tồn tại và mật khẩu khớp → Hệ thống tạo phiên đăng nhập, chuyển hướng đến trang chủ → Khách hàng thấy thông báo "Đăng nhập thành công"
 
 Chức năng "Quên mật khẩu":
-Nhấn liên kết "Quên mật khẩu?" → Hiển thị form nhập SĐT → Người dùng nhập SĐT → Hệ thống kiểm tra SĐT tồn tại → Gửi OTP 6 chữ số đến SĐT → Hiển thị form xác nhận OTP → Người dùng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực → Hiển thị form nhập mật khẩu mới → Người dùng nhập mật khẩu mới → Hệ thống mã hóa và cập nhật → Thông báo "Đổi mật khẩu thành công" → Chuyển hướng về trang đăng nhập
+Khách hàng nhấn liên kết "Quên mật khẩu?" → Hệ thống hiển thị form nhập SĐT → Khách hàng nhập SĐT, nhấn [Gửi OTP] → Hệ thống gửi mã OTP 6 số đến SĐT, hiển thị form xác nhận OTP → Khách hàng nhập mã OTP, nhấn [Xác nhận] → Hệ thống xác minh OTP, hiển thị form nhập mật khẩu mới → Khách hàng nhập mật khẩu mới, nhấn [Lưu] → Hệ thống cập nhật mật khẩu, thông báo "Đổi mật khẩu thành công" → Khách hàng được chuyển về trang đăng nhập
 
 Chức năng "Đăng ký":
-Nhấn "Đăng ký" từ trang đăng nhập → Hiển thị form gồm Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK → Người dùng nhập thông tin → Nhấn [Tiếp tục] → Hệ thống kiểm tra định dạng → Kiểm tra SĐT chưa tồn tại → Kiểm tra email chưa tồn tại → Gửi OTP 6 chữ số đến SĐT → Hiển thị form xác nhận OTP → Người dùng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực (≤ 5 phút) → Tạo tài khoản mới, hạng "Thường", điểm = 0 → Đăng nhập tự động → Thông báo "Đăng ký thành công!"
+Khách hàng nhấn "Đăng ký" từ trang đăng nhập → Hệ thống hiển thị form gồm Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK → Khách hàng nhập đầy đủ thông tin, nhấn [Tiếp tục] → Hệ thống kiểm tra SĐT và email chưa tồn tại, gửi OTP đến SĐT → Hệ thống hiển thị form xác nhận OTP → Khách hàng nhập mã OTP, nhấn [Xác nhận] → Hệ thống tạo tài khoản hạng "Thường", tự động đăng nhập → Khách hàng thấy thông báo "Đăng ký thành công!"
 
 Chức năng "Đổi mật khẩu":
-Truy cập mục "Bảo mật" trong cài đặt → Hiển thị form gồm MK hiện tại, MK mới, Xác nhận MK mới → Người dùng nhập thông tin → Nhấn [Lưu thay đổi] → Hệ thống xác minh MK hiện tại khớp CSDL → Kiểm tra MK mới: độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt → Kiểm tra MK mới ≠ MK hiện tại → Mã hóa (bcrypt) và cập nhật → Thu hồi tất cả session khác → Thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại." → Chuyển hướng về trang đăng nhập
+Người dùng truy cập mục "Bảo mật" → Hệ thống hiển thị form gồm MK hiện tại, MK mới, Xác nhận MK mới → Người dùng nhập đầy đủ, nhấn [Lưu thay đổi] → Hệ thống xác minh MK hiện tại đúng, kiểm tra MK mới hợp lệ → Hệ thống cập nhật mật khẩu, thu hồi các session khác → Người dùng thấy thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại." → Hệ thống chuyển về trang đăng nhập
 
 Chức năng "Xem hồ sơ cá nhân":
-Nhấn vào ảnh đại diện / tên tài khoản → Hệ thống truy vấn CSDL lấy thông tin người dùng → Hiển thị "Hồ sơ cá nhân": Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, Ngày tham gia
+Khách hàng nhấn vào ảnh đại diện / tên tài khoản → Hệ thống truy xuất thông tin, hiển thị trang hồ sơ gồm Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, Ngày tham gia → Khách hàng xem thông tin cá nhân
 
 Chức năng "Chỉnh sửa thông tin cá nhân":
-Nhấn [Chỉnh sửa thông tin] → Chuyển sang chế độ chỉnh sửa: Họ tên, Email có thể nhập; SĐT bị khóa → Người dùng cập nhật thông tin → Nhấn [Lưu thay đổi] → Hệ thống kiểm tra email hợp lệ và chưa được dùng → Cập nhật vào CSDL → Thông báo "Cập nhật thành công!" → Quay về chế độ xem
+Khách hàng nhấn [Chỉnh sửa thông tin] → Hệ thống chuyển sang chế độ chỉnh sửa, Họ tên và Email cho phép sửa, SĐT bị khóa → Khách hàng sửa thông tin, nhấn [Lưu] → Hệ thống kiểm tra email hợp lệ và chưa trùng → Hệ thống cập nhật hồ sơ → Khách hàng thấy thông báo "Cập nhật thành công!"
 
-Chức năng "Đổi SĐT" (từ UC04):
-Nhấn "Thay đổi SĐT" → Hiển thị form nhập SĐT mới → Người dùng nhập SĐT mới → Hệ thống gửi OTP đến SĐT hiện tại → Người dùng nhập OTP → Hệ thống xác minh OTP → Gửi OTP mới đến SĐT mới → Người dùng nhập OTP mới → Hệ thống xác minh → Cập nhật SĐT trong CSDL
+Chức năng "Đổi SĐT":
+Khách hàng nhấn "Thay đổi SĐT" → Hệ thống hiển thị form nhập SĐT mới → Khách hàng nhập SĐT mới → Hệ thống gửi OTP đến SĐT hiện tại → Khách hàng nhập OTP, nhấn [Xác nhận] → Hệ thống xác minh OTP, gửi OTP mới đến SĐT mới → Khách hàng nhập OTP mới → Hệ thống xác minh và cập nhật SĐT → Khách hàng thấy thông báo "Đổi SĐT thành công"
 
 Chức năng "Xem danh sách nhân viên":
-Truy cập "Quản lý nhân viên" → Hệ thống truy vấn CSDL lấy danh sách nhân viên → Hiển thị bảng danh sách: Họ tên, Vai trò, Trạng thái → Có ô tìm kiếm để lọc
+Admin truy cập trang "Quản lý nhân viên" → Hệ thống hiển thị bảng danh sách nhân viên gồm Họ tên, Vai trò, Trạng thái, kèm ô tìm kiếm → Admin xem danh sách, nhập từ khóa để lọc nếu cần
 
 Chức năng "Thêm nhân viên":
-Nhấn [Thêm nhân viên] → Hiển thị form nhập Họ tên, Vai trò → Admin nhập thông tin → Nhấn [Lưu] → Hệ thống kiểm tra SĐT chưa tồn tại → Tạo tài khoản nhân viên trong CSDL → Thông báo "Thêm nhân viên thành công!" → Cập nhật bảng danh sách
+Admin nhấn [Thêm nhân viên] → Hệ thống hiển thị form nhập Họ tên, SĐT, Vai trò → Admin nhập thông tin, nhấn [Lưu] → Hệ thống kiểm tra SĐT chưa tồn tại, tạo tài khoản nhân viên → Admin thấy thông báo "Thêm nhân viên thành công!", bảng danh sách tự cập nhật
 
 Chức năng "Sửa nhân viên":
-Nhấn [Sửa] trên một dòng nhân viên → Hiển thị form chỉnh sửa thông tin → Admin sửa thông tin → Nhấn [Lưu] → Hệ thống cập nhật vào CSDL → Thông báo "Cập nhật thành công!" → Cập nhật bảng danh sách
+Admin nhấn [Sửa] trên một dòng nhân viên → Hệ thống hiển thị form điền sẵn thông tin nhân viên → Admin sửa thông tin, nhấn [Lưu] → Hệ thống cập nhật vào CSDL → Admin thấy thông báo "Cập nhật thành công!", bảng danh sách tự cập nhật
 
 Chức năng "Xóa nhân viên":
-Nhấn [Xóa] trên một dòng nhân viên → Hiển thị xác nhận "Bạn có chắc muốn xóa?" → Admin xác nhận → Hệ thống kiểm tra nhân viên không đang xử lý order → Chuyển trạng thái "Đã nghỉ" trong CSDL → Thông báo "Xóa nhân viên thành công!" → Cập nhật bảng danh sách
+Admin nhấn [Xóa] trên một dòng nhân viên → Hệ thống hiển thị hộp thoại xác nhận → Admin nhấn [Xác nhận] → Hệ thống kiểm tra nhân viên không đang xử lý order, chuyển trạng thái "Đã nghỉ" → Admin thấy thông báo "Xóa nhân viên thành công!", bảng danh sách tự cập nhật
 
 ### 7. Biểu đồ Use Case chi tiết
 
