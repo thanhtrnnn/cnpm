@@ -168,35 +168,35 @@ Admin --> UC20
 
 ### 5. Mô tả từng Use Case
 
-**UC01 – Đăng nhập:** UC này cho phép Khách hàng, Nhân viên hoặc Chủ doanh nghiệp xác thực danh tính vào hệ thống. Người dùng nhập SĐT/Email và mật khẩu, hệ thống kiểm tra và chuyển hướng đến trang chủ tương ứng với vai trò.
+1. **UC01 – Đăng nhập:** UC này cho phép Khách hàng, Nhân viên hoặc Chủ doanh nghiệp xác thực danh tính vào hệ thống. Người dùng nhập SĐT/Email và mật khẩu, hệ thống kiểm tra và chuyển hướng đến trang chủ tương ứng với vai trò.
 
-**UC02 – Đăng ký:** UC này cho phép Khách hàng tạo tài khoản hội viên mới bằng cách cung cấp họ tên, SĐT, email và mật khẩu. Hệ thống gửi OTP 6 chữ số đến SĐT để xác minh trước khi hoàn tất đăng ký. Sau khi đăng ký thành công, hệ thống tự động đăng nhập.
+2. **UC02 – Đăng ký:** UC này cho phép Khách hàng tạo tài khoản hội viên mới bằng cách cung cấp họ tên, SĐT, email và mật khẩu. Hệ thống gửi OTP 6 chữ số đến SĐT để xác minh trước khi hoàn tất đăng ký. Sau khi đăng ký thành công, hệ thống tự động đăng nhập.
 
-**UC03 – Đổi mật khẩu:** UC này cho phép người dùng đã đăng nhập (Khách hàng, Nhân viên) thay đổi mật khẩu bằng cách xác minh mật khẩu hiện tại, nhập mật khẩu mới (độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt). Sau khi đổi, tất cả session khác bị thu hồi. UC này được kích hoạt từ UC01 (trang cá nhân → Bảo mật).
+3. **UC03 – Đổi mật khẩu:** UC này cho phép người dùng đã đăng nhập (Khách hàng, Nhân viên) thay đổi mật khẩu bằng cách xác minh mật khẩu hiện tại, nhập mật khẩu mới (độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt). Sau khi đổi, tất cả session khác bị thu hồi.
 
-**UC04 – Quản lý thông tin cá nhân:** UC này cho phép Khách hàng xem hồ sơ cá nhân (họ tên, SĐT, email, hạng hội viên, điểm tích lũy) và cập nhật thông tin (họ tên, email). SĐT bị khóa, muốn đổi phải xác minh OTP.
+4. **UC04 – Quản lý thông tin cá nhân:** UC này cho phép Khách hàng xem hồ sơ cá nhân (họ tên, SĐT, email, hạng hội viên, điểm tích lũy) và cập nhật thông tin (họ tên, email). SĐT bị khóa, muốn đổi phải xác minh OTP.
 
-**UC20 – Quản lý tài khoản nhân viên:** UC này cho phép Chủ doanh nghiệp quản lý tài khoản nhân viên toàn hệ thống: xem danh sách, thêm mới, chỉnh sửa và xóa (chuyển trạng thái "Đã nghỉ"). Không thể xóa nhân viên đang xử lý order.
+5. **UC20 – Quản lý tài khoản nhân viên:** UC này cho phép Chủ doanh nghiệp quản lý tài khoản nhân viên toàn hệ thống: xem danh sách, thêm mới, chỉnh sửa và xóa (chuyển trạng thái "Đã nghỉ"). Không thể xóa nhân viên đang xử lý order.
 
 ### 6. Quy trình nghiệp vụ từng chức năng
 
 Chức năng "Đăng nhập":
-Người dùng mở trang đăng nhập → Hệ thống hiển thị form nhập SĐT/Email và Mật khẩu → Người dùng nhập thông tin và nhấn Đăng nhập → Hệ thống kiểm tra tài khoản tồn tại trong CSDL → Hệ thống so sánh mật khẩu đã mã hóa → Hệ thống tạo phiên đăng nhập, chuyển người dùng đến trang chủ tương ứng vai trò
+Người dùng mở trang đăng nhập → Hệ thống yêu cầu nhập thông tin đăng nhập → Người dùng nhập SĐT/Email và mật khẩu → Hệ thống kiểm tra tài khoản tồn tại trong CSDL → Hệ thống so sánh mật khẩu đã mã hóa → Thành công: hệ thống tạo phiên đăng nhập, chuyển người dùng đến trang chủ tương ứng vai trò / Thất bại: hệ thống thông báo sai thông tin đăng nhập
 
 Chức năng "Quên mật khẩu":
-Người dùng nhấn liên kết "Quên mật khẩu?" → Hệ thống hiển thị form nhập SĐT → Người dùng nhập SĐT → Hệ thống kiểm tra SĐT tồn tại → Hệ thống gửi mã OTP 6 chữ số đến SĐT → Người dùng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực → Hệ thống hiển thị form nhập mật khẩu mới → Người dùng nhập mật khẩu mới → Hệ thống mã hóa và cập nhật mật khẩu → Hệ thống thông báo đổi mật khẩu thành công
+Người dùng yêu cầu khôi phục mật khẩu → Hệ thống yêu cầu nhập SĐT → Người dùng nhập SĐT → Hệ thống kiểm tra SĐT tồn tại → Hệ thống gửi mã OTP đến SĐT → Người dùng nhập mã OTP → Hệ thống xác minh OTP hợp lệ → Hệ thống yêu cầu nhập mật khẩu mới → Người dùng nhập mật khẩu mới → Hệ thống cập nhật mật khẩu vào CSDL → Hệ thống thông báo đổi mật khẩu thành công
 
 Chức năng "Đăng ký":
-Khách hàng mở trang đăng ký → Hệ thống hiển thị form nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận MK → Khách hàng nhập đầy đủ thông tin → Hệ thống kiểm tra SĐT và email chưa tồn tại trong CSDL → Hệ thống gửi mã OTP 6 chữ số đến SĐT → Khách hàng nhập mã OTP → Hệ thống xác minh OTP đúng và còn hiệu lực → Hệ thống tạo tài khoản mới hạng "Thường", điểm tích lũy = 0 → Hệ thống tự động đăng nhập cho khách hàng
+Khách hàng mở trang đăng ký → Hệ thống yêu cầu nhập thông tin đăng ký → Khách hàng nhập họ tên, SĐT, email, mật khẩu → Hệ thống kiểm tra SĐT và email chưa tồn tại trong CSDL → Hệ thống gửi mã OTP đến SĐT → Khách hàng nhập mã OTP → Hệ thống xác minh OTP hợp lệ → Hệ thống tạo tài khoản mới hạng "Thường", điểm tích lũy bằng 0 → Hệ thống tự động đăng nhập cho khách hàng
 
 Chức năng "Đổi mật khẩu":
-Người dùng mở trang bảo mật → Hệ thống hiển thị form nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới → Người dùng nhập đầy đủ thông tin → Hệ thống xác minh mật khẩu hiện tại khớp CSDL → Hệ thống kiểm tra mật khẩu mới hợp lệ (độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt) → Hệ thống mã hóa mật khẩu mới và cập nhật → Hệ thống thu hồi tất cả phiên đăng nhập khác → Hệ thống thông báo đổi mật khẩu thành công
+Người dùng mở trang bảo mật → Hệ thống yêu cầu nhập mật khẩu hiện tại và mật khẩu mới → Người dùng nhập đầy đủ thông tin → Hệ thống xác minh mật khẩu hiện tại khớp CSDL → Hệ thống kiểm tra mật khẩu mới hợp lệ → Hệ thống cập nhật mật khẩu mới vào CSDL → Hệ thống thu hồi tất cả phiên đăng nhập khác → Hệ thống thông báo đổi mật khẩu thành công
 
 Chức năng "Quản lý thông tin cá nhân":
-Khách hàng mở trang hồ sơ cá nhân → Hệ thống truy xuất thông tin từ CSDL và hiển thị: Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy, Ngày tham gia → Khách hàng nhấn chỉnh sửa, cập nhật Họ tên và Email → Hệ thống kiểm tra email hợp lệ và chưa được dùng → Hệ thống cập nhật hồ sơ vào CSDL → Hệ thống thông báo cập nhật thành công
+Khách hàng mở trang hồ sơ cá nhân → Hệ thống truy xuất và hiển thị thông tin từ CSDL → Khách hàng chọn chỉnh sửa và cập nhật họ tên, email → Hệ thống kiểm tra email hợp lệ và chưa được dùng → Hệ thống cập nhật hồ sơ vào CSDL → Hệ thống thông báo cập nhật thành công
 
 Chức năng "Quản lý tài khoản nhân viên":
-Admin mở trang quản lý nhân viên → Hệ thống hiển thị danh sách nhân viên với Họ tên, Vai trò, Trạng thái → Admin nhấn thêm nhân viên, nhập Họ tên, SĐT, Vai trò → Hệ thống kiểm tra SĐT chưa tồn tại, tạo tài khoản nhân viên → Admin nhấn sửa trên một dòng nhân viên, cập nhật thông tin → Hệ thống lưu thay đổi vào CSDL → Admin nhấn xóa trên một dòng nhân viên → Hệ thống kiểm tra nhân viên không đang xử lý order → Hệ thống chuyển trạng thái "Đã nghỉ"
+Admin mở trang quản lý nhân viên → Hệ thống hiển thị danh sách nhân viên → Admin chọn thêm nhân viên, nhập thông tin → Hệ thống kiểm tra SĐT chưa tồn tại, tạo tài khoản nhân viên → Admin chọn sửa nhân viên, cập nhật thông tin → Hệ thống lưu thay đổi vào CSDL → Admin chọn xóa nhân viên → Hệ thống kiểm tra nhân viên không đang xử lý order → Hệ thống chuyển trạng thái "Đã nghỉ"
 
 ### 7. Biểu đồ Use Case chi tiết
 

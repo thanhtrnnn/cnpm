@@ -44,11 +44,7 @@ DIAGRAM_MAP = {
     'account_uc_detail_staff': 'output/diagrams/account_uc_detail_staff.png',
     # Phase II — Analysis
     'account_entity_analysis': 'output/diagrams/account_entity_analysis.png',
-    'account_bce_login': 'output/diagrams/account_bce_login.png',
-    'account_bce_register': 'output/diagrams/account_bce_register.png',
-    'account_bce_changepw': 'output/diagrams/account_bce_changepw.png',
-    'account_bce_profile': 'output/diagrams/account_bce_profile.png',
-    'account_bce_staff': 'output/diagrams/account_bce_staff.png',
+    'account_class_analysis': 'output/diagrams/account_class_analysis.png',
     'account_seq_login_analysis': 'output/diagrams/account_seq_login_analysis.png',
     'account_seq_register_analysis': 'output/diagrams/account_seq_register_analysis.png',
     'account_seq_changepw_analysis': 'output/diagrams/account_seq_changepw_analysis.png',
@@ -209,13 +205,20 @@ def parse_inline_html_table(text):
 def add_scenario_table(doc, rows):
     if not rows or len(rows[0]) < 2:
         return
-    table = doc.add_table(rows=len(rows), cols=2)
+    # Detect if first row is a generic header (Trường/Nội dung) vs old format (Use case/Actor)
+    first_cell_lower = rows[0][0].lower().strip().replace('*', '')
+    is_generic_header = first_cell_lower in ['trường', 'field']
+    start_row = 1 if is_generic_header else 0
+    data_rows = rows[start_row:]
+    if not data_rows:
+        return
+    table = doc.add_table(rows=len(data_rows), cols=2)
     table.style = 'Table Grid'
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     for row in table.rows:
         row.cells[0].width = Cm(5)
         row.cells[1].width = Cm(12)
-    for ri, row in enumerate(rows):
+    for ri, row in enumerate(data_rows):
         for ci in range(2):
             cell = table.cell(ri, ci)
             cell.text = ''
@@ -408,8 +411,9 @@ def process_file(doc, md_file):
             if not in_table:
                 in_table = True
                 cells = [c.strip() for c in stripped.split('|')[1:-1]]
-                is_scenario_table = (len(cells) == 2 and any(
-                    kw in cells[0].lower() for kw in ['use case', 'actor', 'tiền', 'hậu', 'kịch', 'ngoại']
+                is_scenario_table = (len(cells) == 2 and (
+                    any(kw in cells[0].lower() for kw in ['use case', 'actor', 'tiền', 'hậu', 'kịch', 'ngoại'])
+                    or cells[0].lower().strip() in ['trường', 'field']
                 ))
             cells = [c.strip() for c in stripped.split('|')[1:-1]]
             current_table.append(cells)
