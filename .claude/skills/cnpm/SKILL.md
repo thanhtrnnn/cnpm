@@ -174,6 +174,7 @@ Sau mỗi pha, hỏi: *"Pha [X] đã hoàn thành. Bạn có muốn điều ch�
 - Bảng Markdown chuẩn, có header rõ ràng.
 - PlantUML đặt trong code block plantuml.
 - Wireframe dùng ASCII box diagram (xem ví dụ trong `references/module-phases.md`).
+- **Test case PHẢI có CSDL trước/sau** — liệt kê dữ liệu mẫu cụ thể cho MỌI bảng DB liên quan. Kết quả mong đợi PHẢI liệt kê TOÀN BỘ UI elements khi sang giao diện mới. Xem `references/iv_kiemthu.md`.
 
 ### Quy tắc Columns (BẮT BUỘC cho Notion output)
 
