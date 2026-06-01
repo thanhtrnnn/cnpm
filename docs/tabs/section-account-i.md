@@ -38,3 +38,65 @@
 
 <!-- PLACEHOLDER: account_uc_overview -->
 <!-- File: output/diagrams/account_uc_overview.png -->
+
+```plantuml
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Khách hàng" as KH
+actor "Nhân viên" as NV
+actor "Chủ DN (Admin)" as Admin
+
+package "Module: Tài khoản & Thành viên" {
+  usecase "UC01 – Đăng nhập" as UC01
+  usecase "UC02 – Đăng ký" as UC02
+  usecase "UC03 – Đổi mật khẩu" as UC03
+  usecase "UC04 – Quản lý TTCN" as UC04
+  usecase "UC20 – Quản lý NV" as UC20
+
+  usecase "Nhập TK + MK" as UC01_1
+  usecase "Xác thực" as UC01_2
+  usecase "Quên MK" as UC01_3
+  usecase "Điền thông tin" as UC02_1
+  usecase "Xác nhận OTP" as UC02_2
+  usecase "Xác minh MK cũ" as UC03_1
+  usecase "Xem hồ sơ" as UC04_1
+  usecase "Chỉnh sửa" as UC04_2
+  usecase "Xem DS NV" as UC20_1
+  usecase "Thêm/Sửa/Xóa NV" as UC20_2
+
+  UC01 .> UC01_1 : <<include>>
+  UC01 .> UC01_2 : <<include>>
+  UC01_3 .> UC01 : <<extend>>
+  UC02 .> UC02_1 : <<include>>
+  UC02 .> UC02_2 : <<include>>
+  UC03 .> UC03_1 : <<include>>
+  UC04 .> UC04_1 : <<include>>
+  UC04_2 .> UC04 : <<extend>>
+  UC20 .> UC20_1 : <<include>>
+  UC20_2 .> UC20 : <<extend>>
+}
+
+KH --> UC01
+KH --> UC02
+KH --> UC03
+KH --> UC04
+NV --> UC01
+NV --> UC03
+Admin --> UC01
+Admin --> UC20
+@enduml
+```
+
+### 5. Mô tả từng Use Case
+
+**UC01 – Đăng nhập:** UC này cho phép Khách hàng, Nhân viên hoặc Chủ doanh nghiệp xác thực danh tính vào hệ thống. Người dùng nhập SĐT/Email và mật khẩu, hệ thống kiểm tra và chuyển hướng đến trang chủ tương ứng với vai trò.
+
+**UC02 – Đăng ký:** UC này cho phép Khách hàng tạo tài khoản hội viên mới bằng cách cung cấp họ tên, SĐT, email và mật khẩu. Hệ thống gửi OTP 6 chữ số đến SĐT để xác minh trước khi hoàn tất đăng ký.
+
+**UC03 – Đổi mật khẩu:** UC này cho phép người dùng đã đăng nhập thay đổi mật khẩu bằng cách xác minh mật khẩu hiện tại, nhập mật khẩu mới (độ dài ≥ 8, có chữ hoa/thường/số/đặc biệt). Sau khi đổi, tất cả session khác bị thu hồi.
+
+**UC04 – Quản lý thông tin cá nhân:** UC này cho phép Khách hàng xem hồ sơ cá nhân (họ tên, SĐT, email, hạng hội viên, điểm tích lũy) và cập nhật thông tin (họ tên, email). SĐT bị khóa, muốn đổi phải xác minh OTP.
+
+**UC20 – Quản lý tài khoản nhân viên:** UC này cho phép Chủ doanh nghiệp quản lý tài khoản nhân viên toàn hệ thống: xem danh sách, thêm mới, chỉnh sửa và xóa (chuyển trạng thái "Đã nghỉ"). Không thể xóa nhân viên đang xử lý order.

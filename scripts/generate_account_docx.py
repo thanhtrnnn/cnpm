@@ -35,6 +35,7 @@ FILES = [
 ]
 
 DIAGRAM_MAP = {
+    'account_uc_overview': 'output/diagrams/account_uc_overview.png',
     'account_entity_class': 'output/diagrams/account_entity_class.png',
     'account_erd': 'output/diagrams/account_erd.png',
     'account_entity_analysis': 'output/diagrams/account_entity_analysis.png',

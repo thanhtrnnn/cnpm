@@ -216,3 +216,113 @@ tblNguoiDung
 | 4. Hiển thị lỗi | "Mật khẩu hiện tại không chính xác." |
 
 **Trạng thái CSDL sau:** Không thay đổi.
+
+---
+
+#### TC03: Mật khẩu sai 5 lần → khóa tài khoản
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai | matKhau | soLanSai | thoiGianKhoa |
+|----|-------|-------------|---------|----------|--------------|
+| 1 | Nguyễn Văn A | 0912345678 | $2a$10$hashAbc@1234 | 0 | null |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Mở màn hình Đăng nhập | Hiển thị form |
+| 2. Nhập: 0912345678 / SaiPass1 | Mật khẩu sai, soLanSai = 1 |
+| 3. Nhập: 0912345678 / SaiPass2 | Mật khẩu sai, soLanSai = 2 |
+| 4. Nhập: 0912345678 / SaiPass3 | Mật khẩu sai, soLanSai = 3 |
+| 5. Nhập: 0912345678 / SaiPass4 | Mật khẩu sai, soLanSai = 4 |
+| 6. Nhập: 0912345678 / SaiPass5 | Mật khẩu sai, soLanSai = 5 → khóa 15 phút |
+| 7. Nhập: 0912345678 / Abc@1234 | "Tài khoản đã bị khóa. Vui lòng thử lại sau 15 phút." |
+
+**Trạng thái CSDL sau:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai | soLanSai | thoiGianKhoa |
+|----|-------|-------------|----------|--------------|
+| 1 | Nguyễn Văn A | 0912345678 | **5** | **2026-06-01 10:15** |
+
+---
+
+#### TC05: SĐT đã tồn tại khi đăng ký
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai | email |
+|----|-------|-------------|-------|
+| 1 | Nguyễn Văn A | 0912345678 | vana@email.com |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Nhấn "Đăng ký" | Hiển thị form đăng ký |
+| 2. Nhập: Họ tên = "Test", SĐT = "0912345678", Email = "test@email.com", MK = "Pass@2025" | Form đầy đủ |
+| 3. Nhấn [Tiếp tục] | Kiểm tra SĐT → đã tồn tại |
+| 4. Hiển thị lỗi | "SĐT này đã được sử dụng." |
+
+**Trạng thái CSDL sau:** Không thay đổi.
+
+---
+
+#### TC06: OTP sai 3 lần → hủy phiên
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai |
+|----|-------|-------------|
+| 1 | Nguyễn Văn A | 0912345678 |
+
+tblOTP
+| ma | maOTP | loai | thoiHanHetHan | daXacMinh | tblNguoiDungMa |
+|----|-------|------|---------------|-----------|----------------|
+| 1 | 482917 | DANG_KY | 2026-06-01 10:05 | false | 1 |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Nhập OTP = "111111" | Sai OTP, soLanSai = 1 |
+| 2. Nhập OTP = "222222" | Sai OTP, soLanSai = 2 |
+| 3. Nhập OTP = "333333" | Sai OTP, soLanSai = 3 → hủy phiên |
+| 4. Hiển thị lỗi | "Mã OTP sai 3 lần. Vui lòng đăng ký lại." |
+
+**Trạng thái CSDL sau:**
+
+tblOTP
+| ma | maOTP | loai | daXacMinh | tblNguoiDungMa |
+|----|-------|------|-----------|----------------|
+| 1 | 482917 | DANG_KY | **true** | 1 |
+
+tblNguoiDung: Tài khoản chưa tạo (đăng ký bị hủy).
+
+---
+
+#### TC10: Email đã được sử dụng khi cập nhật hồ sơ
+
+**Trạng thái CSDL trước:**
+
+tblNguoiDung
+| ma | hoTen | soDienThoai | email |
+|----|-------|-------------|-------|
+| 1 | Nguyễn Văn A | 0912345678 | vana@email.com |
+| 2 | Lê Thị B | 0987654321 | b.lt@email.com |
+
+**Kịch bản thực hiện:**
+
+| Kịch bản | Kết quả mong đợi |
+|----------|------------------|
+| 1. Nhấn vào hồ sơ cá nhân (user 1) | Hiển thị thông tin hiện tại |
+| 2. Nhấn [Chỉnh sửa] | Chế độ chỉnh sửa |
+| 3. Sửa Email = "b.lt@email.com" | Email trùng với user 2 |
+| 4. Nhấn [Lưu thay đổi] | Kiểm tra email → đã tồn tại |
+| 5. Hiển thị lỗi | "Email này đã được đăng ký bởi tài khoản khác." |
+
+**Trạng thái CSDL sau:** Không thay đổi.
