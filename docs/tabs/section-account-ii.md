@@ -9,9 +9,9 @@
 | **Use case** | Đăng nhập |
 | **Actor** | Khách hàng, Nhân viên |
 | **Tiền điều kiện** | Người dùng chưa đăng nhập. Tài khoản đã tồn tại trong hệ thống. |
-| **Hậu điều kiện** | Người dùng được xác thực thành công, hệ thống tạo phiên đăng nhập và chuyển hướng đến trang chủ tương ứng. |
-| **Kịch bản chính** | 1. Người dùng truy cập chức năng "Đăng nhập".<br>2. Hệ thống hiển thị giao diện đăng nhập yêu cầu nhập thông tin đăng nhập.<br>3. Người dùng nhập SĐT/Email và Mật khẩu.<br>4. Người dùng nhấn nút xác nhận đăng nhập.<br>5. Hệ thống kiểm tra định dạng đầu vào.<br>6. Hệ thống truy vấn CSDL tìm tài khoản theo SĐT/Email, so sánh mật khẩu đã mã hóa.<br>7. Xác thực thành công, hệ thống tạo phiên đăng nhập với vai trò tương ứng.<br>8. Hệ thống chuyển hướng đến trang chủ, hiển thị thông báo "Đăng nhập thành công". |
-| **Ngoại lệ** | 5. Hệ thống phát hiện định dạng đầu vào không hợp lệ.<br>5.1 Hệ thống hiển thị thông báo lỗi yêu cầu nhập lại.<br>5.2 Người dùng nhập lại thông tin (quay về Bước 4).<br><br>6. Hệ thống không tìm thấy tài khoản khớp SĐT/Email.<br>6.1 Hệ thống hiển thị thông báo "Tài khoản không tồn tại".<br>6.2 Người dùng chọn đăng ký tài khoản mới (chuyển sang UC02).<br><br>6. Mật khẩu không chính xác.<br>6.1 Hệ thống hiển thị thông báo "Sai mật khẩu".<br>6.2 Người dùng nhập lại mật khẩu (quay về Bước 4). |
+| **Hậu điều kiện** | Người dùng được xác thực, chuyển hướng đến trang chủ. |
+| **Kịch bản chính** | 1. Người dùng chọn chức năng "Đăng nhập".<br>2. Hệ thống hiển thị giao diện đăng nhập có ô nhập SĐT/Email, ô nhập Mật khẩu, nút Đăng nhập, liên kết "Quên mật khẩu?" và "Đăng ký".<br>3. Người dùng nhập SĐT/Email và Mật khẩu.<br>4. Người dùng nhấn nút Đăng nhập.<br>5. Hệ thống xác thực thành công, chuyển hướng đến trang chủ và hiển thị thông báo "Đăng nhập thành công". |
+| **Ngoại lệ** | 5. Hệ thống thông báo "Tài khoản không tồn tại".<br>5.1 Người dùng chọn liên kết "Đăng ký" (chuyển sang UC02).<br><br>5. Hệ thống thông báo "Sai mật khẩu".<br>5.1 Người dùng nhập lại mật khẩu (quay về Bước 4). |
 
 #### UC02 – Đăng ký
 
@@ -19,10 +19,10 @@
 |---|---|
 | **Use case** | Đăng ký |
 | **Actor** | Khách hàng |
-| **Tiền điều kiện** | Người dùng chưa có tài khoản. Hệ thống hoạt động bình thường. |
-| **Hậu điều kiện** | Tài khoản mới được tạo, hạng "Thường", đăng nhập tự động. |
-| **Kịch bản chính** | 1. Người dùng chọn chức năng "Đăng ký" từ giao diện đăng nhập.<br>2. Hệ thống hiển thị giao diện đăng ký yêu cầu nhập thông tin.<br>3. Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu.<br>4. Người dùng nhấn nút Tiếp tục.<br>5. Hệ thống kiểm tra định dạng, SĐT và Email chưa tồn tại trong CSDL.<br>6. Hệ thống gửi mã OTP 6 chữ số đến SĐT.<br>7. Hệ thống hiển thị giao diện yêu cầu nhập mã OTP.<br>8. Người dùng nhập mã OTP và nhấn nút Xác nhận.<br>9. Hệ thống xác minh mã OTP đúng và còn hiệu lực.<br>10. Hệ thống tạo tài khoản mới, hạng "Thường", điểm tích lũy bằng 0.<br>11. Hệ thống tự động đăng nhập, hiển thị thông báo "Đăng ký thành công!". |
-| **Ngoại lệ** | 5. Hệ thống phát hiện SĐT hoặc Email đã tồn tại.<br>5.1 Hệ thống hiển thị thông báo "SĐT hoặc Email đã được sử dụng".<br>5.2 Người dùng nhập lại thông tin khác (quay về Bước 4).<br><br>5. Hệ thống phát hiện định dạng đầu vào không hợp lệ.<br>5.1 Hệ thống hiển thị thông báo lỗi cụ thể.<br>5.2 Người dùng nhập lại thông tin (quay về Bước 4).<br><br>9. Mã OTP sai hoặc đã hết hiệu lực.<br>9.1 Hệ thống hiển thị thông báo "Mã OTP không hợp lệ hoặc đã hết hạn".<br>9.2 Người dùng chọn gửi lại mã OTP (quay về Bước 8). |
+| **Tiền điều kiện** | Người dùng chưa có tài khoản. |
+| **Hậu điều kiện** | Tài khoản mới được tạo, đăng nhập tự động. |
+| **Kịch bản chính** | 1. Người dùng chọn liên kết "Đăng ký" từ giao diện đăng nhập.<br>2. Hệ thống hiển thị giao diện đăng ký có ô nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu, nút Tiếp tục.<br>3. Người dùng nhập Họ tên, SĐT, Email, Mật khẩu, Xác nhận mật khẩu.<br>4. Người dùng nhấn nút Tiếp tục.<br>5. Hệ thống gửi mã OTP 6 chữ số đến SĐT.<br>6. Hệ thống hiển thị giao diện xác nhận OTP có ô nhập mã OTP, nút Xác nhận, nút Gửi lại mã.<br>7. Người dùng nhập mã OTP và nhấn nút Xác nhận.<br>8. Hệ thống tạo tài khoản mới, tự động đăng nhập và hiển thị thông báo "Đăng ký thành công!". |
+| **Ngoại lệ** | 4. Hệ thống thông báo "SĐT hoặc Email đã được sử dụng".<br>4.1 Người dùng nhập lại thông tin khác (quay về Bước 4).<br><br>7. Hệ thống thông báo "Mã OTP không hợp lệ hoặc đã hết hạn".<br>7.1 Người dùng nhấn nút Gửi lại mã (quay về Bước 6). |
 
 #### UC03 – Đổi mật khẩu
 
@@ -30,10 +30,10 @@
 |---|---|
 | **Use case** | Đổi mật khẩu |
 | **Actor** | Khách hàng, Nhân viên (đã đăng nhập) |
-| **Tiền điều kiện** | Người dùng đã đăng nhập thành công. |
-| **Hậu điều kiện** | Mật khẩu mới được lưu (mã hóa). Tất cả phiên đăng nhập khác bị thu hồi. |
-| **Kịch bản chính** | 1. Người dùng truy cập chức năng "Đổi mật khẩu".<br>2. Hệ thống hiển thị giao diện yêu cầu nhập mật khẩu hiện tại và mật khẩu mới.<br>3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới.<br>4. Người dùng nhấn nút Lưu thay đổi.<br>5. Hệ thống xác minh mật khẩu hiện tại khớp CSDL.<br>6. Hệ thống kiểm tra mật khẩu mới hợp lệ (độ dài tối thiểu 8 ký tự, có chữ hoa, chữ thường, số, ký tự đặc biệt).<br>7. Hệ thống kiểm tra mật khẩu mới khác mật khẩu hiện tại.<br>8. Hệ thống mã hóa và cập nhật mật khẩu mới vào CSDL.<br>9. Hệ thống thu hồi tất cả phiên đăng nhập khác.<br>10. Hệ thống hiển thị thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại."<br>11. Hệ thống chuyển hướng về giao diện đăng nhập. |
-| **Ngoại lệ** | 5. Hệ thống phát hiện mật khẩu hiện tại không khớp.<br>5.1 Hệ thống hiển thị thông báo "Mật khẩu hiện tại không chính xác".<br>5.2 Người dùng nhập lại mật khẩu hiện tại (quay về Bước 4).<br><br>6. Hệ thống phát hiện mật khẩu mới không hợp lệ.<br>6.1 Hệ thống hiển thị thông báo lỗi yêu cầu mật khẩu đạt tiêu chuẩn.<br>6.2 Người dùng nhập lại mật khẩu mới (quay về Bước 4).<br><br>7. Hệ thống phát hiện mật khẩu mới trùng mật khẩu hiện tại.<br>7.1 Hệ thống hiển thị thông báo "Mật khẩu mới phải khác mật khẩu hiện tại".<br>7.2 Người dùng nhập lại mật khẩu mới (quay về Bước 4). |
+| **Tiền điều kiện** | Người dùng đã đăng nhập. |
+| **Hậu điều kiện** | Mật khẩu mới được lưu. Tất cả phiên đăng nhập khác bị thu hồi. |
+| **Kịch bản chính** | 1. Người dùng chọn chức năng "Đổi mật khẩu".<br>2. Hệ thống hiển thị giao diện có ô nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới, nút Lưu thay đổi.<br>3. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận mật khẩu mới.<br>4. Người dùng nhấn nút Lưu thay đổi.<br>5. Hệ thống cập nhật mật khẩu, thu hồi các phiên khác, hiển thị thông báo "Đổi mật khẩu thành công. Vui lòng đăng nhập lại." và chuyển hướng về giao diện đăng nhập. |
+| **Ngoại lệ** | 4. Hệ thống thông báo "Mật khẩu hiện tại không chính xác".<br>4.1 Người dùng nhập lại mật khẩu hiện tại (quay về Bước 4).<br><br>4. Hệ thống thông báo "Mật khẩu mới không hợp lệ".<br>4.1 Người dùng nhập lại mật khẩu mới (quay về Bước 4). |
 
 #### UC04 – Quản lý thông tin cá nhân
 
@@ -41,10 +41,10 @@
 |---|---|
 | **Use case** | Quản lý thông tin cá nhân |
 | **Actor** | Khách hàng (đã đăng nhập) |
-| **Tiền điều kiện** | Khách hàng đã đăng nhập. Tài khoản tồn tại trong CSDL. |
-| **Hậu điều kiện** | Thông tin cập nhật trong CSDL, hiển thị ngay trên giao diện. |
-| **Kịch bản chính** | 1. Khách hàng chọn chức năng "Hồ sơ cá nhân".<br>2. Hệ thống truy xuất thông tin từ CSDL và hiển thị trang hồ sơ cá nhân:<br><table><tr><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Hạng hội viên</th><th>Điểm tích lũy</th><th>Ngày tham gia</th></tr><tr><td>Nguyễn Văn A</td><td>0912345678</td><td>nva@gmail.com</td><td>Bạc</td><td>1.250</td><td>15/03/2025</td></tr></table><br>3. Khách hàng nhấn chọn chỉnh sửa thông tin.<br>4. Hệ thống chuyển sang chế độ chỉnh sửa: Họ tên và Email cho phép sửa, SĐT bị khóa.<br>5. Khách hàng cập nhật Họ tên và Email.<br>6. Khách hàng nhấn nút Lưu thay đổi.<br>7. Hệ thống kiểm tra email hợp lệ và chưa được dùng bởi tài khoản khác.<br>8. Hệ thống cập nhật thông tin vào CSDL.<br>9. Hệ thống hiển thị thông báo "Cập nhật thành công!" và quay về chế độ xem. |
-| **Ngoại lệ** | 7. Hệ thống phát hiện email không hợp lệ hoặc đã được dùng.<br>7.1 Hệ thống hiển thị thông báo "Email không hợp lệ hoặc đã được sử dụng".<br>7.2 Khách hàng nhập lại email khác (quay về Bước 6). |
+| **Tiền điều kiện** | Khách hàng đã đăng nhập. |
+| **Hậu điều kiện** | Thông tin cá nhân được cập nhật. |
+| **Kịch bản chính** | 1. Khách hàng chọn chức năng "Hồ sơ cá nhân".<br>2. Hệ thống hiển thị trang hồ sơ cá nhân:<br><table><tr><th>Họ tên</th><th>SĐT</th><th>Email</th><th>Hạng hội viên</th><th>Điểm tích lũy</th><th>Ngày tham gia</th></tr><tr><td>Nguyễn Văn A</td><td>0912345678</td><td>nva@gmail.com</td><td>Bạc</td><td>1.250</td><td>15/03/2025</td></tr></table><br>3. Khách hàng nhấn nút Chỉnh sửa.<br>4. Hệ thống chuyển sang chế độ chỉnh sửa: Họ tên và Email cho phép sửa, SĐT bị khóa.<br>5. Khách hàng cập nhật Họ tên và Email.<br>6. Khách hàng nhấn nút Lưu thay đổi.<br>7. Hệ thống hiển thị thông báo "Cập nhật thành công!" và quay về chế độ xem. |
+| **Ngoại lệ** | 6. Hệ thống thông báo "Email không hợp lệ hoặc đã được sử dụng".<br>6.1 Khách hàng nhập lại email khác (quay về Bước 6). |
 
 #### UC20 – Quản lý tài khoản nhân viên
 
@@ -52,10 +52,10 @@
 |---|---|
 | **Use case** | Quản lý tài khoản nhân viên |
 | **Actor** | Chủ Doanh nghiệp (Admin) |
-| **Tiền điều kiện** | Admin đã đăng nhập. Có quyền quản lý tài khoản nhân viên toàn hệ thống. |
-| **Hậu điều kiện** | Tài khoản nhân viên được tạo/sửa/xóa trong CSDL. |
-| **Kịch bản chính** | 1. Admin truy cập chức năng "Quản lý nhân viên".<br>2. Hệ thống truy xuất danh sách nhân viên từ CSDL và hiển thị:<br><table><tr><th>Họ tên</th><th>Vai trò</th><th>Chi nhánh</th><th>Trạng thái</th></tr><tr><td>Nguyễn Minh Tuấn</td><td>Lễ tân</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr><tr><td>Trần Thị Hương</td><td>Phục vụ</td><td>Karaoke Star - CN2</td><td>Đang làm</td></tr><tr><td>Lê Văn Khánh</td><td>Quản lý</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr></table><br>3. Admin nhấn nút Thêm nhân viên.<br>4. Hệ thống hiển thị giao diện yêu cầu nhập thông tin nhân viên mới.<br>5. Admin nhập Họ tên, SĐT, Vai trò, Chi nhánh.<br>6. Admin nhấn nút Lưu.<br>7. Hệ thống kiểm tra SĐT chưa tồn tại trong CSDL.<br>8. Hệ thống tạo tài khoản nhân viên mới.<br>9. Hệ thống hiển thị thông báo "Thêm nhân viên thành công!" và cập nhật danh sách.<br>10. Admin nhấn nút Sửa trên một dòng nhân viên.<br>11. Hệ thống hiển thị giao diện chỉnh sửa với thông tin hiện tại.<br>12. Admin cập nhật thông tin và nhấn nút Lưu.<br>13. Hệ thống cập nhật thông tin vào CSDL.<br>14. Hệ thống hiển thị thông báo "Cập nhật thành công!".<br>15. Admin nhấn nút Xóa trên một dòng nhân viên.<br>16. Hệ thống yêu cầu xác nhận xóa.<br>17. Admin xác nhận xóa.<br>18. Hệ thống kiểm tra nhân viên không đang xử lý order.<br>19. Hệ thống chuyển trạng thái nhân viên thành "Đã nghỉ".<br>20. Hệ thống hiển thị thông báo "Xóa nhân viên thành công!". |
-| **Ngoại lệ** | 7. Hệ thống phát hiện SĐT đã tồn tại.<br>7.1 Hệ thống hiển thị thông báo "SĐT đã được sử dụng".<br>7.2 Admin nhập lại SĐT khác (quay về Bước 6).<br><br>18. Hệ thống phát hiện nhân viên đang xử lý order.<br>18.1 Hệ thống hiển thị thông báo "Không thể xóa nhân viên đang xử lý order".<br>18.2 Admin hủy thao tác xóa. |
+| **Tiền điều kiện** | Admin đã đăng nhập với quyền quản lý nhân viên. |
+| **Hậu điều kiện** | Tài khoản nhân viên được tạo/sửa/xóa. |
+| **Kịch bản chính** | 1. Admin chọn chức năng "Quản lý nhân viên".<br>2. Hệ thống hiển thị danh sách nhân viên:<br><table><tr><th>Họ tên</th><th>Vai trò</th><th>Chi nhánh</th><th>Trạng thái</th></tr><tr><td>Nguyễn Minh Tuấn</td><td>Lễ tân</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr><tr><td>Trần Thị Hương</td><td>Phục vụ</td><td>Karaoke Star - CN2</td><td>Đang làm</td></tr><tr><td>Lê Văn Khánh</td><td>Quản lý</td><td>Karaoke Star - CN1</td><td>Đang làm</td></tr></table><br>3. Admin nhấn nút Thêm nhân viên.<br>4. Hệ thống hiển thị giao diện nhập Họ tên, SĐT, Vai trò, Chi nhánh.<br>5. Admin nhập thông tin và nhấn nút Lưu.<br>6. Hệ thống hiển thị thông báo "Thêm nhân viên thành công!" và cập nhật danh sách.<br>7. Admin nhấn nút Sửa trên dòng nhân viên Nguyễn Minh Tuấn.<br>8. Hệ thống hiển thị giao diện chỉnh sửa với thông tin hiện tại.<br>9. Admin cập nhật thông tin và nhấn nút Lưu.<br>10. Hệ thống hiển thị thông báo "Cập nhật thành công!".<br>11. Admin nhấn nút Xóa trên dòng nhân viên Lê Văn Khánh.<br>12. Hệ thống yêu cầu xác nhận xóa.<br>13. Admin xác nhận xóa.<br>14. Hệ thống hiển thị thông báo "Xóa nhân viên thành công!". |
+| **Ngoại lệ** | 5. Hệ thống thông báo "SĐT đã được sử dụng".<br>5.1 Admin nhập lại SĐT khác (quay về Bước 5).<br><br>13. Hệ thống thông báo "Không thể xóa nhân viên đang xử lý order".<br>13.1 Admin hủy thao tác xóa. |
 
 ### 2. Mô hình hóa lớp
 
