@@ -27,6 +27,7 @@ OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'booking_module.docx')
 FILES = [
     (None, 'I. PHA XÁC ĐỊNH YÊU CẦU'),
     ('section-booking-i.md', None),
+    ('section-booking-i-uc.md', None),
     (None, 'II. PHA PHÂN TÍCH'),
     ('section-booking-ii.1-datphong.md', None),
     ('section-booking-ii.1-fix.md', None),
@@ -61,6 +62,12 @@ DIAGRAM_MAP = {
     'booking_seq_checkin': 'output/diagrams/booking_seq_2.png',
     'booking_seq_checkout': 'output/diagrams/booking_seq_3.png',
     'booking_seq_huyphong': 'output/diagrams/booking_seq_4.png',
+    # Phase I - UC diagrams
+    'booking_uc_overview': 'output/diagrams/booking_uc_overview.png',
+    'booking_uc_datphong': 'output/diagrams/booking_uc_datphong.png',
+    'booking_uc_huyphong': 'output/diagrams/booking_uc_huyphong.png',
+    'booking_uc_checkin': 'output/diagrams/booking_uc_checkin.png',
+    'booking_uc_checkout': 'output/diagrams/booking_uc_checkout.png',
 }
 
 
@@ -363,6 +370,18 @@ def process_file(doc, md_file):
                 return '<!-- DIAGRAM: booking_seq_checkout -->'
             elif 'SearchBookingView' in block_content or 'CancelBookingPage' in block_content or 'Hủy' in block_content:
                 return '<!-- DIAGRAM: booking_seq_huyphong -->'
+        elif 'i-uc' in base:
+            # Match by rectangle title (most reliable)
+            if 'rectangle "Quản lý đặt và trả phòng"' in block_content:
+                return '<!-- DIAGRAM: booking_uc_overview -->'
+            elif 'rectangle "Đặt phòng"' in block_content:
+                return '<!-- DIAGRAM: booking_uc_datphong -->'
+            elif 'rectangle "Huỷ phòng"' in block_content:
+                return '<!-- DIAGRAM: booking_uc_huyphong -->'
+            elif 'rectangle "Check-in"' in block_content:
+                return '<!-- DIAGRAM: booking_uc_checkin -->'
+            elif 'rectangle "Check-out"' in block_content:
+                return '<!-- DIAGRAM: booking_uc_checkout -->'
         return '<!-- DIAGRAM: unknown -->'
 
     content = re.sub(r'```plantuml\s*\n(.*?)```', replace_plantuml, content, flags=re.DOTALL)
@@ -462,29 +481,38 @@ def process_file(doc, md_file):
             current_table = []
             in_table = False
 
-        # Heading
+        # Heading (## / ### / ####)
         m = re.match(r'^(#{1,4})\s+(.+)$', line)
         if m:
-            level = len(m.group(1))
+            md_level = len(m.group(1))
             text = m.group(2).strip()
-            content_level = determine_heading_level(text)
-            if content_level:
-                level = content_level
+            # Use markdown # level directly — content detection only for plain-text phase headers
+            level = md_level
             add_heading_with_blue_underline(doc, text, level)
             i += 1
             continue
 
-        # Bold paragraph
+        # Bold paragraph that wraps a heading: **## X.Y. Title**
+        bm_heading = re.match(r'^\*\*#{1,4}\s+(.+?)\*\*$', stripped)
+        if bm_heading:
+            text = bm_heading.group(1).strip()
+            level = determine_heading_level(text)
+            if level:
+                add_heading_with_blue_underline(doc, text, level)
+            else:
+                p = doc.add_paragraph()
+                run = p.add_run(text)
+                run.bold = True
+            i += 1
+            continue
+
+        # Bold paragraph — keep as bold text, not heading
         bm = re.match(r'^\*\*(.+?)\*\*$', stripped)
         if bm:
             text = bm.group(1).strip()
-            content_level = determine_heading_level(text)
-            if content_level:
-                add_heading_with_blue_underline(doc, text, content_level)
-            else:
-                p = add_formatted_paragraph(doc, text, style='Normal')
-                for run in p.runs:
-                    run.bold = True
+            p = add_formatted_paragraph(doc, text, style='Normal')
+            for run in p.runs:
+                run.bold = True
             i += 1
             continue
 
