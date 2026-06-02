@@ -18,10 +18,10 @@ Actor gián tiếp: Khách hàng (Client) – dữ liệu được tra cứu tro
 3.3. Biểu đồ UC tổng quan của module
 
 
+
+
+
 3.4. Các biểu đồ Use Case phân rã của module
-
-
-
 Quản lý nhân viên chi nhánh:
 
 Báo cáo số liệu chi nhánh:
@@ -48,10 +48,9 @@ II. PHA PHÂN TÍCH
 
 
 
+
+
 1.2. Kịch bản “Báo cáo tình trạng hàng”
-
-
-
 1.3. Kịch bản “Xem thông tin khách hàng chi nhánh:”
 
 
@@ -683,6 +682,8 @@ CSDL sau khi test: không có gì thay đổi (chức năng chỉ đọc và t�
 CSDL trước khi test:
 tblBranch:
  
+
+
  
 CSDL sau khi test: không có gì thay đổi
 

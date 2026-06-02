@@ -9,7 +9,6 @@ I. PHA XÁC ĐỊNH YÊU CẦU
 3. UC con và quan hệ Include/Extend
 4. Biểu đồ Use Case tổng quan
 
-Quy trình 4 bước:
 Bước 1 – Copy UC + Actor từ hệ thống:
 Bước 2 – Đề xuất UC con từ giao diện:
 Bước 3 – Xác định quan hệ include/extend:
@@ -111,133 +110,135 @@ Sơ đồ lớp phân tích – Module Tài khoản & Thành viên
 UC01 – Đăng nhập (7 bước)
 
 Kịch bản phiên bản 2 – UC01 Đăng nhập (7 bước)
-1.     Người dùng chọn chức năng Đăng nhập.
-2.     Lớp LoginView hiển thị giao diện đăng nhập.
-3.     Người dùng nhập SĐT/Email + Mật khẩu, nhấn Đăng nhập.
-4.     Lớp LoginView gọi checkLogin(phoneNumber, password).
-5.     Lớp User trả kết quả xác thực.
-6.     Lớp LoginView chuyển hướng sang HomeView, "Đăng nhập thành công".
-7.     Lớp HomeView hiển thị trang chủ.
+ Actor → LoginView: chọn chức năng Đăng nhập.
+ LoginView → Actor: hiển thị giao diện đăng nhập.
+ Actor → LoginView: nhập txtPhoneNumber + txtPassword, nhấn Đăng nhập.
+ LoginView → User: checkLogin(phoneNumber, password).
+ User → LoginView: return kết quả xác thực.
+ LoginView → HomeView: chuyển hướng, "Đăng nhập thành công".
+ HomeView → Actor: hiển thị trang chủ.
 UC02 – Đăng ký (17 bước)
 
 Kịch bản phiên bản 2 – UC02 Đăng ký (17 bước)
-1.     Khách hàng chọn liên kết Đăng ký.
-2.     Lớp RegisterView hiển thị giao diện đăng ký.
-3.     Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, nhấn Tiếp tục.
-4.     Lớp RegisterView gọi register(fullName, phoneNumber, email, password).
-5.     Lớp Client gọi sendOTP(phoneNumber, REGISTER).
-6.     Lớp OTP OTP đã gửi.
-7.     Lớp Client trả kết quả.
-8.     Lớp RegisterView kiểm tra hợp lệ, gửi mã OTP.
-9.     Lớp RegisterView hiển thị giao diện xác nhận OTP.
-10.  Khách hàng nhập mã OTP, nhấn Xác nhận.
-11.  Lớp OTPVerifyView gọi verifyOTP(otpCode).
-12.  Lớp OTP xác minh thành công.
-13.  Lớp OTPVerifyView gọi saveUser().
-14.  Lớp Client tạo tài khoản thành công.
-15.  Lớp OTPVerifyView "Đăng ký thành công!".
-16.  Lớp OTPVerifyView tự động đăng nhập, chuyển hướng HomeView.
-17.  Lớp HomeView hiển thị trang chủ.
+ Actor → RegisterView: chọn liên kết Đăng ký.
+ RegisterView → Actor: hiển thị giao diện đăng ký.
+ Actor → RegisterView: nhập txtFullName, txtPhoneNumber, txtEmail, txtPassword, nhấn Tiếp tục.
+ RegisterView → Client: register(fullName, phoneNumber, email, password).
+ Client → OTP: sendOTP(phoneNumber, REGISTER).
+ OTP → Client: return OTP đã gửi.
+ Client → RegisterView: return kết quả.
+ RegisterView → Actor: kiểm tra hợp lệ, gửi mã OTP.
+ RegisterView → Actor: hiển thị giao diện xác nhận OTP.
+Actor → OTPVerifyView: nhập txtOTP, nhấn Xác nhận.
+OTPVerifyView → OTP: verifyOTP(otpCode).
+OTP → OTPVerifyView: return xác minh thành công.
+OTPVerifyView → Client: saveUser().
+Client → OTPVerifyView: return tạo tài khoản thành công.
+OTPVerifyView → Actor: "Đăng ký thành công!".
+OTPVerifyView → HomeView: tự động đăng nhập, chuyển hướng.
+HomeView → Actor: hiển thị trang chủ.
 UC03 – Đổi mật khẩu (8 bước)
 
 Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (8 bước)
-1.     Người dùng chọn chức năng Đổi mật khẩu.
-2.     Lớp ChangePasswordView hiển thị giao diện đổi mật khẩu.
-3.     Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn Lưu.
-4.     Lớp ChangePasswordView gọi changePassword(currentPassword, newPassword).
-5.     Lớp User đổi mật khẩu thành công.
-6.     Lớp ChangePasswordView "Đổi mật khẩu thành công".
-7.     Lớp ChangePasswordView chuyển hướng về giao diện Đăng nhập.
-8.     Lớp LoginView hiển thị trang đăng nhập.
+ Actor → ChangePasswordView: chọn chức năng Đổi mật khẩu.
+ ChangePasswordView → Actor: hiển thị giao diện đổi mật khẩu.
+ Actor → ChangePasswordView: nhập txtCurrentPassword, txtNewPassword, txtConfirmNewPassword, nhấn Lưu.
+ ChangePasswordView → User: changePassword(currentPassword, newPassword).
+ User → ChangePasswordView: return đổi mật khẩu thành công.
+ ChangePasswordView → Actor: "Đổi mật khẩu thành công".
+ ChangePasswordView → LoginView: chuyển hướng về giao diện Đăng nhập.
+ LoginView → Actor: hiển thị trang đăng nhập.
 UC04 – Quản lý thông tin cá nhân (10 bước)
 
 Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân (10 bước)
-1.     Khách hàng chọn chức năng Hồ sơ cá nhân.
-2.     Lớp ProfileView gọi getProfile(clientId).
-3.     Lớp Client trả về thông tin Client.
-4.     Lớp ProfileView hiển thị trang hồ sơ cá nhân.
-5.     Khách hàng nhấn nút Chỉnh sửa.
-6.     Lớp ProfileView chuyển sang chế độ chỉnh sửa.
-7.     Khách hàng cập nhật Họ tên, Email, nhấn Lưu.
-8.     Lớp ProfileView gọi updateProfile(clientId, fullName, email).
-9.     Lớp Client cập nhật thành công.
-10.  Lớp ProfileView "Cập nhật thành công!", quay về chế độ xem.
+ Actor → ProfileView: chọn chức năng Hồ sơ cá nhân.
+ ProfileView → Client: getProfile(clientId).
+ Client → ProfileView: return thông tin Client.
+ ProfileView → Actor: hiển thị trang hồ sơ cá nhân.
+ Actor → ProfileView: nhấn nút btnEdit.
+ ProfileView → Actor: chuyển sang chế độ chỉnh sửa.
+ Actor → ProfileView: cập nhật lblFullName, lblEmail, nhấn Lưu.
+ ProfileView → Client: updateProfile(clientId, fullName, email).
+ Client → ProfileView: return cập nhật thành công.
+ProfileView → Actor: "Cập nhật thành công!", quay về chế độ xem.
 UC20 – Quản lý tài khoản nhân viên (18 bước)
 
 Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên (18 bước)
-1.     Admin chọn chức năng Quản lý nhân viên.
-2.     Lớp StaffManageView gọi getAllStaff().
-3.     Lớp Employee trả về danh sách Employee.
-4.     Lớp StaffManageView hiển thị danh sách nhân viên.
-5.     Admin nhấn nút Thêm nhân viên.
-6.     Lớp StaffManageView hiển thị giao diện nhập thông tin.
-7.     Admin nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu.
-8.     Lớp StaffManageView gọi addStaff(fullName, role).
-9.     Lớp Employee tạo thành công.
-10.  Lớp StaffManageView "Thêm nhân viên thành công!".
-11.  Admin nhấn nút Sửa trên dòng Nguyễn Minh Tuấn.
-12.  Lớp StaffManageView hiển thị giao diện chỉnh sửa.
-13.  Admin cập nhật thông tin, nhấn Lưu.
-14.  Lớp StaffManageView gọi updateStaff(id, data).
-15.  Lớp Employee cập nhật thành công.
-16.  Lớp StaffManageView "Cập nhật thành công!".
-17.  Admin nhấn nút Xóa trên dòng Lê Văn Khánh.
-18.  Lớp StaffManageView yêu cầu xác nhận xóa, "Xóa nhân viên thành công!".
- 
+ Actor → StaffManageView: chọn chức năng Quản lý nhân viên.
+ StaffManageView → Employee: getAllStaff().
+ Employee → StaffManageView: return danh sách Employee.
+ StaffManageView → Actor: hiển thị tblStaffList.
+ Actor → StaffManageView: nhấn nút btnAdd.
+ StaffManageView → Actor: hiển thị giao diện nhập thông tin.
+ Actor → StaffManageView: nhập fullName, staffRole, nhấn Lưu.
+ StaffManageView → Employee: addStaff(fullName, role).
+ Employee → StaffManageView: return tạo thành công.
+StaffManageView → Actor: "Thêm nhân viên thành công!".
+Actor → StaffManageView: nhấn btnEdit trên dòng nhân viên.
+StaffManageView → Actor: hiển thị giao diện chỉnh sửa.
+Actor → StaffManageView: cập nhật thông tin, nhấn Lưu.
+StaffManageView → Employee: updateStaff(id, data).
+Employee → StaffManageView: return cập nhật thành công.
+StaffManageView → Actor: "Cập nhật thành công!".
+Actor → StaffManageView: nhấn btnDelete trên dòng nhân viên.
+StaffManageView → Actor: yêu cầu xác nhận xóa, "Xóa nhân viên thành công!".
+
 III. PHA THIẾT KẾ
 1. Thiết kế lớp thực thể
 1.1. Bước 1 – Bổ sung thuộc tính id
-19.  User: id : int — lớp gốc; Client và Employee kế thừa id này
-20.  MembershipTier: id : int
-21.  OTP: id : int
-22.  LoginSession: id : int
+ User: id : int — lớp gốc; Client và Employee kế thừa id này
+ MembershipTier: id : int
+ OTP: id : int
+ LoginSession: id : int
 1.2. Bước 2 – Thêm kiểu dữ liệu
-23.  User (lớp cha): id : int, fullName : String, phoneNumber : String, email : String, password : String, role : String, createdAt : Date
-24.  Client (kế thừa User): loyaltyPoints : int, joinedAt : Date
-25.  Employee (kế thừa User): staffRole : String, branch : String, status : String
-26.  MembershipTier: id : int, tierName : String, minPoints : int, description : String, discountRate : double
-27.  OTP: id : int, otpCode : String, type : String, expiresAt : Date, verified : boolean
-28.  LoginSession: id : int, sessionToken : String, loginTime : DateTime, expiresAt : DateTime, device : String
+ User (lớp cha): id : int, fullName : String, phoneNumber : String, email : String, password : String, role : String, createdAt : Date
+ Client (kế thừa User): loyaltyPoints : int, joinedAt : Date
+ Employee (kế thừa User): staffRole : String, branch : String, status : String
+ MembershipTier: id : int, tierName : String, minPoints : int, description : String, discountRate : double
+ OTP: id : int, otpCode : String, type : String, expiresAt : Date, verified : boolean
+LoginSession: id : int, sessionToken : String, loginTime : DateTime, expiresAt : DateTime, device : String
 1.3. Bước 3 – Chuyển quan hệ
-29.  Client kế thừa User: generalization (khách hàng là User có vai trò CLIENT)
-30.  Employee kế thừa User: generalization (nhân viên là User có vai trò EMPLOYEE)
-31.  Client o-- MembershipTier: aggregation (hạng hội viên là danh mục độc lập, chỉ khách hàng có)
-32.  User *-- OTP: composition (OTP không tồn tại độc lập)
-33.  User *-- LoginSession: composition (phiên không tồn tại độc lập)
+Client kế thừa User: generalization (khách hàng là User có vai trò CLIENT)
+Employee kế thừa User: generalization (nhân viên là User có vai trò EMPLOYEE)
+Client o-- MembershipTier: aggregation (hạng hội viên là danh mục độc lập, chỉ khách hàng có)
+User *-- OTP: composition (OTP không tồn tại độc lập)
+User *-- LoginSession: composition (phiên không tồn tại độc lập)
 1.4. Bước 4 – Bổ sung thuộc tính kiểu đối tượng
-34.  Client: membershipTier : MembershipTier
-35.  OTP: user : User
-36.  LoginSession: user : User
+Client: membershipTier : MembershipTier
+OTP: user : User
+LoginSession: user : User
 1.5. Biểu đồ lớp thực thể
 
 2. Thiết kế CSDL
 2.1. Bước 1 – Tạo bảng
 Ánh xạ kế thừa kiểu single-table: gộp User, Client, Employee vào một bảng tblUser, dùng cột role để phân biệt; thuộc tính riêng của Client/Employee để NULL khi không áp dụng.
+
 2.2. Bước 2 – Chuyển kiểu dữ liệu
 2.3. Bước 3 – Xử lý cardinality
-37.  Client – MembershipTier (n-1): tblUser có FK tblMembershipTierMa (chỉ dòng role = CLIENT dùng, NULL với dòng khác)
-38.  User – OTP (1-n): tblOTP có FK tblUserMa
-39.  User – LoginSession (1-n): tblLoginSession có FK tblUserMa
+Client – MembershipTier (n-1): tblUser có FK tblMembershipTierMa (chỉ dòng role = CLIENT dùng, NULL với dòng khác)
+User – OTP (1-n): tblOTP có FK tblUserMa
+User – LoginSession (1-n): tblLoginSession có FK tblUserMa
 2.4. Bước 4 – PK/FK
-40.  PK: ma : integer(10) <<PK>>
-41.  FK: tbl[TenBangCha]Ma : integer(10) <<FK>>
-42.  Cột role (CLIENT / EMPLOYEE / ADMIN) phân biệt loại người dùng trong bảng tblUser gộp
+PK: ma : integer(10) <<PK>>
+FK: tbl[TenBangCha]Ma : integer(10) <<FK>>
+Cột role (CLIENT / EMPLOYEE / ADMIN) phân biệt loại người dùng trong bảng tblUser gộp
 2.5. Biểu đồ ERD
 
-3. Wireframe
+3. Thiết kế giao diện
 3.1. Màn hình đăng nhập
-┌──────────────────────────────────────────────┐ │          	Đăng nhập                   	│ │                                              │ │  txtSDT:   	[________________________] 	│ │  txtMatKhau:   [________________________] 	│ │                                              │ │  [btnDangNhap]                           	│ │  btnQuenMatKhau  |  btnDangKy            	│ └──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐ │           	Đăng nhập                       			                  	       │ │                                                                                                                                 │ │  txtPhoneNumber: [_______________________]                                                 │ │  txtPassword:	[_______________________]                                                │ │                                                                                                                                 │ │  [btnLogin]                              	                                                                               │ │  lnkForgotPassword  |  lnkRegister       	                                                              │ └──────────────────────────────────────────────┘
 3.2. Màn hình đăng ký
-┌──────────────────────────────────────────────┐ │          	Đăng ký tài khoản            	│ │                                              │ │  txtHoTen:       	[________________________]  │ │  txtSoDienThoai: 	[________________________]  │ │  txtEmail:       	[________________________]  │ │  txtMatKhau:     	[________________________]  │ │  txtXacNhanMatKhau:  [________________________]  │ │                                              │ │  [btnTiepTuc]            	[btnHuy]    	│ └──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐ │       	Đăng ký tài khoản              	         				     │ │                                              					     │ │  txtFullName:    	[___________________]                                                            │ │  txtPhoneNumber: 	[___________________]   			     │ │  txtEmail:       	[___________________]   				     │ │  txtPassword:    	[___________________]   				      │ │  txtConfirmPassword: [___________________]                                                    │ │                                                                                                                                  │ │  [btnContinue]           	[Cancel]    	                                                      │ └──────────────────────────────────────────────┘
 3.3. Màn hình xác nhận OTP
-┌──────────────────────────────────────────────┐ │       	Xác nhận OTP                   	│ │                                              │ │  txtOTP: [__][__][__][__][__][__]        	│ │                                              │ │  [btnXacNhan]                            	│ │  lblCountdown: Gửi lại OTP (60s)        	│ └──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐ │       	Xác nhận OTP                   	                                                                     │ │                                                                                                                                 │ │  txtOTP: [__][__][__][__][__][__]        	                                                     │ │                                              					     │ │  [btnConfirm]                            					     │ │  btnResendOTP                            					      │ └──────────────────────────────────────────────┘
 3.4. Màn hình đổi mật khẩu
-┌──────────────────────────────────────────────┐ │       	Đổi mật khẩu                   	│ │                                              │ │  txtMatKhauHienTai: 	[________________________]│ │  txtMatKhauMoi:     	[________________________]│ │  txtXacNhanMatKhauMoi:  [________________________]│ │                                              │ │  [btnLuu]            	[btnHuy]        	│ └──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐ │       	Đổi mật khẩu                   	│ │                                              │ │  txtCurrentPassword:	[________________]   │ │  txtNewPassword:    	[________________]   │ │  txtConfirmNewPassword: [________________]   │ │                                              │ │  [btnSave]               	[Cancel]    	│ └──────────────────────────────────────────────┘
 3.5. Màn hình hồ sơ cá nhân
-┌──────────────────────────────────────────────┐ │       	Hồ sơ cá nhân                  	│ │                                              │ │  txtHoTen:     	[________________________]  │ │  txtSoDienThoai:   [________________________]  │ │  txtEmail:     	[________________________]  │ │  lblMembershipTier: ........................  │ │  lblDiemTichLuy:   ........................  │ │                                              │ │  [btnChinhSua]  [btnDoiMatKhau]          	│ └──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐ │       	Hồ sơ cá nhân                  	│ │                                              │ │  lblFullName:   	[_____________________]  │ │  lblPhoneNumber:	[__________] (readonly)  │ │  lblEmail:      	[_____________________]  │ │  lblMembershipTier: [Bạc  	] (readonly)   │ │  lblLoyaltyPoints:  [1250     ] (readonly)   │ │                                              │ │  [btnEdit]	[btnChangePassword]        	│ └──────────────────────────────────────────────┘
 3.6. Màn hình quản lý nhân viên
-┌──────────────────────────────────────────────┐ │    	Quản lý tài khoản nhân viên       	│ │                                              │ │  txtTimKiem: [________________________]  	│ │  [btnThem]                               	│ │                                              │ │ ┌──────┬────────┬──────────┬──────────┐      │ │ │ Họ tên│ Vai trò│ Trạng thái│ ...     │  	│ │ │ ......│ .......│ .........│         │  	│ │ │ ......│ .......│ .........│         │  	│ │ └──────┴────────┴──────────┴──────────┘      │ │  tblStaff                                	│ │                                              │ │  [btnSua]  [btnXoa]                      	│ └──────────────────────────────────────────────┘
-4. MVC class diagram
+┌──────────────────────────────────────────────┐ │    	Quản lý tài khoản nhân viên       	│ │                                              │ │  [btnAdd]                                	│ │                                              │ │ ┌──────────┬───────────┬──────────┐          │ │ │ fullName │ staffRole │ status   │      	│ │ │ ........ │ ......... │ ........ │          │ │ │ ........ │ ......... │ ........ │          │ │ └──────────┴───────────┴──────────┘          │ │          	tblStaffList                	│ │                                              │ │  [btnEdit]	[btnDelete]                	│ └──────────────────────────────────────────────┘
+
+4. Thiết kế mô hình MVC
 4.1. Tổng quan kiến trúc
 Mô hình thiết kế theo kiến trúc MVC (Boundary – Control – Entity):
 Boundary: LoginPage, RegisterPage, OTPVerifyPage, ChangePasswordPage, ProfilePage, StaffManagePage
@@ -245,183 +246,183 @@ Control: AuthController, ProfileController, StaffController
 Entity: User, Client, Employee, MembershipTier, OTP, LoginSession
 4.2. Quy trình xác định chữ ký hàm Controller
 a) Đăng nhập → checkLogin()
-43.  Input: username, password
-44.  Output: boolean
-45.  Ứng viên tham số vào: checkLogin() → chọn (gom nhóm tham số)
-46.  Ứng viên tham số ra: checkLogin(): boolean → chọn (trả về true/false xác thực)
+Input: username, password
+Output: boolean
+Ứng viên tham số vào: checkLogin() → chọn (gom nhóm tham số)
+Ứng viên tham số ra: checkLogin(): boolean → chọn (trả về true/false xác thực)
 b) Đăng ký → register()
-47.  Input: fullName, phoneNumber, email, password
-48.  Output: User (vừa tạo)
-49.  Ứng viên tham số vào: register() → chọn
-50.  Ứng viên tham số ra: register(): User → chọn
+Input: fullName, phoneNumber, email, password
+Output: User (vừa tạo)
+Ứng viên tham số vào: register() → chọn
+Ứng viên tham số ra: register(): User → chọn
 c) Xác minh OTP → verifyOTP()
-51.  Input: otp
-52.  Output: boolean
-53.  Ứng viên tham số vào: verifyOTP() → chọn
-54.  Ứng viên tham số ra: verifyOTP(): boolean → chọn (cần biết đúng/sai)
+Input: otp
+Output: boolean
+ Ứng viên tham số vào: verifyOTP() → chọn
+Ứng viên tham số ra: verifyOTP(): boolean → chọn (cần biết đúng/sai)
 d) Đổi mật khẩu → changePassword()
-55.  Input: currentPassword, newPassword
-56.  Output: boolean
-57.  Ứng viên tham số vào: changePassword() → chọn
-58.  Ứng viên tham số ra: changePassword(): boolean → chọn
+ Input: currentPassword, newPassword
+Output: boolean
+Ứng viên tham số vào: changePassword() → chọn
+Ứng viên tham số ra: changePassword(): boolean → chọn
 e) Xem hồ sơ → getProfile()
-59.  Input: userId
-60.  Output: User
-61.  Ứng viên tham số vào: getProfile() → chọn
-62.  Ứng viên tham số ra: getProfile(): User → chọn
+Input: userId
+Output: User
+Ứng viên tham số vào: getProfile() → chọn
+Ứng viên tham số ra: getProfile(): User → chọn
 f) Cập nhật hồ sơ → updateProfile()
-63.  Input: userId, fullName, email
-64.  Output: User
-65.  Ứng viên tham số vào: updateProfile() → chọn
-66.  Ứng viên tham số ra: updateProfile(): User → chọn
+Input: userId, fullName, email
+Output: User
+Ứng viên tham số vào: updateProfile() → chọn
+Ứng viên tham số ra: updateProfile(): User → chọn
 g) Xem danh sách NV → getAllStaff()
-67.  Input: (không có)
-68.  Output: List\<Employee\>
-69.  Ứng viên tham số vào: getAllStaff() → chọn
-70.  Ứng viên tham số ra: getAllStaff(): List<Employee> → chọn
+Input: (không có)
+Output: List<Employee>
+Ứng viên tham số vào: getAllStaff() → chọn
+Ứng viên tham số ra: getAllStaff(): List<Employee> → chọn
 h) Tìm kiếm NV → searchStaff()
-71.  Input: keyword
-72.  Output: List\<Employee\>
-73.  Ứng viên tham số vào: searchStaff(keyword: String) → chọn
-74.  Ứng viên tham số ra: searchStaff(): List<Employee> → chọn
+Input: keyword
+Output: List<Employee>
+Ứng viên tham số vào: searchStaff(keyword: String) → chọn
+Ứng viên tham số ra: searchStaff(): List<Employee> → chọn
 i) Lấy NV theo id → getStaffById()
-75.  Input: id
-76.  Output: Employee
-77.  Ứng viên tham số vào: getStaffById(id: int) → chọn
-78.  Ứng viên tham số ra: getStaffById(): Employee → chọn
+Input: id
+Output: Employee
+Ứng viên tham số vào: getStaffById(id: int) → chọn
+Ứng viên tham số ra: getStaffById(): Employee → chọn
 j) Thêm NV → saveStaff()
-79.  Input: employee
-80.  Output: boolean
-81.  Ứng viên tham số vào: saveStaff(employee: Employee) → chọn
-82.  Ứng viên tham số ra: saveStaff(): boolean → chọn (cần biết thành công/thất bại)
+Input: employee
+Output: boolean
+Ứng viên tham số vào: saveStaff(employee: Employee) → chọn
+Ứng viên tham số ra: saveStaff(): boolean → chọn (cần biết thành công/thất bại)
 k) Sửa NV → updateStaff()
-83.  Input: employee
-84.  Output: boolean
-85.  Ứng viên tham số vào: updateStaff() → chọn
-86.  Ứng viên tham số ra: updateStaff(): boolean → chọn
+Input: employee
+Output: boolean
+Ứng viên tham số vào: updateStaff() → chọn
+Ứng viên tham số ra: updateStaff(): boolean → chọn
 l) Xóa NV → deleteStaff()
-87.  Input: id
-88.  Output: boolean
-89.  Ứng viên tham số vào: deleteStaff() → chọn
-90.  Ứng viên tham số ra: deleteStaff(): boolean → chọn (cần biết thành công/thất bại)
+Input: id
+Output: boolean
+Ứng viên tham số vào: deleteStaff() → chọn
+Ứng viên tham số ra: deleteStaff(): boolean → chọn (cần biết thành công/thất bại)
 
 5. Biểu đồ tuần tự thiết kế
 5.1. Đăng nhập
 
 Kịch bản phiên bản 3 – UC01 Đăng nhập
-1.     Khách hàng truy cập URL /login.
-2.     Lớp LoginPage gọi phương thức formLoad().
-3.     Lớp LoginPage render form đăng nhập.
-4.     Khách hàng nhập SĐT và Mật khẩu.
-5.     Khách hàng click nút [Đăng nhập].
-6.     Lớp LoginPage gọi phương thức btnLoginClick().
-7.     Lớp LoginPage gọi phương thức checkLogin() của lớp AuthController.
-8.     Lớp AuthController gọi phương thức findBySDT() của lớp User.
-9.     Lớp User trả về User cho lớp AuthController.
-10.  Lớp AuthController gọi phương thức checkPassword().
-11.  Lớp AuthController trả về true cho lớp LoginPage.
-12.  Lớp LoginPage redirect /home.
-13.  Lớp LoginPage showMessage("Đăng nhập thành công").
+ KH → LoginPage: truy cập URL /login.
+ LoginPage → LoginPage: formLoad().
+ LoginPage → KH: render form đăng nhập.
+ KH → LoginPage: nhập txtPhoneNumber và txtPassword.
+ KH → LoginPage: click btnLogin.
+ LoginPage → LoginPage: btnLoginClick().
+ LoginPage → AuthController: checkLogin().
+ AuthController → User: findBySDT().
+ User → AuthController: return User.
+AuthController → AuthController: checkPassword().
+AuthController → LoginPage: return true.
+LoginPage → LoginPage: redirect /home.
+LoginPage → KH: showMessage("Đăng nhập thành công").
 5.2. Đăng ký
 
 Kịch bản phiên bản 3 – UC02 Đăng ký
-1.     Khách hàng click liên kết "Đăng ký" từ trang /login.
-2.     Lớp RegisterPage gọi phương thức formLoad().
-3.     Lớp RegisterPage render form đăng ký.
-4.     Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu.
-5.     Khách hàng click nút [Tiếp tục].
-6.     Lớp RegisterPage gọi phương thức btnTiepTucClick().
-7.     Lớp RegisterPage gọi phương thức register() của lớp AuthController.
-8.     Lớp AuthController gọi phương thức existsBySDT() của lớp User.
-9.     Lớp User trả về false cho lớp AuthController.
-10.  Lớp AuthController gọi phương thức existsByEmail() của lớp User.
-11.  Lớp User trả về false cho lớp AuthController.
-12.  Lớp AuthController gọi phương thức save() của lớp User.
-13.  Lớp User trả về User cho lớp AuthController.
-14.  Lớp AuthController gọi phương thức sendOTP() của lớp OTP.
-15.  Lớp OTP OTP sent.
-16.  Lớp AuthController trả về User cho lớp RegisterPage.
-17.  Lớp RegisterPage hiển thị OTPVerifyPage.
-18.  Khách hàng nhập mã OTP.
-19.  Khách hàng click nút [Xác nhận].
-20.  Lớp OTPVerifyPage gọi phương thức btnXacNhanClick().
-21.  Lớp OTPVerifyPage gọi phương thức verifyOTP() của lớp AuthController.
-22.  Lớp AuthController gọi phương thức verify() của lớp OTP.
-23.  Lớp OTP trả về true cho lớp AuthController.
-24.  Lớp AuthController trả về true cho lớp OTPVerifyPage.
-25.  Lớp OTPVerifyPage showMessage("Đăng ký thành công!").
+ KH → RegisterPage: click lnkRegister từ trang /login.
+ RegisterPage → RegisterPage: formLoad().
+ RegisterPage → KH: render form đăng ký.
+ KH → RegisterPage: nhập txtFullName, txtPhoneNumber, txtEmail, txtPassword.
+ KH → RegisterPage: click btnContinue.
+ RegisterPage → RegisterPage: btnTiepTucClick().
+ RegisterPage → AuthController: register().
+ AuthController → User: existsBySDT().
+ User → AuthController: return false.
+AuthController → User: existsByEmail().
+User → AuthController: return false.
+AuthController → User: save().
+User → AuthController: return User.
+AuthController → OTP: sendOTP().
+OTP → AuthController: return OTP sent.
+AuthController → RegisterPage: return User.
+RegisterPage → KH: hiển thị OTPVerifyPage.
+KH → OTPVerifyPage: nhập txtOTP.
+KH → OTPVerifyPage: click btnConfirm.
+OTPVerifyPage → OTPVerifyPage: btnXacNhanClick().
+OTPVerifyPage → AuthController: verifyOTP().
+AuthController → OTP: verify().
+OTP → AuthController: return true.
+AuthController → OTPVerifyPage: return true.
+OTPVerifyPage → KH: showMessage("Đăng ký thành công!").
 5.3. Đổi mật khẩu
 
 Kịch bản phiên bản 3 – UC03 Đổi mật khẩu
-1.     Người dùng truy cập URL /security.
-2.     Lớp ChangePasswordPage gọi phương thức formLoad().
-3.     Lớp ChangePasswordPage render form đổi mật khẩu.
-4.     Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới.
-5.     Người dùng click nút [Lưu thay đổi].
-6.     Lớp ChangePasswordPage gọi phương thức btnLuuClick().
-7.     Lớp ChangePasswordPage gọi phương thức changePassword() của lớp AuthController.
-8.     Lớp AuthController gọi phương thức findById() của lớp User.
-9.     Lớp User trả về User cho lớp AuthController.
-10.  Lớp AuthController gọi phương thức checkPassword().
-11.  Lớp AuthController hashPassword().
-12.  Lớp AuthController gọi phương thức updatePassword() của lớp User.
-13.  Lớp User trả về true cho lớp AuthController.
-14.  Lớp AuthController gọi phương thức revokeAllSessions() của lớp User.
-15.  Lớp User trả về void cho lớp AuthController.
-16.  Lớp AuthController trả về true cho lớp ChangePasswordPage.
-17.  Lớp ChangePasswordPage showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.").
+ Người dùng → ChangePasswordPage: truy cập URL /security.
+ ChangePasswordPage → ChangePasswordPage: formLoad().
+ ChangePasswordPage → Người dùng: render form đổi mật khẩu.
+ Người dùng → ChangePasswordPage: nhập txtCurrentPassword, txtNewPassword, txtConfirmNewPassword.
+ Người dùng → ChangePasswordPage: click btnSave.
+ ChangePasswordPage → ChangePasswordPage: btnLuuClick().
+ ChangePasswordPage → AuthController: changePassword().
+ AuthController → User: findById().
+ User → AuthController: return User.
+  AuthController → AuthController: checkPassword().
+AuthController → AuthController: hashPassword().
+AuthController → User: updatePassword().
+User → AuthController: return true.
+AuthController → User: revokeAllSessions().
+User → AuthController: return void.
+AuthController → ChangePasswordPage: return true.
+ChangePasswordPage → Người dùng: showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.").
 5.4. Quản lý TTCN
 
 Kịch bản phiên bản 3 – UC04 Quản lý TTCN
-1.     Khách hàng click avatar / tên tài khoản.
-2.     Lớp ProfilePage gọi phương thức formLoad().
-3.     Lớp ProfilePage gọi phương thức getProfile() của lớp ProfileController.
-4.     Lớp ProfileController gọi phương thức findById() của lớp User.
-5.     Lớp User trả về User cho lớp ProfileController.
-6.     Lớp ProfileController trả về User cho lớp ProfilePage.
-7.     Lớp ProfilePage gọi phương thức displayProfile().
-8.     Lớp ProfilePage render hồ sơ cá nhân.
-9.     Khách hàng click nút [Chỉnh sửa].
-10.  Khách hàng sửa Họ tên và Email.
-11.  Khách hàng click nút [Lưu].
-12.  Lớp ProfilePage gọi phương thức btnChinhSuaClick().
-13.  Lớp ProfilePage gọi phương thức updateProfile() của lớp ProfileController.
-14.  Lớp ProfileController gọi phương thức checkEmail() của lớp User.
-15.  Lớp User trả về true cho lớp ProfileController.
-16.  Lớp ProfileController gọi phương thức save() của lớp User.
-17.  Lớp User trả về User cho lớp ProfileController.
-18.  Lớp ProfileController trả về User cho lớp ProfilePage.
-19.  Lớp ProfilePage gọi phương thức displayProfile().
-20.  Lớp ProfilePage showMessage("Cập nhật thành công!").
+ KH → ProfilePage: click avatar / tên tài khoản.
+ ProfilePage → ProfilePage: formLoad().
+ ProfilePage → ProfileController: getProfile().
+ ProfileController → User: findById().
+ User → ProfileController: return User.
+ ProfileController → ProfilePage: return User.
+ ProfilePage → ProfilePage: displayProfile().
+ ProfilePage → KH: render hồ sơ cá nhân.
+ KH → ProfilePage: click btnEdit.
+KH → ProfilePage: sửa lblFullName và lblEmail.
+KH → ProfilePage: click [Lưu].
+ProfilePage → ProfilePage: btnChinhSuaClick().
+ProfilePage → ProfileController: updateProfile().
+ProfileController → User: checkEmail().
+User → ProfileController: return true.
+ProfileController → User: save().
+User → ProfileController: return User.
+ProfileController → ProfilePage: return User.
+ProfilePage → ProfilePage: displayProfile().
+ProfilePage → KH: showMessage("Cập nhật thành công!").
 5.5. Quản lý nhân viên
 
 Kịch bản phiên bản 3 – UC20 Quản lý nhân viên
-1.     Admin truy cập URL /admin/staff.
-2.     Lớp StaffManagePage gọi phương thức formLoad().
-3.     Lớp StaffManagePage gọi phương thức getAllStaff() của lớp StaffController.
-4.     Lớp StaffController gọi phương thức findAll() của lớp Employee.
-5.     Lớp Employee trả về List<Employee> cho lớp StaffController.
-6.     Lớp StaffController trả về List<Employee> cho lớp StaffManagePage.
-7.     Lớp StaffManagePage gọi phương thức displayStaffList().
-8.     Lớp StaffManagePage render bảng nhân viên.
-9.     Admin click nút [Thêm nhân viên].
-10.  Admin nhập Họ tên và Vai trò.
-11.  Admin click nút [Lưu].
-12.  Lớp StaffManagePage gọi phương thức btnThemClick().
-13.  Lớp StaffManagePage gọi phương thức saveStaff() của lớp StaffController.
-14.  Lớp StaffController gọi phương thức save() của lớp Employee.
-15.  Lớp Employee trả về Employee cho lớp StaffController.
-16.  Lớp StaffController trả về true cho lớp StaffManagePage.
-17.  Lớp StaffManagePage gọi phương thức displayStaffList().
-18.  Lớp StaffManagePage showMessage("Thêm nhân viên thành công!").
-19.  Admin click nút [Xóa] trên một dòng nhân viên.
-20.  Lớp StaffManagePage gọi phương thức btnXoaClick().
-21.  Lớp StaffManagePage gọi phương thức deleteStaff() của lớp StaffController.
-22.  Lớp StaffController gọi phương thức deleteById() của lớp Employee.
-23.  Lớp Employee trả về true cho lớp StaffController.
-24.  Lớp StaffController trả về true cho lớp StaffManagePage.
-25.  Lớp StaffManagePage gọi phương thức displayStaffList().
-26.  Lớp StaffManagePage showMessage("Xóa nhân viên thành công!").
+ Admin → StaffManagePage: truy cập URL /admin/staff.
+ StaffManagePage → StaffManagePage: formLoad().
+ StaffManagePage → StaffController: getAllStaff().
+ StaffController → Employee: findAll().
+ Employee → StaffController: return List<Employee>.
+ StaffController → StaffManagePage: return List<Employee>.
+ StaffManagePage → StaffManagePage: displayStaffList().
+ StaffManagePage → Admin: render tblStaffList.
+ Admin → StaffManagePage: click btnAdd.
+Admin → StaffManagePage: nhập fullName và staffRole.
+Admin → StaffManagePage: click [Lưu].
+StaffManagePage → StaffManagePage: btnThemClick().
+StaffManagePage → StaffController: saveStaff().
+StaffController → Employee: save().
+Employee → StaffController: return Employee.
+StaffController → StaffManagePage: return true.
+StaffManagePage → StaffManagePage: displayStaffList().
+StaffManagePage → Admin: showMessage("Thêm nhân viên thành công!").
+Admin → StaffManagePage: click btnDelete trên dòng nhân viên.
+StaffManagePage → StaffManagePage: btnXoaClick().
+StaffManagePage → StaffController: deleteStaff().
+StaffController → Employee: deleteById().
+Employee → StaffController: return true.
+StaffController → StaffManagePage: return true.
+StaffManagePage → StaffManagePage: displayStaffList().
+StaffManagePage → Admin: showMessage("Xóa nhân viên thành công!").
  
 IV. PHA CÀI ĐẶT VÀ KIỂM THỬ
 1. Lập kế hoạch test

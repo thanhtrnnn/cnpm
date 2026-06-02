@@ -14,7 +14,7 @@ Phạm vi: Hệ thống bao phủ toàn bộ quy trình vận hành từ khi kh�
 2.2. Ai có thể sử dụng phần mềm?
 Hệ thống phục vụ 5 nhóm người dùng chính:
 Khách hàng là nhóm người dùng bên ngoài, sử dụng web hoặc ứng dụng di động để đặt phòng trực tuyến, theo dõi lịch sử sử dụng, quản lý điểm thưởng hội viên và tương tác dịch vụ trực tiếp khi đang ở phòng hát.
-Nhân viên lễ tân là người dùng nội bộ tại quầy tiếp tân của mỗi chi nhánh. Họ trực tiếp xử lý các thao tác đặt phòng walk-in, thực hiện check-in/check-out, tổng hợp hóa đơn và thu tiền của khách, đồng thời kiểm kê hàng hóa tại quầy.
+Nhân viên lễ tân là người dùng nội bộ tại quầy tiếp tân của mỗi chi nhánh. Họ trực tiếp xử lý các thao tác đặt phòng walk-in, thực hiện check-in/check-out, tổng hợp hóa đơn và thu tiền của khách.
 Nhân viên phục vụ là người dùng nội bộ sử dụng thiết bị tablet hoặc ứng dụng di động để tiếp nhận order gọi món từ các phòng, chuyển yêu cầu đến bếp/bar, theo dõi và cập nhật trạng thái phục vụ, đồng thời báo cáo tình trạng hàng hóa và cơ sở vật chất trong phòng.
 Quản lý chi nhánh là người dùng nội bộ phụ trách điều hành toàn bộ một chi nhánh: phân ca làm việc cho nhân viên, theo dõi chấm công, đánh giá hiệu suất, quản lý kho hàng, xem thông tin khách hàng của chi nhánh và xem báo cáo doanh thu chi nhánh.
 Chủ doanh nghiệp là người dùng cấp cao nhất, có quyền quản lý toàn bộ chuỗi karaoke: thêm/sửa/xóa chi nhánh, quản lý danh mục chung (menu, bảng giá phòng, chương trình khuyến mãi), quản lý toàn bộ danh sách khách hàng, cấu hình hạng hội viên, quản lý phòng hát và xem báo cáo tổng hợp toàn chuỗi.
@@ -26,7 +26,6 @@ Tương tác dịch vụ trong phòng: gọi món qua app hoặc điện thoại
 Nhân viên lễ tân
 Quản lý đặt phòng: xếp phòng walk-in, xác nhận check-in booking online, tra cứu và tìm kiếm booking.
 Quản lý trả phòng: tính tiền phòng, tổng hợp order, áp dụng ưu đãi hội viên/voucher, thu tiền, in hóa đơn.
-Kiểm kê hàng tại quầy: đếm số lượng thực tế, tạo phiếu kiểm kê, báo cáo chênh lệch tồn kho.
 Nhân viên phục vụ
 Quản lý order: nhận yêu cầu gọi món từ phòng (qua app hoặc điện thoại), chuyển bếp/bar, cập nhật trạng thái giao hàng, hủy hoặc thay đổi order.
 Báo cáo tình trạng hàng hóa: kiểm tra cơ sở vật chất phòng sau mỗi lượt, cập nhật trạng thái phòng, báo hỏng hóc thiết bị, yêu cầu bổ sung minibar.
@@ -45,61 +44,88 @@ Quản lý hạng hội viên: cấu hình điều kiện nâng hạng và ưu �
 Quản lý tài khoản nhân viên: tạo tài khoản mới, phân quyền, khóa/mở tài khoản, reset mật khẩu.
 Tổng hợp báo cáo: so sánh hiệu suất chi nhánh, doanh thu toàn chuỗi, xuất file báo cáo.
 2.4. Mỗi chức năng hoạt động như thế nào?
-Đăng nhập
-Người dùng cung cấp SĐT/Email và mật khẩu → Hệ thống xác thực thông tin đăng nhập → Hệ thống tạo phiên đăng nhập và chuyển người dùng đến trang chủ tương ứng vai trò.
-Đăng ký
-Khách hàng cung cấp Họ tên, SĐT, Email, Mật khẩu → Hệ thống kiểm tra SĐT và email chưa tồn tại → Hệ thống gửi mã OTP đến SĐT để xác minh → Khách hàng cung cấp mã OTP → Hệ thống tạo tài khoản hạng "Thường" và tự động đăng nhập.
-Đổi mật khẩu
-Người dùng cung cấp mật khẩu hiện tại và mật khẩu mới → Hệ thống xác minh mật khẩu hiện tại → Hệ thống kiểm tra mật khẩu mới hợp lệ → Hệ thống cập nhật mật khẩu và thu hồi tất cả phiên đăng nhập khác.
+UC01 – Đăng nhập
+Người dùng nhập SĐT/Email và mật khẩu → Hệ thống xác thực thông tin đăng nhập → Hệ thống tạo phiên đăng nhập → Hệ thống chuyển người dùng đến trang chủ tương ứng vai trò.
+Người dùng nhập sai mật khẩu → Hệ thống thông báo lỗi xác thực → Người dùng nhập lại (tối đa 5 lần).
+Tài khoản bị khóa → Hệ thống hiển thị thông báo tài khoản bị khóa → Người dùng liên hệ Admin.
 
-Quản lý tài khoản cá nhân
-Khách hàng xem thông tin hồ sơ cá nhân (Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy) → Khách hàng cập nhật Họ tên và Email → Hệ thống cập nhật hồ sơ.
-Quản lý tài khoản nhân viên
-Admin xem danh sách nhân viên → Admin thêm nhân viên mới (Họ tên, SĐT, Vai trò) → Hệ thống tạo tài khoản nhân viên → Admin sửa thông tin nhân viên → Hệ thống cập nhật → Admin xóa nhân viên → Hệ thống chuyển trạng thái "Đã nghỉ".
-Đặt phòng trực tuyến
-Khách hàng đăng nhập vào hệ thống web/app → Khách hàng chọn chi nhánh →  Khách hàng xem danh sách phòng trống theo khung giờ mong muốn →  Khách hàng chọn phòng và thời gian → Khách hàng xác nhận đặt phòng → Hệ thống ghi nhận booking với trạng thái "Chờ nhận" trên hệ thống.
-Đặt phòng tại chi nhánh
-Khách hàng đến trực tiếp chi nhánh → Lễ tân kiểm tra phòng trống → Lễ tân chọn chi nhánh →  Lễ tân xem danh sách phòng trống theo khung giờ mong muốn → Lễ tân chọn phòng và thời gian → Lễ tân ghi nhận thông tin khách (hoặc tra cứu hội viên qua số điện thoại) → Lễ tân xác nhận đặt phòng với khách hàng → Lễ tân tạo booking với trạng thái “Chờ nhận” trên hệ thống.
-Check-in
-Khách hàng yêu cầu nhận phòng → Lễ tân kiểm tra thông tin khách hàng và phòng đặt → Lễ tân xác nhận đúng thông tin → Hệ thống chuyển trạng thái phòng được đặt từ “Chờ nhận” sang “Đang hoạt động”.
-Check-out
-Khách hàng yêu cầu trả phòng → Lễ tân chọn phòng trên hệ thống → Hệ thống tự động tính tiền phòng (giờ sử dụng × đơn giá) cộng tổng tiền order gọi món → Nếu khách là hội viên, lễ tân áp dụng ưu đãi hoặc voucher →  Hệ thống hiển thị tổng tiền →  Khách hàng thanh toán (tiền mặt/chuyển khoản) → Lễ tân in hóa đơn → Hệ thống đóng phòng → Hệ thống chuyển trạng thái về "Trống" → Hệ thống cộng điểm hội viên tự động.
-Huỷ phòng trực tuyến
-Khách hàng ấn nút Huỷ đặt phòng trên hệ thống → Hệ thống hỏi người dùng xác nhận chắc chắn huỷ → Hệ thống chuyển trạng thái “Chờ nhận” ở ghi nhận booking sang “Trống” → Lễ tân bấm xác nhận “Huỷ đặt phòng”.
-Huỷ phòng tại chi nhánh
-Khách hàng huỷ đặt phòng trực tiếp tại chi nhánh → Lễ tân chuyển trạng thái “chờ nhận” ở ghi nhận booking sang “huỷ đặt”. Lễ tân bấm xác nhận “huỷ đặt phòng” và không hoàn tiền cọc cho khách hàng.
-Gọi món / Tương tác dịch vụ
-Khách yêu cầu gọi món qua app hoặc điện thoại nội bộ. Nhân viên phục vụ mở hệ thống trên tablet, chọn phòng tương ứng, thêm các món vào order, gửi order. Hệ thống thông báo đến bếp/bar để chuẩn bị. Nhân viên phục vụ mang đồ đến phòng và cập nhật trạng thái đã giao.
-Quản lý order
-Nhân viên phục vụ nhận order từ phòng, chuyển đến bếp/bar. Trước khi bếp xử lý, nhân viên có thể hủy hoặc thay đổi order. Sau khi giao, nhân viên cập nhật trạng thái và hệ thống tự động ghi vào hóa đơn của phòng.
-Trả phòng & Thanh toán
-Khách yêu cầu trả phòng, lễ tân chọn phòng trên hệ thống. Hệ thống tự động tính tiền phòng (giờ sử dụng × đơn giá) cộng tổng tiền order gọi món. Nếu khách là hội viên, lễ tân áp dụng ưu đãi hoặc voucher. Hệ thống hiển thị tổng tiền, khách thanh toán (tiền mặt/chuyển khoản), lễ tân in hóa đơn. Hệ thống đóng phòng, chuyển trạng thái về "Trống" và cộng điểm hội viên tự động.
-Báo cáo tình trạng hàng hóa
-Sau mỗi lượt phục vụ, nhân viên phục vụ kiểm tra cơ sở vật chất và cập nhật trạng thái phòng. Nếu phát hiện thiết bị hỏng, nhân viên báo hỏng hóc để kỹ thuật xử lý. Nếu minibar cần bổ sung, nhân viên gửi yêu cầu bổ sung qua hệ thống.
-Kiểm kê hàng tại quầy
-Nhân viên lễ tân đếm số lượng thực tế các mặt hàng tại quầy, tạo phiếu kiểm kê và lưu vào hệ thống. Nếu phát hiện chênh lệch so với tồn kho hệ thống, nhân viên báo cáo chênh lệch để quản lý xử lý đối soát.
-Quản lý kho
-Quản lý chi nhánh theo dõi tồn kho trên hệ thống. Khi hàng sắp hết, hệ thống cảnh báo. Quản lý duyệt phiếu nhập hàng hoặc gửi đơn mua hàng. Sau khi hàng về, nhân viên kiểm nhận và tạo phiếu nhập, cập nhật số lượng tồn kho. Khi giao hàng cho phòng, hệ thống tự động trừ tồn kho tương ứng.
-Quản lý nhân viên chi nhánh
-Quản lý chi nhánh đăng nhập vào hệ thống → Quản lý chi nhánh xem danh sách nhân viên của chi nhánh → Quản lý chi nhánh phân ca làm việc cho nhân viên theo ngày/tuần → Hệ thống ghi nhận chấm công thực tế của nhân viên → Quản lý chi nhánh đánh giá hiệu suất định kỳ → Quản lý chi nhánh thực hiện khen thưởng hoặc kỷ luật dựa trên kết quả đánh giá → Hệ thống lưu lại kết quả phân ca, đánh giá và quyết định.
-Báo cáo số liệu chi nhánh
-Quản lý chi nhánh chọn chức năng báo cáo → Quản lý chi nhánh chọn kỳ báo cáo (ngày/tuần/tháng/quý/năm) → Hệ thống tổng hợp doanh thu, công suất phòng, lượng khách và doanh số bán hàng trong kỳ → Hệ thống hiển thị số liệu dưới dạng bảng và biểu đồ → Quản lý chi nhánh xuất báo cáo ra file Excel/PDF.
-Xem thông tin khách hàng chi nhánh:
-Quản lý chi nhánh chọn chức năng xem thông tin khách hàng → Quản lý chi nhánh nhập từ khóa tìm kiếm theo tên hoặc số điện thoại → Hệ thống truy vấn danh sách khách hàng của chi nhánh → Hệ thống hiển thị danh sách khách hàng → Quản lý chi nhánh chọn một khách hàng → Hệ thống hiển thị lịch sử sử dụng và điểm tích lũy của khách hàng.
-Quản lý hệ thống chi nhánh
-Admin chọn chức năng quản lý chi nhánh → Hệ thống hiển thị danh sách chi nhánh → Admin chọn Thêm mới, Sửa hoặc Xóa → Hệ thống hiển thị form nhập liệu (với Thêm/Sửa) hoặc popup xác nhận (với Xóa) → Admin nhập thông tin hoặc bấm xác nhận → Hệ thống kiểm tra dữ liệu hợp lệ và các ràng buộc (không xóa chi nhánh đang hoạt động) → Hệ thống cập nhật CSDL và làm mới danh sách.
-Quản lý khách hàng toàn hệ thống
-Admin chọn chức năng quản lý khách hàng → Hệ thống hiển thị giao diện tìm kiếm → Admin nhập từ khóa và tìm kiếm → Hệ thống hiển thị danh sách kết quả → Admin chọn Xem chi tiết hoặc Khóa tài khoản → Hệ thống truy xuất và hiển thị lịch sử đặt phòng (nếu xem) hoặc yêu cầu xác nhận (nếu khóa) → Admin thao tác tương ứng → Hệ thống cập nhật trạng thái tài khoản nếu khóa.
-Quản lý hạng hội viên
-Admin chọn chức năng quản lý hạng hội viên → Hệ thống hiển thị danh sách cấu hình các hạng → Admin chọn Sửa cấu hình hoặc Thay đổi hạng thủ công cho khách hàng → Hệ thống hiển thị form tương ứng → Admin thay đổi thông số ngưỡng điểm/giảm giá hoặc chọn khách hàng và hạng mới → Admin xác nhận lưu → Hệ thống kiểm tra tính hợp lệ → Hệ thống cập nhật dữ liệu vào CSDL.
-Quản lý danh mục loại phòng
-Admin chọn chức năng quản lý loại phòng → Hệ thống hiển thị danh mục các loại phòng chuẩn → Admin chọn Thêm mới, Sửa hoặc Xóa loại phòng → Hệ thống hiển thị form cấu hình (Tên loại, Sức chứa chuẩn, Giá chung) hoặc popup xác nhận (nếu Xóa) → Admin nhập thông tin hoặc xác nhận → Hệ thống kiểm tra ràng buộc (không xóa loại phòng đang có chi nhánh sử dụng) → Hệ thống cập nhật bảng giá và tiêu chuẩn phòng xuống toàn bộ hệ thống.
-Quản lý phòng hát tại chi nhánh
-Quản lý chi nhánh chọn chức năng quản lý phòng hát → Hệ thống hiển thị danh sách phòng thuộc chi nhánh mình quản lý → Quản lý chọn Thêm mới, Sửa hoặc Xóa phòng → Hệ thống hiển thị form nhập liệu hoặc popup xác nhận → Quản lý nhập thông tin (Tên phòng, chọn chuẩn Loại phòng) hoặc xác nhận → Hệ thống kiểm tra dữ liệu và ràng buộc (không xóa phòng đang có lịch đặt) → Hệ thống cập nhật CSDL và làm mới danh sách phòng của chi nhánh.
-Quản lý tài khoản nhân viên
-Chủ doanh nghiệp chọn chức năng quản lý tài khoản nhân viên → Chủ doanh nghiệp tạo tài khoản mới cho nhân viên → Chủ doanh nghiệp gán phân quyền phù hợp với vai trò → Hệ thống mã hóa mật khẩu và lưu tài khoản → Chủ doanh nghiệp khóa, mở hoặc reset mật khẩu tài khoản khi cần → Hệ thống cập nhật trạng thái tài khoản.
- Tổng hợp báo cáo
-Chủ doanh nghiệp chọn chức năng tổng hợp báo cáo → Chủ doanh nghiệp chọn khoảng thời gian và các chi nhánh → Hệ thống tổng hợp số liệu của toàn chuỗi → Hệ thống hiển thị biểu đồ so sánh hiệu suất giữa các chi nhánh và tổng doanh thu → Chủ doanh nghiệp xuất file báo cáo.
+UC02 – Đăng ký
+Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu → Hệ thống kiểm tra SĐT và Email chưa tồn tại → Hệ thống gửi mã OTP đến SĐT → Khách hàng nhập mã OTP → Hệ thống xác minh OTP hợp lệ → Hệ thống tạo tài khoản hạng "Thường" → Hệ thống tự động đăng nhập.
+SĐT hoặc Email đã tồn tại → Hệ thống thông báo trùng lặp → Khách hàng dùng thông tin khác hoặc chọn Đăng nhập.
+OTP sai hoặc hết hạn (5 phút) → Hệ thống thông báo lỗi OTP → Khách hàng yêu cầu gửi lại OTP.
+
+UC03 – Đổi mật khẩu
+Người dùng nhập mật khẩu hiện tại và mật khẩu mới → Hệ thống xác minh mật khẩu hiện tại đúng → Hệ thống kiểm tra mật khẩu mới hợp lệ → Hệ thống cập nhật mật khẩu → Hệ thống thu hồi tất cả phiên đăng nhập khác.
+
+Mật khẩu hiện tại không đúng → Hệ thống thông báo lỗi → Người dùng thử lại.
+Mật khẩu mới không hợp lệ → Hệ thống hiển thị yêu cầu định dạng → Người dùng nhập lại.
+
+UC04 – Quản lý thông tin cá nhân
+Khách hàng xem hồ sơ cá nhân (Họ tên, SĐT, Email, Hạng hội viên, Điểm tích lũy) → Khách hàng chỉnh sửa Họ tên hoặc Email → Hệ thống kiểm tra Email chưa tồn tại → Hệ thống cập nhật hồ sơ → Hệ thống hiển thị thông báo thành công.
+
+UC05 – Đặt phòng
+Đặt phòng trực tuyến: Khách hàng đăng nhập → Khách hàng chọn chi nhánh và khung giờ → Hệ thống hiển thị danh sách phòng trống → Khách hàng chọn phòng và xác nhận → Hệ thống ghi nhận booking trạng thái "Chờ nhận" → Hệ thống gửi thông báo xác nhận đến khách hàng.
+
+Đặt phòng tại chi nhánh: Khách hàng đến chi nhánh → Lễ tân tra cứu phòng trống theo khung giờ → Lễ tân ghi nhận thông tin khách (hoặc tra cứu hội viên qua SĐT) → Lễ tân chọn phòng và xác nhận với khách → Hệ thống tạo booking trạng thái "Chờ nhận".
+
+Hủy phòng trực tuyến: Khách hàng chọn booking cần hủy → Khách hàng bấm Hủy đặt phòng → Hệ thống yêu cầu xác nhận → Khách hàng xác nhận → Hệ thống chuyển trạng thái booking sang "Đã hủy" → Hệ thống giải phóng slot phòng.
+
+Hủy phòng tại chi nhánh: Khách hàng yêu cầu hủy trực tiếp → Lễ tân tra cứu booking → Lễ tân xác nhận hủy trên hệ thống → Hệ thống chuyển trạng thái sang "Đã hủy" → Hệ thống ghi nhận không hoàn tiền cọc.
+UC06 – Gọi món / Quản lý order
+Tạo order: Khách hàng yêu cầu gọi món → Nhân viên phục vụ mở hệ thống, chọn phòng tương ứng → Nhân viên thêm các món vào order → Nhân viên gửi order → Hệ thống ghi nhận order và thông báo đến bếp/bar.
+
+Cập nhật hoặc hủy order (trước khi bếp xử lý): Nhân viên chọn order cần thay đổi → Nhân viên sửa số lượng hoặc hủy món → Hệ thống cập nhật order → Hệ thống thông báo lại bếp/bar.
+
+Giao món và ghi nhận: Nhân viên mang đồ đến phòng → Nhân viên cập nhật trạng thái order sang "Đã giao" → Hệ thống tự động ghi chi tiết order vào hóa đơn phòng.
+
+UC07 – Quản lý đặt phòng (check-in)
+Khách hàng đến nhận phòng → Lễ tân tra cứu booking theo tên/SĐT → Lễ tân xác nhận đúng thông tin khách và phòng → Hệ thống chuyển trạng thái booking từ "Chờ nhận" sang "Đang hoạt động" → Hệ thống ghi nhận thời gian check-in thực tế.
+
+UC08 – Quản lý trả phòng (check-out)
+Khách hàng yêu cầu trả phòng → Lễ tân chọn phòng trên hệ thống → Hệ thống tính tiền phòng (giờ thực tế × đơn giá) cộng tổng tiền order → Lễ tân áp dụng ưu đãi hoặc voucher nếu khách là hội viên → Hệ thống hiển thị tổng tiền → Khách hàng thanh toán (tiền mặt / chuyển khoản) → Lễ tân in hóa đơn → Hệ thống đóng phòng, chuyển trạng thái về "Trống" → Hệ thống cộng điểm hội viên tự động.
+
+UC10 – Báo cáo tình trạng hàng hóa
+Sau mỗi lượt phục vụ, nhân viên phục vụ chọn phòng vừa phục vụ trên hệ thống → Nhân viên kiểm tra cơ sở vật chất trong phòng → Nhân viên cập nhật trạng thái phòng → Nếu phát hiện thiết bị hỏng, nhân viên tạo phiếu báo hỏng hóc → Nếu minibar cần bổ sung, nhân viên gửi yêu cầu bổ sung → Hệ thống ghi nhận và thông báo đến Quản lý chi nhánh.
+
+UC11 – Quản lý nhân viên chi nhánh
+Quản lý chi nhánh xem danh sách nhân viên của chi nhánh → Quản lý phân ca làm việc cho nhân viên theo ngày/tuần → Hệ thống ghi nhận lịch ca và chấm công thực tế → Quản lý đánh giá hiệu suất định kỳ → Quản lý thực hiện khen thưởng hoặc kỷ luật → Hệ thống lưu kết quả phân ca, đánh giá và quyết định.
+
+UC12 – Quản lý kho
+Quản lý chi nhánh theo dõi tồn kho trên hệ thống → Khi hàng sắp hết, hệ thống cảnh báo tự động → Quản lý duyệt phiếu nhập hàng hoặc gửi đơn mua hàng → Hàng về, nhân viên kiểm nhận và tạo phiếu nhập → Hệ thống cập nhật số lượng tồn kho → Khi phục vụ order, hệ thống tự động trừ tồn kho tương ứng.
+
+UC13 – Báo cáo số liệu chi nhánh
+Quản lý chi nhánh chọn chức năng báo cáo → Quản lý chọn kỳ báo cáo (ngày/tuần/tháng/quý/năm) → Hệ thống tổng hợp doanh thu, công suất phòng, lượng khách và doanh số bán hàng → Hệ thống hiển thị số liệu dạng bảng và biểu đồ → Quản lý xuất báo cáo ra file Excel/PDF.
+
+UC14 – Xem thông tin khách hàng chi nhánh
+Quản lý chi nhánh nhập từ khóa tìm kiếm (tên hoặc SĐT) → Hệ thống truy vấn danh sách khách hàng của chi nhánh → Hệ thống hiển thị danh sách kết quả → Quản lý chọn một khách hàng → Hệ thống hiển thị lịch sử sử dụng và điểm tích lũy.
+
+UC15 – Quản lý menu
+Xem và lọc menu: Quản lý chi nhánh chọn chức năng quản lý menu → Hệ thống hiển thị danh sách món ăn/đồ uống → Quản lý lọc theo danh mục → Hệ thống hiển thị danh sách đã lọc.
+
+Thêm hoặc sửa món: Quản lý chọn Thêm mới hoặc Sửa → Hệ thống hiển thị form (Tên món, Loại, Đơn giá, Mô tả, Trạng thái) → Quản lý nhập thông tin → Hệ thống kiểm tra dữ liệu hợp lệ → Hệ thống lưu và làm mới danh sách.
+
+Ẩn hoặc xóa món: Quản lý chọn món cần xóa hoặc ẩn → Hệ thống hiển thị xác nhận → Quản lý xác nhận → Hệ thống cập nhật trạng thái "Ngừng kinh doanh" hoặc xóa khỏi danh mục.
+
+UC16 – Quản lý hệ thống chi nhánh
+Admin chọn chức năng quản lý chi nhánh → Hệ thống hiển thị danh sách chi nhánh → Admin chọn Thêm mới, Sửa hoặc Xóa → Hệ thống hiển thị form nhập liệu (Thêm/Sửa) hoặc popup xác nhận (Xóa) → Admin nhập thông tin hoặc xác nhận → Hệ thống kiểm tra ràng buộc (không xóa chi nhánh đang hoạt động) → Hệ thống cập nhật CSDL và làm mới danh sách.
+
+UC17 – Quản lý khách hàng toàn hệ thống
+Admin nhập từ khóa và tìm kiếm → Hệ thống hiển thị danh sách kết quả toàn chuỗi → Admin chọn Xem chi tiết hoặc Khóa tài khoản → Hệ thống truy xuất lịch sử đặt phòng (nếu xem) hoặc yêu cầu xác nhận (nếu khóa) → Admin thực hiện thao tác → Hệ thống cập nhật trạng thái tài khoản.
+
+UC18 – Quản lý hạng hội viên
+Admin xem danh sách cấu hình các hạng (Thường/Bạc/Vàng) → Admin chọn Sửa cấu hình ngưỡng điểm/ưu đãi hoặc Thay đổi hạng thủ công cho khách hàng → Hệ thống hiển thị form tương ứng → Admin thay đổi thông số hoặc chọn khách hàng và hạng mới → Admin xác nhận → Hệ thống kiểm tra tính hợp lệ → Hệ thống cập nhật CSDL.
+
+UC19 – Quản lý phòng hát
+Quản lý danh mục loại phòng (Admin): Admin chọn chức năng quản lý loại phòng → Hệ thống hiển thị danh mục loại phòng chuẩn → Admin chọn Thêm mới, Sửa hoặc Xóa → Hệ thống hiển thị form (Tên loại, Sức chứa, Giá chung) hoặc xác nhận xóa → Admin nhập thông tin hoặc xác nhận → Hệ thống kiểm tra ràng buộc (không xóa loại đang được chi nhánh sử dụng) → Hệ thống cập nhật tiêu chuẩn phòng toàn hệ thống.
+
+Quản lý phòng vật lý tại chi nhánh (Quản lý chi nhánh): Quản lý chọn chức năng quản lý phòng của chi nhánh → Hệ thống hiển thị danh sách phòng thuộc chi nhánh → Quản lý chọn Thêm mới, Sửa hoặc Xóa → Hệ thống hiển thị form (Tên phòng, Loại phòng) hoặc xác nhận xóa → Quản lý nhập thông tin hoặc xác nhận → Hệ thống kiểm tra ràng buộc (không xóa phòng đang có lịch đặt) → Hệ thống cập nhật CSDL chi nhánh.
+
+UC20 – Quản lý tài khoản nhân viên
+Chủ doanh nghiệp xem danh sách tài khoản nhân viên → Chủ doanh nghiệp tạo tài khoản mới (Họ tên, SĐT, Vai trò, Chi nhánh) → Hệ thống tạo tài khoản và mã hóa mật khẩu mặc định → Chủ doanh nghiệp gán phân quyền phù hợp với vai trò → Khi cần, Chủ doanh nghiệp khóa, mở hoặc reset mật khẩu tài khoản → Hệ thống cập nhật trạng thái tài khoản.
+
+UC21 – Tổng hợp báo cáo toàn chuỗi
+Chủ doanh nghiệp chọn khoảng thời gian và các chi nhánh cần xem → Hệ thống tổng hợp số liệu toàn chuỗi → Hệ thống hiển thị biểu đồ so sánh hiệu suất giữa các chi nhánh và tổng doanh thu → Chủ doanh nghiệp xuất file báo cáo (Excel/PDF).
+
 2.5. Những thông tin/đối tượng mà hệ thống cần xử lý
 Hệ thống cần quản lý và xử lý các đối tượng thông tin chính sau:
 Chi nhánh: Mã chi nhánh, tên, địa chỉ, số điện thoại.
@@ -131,6 +157,7 @@ Một Phiếu nhập hàng thuộc một Chi nhánh và ghi nhận nhiều mặt
 
 3. Mô hình nghiệp vụ bằng UML
 3.1. Danh sách Actor
+
 3.2. Các Use Case cho từng Actor
 
 
