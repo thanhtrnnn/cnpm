@@ -22,6 +22,10 @@
 
 <!-- PLACEHOLDER: account_bce -->
 
+### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: account_seq -->
+
 ### Entity chính
 
 | Class | Bảng CSDL |
@@ -145,6 +149,10 @@
 ### Biểu đồ BCE phân tích
 
 <!-- PLACEHOLDER: core_bce -->
+
+### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: core_seq -->
 
 ### Entity chính
 

@@ -46,8 +46,10 @@ DIAGRAM_MAP = {
     'core_bce':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_07.png'),
     'hr_bce':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_07.png'),
     # Sequence diagrams
+    'account_seq':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_09.png'),
     'booking_seq':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_11.png'),
     'services_seq': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_11.png'),
+    'core_seq':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_12.png'),
     'hr_seq':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_08.png'),
 }
 
