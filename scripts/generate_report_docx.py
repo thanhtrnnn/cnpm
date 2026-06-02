@@ -1,7 +1,7 @@
-"""Generate DOCX for BÁO CÁO (Phần I + II).
+"""Generate DOCX for BÁO CÁO (Phần I–V).
 
-Source: docs/tabs/report/phan-i-ii.md
-Output: output/report.docx
+Sources: docs/tabs/report/phan-*.md
+Output:  output/report.docx
 
 Font:     Times New Roman throughout
 Headings: TNR, bold, #1F4E79 (XÁC ĐỊNH YÊU CẦU style)
@@ -12,16 +12,35 @@ Headings: TNR, bold, #1F4E79 (XÁC ĐỊNH YÊU CẦU style)
 import os
 import re
 from docx import Document
-from docx.shared import Pt, Cm, RGBColor
+from docx.shared import Pt, Cm, Inches, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import nsdecls
 from docx.oxml import parse_xml
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REPORT_DIR = os.path.join(SCRIPT_DIR, '..', 'docs', 'tabs', 'report')
-OUTPUT_DIR = os.path.join(SCRIPT_DIR, '..', 'output')
+REPO_DIR   = os.path.join(SCRIPT_DIR, '..')
+REPORT_DIR = os.path.join(REPO_DIR, 'docs', 'tabs', 'report')
+OUTPUT_DIR = os.path.join(REPO_DIR, 'output')
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'report.docx')
+
+# UC overview diagrams — identified by visual inspection of screenshots
+DIAGRAM_MAP = {
+    'account_uc_overview': os.path.join(REPO_DIR, 'exports', 'account',  'screenshots', 'image_01.png'),
+    'booking_uc_overview':  os.path.join(REPO_DIR, 'exports', 'booking',  'screenshots', 'image_01.png'),
+    'services_uc_overview': os.path.join(REPO_DIR, 'exports', 'services', 'screenshots', 'image_01.png'),
+    'core_uc_overview':     os.path.join(REPO_DIR, 'exports', 'core',     'screenshots', 'image_01.png'),
+    'hr_uc_overview':       os.path.join(REPO_DIR, 'exports', 'hr',       'screenshots', 'image_03.png'),
+}
+
+# Markdown files to process in order
+MD_FILES = [
+    os.path.join(REPORT_DIR, 'phan-i-ii.md'),
+    os.path.join(REPORT_DIR, 'phan-iii.md'),
+    os.path.join(REPORT_DIR, 'phan-iv.md'),
+    os.path.join(REPORT_DIR, 'phan-v.md'),
+]
 
 TNR = 'Times New Roman'
 HEADING_COLOR = RGBColor(0x1F, 0x4E, 0x79)
@@ -190,7 +209,23 @@ def process_md(doc, md_path):
         line = lines[i]
         stripped = line.strip()
 
-        # HTML comments (<!-- ... -->) — skip entirely
+        # PLACEHOLDER comment → embed diagram image
+        if stripped.startswith('<!--') and 'PLACEHOLDER' in stripped:
+            m_ph = re.search(r'PLACEHOLDER:\s*(\S+)', stripped)
+            if m_ph:
+                key = m_ph.group(1).rstrip('-->')  .strip()
+                img_path = DIAGRAM_MAP.get(key)
+                if img_path and os.path.exists(img_path):
+                    p = doc.add_paragraph()
+                    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                    run = p.add_run()
+                    run.add_picture(img_path, width=Inches(5.5))
+                else:
+                    add_para(doc, f'[Biểu đồ: {key}]')
+            i += 1
+            continue
+
+        # Other HTML comments — skip entirely
         if stripped.startswith('<!--'):
             i += 1
             continue
@@ -274,8 +309,12 @@ def main():
         hs.font.bold = True
         hs.font.color.rgb = HEADING_COLOR
 
-    md_path = os.path.join(REPORT_DIR, 'phan-i-ii.md')
-    process_md(doc, md_path)
+    for md_path in MD_FILES:
+        if not os.path.exists(md_path):
+            print(f'SKIP (not found): {md_path}')
+            continue
+        print(f'Processing: {os.path.basename(md_path)}')
+        process_md(doc, md_path)
 
     doc.save(OUTPUT_FILE)
     print(f'Saved: {OUTPUT_FILE}  ({os.path.getsize(OUTPUT_FILE):,} bytes)')
