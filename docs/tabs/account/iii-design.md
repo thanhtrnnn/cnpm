@@ -627,17 +627,17 @@ sequenceDiagram {
 </style>
 title Đăng nhập – Tuần tự Thiết kế (13 bước)
 
-actor "Khách hàng" as KH
+actor "KH" as KH
 boundary LoginPage as B1
 control AuthController as C1
 entity User as E1
 
-KH -> B1 : 1: truy cập URL /login
+KH -> B1 : 1: access /login
 activate B1
 B1 -> B1 : 2: formLoad()
-B1 --> KH : 3: render form đăng nhập
-KH -> B1 : 4: nhập SĐT và Mật khẩu
-KH -> B1 : 5: click nút [Đăng nhập]
+B1 --> KH : 3: display login form
+KH -> B1 : 4: enter phoneNumber and password
+KH -> B1 : 5: click btnLogin
 B1 -> B1 : 6: btnLoginClick()
 B1 -> C1 : 7: checkLogin()
 activate C1
@@ -649,7 +649,7 @@ C1 -> C1 : 10: checkPassword()
 C1 --> B1 : 11: true
 deactivate C1
 B1 -> B1 : 12: redirect /home
-B1 --> KH : 13: showMessage("Đăng nhập thành công")
+B1 --> KH : 13: showMessage("Login successful")
 deactivate B1
 @enduml
 ```
@@ -728,20 +728,20 @@ sequenceDiagram {
 </style>
 title Đăng ký – Tuần tự Thiết kế (25 bước)
 
-actor "Khách hàng" as KH
+actor "KH" as KH
 boundary RegisterPage as B1
 boundary OTPVerifyPage as B2
 control AuthController as C1
 entity User as E1
 entity OTP as E2
 
-KH -> B1 : 1: click liên kết "Đăng ký" từ trang /login
+KH -> B1 : 1: click lnkRegister on /login
 activate B1
 B1 -> B1 : 2: formLoad()
-B1 --> KH : 3: render form đăng ký
-KH -> B1 : 4: nhập Họ tên, SĐT, Email, Mật khẩu
-KH -> B1 : 5: click nút [Tiếp tục]
-B1 -> B1 : 6: btnTiepTucClick()
+B1 --> KH : 3: display registration form
+KH -> B1 : 4: enter fullName, phoneNumber, email, password
+KH -> B1 : 5: click btnContinue
+B1 -> B1 : 6: btnContinueClick()
 B1 -> C1 : 7: register()
 activate C1
 C1 -> E1 : 8: existsBySDT()
@@ -762,13 +762,13 @@ E2 --> C1 : 15: OTP sent
 deactivate E2
 C1 --> B1 : 16: User
 deactivate C1
-B1 --> KH : 17: hiển thị OTPVerifyPage
+B1 --> KH : 17: display OTPVerifyPage
 deactivate B1
 
-KH -> B2 : 18: nhập mã OTP
+KH -> B2 : 18: enter OTP code
 activate B2
-KH -> B2 : 19: click nút [Xác nhận]
-B2 -> B2 : 20: btnXacNhanClick()
+KH -> B2 : 19: click btnConfirm
+B2 -> B2 : 20: btnConfirmClick()
 B2 -> C1 : 21: verifyOTP()
 activate C1
 C1 -> E2 : 22: verify()
@@ -777,7 +777,7 @@ E2 --> C1 : 23: true
 deactivate E2
 C1 --> B2 : 24: true
 deactivate C1
-B2 --> KH : 25: showMessage("Đăng ký thành công!")
+B2 --> KH : 25: showMessage("Registration successful!")
 deactivate B2
 @enduml
 ```
@@ -868,18 +868,18 @@ sequenceDiagram {
 </style>
 title Đổi mật khẩu – Tuần tự Thiết kế (17 bước)
 
-actor "Người dùng" as User
+actor "KH" as KH
 boundary ChangePasswordPage as B1
 control AuthController as C1
 entity User as E1
 
-User -> B1 : 1: truy cập URL /security
+KH -> B1 : 1: access /security
 activate B1
 B1 -> B1 : 2: formLoad()
-B1 --> User : 3: render form đổi mật khẩu
-User -> B1 : 4: nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới
-User -> B1 : 5: click nút [Lưu thay đổi]
-B1 -> B1 : 6: btnLuuClick()
+B1 --> KH : 3: display change password form
+KH -> B1 : 4: enter currentPassword, newPassword, confirmPassword
+KH -> B1 : 5: click btnSave
+B1 -> B1 : 6: btnSaveClick()
 B1 -> C1 : 7: changePassword()
 activate C1
 C1 -> E1 : 8: findById()
@@ -898,7 +898,7 @@ E1 --> C1 : 15: void
 deactivate E1
 C1 --> B1 : 16: true
 deactivate C1
-B1 --> User : 17: showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.")
+B1 --> KH : 17: showMessage("Password changed. Please log in again.")
 deactivate B1
 @enduml
 ```
@@ -981,12 +981,12 @@ sequenceDiagram {
 </style>
 title Quản lý TTCN – Tuần tự Thiết kế (20 bước)
 
-actor "Khách hàng" as KH
+actor "KH" as KH
 boundary ProfilePage as B1
 control ProfileController as C1
 entity User as E1
 
-KH -> B1 : 1: click avatar / tên tài khoản
+KH -> B1 : 1: click profile avatar
 activate B1
 B1 -> B1 : 2: formLoad()
 B1 -> C1 : 3: getProfile()
@@ -998,12 +998,12 @@ deactivate E1
 C1 --> B1 : 6: User
 deactivate C1
 B1 -> B1 : 7: displayProfile()
-B1 --> KH : 8: render hồ sơ cá nhân
-KH -> B1 : 9: click nút [Chỉnh sửa]
+B1 --> KH : 8: display profile
+KH -> B1 : 9: click btnEdit
 activate B1
-KH -> B1 : 10: sửa Họ tên và Email
-KH -> B1 : 11: click nút [Lưu]
-B1 -> B1 : 12: btnChinhSuaClick()
+KH -> B1 : 10: edit fullName and email
+KH -> B1 : 11: click Save
+B1 -> B1 : 12: btnEditClick()
 B1 -> C1 : 13: updateProfile()
 activate C1
 C1 -> E1 : 14: checkEmail()
@@ -1017,7 +1017,7 @@ deactivate E1
 C1 --> B1 : 18: User
 deactivate C1
 B1 -> B1 : 19: displayProfile()
-B1 --> KH : 20: showMessage("Cập nhật thành công!")
+B1 --> KH : 20: showMessage("Update successful!")
 deactivate B1
 @enduml
 ```
@@ -1108,7 +1108,7 @@ boundary StaffManagePage as B1
 control StaffController as C1
 entity Employee as E1
 
-Admin -> B1 : 1: truy cập URL /admin/staff
+Admin -> B1 : 1: access /admin/staff
 activate B1
 B1 -> B1 : 2: formLoad()
 B1 -> C1 : 3: getAllStaff()
@@ -1120,12 +1120,12 @@ deactivate E1
 C1 --> B1 : 6: List<Employee>
 deactivate C1
 B1 -> B1 : 7: displayStaffList()
-B1 --> Admin : 8: render bảng nhân viên
+B1 --> Admin : 8: display tblStaffList
 
-Admin -> B1 : 9: click nút [Thêm nhân viên]
-Admin -> B1 : 10: nhập Họ tên và Vai trò
-Admin -> B1 : 11: click nút [Lưu]
-B1 -> B1 : 12: btnThemClick()
+Admin -> B1 : 9: click btnAdd
+Admin -> B1 : 10: enter fullName and staffRole
+Admin -> B1 : 11: click Save
+B1 -> B1 : 12: btnAddClick()
 B1 -> C1 : 13: saveStaff()
 activate C1
 C1 -> E1 : 14: save()
@@ -1135,12 +1135,12 @@ deactivate E1
 C1 --> B1 : 16: true
 deactivate C1
 B1 -> B1 : 17: displayStaffList()
-B1 --> Admin : 18: showMessage("Thêm nhân viên thành công!")
+B1 --> Admin : 18: showMessage("Staff added successfully!")
 deactivate B1
 
-Admin -> B1 : 19: click nút [Xóa] trên một dòng nhân viên
+Admin -> B1 : 19: click btnDelete on staff row
 activate B1
-B1 -> B1 : 20: btnXoaClick()
+B1 -> B1 : 20: btnDeleteClick()
 B1 -> C1 : 21: deleteStaff()
 activate C1
 C1 -> E1 : 22: deleteById()
@@ -1150,7 +1150,7 @@ deactivate E1
 C1 --> B1 : 24: true
 deactivate C1
 B1 -> B1 : 25: displayStaffList()
-B1 --> Admin : 26: showMessage("Xóa nhân viên thành công!")
+B1 --> Admin : 26: showMessage("Staff deleted successfully!")
 deactivate B1
 @enduml
 ```

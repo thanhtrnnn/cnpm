@@ -433,22 +433,22 @@ skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Đăng nhập – Tuần tự Phân tích (7 bước)
 
-actor "Người dùng" as Actor
+actor "User" as Actor
 boundary LoginView as B1
 boundary HomeView as B2
 entity User as E1
 
-Actor -> B1 : 1: chọn chức năng Đăng nhập
+Actor -> B1 : 1: select Login
 activate B1
-B1 --> Actor : 2: hiển thị giao diện đăng nhập
-Actor -> B1 : 3: nhập SĐT/Email + Mật khẩu, nhấn Đăng nhập
-B1 -> E1 : 4: gọi checkLogin(phoneNumber, password)
+B1 --> Actor : 2: display login screen
+Actor -> B1 : 3: enter phoneNumber + password, click Login
+B1 -> E1 : 4: checkLogin(phoneNumber, password)
 activate E1
-E1 --> B1 : 5: trả kết quả xác thực
+E1 --> B1 : 5: return auth result
 deactivate E1
-B1 -> B2 : 6: chuyển hướng sang HomeView, "Đăng nhập thành công"
+B1 -> B2 : 6: redirect HomeView, "Login successful"
 activate B2
-B2 --> Actor : 7: hiển thị trang chủ
+B2 --> Actor : 7: display home screen
 deactivate B2
 deactivate B1
 @enduml
@@ -492,41 +492,41 @@ skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Đăng ký – Tuần tự Phân tích (17 bước)
 
-actor "Khách hàng" as Actor
+actor "Customer" as Actor
 boundary RegisterView as B1
 boundary OTPVerifyView as B2
 boundary HomeView as B3
 entity Client as E1
 entity OTP as E2
 
-Actor -> B1 : 1: chọn liên kết Đăng ký
+Actor -> B1 : 1: click Register link
 activate B1
-B1 --> Actor : 2: hiển thị giao diện đăng ký
-Actor -> B1 : 3: nhập Họ tên, SĐT, Email, Mật khẩu, nhấn Tiếp tục
-B1 -> E1 : 4: gọi register(fullName, phoneNumber, email, password)
+B1 --> Actor : 2: display registration screen
+Actor -> B1 : 3: enter fullName, phoneNumber, email, password, click Continue
+B1 -> E1 : 4: register(fullName, phoneNumber, email, password)
 activate E1
-E1 -> E2 : 5: gọi sendOTP(phoneNumber, REGISTER)
+E1 -> E2 : 5: sendOTP(phoneNumber, REGISTER)
 activate E2
-E2 --> E1 : 6: OTP đã gửi
+E2 --> E1 : 6: OTP sent
 deactivate E2
-E1 --> B1 : 7: trả kết quả
+E1 --> B1 : 7: return result
 deactivate E1
-B1 --> Actor : 8: kiểm tra hợp lệ, gửi mã OTP
-B1 --> Actor : 9: hiển thị giao diện xác nhận OTP
-Actor -> B2 : 10: nhập mã OTP, nhấn Xác nhận
+B1 --> Actor : 8: validate, send OTP
+B1 --> Actor : 9: display OTP verification screen
+Actor -> B2 : 10: enter OTP code, click Confirm
 activate B2
-B2 -> E2 : 11: gọi verifyOTP(otpCode)
+B2 -> E2 : 11: verifyOTP(otpCode)
 activate E2
-E2 --> B2 : 12: xác minh thành công
+E2 --> B2 : 12: verified
 deactivate E2
-B2 -> E1 : 13: gọi saveUser()
+B2 -> E1 : 13: saveUser()
 activate E1
-E1 --> B2 : 14: tạo tài khoản thành công
+E1 --> B2 : 14: account created
 deactivate E1
-B2 --> Actor : 15: "Đăng ký thành công!"
-B2 -> B3 : 16: tự động đăng nhập, chuyển hướng HomeView
+B2 --> Actor : 15: "Registration successful!"
+B2 -> B3 : 16: auto-login, redirect HomeView
 activate B3
-B3 --> Actor : 17: hiển thị trang chủ
+B3 --> Actor : 17: display home screen
 deactivate B3
 deactivate B2
 deactivate B1
@@ -581,23 +581,23 @@ skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Đổi mật khẩu – Tuần tự Phân tích (8 bước)
 
-actor "Người dùng" as Actor
+actor "User" as Actor
 boundary ChangePasswordView as B1
 boundary LoginView as B2
 entity User as E1
 
-Actor -> B1 : 1: chọn chức năng Đổi mật khẩu
+Actor -> B1 : 1: select Change Password
 activate B1
-B1 --> Actor : 2: hiển thị giao diện đổi mật khẩu
-Actor -> B1 : 3: nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn Lưu
-B1 -> E1 : 4: gọi changePassword(currentPassword, newPassword)
+B1 --> Actor : 2: display change password screen
+Actor -> B1 : 3: enter currentPassword, newPassword, confirmPassword, click Save
+B1 -> E1 : 4: changePassword(currentPassword, newPassword)
 activate E1
-E1 --> B1 : 5: đổi mật khẩu thành công
+E1 --> B1 : 5: password changed
 deactivate E1
-B1 --> Actor : 6: "Đổi mật khẩu thành công"
-B1 -> B2 : 7: chuyển hướng về giao diện Đăng nhập
+B1 --> Actor : 6: "Password changed successfully"
+B1 -> B2 : 7: redirect login screen
 activate B2
-B2 --> Actor : 8: hiển thị trang đăng nhập
+B2 --> Actor : 8: display login screen
 deactivate B2
 deactivate B1
 @enduml
@@ -642,25 +642,25 @@ skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
 title Quản lý TTCN – Tuần tự Phân tích (10 bước)
 
-actor "Khách hàng" as Actor
+actor "Customer" as Actor
 boundary ProfileView as B1
 entity Client as E1
 
-Actor -> B1 : 1: chọn chức năng Hồ sơ cá nhân
+Actor -> B1 : 1: select Personal Profile
 activate B1
-B1 -> E1 : 2: gọi getProfile(clientId)
+B1 -> E1 : 2: getProfile(clientId)
 activate E1
-E1 --> B1 : 3: trả về thông tin Client
+E1 --> B1 : 3: return Client
 deactivate E1
-B1 --> Actor : 4: hiển thị trang hồ sơ cá nhân
-Actor -> B1 : 5: nhấn nút Chỉnh sửa
-B1 --> Actor : 6: chuyển sang chế độ chỉnh sửa
-Actor -> B1 : 7: cập nhật Họ tên, Email, nhấn Lưu
-B1 -> E1 : 8: gọi updateProfile(clientId, fullName, email)
+B1 --> Actor : 4: display profile
+Actor -> B1 : 5: click Edit
+B1 --> Actor : 6: switch to edit mode
+Actor -> B1 : 7: update fullName, email, click Save
+B1 -> E1 : 8: updateProfile(clientId, fullName, email)
 activate E1
-E1 --> B1 : 9: cập nhật thành công
+E1 --> B1 : 9: updated
 deactivate E1
-B1 --> Actor : 10: "Cập nhật thành công!", quay về chế độ xem
+B1 --> Actor : 10: "Update successful!", return to view mode
 deactivate B1
 @enduml
 ```
@@ -710,31 +710,31 @@ actor "Admin" as Actor
 boundary StaffManageView as B1
 entity Employee as E1
 
-Actor -> B1 : 1: chọn chức năng Quản lý nhân viên
+Actor -> B1 : 1: select Staff Management
 activate B1
-B1 -> E1 : 2: gọi getAllStaff()
+B1 -> E1 : 2: getAllStaff()
 activate E1
-E1 --> B1 : 3: trả về danh sách Employee
+E1 --> B1 : 3: return staff list
 deactivate E1
-B1 --> Actor : 4: hiển thị danh sách nhân viên
-Actor -> B1 : 5: nhấn nút Thêm nhân viên
-B1 --> Actor : 6: hiển thị giao diện nhập thông tin
-Actor -> B1 : 7: nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu
-B1 -> E1 : 8: gọi addStaff(fullName, role)
+B1 --> Actor : 4: display tblStaffList
+Actor -> B1 : 5: click Add Staff
+B1 --> Actor : 6: display add staff form
+Actor -> B1 : 7: enter fullName, staffRole, click Save
+B1 -> E1 : 8: addStaff(fullName, role)
 activate E1
-E1 --> B1 : 9: tạo thành công
+E1 --> B1 : 9: created
 deactivate E1
-B1 --> Actor : 10: "Thêm nhân viên thành công!"
-Actor -> B1 : 11: nhấn nút Sửa trên dòng Nguyễn Minh Tuấn
-B1 --> Actor : 12: hiển thị giao diện chỉnh sửa
-Actor -> B1 : 13: cập nhật thông tin, nhấn Lưu
-B1 -> E1 : 14: gọi updateStaff(id, data)
+B1 --> Actor : 10: "Staff added successfully!"
+Actor -> B1 : 11: click Edit on staff row
+B1 --> Actor : 12: display edit form
+Actor -> B1 : 13: update data, click Save
+B1 -> E1 : 14: updateStaff(id, data)
 activate E1
-E1 --> B1 : 15: cập nhật thành công
+E1 --> B1 : 15: updated
 deactivate E1
-B1 --> Actor : 16: "Cập nhật thành công!"
-Actor -> B1 : 17: nhấn nút Xóa trên dòng Lê Văn Khánh
-B1 --> Actor : 18: yêu cầu xác nhận xóa, "Xóa nhân viên thành công!"
+B1 --> Actor : 16: "Update successful!"
+Actor -> B1 : 17: click Delete on staff row
+B1 --> Actor : 18: confirm delete, "Staff deleted successfully!"
 deactivate B1
 @enduml
 ```
