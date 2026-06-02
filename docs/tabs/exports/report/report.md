@@ -622,7 +622,8 @@ Kịch bản chi tiết:
 15. EvaluationForm gọi DanhGiaController.saveEvaluation(dg) để lưu bản ghi đánh giá (thực thể DanhGiaNhanVien) xuống CSDL.
 16. EvaluationForm gọi showMessage("Lưu đánh giá thành công") cho Quản lý.
 
-Hình. Biểu đồ tuần tự thiết kế – Quản lý nhân viên chi nhánh
+![Biểu đồ tuần tự – Quản lý nhân viên chi nhánh](screenshots/image_08.png)
+
 4.2. Chức năng Báo cáo số liệu chi nhánh
 Kịch bản chi tiết:
 1. Quản lý chi nhánh nhập username, password trên LoginPage và nhấn Đăng nhập.
@@ -638,7 +639,8 @@ Kịch bản chi tiết:
 11. Quản lý nhấn Xuất file; BranchReportPage gọi BaoCaoController.exportFile(bc, format).
 12. BaoCaoController trả về File; BranchReportPage cho phép Quản lý tải về.
 
-Hình. Biểu đồ tuần tự thiết kế – Báo cáo số liệu chi nhánh
+![Biểu đồ tuần tự – Báo cáo số liệu chi nhánh](screenshots/image_09.png)
+
 4.3. Chức năng Xem thông tin khách hàng chi nhánh
 Kịch bản chi tiết:
 1. Quản lý chi nhánh nhập username, password trên LoginPage và nhấn Đăng nhập.
@@ -654,7 +656,8 @@ Kịch bản chi tiết:
 11. KhachHangController gọi thực thể HoaDon truy vấn lịch sử hóa đơn và gọi thực thể KhachHang lấy điểm tích lũy, trả kết quả về.
 12. CustomerHistoryPanel tự gọi displayHistory(list) hiển thị lịch sử và điểm tích lũy cho Quản lý.
 
-Hình. Biểu đồ tuần tự thiết kế – Xem thông tin khách hàng chi nhánh
+![Biểu đồ tuần tự – Xem thông tin khách hàng chi nhánh](screenshots/image_10.png)
+
 4.4. Chức năng Tổng hợp báo cáo toàn chuỗi
 Kịch bản chi tiết:
 1. Chủ doanh nghiệp nhập username, password trên LoginPage và nhấn Đăng nhập.
@@ -790,5 +793,7 @@ tblBranch:
 id | name | address | phone1 | Hà Nội 1 | 12 Trần Duy Hưng | 02411122332 | Hà Nội 2 | 45 Cầu Giấy | 02444555663 | Đà Nẵng 1 | 9 Nguyễn Văn Linh | 0236778899 
 Các bước thực hiện | Kết quả mong đợi1. Chủ doanh nghiệp vào chức năng Tổng hợp báo cáo toàn chuỗi. | Màn hình tổng hợp hiển thị.2. Chọn kỳ Quý 2/2025 nhưng không chọn chi nhánh nào, click Tổng hợp. | Hệ thống kiểm tra danh sách chi nhánh.3. Xem kết quả. | Hiển thị thông báo "Vui lòng chọn ít nhất 1 chi nhánh". 
 CSDL sau khi test: không có gì thay đổi
+
+![Biểu đồ tuần tự – Tổng hợp báo cáo toàn chuỗi](screenshots/image_11.png)
 
 
