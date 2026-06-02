@@ -25,32 +25,149 @@ REPORT_DIR = os.path.join(REPO_DIR, 'docs', 'tabs', 'report')
 OUTPUT_DIR = os.path.join(REPO_DIR, 'output')
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'report.docx')
 
-# UC overview diagrams — identified by visual inspection of screenshots
+# Full DIAGRAM_MAP — 105 entries mapping PLACEHOLDER keys to screenshot files
+def _img(module, filename):
+    return os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', module, 'screenshots', filename)
+
 DIAGRAM_MAP = {
-    # UC overviews
-    'account_uc_overview': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_01.png'),
-    'booking_uc_overview':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_01.png'),
-    'services_uc_overview': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_01.png'),
-    'core_uc_overview':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_01.png'),
-    'hr_uc_overview':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_01.png'),
-    # Entity diagrams
-    'account_entity':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_07.png'),
-    'booking_entity':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_06.png'),
-    'services_entity': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_06.png'),
-    'core_entity':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_06.png'),
-    'hr_entity':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_06.png'),
-    # BCE class diagrams
-    'account_bce':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_08.png'),
-    'booking_bce':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_07.png'),
-    'services_bce': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_07.png'),
-    'core_bce':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_07.png'),
-    'hr_bce':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_07.png'),
-    # Sequence diagrams
-    'account_seq':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_09.png'),
-    'booking_seq':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_11.png'),
-    'services_seq': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_11.png'),
-    'core_seq':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_12.png'),
-    'hr_seq':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_08.png'),
+    # ═══════════════════════════════════════════════════════════════════════════
+    # MODULE 1: ACCOUNT (13 images)
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Phase I — UC
+    'account_uc_overview':   _img('account', 'image_01.png'),
+    'account_uc_uc01':       _img('account', 'image_02.png'),
+    'account_uc_uc02':       _img('account', 'image_03.png'),
+    'account_uc_uc03':       _img('account', 'image_04.png'),
+    'account_uc_uc04':       _img('account', 'image_05.png'),
+    'account_uc_uc20':       _img('account', 'image_06.png'),
+    # Phase II — Entity + BCE + Seq phân tích
+    'account_entity':               _img('account', 'image_07.png'),
+    'account_bce':                  _img('account', 'image_08.png'),
+    'account_seq_analysis_uc01':    _img('account', 'image_09.png'),
+    'account_seq_analysis_uc02':    _img('account', 'image_10.png'),
+    'account_seq_analysis_uc03':    _img('account', 'image_11.png'),
+    'account_seq_analysis_uc04':    _img('account', 'image_12.png'),
+    'account_seq_analysis_uc20':    _img('account', 'image_13.png'),
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # MODULE 2: BOOKING (21 images)
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Phase I — UC
+    'booking_uc_overview':          _img('booking', 'image_01.png'),
+    'booking_uc_datphong':          _img('booking', 'image_02.png'),
+    'booking_uc_huyphong':          _img('booking', 'image_03.png'),
+    'booking_uc_checkin':           _img('booking', 'image_04.png'),
+    'booking_uc_checkout':          _img('booking', 'image_05.png'),
+    # Phase II — Entity + BCE + Seq phân tích
+    'booking_entity':                       _img('booking', 'image_06.png'),
+    'booking_bce':                          _img('booking', 'image_07.png'),
+    'booking_seq_analysis_datphong':        _img('booking', 'image_08.png'),
+    'booking_seq_analysis_huyphong':        _img('booking', 'image_09.png'),
+    'booking_seq_analysis_checkin':         _img('booking', 'image_10.png'),
+    'booking_seq_analysis_checkout':        _img('booking', 'image_11.png'),
+    # Phase III — Thiết kế
+    'booking_design_entity':                _img('booking', 'image_12.png'),
+    'booking_db':                           _img('booking', 'image_13.png'),
+    'booking_design_class':                 _img('booking', 'image_14.png'),
+    'booking_seq_design_datphong':          _img('booking', 'image_15.png'),
+    'booking_seq_design_checkin':           _img('booking', 'image_16.png'),
+    'booking_wireframe_01':                 _img('booking', 'image_17.png'),
+    'booking_wireframe_02':                 _img('booking', 'image_18.png'),
+    'booking_wireframe_03':                 _img('booking', 'image_19.png'),
+    'booking_wireframe_04':                 _img('booking', 'image_20.png'),
+    'booking_wireframe_05':                 _img('booking', 'image_21.png'),
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # MODULE 3: SERVICES (42 images)
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Phase I — UC
+    'services_uc_overview':         _img('services', 'image_01.png'),
+    'services_uc_order':            _img('services', 'image_02.png'),
+    'services_uc_baocao':           _img('services', 'image_03.png'),
+    'services_uc_menu':             _img('services', 'image_04.png'),
+    'services_uc_kho':              _img('services', 'image_05.png'),
+    # Phase II — Entity + BCE + Seq phân tích
+    'services_entity':                      _img('services', 'image_06.png'),
+    'services_bce':                         _img('services', 'image_07.png'),
+    'services_seq_analysis_order':          _img('services', 'image_08.png'),
+    'services_seq_analysis_baocao':         _img('services', 'image_09.png'),
+    'services_seq_analysis_menu':           _img('services', 'image_10.png'),
+    'services_seq_analysis_kho':            _img('services', 'image_11.png'),
+    # Phase III — Thiết kế
+    'services_design_entity':               _img('services', 'image_12.png'),
+    'services_db':                          _img('services', 'image_13.png'),
+    'services_design_class_order':          _img('services', 'image_14.png'),
+    'services_design_class_baocao':         _img('services', 'image_15.png'),
+    'services_design_class_menu':           _img('services', 'image_16.png'),
+    'services_design_class_kho':            _img('services', 'image_17.png'),
+    'services_seq_design_order':            _img('services', 'image_18.png'),
+    'services_seq_design_baocao':           _img('services', 'image_19.png'),
+    'services_seq_design_menu':             _img('services', 'image_20.png'),
+    'services_seq_design_kho':              _img('services', 'image_21.png'),
+    'services_wireframe_01':                _img('services', 'image_22.png'),
+    'services_wireframe_02':                _img('services', 'image_23.png'),
+    'services_wireframe_03':                _img('services', 'image_24.png'),
+    'services_wireframe_04':                _img('services', 'image_25.png'),
+    'services_wireframe_05':                _img('services', 'image_26.png'),
+    'services_wireframe_06':                _img('services', 'image_27.png'),
+    'services_wireframe_07':                _img('services', 'image_28.png'),
+    'services_wireframe_08':                _img('services', 'image_29.png'),
+    'services_wireframe_09':                _img('services', 'image_30.png'),
+    'services_wireframe_10':                _img('services', 'image_31.png'),
+    'services_wireframe_11':                _img('services', 'image_32.png'),
+    'services_wireframe_12':                _img('services', 'image_33.png'),
+    'services_wireframe_13':                _img('services', 'image_34.png'),
+    'services_wireframe_14':                _img('services', 'image_35.png'),
+    'services_wireframe_15':                _img('services', 'image_36.png'),
+    'services_wireframe_16':                _img('services', 'image_37.png'),
+    'services_wireframe_17':                _img('services', 'image_38.png'),
+    'services_wireframe_18':                _img('services', 'image_39.png'),
+    'services_wireframe_19':                _img('services', 'image_40.png'),
+    'services_wireframe_20':                _img('services', 'image_41.png'),
+    'services_wireframe_21':                _img('services', 'image_42.png'),
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # MODULE 4: CORE (18 images)
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Phase I — UC
+    'core_uc_overview':             _img('core', 'image_01.png'),
+    'core_uc_uc16':                 _img('core', 'image_02.png'),
+    'core_uc_uc17':                 _img('core', 'image_03.png'),
+    'core_uc_uc18':                 _img('core', 'image_04.png'),
+    'core_uc_uc19':                 _img('core', 'image_05.png'),
+    'core_uc_uc20':                 _img('core', 'image_06.png'),
+    # Phase II — Entity + BCE + Seq phân tích
+    'core_entity':                          _img('core', 'image_07.png'),
+    'core_bce':                             _img('core', 'image_08.png'),
+    'core_seq_analysis_uc16':               _img('core', 'image_09.png'),
+    'core_seq_analysis_uc17':               _img('core', 'image_10.png'),
+    'core_seq_analysis_uc18':               _img('core', 'image_11.png'),
+    'core_seq_analysis_uc19':               _img('core', 'image_12.png'),
+    'core_seq_analysis_uc20':               _img('core', 'image_13.png'),
+    # Phase III — Thiết kế
+    'core_design_entity':                   _img('core', 'image_14.png'),
+    'core_db':                              _img('core', 'image_15.png'),
+    'core_design_class':                    _img('core', 'image_16.png'),
+    'core_wireframe_01':                    _img('core', 'image_17.png'),
+    'core_wireframe_02':                    _img('core', 'image_18.png'),
+
+    # ═══════════════════════════════════════════════════════════════════════════
+    # MODULE 5: REPORT (11 images)
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Phase I — UC
+    'hr_uc_overview':               _img('report', 'image_01.png'),
+    'hr_uc_nhanvien':               _img('report', 'image_02.png'),
+    'hr_uc_baocao':                 _img('report', 'image_03.png'),
+    'hr_uc_khachhang':              _img('report', 'image_04.png'),
+    'hr_uc_tonghop':                _img('report', 'image_05.png'),
+    # Phase II — Entity (no analysis seq images for this module)
+    'hr_entity':                    _img('report', 'image_06.png'),
+    # Phase III — Thiết kế
+    'hr_bce':                       _img('report', 'image_07.png'),
+    'hr_seq_design_nhanvien':       _img('report', 'image_08.png'),
+    'hr_seq_design_baocao':         _img('report', 'image_09.png'),
+    'hr_seq_design_khachhang':      _img('report', 'image_10.png'),
+    'hr_seq_design_tonghop':        _img('report', 'image_11.png'),
 }
 
 # Markdown files to process in order
