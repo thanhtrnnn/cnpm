@@ -625,7 +625,7 @@ sequenceDiagram {
   }
 }
 </style>
-title Đăng nhập – Tuần tự Thiết kế (13 bước)
+title Login – Design Sequence (13 steps)
 
 actor "KH" as KH
 boundary LoginPage as B1
@@ -726,7 +726,7 @@ sequenceDiagram {
   }
 }
 </style>
-title Đăng ký – Tuần tự Thiết kế (25 bước)
+title Register – Design Sequence (25 steps)
 
 actor "KH" as KH
 boundary RegisterPage as B1
@@ -866,7 +866,7 @@ sequenceDiagram {
   }
 }
 </style>
-title Đổi mật khẩu – Tuần tự Thiết kế (17 bước)
+title Change Password – Design Sequence (17 steps)
 
 actor "KH" as KH
 boundary ChangePasswordPage as B1
@@ -979,7 +979,7 @@ sequenceDiagram {
   }
 }
 </style>
-title Quản lý TTCN – Tuần tự Thiết kế (20 bước)
+title Manage Profile – Design Sequence (20 steps)
 
 actor "KH" as KH
 boundary ProfilePage as B1
@@ -1101,7 +1101,7 @@ sequenceDiagram {
   }
 }
 </style>
-title Quản lý nhân viên – Tuần tự Thiết kế (26 bước)
+title Manage Staff – Design Sequence (26 steps)
 
 actor "Admin" as Admin
 boundary StaffManagePage as B1

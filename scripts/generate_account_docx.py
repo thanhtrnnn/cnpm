@@ -353,23 +353,54 @@ W_NS = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 
 
 def new_numbered_list(doc):
-    """Tạo một numId mới (nối abstractNumId=2) restart đánh số về 1.
-    Mỗi numbered list riêng phải dùng numId riêng, nếu không Word đánh số nối tiếp."""
+    """Tạo abstractNum + numId hoàn toàn mới, độc lập — đảm bảo đánh số restart từ 1.
+    Mỗi UC nhận abstractNum riêng thay vì dùng chung abstractNumId=2 + startOverride,
+    vì Google Docs không tôn trọng startOverride và cộng dồn số liên tục."""
     numbering_xml = doc.part.numbering_part._element
-    existing = [int(n.get(W_NS + 'numId')) for n in numbering_xml.findall(W_NS + 'num')]
-    new_id = (max(existing) if existing else 0) + 1
+    W = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
+
+    existing_abst = [int(n.get(W + 'abstractNumId'))
+                     for n in numbering_xml.findall(W + 'abstractNum')]
+    new_abst_id = (max(existing_abst) if existing_abst else 0) + 1
+
+    abst = OxmlElement('w:abstractNum')
+    abst.set(W + 'abstractNumId', str(new_abst_id))
+    ml = OxmlElement('w:multiLevelType')
+    ml.set(W + 'val', 'hybridMultilevel')
+    abst.append(ml)
+    for lvl_idx, (indent, hang) in enumerate([(360, 360), (720, 360), (1080, 360)]):
+        lvl = OxmlElement('w:lvl')
+        lvl.set(W + 'ilvl', str(lvl_idx))
+        st = OxmlElement('w:start')
+        st.set(W + 'val', '1')
+        lvl.append(st)
+        fmt = OxmlElement('w:numFmt')
+        fmt.set(W + 'val', 'decimal')
+        lvl.append(fmt)
+        lt = OxmlElement('w:lvlText')
+        lt.set(W + 'val', f'%{lvl_idx + 1}.')
+        lvl.append(lt)
+        pPr = OxmlElement('w:pPr')
+        ind = OxmlElement('w:ind')
+        ind.set(W + 'left', str(indent))
+        ind.set(W + 'hanging', str(hang))
+        pPr.append(ind)
+        lvl.append(pPr)
+        abst.append(lvl)
+    # Insert abstractNum before first <w:num>
+    first_num = numbering_xml.find(W + 'num')
+    if first_num is not None:
+        numbering_xml.insert(list(numbering_xml).index(first_num), abst)
+    else:
+        numbering_xml.append(abst)
+
+    existing_num = [int(n.get(W + 'numId')) for n in numbering_xml.findall(W + 'num')]
+    new_id = (max(existing_num) if existing_num else 0) + 1
     num = OxmlElement('w:num')
-    num.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}numId', str(new_id))
+    num.set(W + 'numId', str(new_id))
     ref = OxmlElement('w:abstractNumId')
-    ref.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '2')
+    ref.set(W + 'val', str(new_abst_id))
     num.append(ref)
-    for lvl in range(3):
-        ov = OxmlElement('w:lvlOverride')
-        ov.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}ilvl', str(lvl))
-        so = OxmlElement('w:startOverride')
-        so.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
-        ov.append(so)
-        num.append(ov)
     numbering_xml.append(num)
     return new_id
 

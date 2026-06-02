@@ -431,7 +431,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đăng nhập – Tuần tự Phân tích (7 bước)
+title Login – Analysis Sequence (7 steps)
 
 actor "User" as Actor
 boundary LoginView as B1
@@ -490,7 +490,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đăng ký – Tuần tự Phân tích (17 bước)
+title Register – Analysis Sequence (17 steps)
 
 actor "Customer" as Actor
 boundary RegisterView as B1
@@ -579,7 +579,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Đổi mật khẩu – Tuần tự Phân tích (8 bước)
+title Change Password – Analysis Sequence (8 steps)
 
 actor "User" as Actor
 boundary ChangePasswordView as B1
@@ -640,7 +640,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Quản lý TTCN – Tuần tự Phân tích (10 bước)
+title Manage Profile – Analysis Sequence (10 steps)
 
 actor "Customer" as Actor
 boundary ProfileView as B1
@@ -704,7 +704,7 @@ skinparam sequenceMessageFontSize 10
 skinparam sequenceActorBorderColor #000000
 skinparam sequenceActorBackgroundColor #7AD2FF
 skinparam sequenceActorFontColor #000000
-title Quản lý nhân viên – Tuần tự Phân tích (18 bước)
+title Manage Staff – Analysis Sequence (18 steps)
 
 actor "Admin" as Actor
 boundary StaffManageView as B1
