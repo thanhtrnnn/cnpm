@@ -27,11 +27,28 @@ OUTPUT_FILE = os.path.join(OUTPUT_DIR, 'report.docx')
 
 # UC overview diagrams — identified by visual inspection of screenshots
 DIAGRAM_MAP = {
-    'account_uc_overview': os.path.join(REPO_DIR, 'exports', 'account',  'screenshots', 'image_01.png'),
-    'booking_uc_overview':  os.path.join(REPO_DIR, 'exports', 'booking',  'screenshots', 'image_01.png'),
-    'services_uc_overview': os.path.join(REPO_DIR, 'exports', 'services', 'screenshots', 'image_01.png'),
-    'core_uc_overview':     os.path.join(REPO_DIR, 'exports', 'core',     'screenshots', 'image_01.png'),
-    'hr_uc_overview':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report', 'screenshots', 'image_01.png'),
+    # UC overviews
+    'account_uc_overview': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_01.png'),
+    'booking_uc_overview':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_01.png'),
+    'services_uc_overview': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_01.png'),
+    'core_uc_overview':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_01.png'),
+    'hr_uc_overview':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_01.png'),
+    # Entity diagrams
+    'account_entity':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_07.png'),
+    'booking_entity':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_06.png'),
+    'services_entity': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_06.png'),
+    'core_entity':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_06.png'),
+    'hr_entity':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_06.png'),
+    # BCE class diagrams
+    'account_bce':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'account',  'screenshots', 'image_08.png'),
+    'booking_bce':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_07.png'),
+    'services_bce': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_07.png'),
+    'core_bce':     os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'core',     'screenshots', 'image_07.png'),
+    'hr_bce':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_07.png'),
+    # Sequence diagrams
+    'booking_seq':  os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'booking',  'screenshots', 'image_11.png'),
+    'services_seq': os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'services', 'screenshots', 'image_11.png'),
+    'hr_seq':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report',   'screenshots', 'image_08.png'),
 }
 
 # Markdown files to process in order

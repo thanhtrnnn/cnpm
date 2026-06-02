@@ -14,6 +14,14 @@
 
 <!-- PLACEHOLDER: account_uc_overview -->
 
+### Biểu đồ Entity
+
+<!-- PLACEHOLDER: account_entity -->
+
+### Biểu đồ BCE phân tích
+
+<!-- PLACEHOLDER: account_bce -->
+
 ### Entity chính
 
 | Class | Bảng CSDL |
@@ -41,6 +49,18 @@
 | UC08 | Check-out & Thanh toán | NV lễ tân |
 
 <!-- PLACEHOLDER: booking_uc_overview -->
+
+### Biểu đồ Entity
+
+<!-- PLACEHOLDER: booking_entity -->
+
+### Biểu đồ BCE phân tích
+
+<!-- PLACEHOLDER: booking_bce -->
+
+### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: booking_seq -->
 
 ### Entity chính
 
@@ -71,6 +91,18 @@
 | Quản lý kho | Quản lý chi nhánh |
 
 <!-- PLACEHOLDER: services_uc_overview -->
+
+### Biểu đồ Entity
+
+<!-- PLACEHOLDER: services_entity -->
+
+### Biểu đồ BCE phân tích
+
+<!-- PLACEHOLDER: services_bce -->
+
+### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: services_seq -->
 
 ### Entity chính
 
@@ -106,6 +138,14 @@
 
 <!-- PLACEHOLDER: core_uc_overview -->
 
+### Biểu đồ Entity
+
+<!-- PLACEHOLDER: core_entity -->
+
+### Biểu đồ BCE phân tích
+
+<!-- PLACEHOLDER: core_bce -->
+
 ### Entity chính
 
 | Class | Bảng CSDL |
@@ -133,6 +173,18 @@
 | UC21 | Tổng hợp báo cáo toàn chuỗi | Chủ doanh nghiệp |
 
 <!-- PLACEHOLDER: hr_uc_overview -->
+
+### Biểu đồ Entity
+
+<!-- PLACEHOLDER: hr_entity -->
+
+### Biểu đồ BCE phân tích
+
+<!-- PLACEHOLDER: hr_bce -->
+
+### Biểu đồ tuần tự
+
+<!-- PLACEHOLDER: hr_seq -->
 
 ### Entity chính
 
