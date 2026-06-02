@@ -107,7 +107,7 @@ def determine_heading_level(text):
         return 1
     if t in ('II. PHA PHÂN TÍCH', 'III. PHA THIẾT KẾ', 'IV. PHA CÀI ĐẶT VÀ KIỂM THỬ'):
         return 1
-    # Hệ thống đánh số 3 cấp: N. → H2, N.N. → H3, N.N.N. → H4, a) b) c) → H4
+    # Hệ thống đánh số 3 cấp: N. → H2, N.N. → H3, N.N.N. → H4
     if re.match(r'^\d+\.\d+\.\d+\.\s', t):
         return 4
     if re.match(r'^\d+\.\d+\.\s', t):
@@ -132,6 +132,9 @@ def determine_heading_level(text):
         return 3
     if t.startswith('TC') and re.match(r'^TC\d+', t):
         return 3
+    # Phase IV test-case subsection labels → H4
+    if re.match(r'^Trạng thái CSDL', t) or t == 'Kịch bản thực hiện:':
+        return 4
     return None
 
 
@@ -394,6 +397,7 @@ def process_file(doc, md_file, start_heading=None):
     code_lines = []
     skip_phase_heading = True  # Skip first H1/H2 phase heading per file
     current_num_id = None  # numId của numbered list đang chạy; None = chưa có list
+    in_scenario_section = False  # True khi đang trong kịch bản phiên bản (sequence scenarios)
 
     while i < len(lines):
         line = lines[i]
@@ -514,6 +518,8 @@ def process_file(doc, md_file, start_heading=None):
                 i += 1
                 continue
             skip_phase_heading = False
+            if level <= 3:
+                in_scenario_section = False  # New section resets scenario flag
             add_heading_with_blue_underline(doc, text, level)
             i += 1
             continue
@@ -522,6 +528,9 @@ def process_file(doc, md_file, start_heading=None):
         bm = re.match(r'^\*\*(.+?)\*\*$', stripped)
         if bm:
             text = bm.group(1).strip()
+            # Detect kịch bản phiên bản header → enable numbered list mode
+            if text.startswith('Kịch bản phiên bản'):
+                in_scenario_section = True
             content_level = determine_heading_level(text)
             if content_level:
                 add_heading_with_blue_underline(doc, text, content_level)
@@ -553,23 +562,33 @@ def process_file(doc, md_file, start_heading=None):
             continue
 
         # Numbered list (1. 2. etc.)
+        # Only use numbered lists inside kịch bản phiên bản (sequence scenario) sections;
+        # everywhere else render as bullet to prevent cross-section numbering bleed.
         nm = re.match(r'^(\s*)\d+[.)]\s+(.+)$', line)
         if nm:
-            if current_num_id is None:
-                current_num_id = new_numbered_list(doc)  # list mới → numId mới, restart về 1
             indent = len(nm.group(1))
             text = nm.group(2).strip()
             level = min(indent // 2, 2)
             p = add_formatted_paragraph(doc, text, style='Normal')
-            # Use native DOCX numbering
             pPr = p._element.get_or_add_pPr()
             numPr = OxmlElement('w:numPr')
             ilvl = OxmlElement('w:ilvl')
-            ilvl.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(level))
-            numPr.append(ilvl)
-            numId = OxmlElement('w:numId')
-            numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(current_num_id))
-            numPr.append(numId)
+            if in_scenario_section:
+                # Numbered list with fresh numId per scenario block
+                if current_num_id is None:
+                    current_num_id = new_numbered_list(doc)
+                ilvl.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(level))
+                numPr.append(ilvl)
+                numId = OxmlElement('w:numId')
+                numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(current_num_id))
+                numPr.append(numId)
+            else:
+                # Outside scenarios → render as bullet (numId=1)
+                ilvl.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', str(level))
+                numPr.append(ilvl)
+                numId = OxmlElement('w:numId')
+                numId.set('{http://schemas.openxmlformats.org/wordprocessingml/2006/main}val', '1')
+                numPr.append(numId)
             pPr.append(numPr)
             i += 1
             continue

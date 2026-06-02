@@ -458,13 +458,13 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC01 Đăng nhập (7 bước)**
 
-1. Người dùng chọn chức năng Đăng nhập.
-2. Lớp LoginView hiển thị giao diện đăng nhập.
-3. Người dùng nhập SĐT/Email + Mật khẩu, nhấn Đăng nhập.
-4. Lớp LoginView gọi checkLogin(phoneNumber, password).
-5. Lớp User trả kết quả xác thực.
-6. Lớp LoginView chuyển hướng sang HomeView, "Đăng nhập thành công".
-7. Lớp HomeView hiển thị trang chủ.
+1. Actor → LoginView: chọn chức năng Đăng nhập.
+2. LoginView → Actor: hiển thị giao diện đăng nhập.
+3. Actor → LoginView: nhập txtPhoneNumber + txtPassword, nhấn Đăng nhập.
+4. LoginView → User: checkLogin(phoneNumber, password).
+5. User → LoginView: return kết quả xác thực.
+6. LoginView → HomeView: chuyển hướng, "Đăng nhập thành công".
+7. HomeView → Actor: hiển thị trang chủ.
 
 #### UC02 – Đăng ký (17 bước)
 
@@ -537,23 +537,23 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC02 Đăng ký (17 bước)**
 
-1. Khách hàng chọn liên kết Đăng ký.
-2. Lớp RegisterView hiển thị giao diện đăng ký.
-3. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu, nhấn Tiếp tục.
-4. Lớp RegisterView gọi register(fullName, phoneNumber, email, password).
-5. Lớp Client gọi sendOTP(phoneNumber, REGISTER).
-6. Lớp OTP OTP đã gửi.
-7. Lớp Client trả kết quả.
-8. Lớp RegisterView kiểm tra hợp lệ, gửi mã OTP.
-9. Lớp RegisterView hiển thị giao diện xác nhận OTP.
-10. Khách hàng nhập mã OTP, nhấn Xác nhận.
-11. Lớp OTPVerifyView gọi verifyOTP(otpCode).
-12. Lớp OTP xác minh thành công.
-13. Lớp OTPVerifyView gọi saveUser().
-14. Lớp Client tạo tài khoản thành công.
-15. Lớp OTPVerifyView "Đăng ký thành công!".
-16. Lớp OTPVerifyView tự động đăng nhập, chuyển hướng HomeView.
-17. Lớp HomeView hiển thị trang chủ.
+1. Actor → RegisterView: chọn liên kết Đăng ký.
+2. RegisterView → Actor: hiển thị giao diện đăng ký.
+3. Actor → RegisterView: nhập txtFullName, txtPhoneNumber, txtEmail, txtPassword, nhấn Tiếp tục.
+4. RegisterView → Client: register(fullName, phoneNumber, email, password).
+5. Client → OTP: sendOTP(phoneNumber, REGISTER).
+6. OTP → Client: return OTP đã gửi.
+7. Client → RegisterView: return kết quả.
+8. RegisterView → Actor: kiểm tra hợp lệ, gửi mã OTP.
+9. RegisterView → Actor: hiển thị giao diện xác nhận OTP.
+10. Actor → OTPVerifyView: nhập txtOTP, nhấn Xác nhận.
+11. OTPVerifyView → OTP: verifyOTP(otpCode).
+12. OTP → OTPVerifyView: return xác minh thành công.
+13. OTPVerifyView → Client: saveUser().
+14. Client → OTPVerifyView: return tạo tài khoản thành công.
+15. OTPVerifyView → Actor: "Đăng ký thành công!".
+16. OTPVerifyView → HomeView: tự động đăng nhập, chuyển hướng.
+17. HomeView → Actor: hiển thị trang chủ.
 
 #### UC03 – Đổi mật khẩu (8 bước)
 
@@ -607,14 +607,14 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC03 Đổi mật khẩu (8 bước)**
 
-1. Người dùng chọn chức năng Đổi mật khẩu.
-2. Lớp ChangePasswordView hiển thị giao diện đổi mật khẩu.
-3. Người dùng nhập MK hiện tại, MK mới, Xác nhận MK mới, nhấn Lưu.
-4. Lớp ChangePasswordView gọi changePassword(currentPassword, newPassword).
-5. Lớp User đổi mật khẩu thành công.
-6. Lớp ChangePasswordView "Đổi mật khẩu thành công".
-7. Lớp ChangePasswordView chuyển hướng về giao diện Đăng nhập.
-8. Lớp LoginView hiển thị trang đăng nhập.
+1. Actor → ChangePasswordView: chọn chức năng Đổi mật khẩu.
+2. ChangePasswordView → Actor: hiển thị giao diện đổi mật khẩu.
+3. Actor → ChangePasswordView: nhập txtCurrentPassword, txtNewPassword, txtConfirmNewPassword, nhấn Lưu.
+4. ChangePasswordView → User: changePassword(currentPassword, newPassword).
+5. User → ChangePasswordView: return đổi mật khẩu thành công.
+6. ChangePasswordView → Actor: "Đổi mật khẩu thành công".
+7. ChangePasswordView → LoginView: chuyển hướng về giao diện Đăng nhập.
+8. LoginView → Actor: hiển thị trang đăng nhập.
 
 #### UC04 – Quản lý thông tin cá nhân (10 bước)
 
@@ -669,16 +669,16 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC04 Quản lý thông tin cá nhân (10 bước)**
 
-1. Khách hàng chọn chức năng Hồ sơ cá nhân.
-2. Lớp ProfileView gọi getProfile(clientId).
-3. Lớp Client trả về thông tin Client.
-4. Lớp ProfileView hiển thị trang hồ sơ cá nhân.
-5. Khách hàng nhấn nút Chỉnh sửa.
-6. Lớp ProfileView chuyển sang chế độ chỉnh sửa.
-7. Khách hàng cập nhật Họ tên, Email, nhấn Lưu.
-8. Lớp ProfileView gọi updateProfile(clientId, fullName, email).
-9. Lớp Client cập nhật thành công.
-10. Lớp ProfileView "Cập nhật thành công!", quay về chế độ xem.
+1. Actor → ProfileView: chọn chức năng Hồ sơ cá nhân.
+2. ProfileView → Client: getProfile(clientId).
+3. Client → ProfileView: return thông tin Client.
+4. ProfileView → Actor: hiển thị trang hồ sơ cá nhân.
+5. Actor → ProfileView: nhấn nút btnEdit.
+6. ProfileView → Actor: chuyển sang chế độ chỉnh sửa.
+7. Actor → ProfileView: cập nhật lblFullName, lblEmail, nhấn Lưu.
+8. ProfileView → Client: updateProfile(clientId, fullName, email).
+9. Client → ProfileView: return cập nhật thành công.
+10. ProfileView → Actor: "Cập nhật thành công!", quay về chế độ xem.
 
 #### UC20 – Quản lý tài khoản nhân viên (18 bước)
 
@@ -743,21 +743,21 @@ deactivate B1
 
 **Kịch bản phiên bản 2 – UC20 Quản lý tài khoản nhân viên (18 bước)**
 
-1. Admin chọn chức năng Quản lý nhân viên.
-2. Lớp StaffManageView gọi getAllStaff().
-3. Lớp Employee trả về danh sách Employee.
-4. Lớp StaffManageView hiển thị danh sách nhân viên.
-5. Admin nhấn nút Thêm nhân viên.
-6. Lớp StaffManageView hiển thị giao diện nhập thông tin.
-7. Admin nhập Họ tên, SĐT, Vai trò, Chi nhánh, nhấn Lưu.
-8. Lớp StaffManageView gọi addStaff(fullName, role).
-9. Lớp Employee tạo thành công.
-10. Lớp StaffManageView "Thêm nhân viên thành công!".
-11. Admin nhấn nút Sửa trên dòng Nguyễn Minh Tuấn.
-12. Lớp StaffManageView hiển thị giao diện chỉnh sửa.
-13. Admin cập nhật thông tin, nhấn Lưu.
-14. Lớp StaffManageView gọi updateStaff(id, data).
-15. Lớp Employee cập nhật thành công.
-16. Lớp StaffManageView "Cập nhật thành công!".
-17. Admin nhấn nút Xóa trên dòng Lê Văn Khánh.
-18. Lớp StaffManageView yêu cầu xác nhận xóa, "Xóa nhân viên thành công!".
+1. Actor → StaffManageView: chọn chức năng Quản lý nhân viên.
+2. StaffManageView → Employee: getAllStaff().
+3. Employee → StaffManageView: return danh sách Employee.
+4. StaffManageView → Actor: hiển thị tblStaffList.
+5. Actor → StaffManageView: nhấn nút btnAdd.
+6. StaffManageView → Actor: hiển thị giao diện nhập thông tin.
+7. Actor → StaffManageView: nhập fullName, staffRole, nhấn Lưu.
+8. StaffManageView → Employee: addStaff(fullName, role).
+9. Employee → StaffManageView: return tạo thành công.
+10. StaffManageView → Actor: "Thêm nhân viên thành công!".
+11. Actor → StaffManageView: nhấn btnEdit trên dòng nhân viên.
+12. StaffManageView → Actor: hiển thị giao diện chỉnh sửa.
+13. Actor → StaffManageView: cập nhật thông tin, nhấn Lưu.
+14. StaffManageView → Employee: updateStaff(id, data).
+15. Employee → StaffManageView: return cập nhật thành công.
+16. StaffManageView → Actor: "Cập nhật thành công!".
+17. Actor → StaffManageView: nhấn btnDelete trên dòng nhân viên.
+18. StaffManageView → Actor: yêu cầu xác nhận xóa, "Xóa nhân viên thành công!".

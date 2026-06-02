@@ -209,13 +209,13 @@ tblUser ||--o{ tblLoginSession
 
 ```
 ┌──────────────────────────────────────────────┐
-│              Đăng nhập                       │
+│               Đăng nhập                      │
 │                                              │
-│  txtSDT:       [________________________]     │
-│  txtMatKhau:   [________________________]     │
+│  txtPhoneNumber: [_______________________]   │
+│  txtPassword:    [_______________________]   │
 │                                              │
-│  [btnDangNhap]                               │
-│  btnQuenMatKhau  |  btnDangKy                │
+│  [btnLogin]                                  │
+│  lnkForgotPassword  |  lnkRegister           │
 └──────────────────────────────────────────────┘
 ```
 
@@ -223,15 +223,15 @@ tblUser ||--o{ tblLoginSession
 
 ```
 ┌──────────────────────────────────────────────┐
-│              Đăng ký tài khoản                │
+│           Đăng ký tài khoản                  │
 │                                              │
-│  txtHoTen:           [________________________]  │
-│  txtSoDienThoai:     [________________________]  │
-│  txtEmail:           [________________________]  │
-│  txtMatKhau:         [________________________]  │
-│  txtXacNhanMatKhau:  [________________________]  │
+│  txtFullName:        [___________________]   │
+│  txtPhoneNumber:     [___________________]   │
+│  txtEmail:           [___________________]   │
+│  txtPassword:        [___________________]   │
+│  txtConfirmPassword: [___________________]   │
 │                                              │
-│  [btnTiepTuc]                [btnHuy]        │
+│  [btnContinue]               [Cancel]        │
 └──────────────────────────────────────────────┘
 ```
 
@@ -243,8 +243,8 @@ tblUser ||--o{ tblLoginSession
 │                                              │
 │  txtOTP: [__][__][__][__][__][__]            │
 │                                              │
-│  [btnXacNhan]                                │
-│  lblCountdown: Gửi lại OTP (60s)            │
+│  [btnConfirm]                                │
+│  btnResendOTP                                │
 └──────────────────────────────────────────────┘
 ```
 
@@ -254,11 +254,11 @@ tblUser ||--o{ tblLoginSession
 ┌──────────────────────────────────────────────┐
 │           Đổi mật khẩu                       │
 │                                              │
-│  txtMatKhauHienTai:     [________________________]│
-│  txtMatKhauMoi:         [________________________]│
-│  txtXacNhanMatKhauMoi:  [________________________]│
+│  txtCurrentPassword:    [________________]   │
+│  txtNewPassword:        [________________]   │
+│  txtConfirmNewPassword: [________________]   │
 │                                              │
-│  [btnLuu]                [btnHuy]            │
+│  [btnSave]                   [Cancel]        │
 └──────────────────────────────────────────────┘
 ```
 
@@ -268,13 +268,13 @@ tblUser ||--o{ tblLoginSession
 ┌──────────────────────────────────────────────┐
 │           Hồ sơ cá nhân                      │
 │                                              │
-│  txtHoTen:         [________________________]  │
-│  txtSoDienThoai:   [________________________]  │
-│  txtEmail:         [________________________]  │
-│  lblMembershipTier: ........................  │
-│  lblDiemTichLuy:   ........................  │
+│  lblFullName:       [_____________________]  │
+│  lblPhoneNumber:    [__________] (readonly)  │
+│  lblEmail:          [_____________________]  │
+│  lblMembershipTier: [Bạc      ] (readonly)   │
+│  lblLoyaltyPoints:  [1250     ] (readonly)   │
 │                                              │
-│  [btnChinhSua]  [btnDoiMatKhau]              │
+│  [btnEdit]    [btnChangePassword]            │
 └──────────────────────────────────────────────┘
 ```
 
@@ -284,17 +284,16 @@ tblUser ||--o{ tblLoginSession
 ┌──────────────────────────────────────────────┐
 │        Quản lý tài khoản nhân viên           │
 │                                              │
-│  txtTimKiem: [________________________]      │
-│  [btnThem]                                   │
+│  [btnAdd]                                    │
 │                                              │
-│ ┌──────┬────────┬──────────┬──────────┐      │
-│ │ Họ tên│ Vai trò│ Trạng thái│ ...     │      │
-│ │ ......│ .......│ .........│         │      │
-│ │ ......│ .......│ .........│         │      │
-│ └──────┴────────┴──────────┴──────────┘      │
-│  tblStaff                                    │
+│ ┌──────────┬───────────┬──────────┐          │
+│ │ fullName │ staffRole │ status   │          │
+│ │ ........ │ ......... │ ........ │          │
+│ │ ........ │ ......... │ ........ │          │
+│ └──────────┴───────────┴──────────┘          │
+│              tblStaffList                    │
 │                                              │
-│  [btnSua]  [btnXoa]                          │
+│  [btnEdit]    [btnDelete]                    │
 └──────────────────────────────────────────────┘
 ```
 
@@ -657,19 +656,19 @@ deactivate B1
 
 **Kịch bản phiên bản 3 – UC01 Đăng nhập**
 
-1. Khách hàng truy cập URL /login.
-2. Lớp LoginPage gọi phương thức formLoad().
-3. Lớp LoginPage render form đăng nhập.
-4. Khách hàng nhập SĐT và Mật khẩu.
-5. Khách hàng click nút [Đăng nhập].
-6. Lớp LoginPage gọi phương thức btnLoginClick().
-7. Lớp LoginPage gọi phương thức checkLogin() của lớp AuthController.
-8. Lớp AuthController gọi phương thức findBySDT() của lớp User.
-9. Lớp User trả về User cho lớp AuthController.
-10. Lớp AuthController gọi phương thức checkPassword().
-11. Lớp AuthController trả về true cho lớp LoginPage.
-12. Lớp LoginPage redirect /home.
-13. Lớp LoginPage showMessage("Đăng nhập thành công").
+1. KH → LoginPage: truy cập URL /login.
+2. LoginPage → LoginPage: formLoad().
+3. LoginPage → KH: render form đăng nhập.
+4. KH → LoginPage: nhập txtPhoneNumber và txtPassword.
+5. KH → LoginPage: click btnLogin.
+6. LoginPage → LoginPage: btnLoginClick().
+7. LoginPage → AuthController: checkLogin().
+8. AuthController → User: findBySDT().
+9. User → AuthController: return User.
+10. AuthController → AuthController: checkPassword().
+11. AuthController → LoginPage: return true.
+12. LoginPage → LoginPage: redirect /home.
+13. LoginPage → KH: showMessage("Đăng nhập thành công").
 
 #### 5.2. Đăng ký
 
@@ -785,31 +784,31 @@ deactivate B2
 
 **Kịch bản phiên bản 3 – UC02 Đăng ký**
 
-1. Khách hàng click liên kết "Đăng ký" từ trang /login.
-2. Lớp RegisterPage gọi phương thức formLoad().
-3. Lớp RegisterPage render form đăng ký.
-4. Khách hàng nhập Họ tên, SĐT, Email, Mật khẩu.
-5. Khách hàng click nút [Tiếp tục].
-6. Lớp RegisterPage gọi phương thức btnTiepTucClick().
-7. Lớp RegisterPage gọi phương thức register() của lớp AuthController.
-8. Lớp AuthController gọi phương thức existsBySDT() của lớp User.
-9. Lớp User trả về false cho lớp AuthController.
-10. Lớp AuthController gọi phương thức existsByEmail() của lớp User.
-11. Lớp User trả về false cho lớp AuthController.
-12. Lớp AuthController gọi phương thức save() của lớp User.
-13. Lớp User trả về User cho lớp AuthController.
-14. Lớp AuthController gọi phương thức sendOTP() của lớp OTP.
-15. Lớp OTP OTP sent.
-16. Lớp AuthController trả về User cho lớp RegisterPage.
-17. Lớp RegisterPage hiển thị OTPVerifyPage.
-18. Khách hàng nhập mã OTP.
-19. Khách hàng click nút [Xác nhận].
-20. Lớp OTPVerifyPage gọi phương thức btnXacNhanClick().
-21. Lớp OTPVerifyPage gọi phương thức verifyOTP() của lớp AuthController.
-22. Lớp AuthController gọi phương thức verify() của lớp OTP.
-23. Lớp OTP trả về true cho lớp AuthController.
-24. Lớp AuthController trả về true cho lớp OTPVerifyPage.
-25. Lớp OTPVerifyPage showMessage("Đăng ký thành công!").
+1. KH → RegisterPage: click lnkRegister từ trang /login.
+2. RegisterPage → RegisterPage: formLoad().
+3. RegisterPage → KH: render form đăng ký.
+4. KH → RegisterPage: nhập txtFullName, txtPhoneNumber, txtEmail, txtPassword.
+5. KH → RegisterPage: click btnContinue.
+6. RegisterPage → RegisterPage: btnTiepTucClick().
+7. RegisterPage → AuthController: register().
+8. AuthController → User: existsBySDT().
+9. User → AuthController: return false.
+10. AuthController → User: existsByEmail().
+11. User → AuthController: return false.
+12. AuthController → User: save().
+13. User → AuthController: return User.
+14. AuthController → OTP: sendOTP().
+15. OTP → AuthController: return OTP sent.
+16. AuthController → RegisterPage: return User.
+17. RegisterPage → KH: hiển thị OTPVerifyPage.
+18. KH → OTPVerifyPage: nhập txtOTP.
+19. KH → OTPVerifyPage: click btnConfirm.
+20. OTPVerifyPage → OTPVerifyPage: btnXacNhanClick().
+21. OTPVerifyPage → AuthController: verifyOTP().
+22. AuthController → OTP: verify().
+23. OTP → AuthController: return true.
+24. AuthController → OTPVerifyPage: return true.
+25. OTPVerifyPage → KH: showMessage("Đăng ký thành công!").
 
 #### 5.3. Đổi mật khẩu
 
@@ -906,23 +905,23 @@ deactivate B1
 
 **Kịch bản phiên bản 3 – UC03 Đổi mật khẩu**
 
-1. Người dùng truy cập URL /security.
-2. Lớp ChangePasswordPage gọi phương thức formLoad().
-3. Lớp ChangePasswordPage render form đổi mật khẩu.
-4. Người dùng nhập Mật khẩu hiện tại, Mật khẩu mới, Xác nhận MK mới.
-5. Người dùng click nút [Lưu thay đổi].
-6. Lớp ChangePasswordPage gọi phương thức btnLuuClick().
-7. Lớp ChangePasswordPage gọi phương thức changePassword() của lớp AuthController.
-8. Lớp AuthController gọi phương thức findById() của lớp User.
-9. Lớp User trả về User cho lớp AuthController.
-10. Lớp AuthController gọi phương thức checkPassword().
-11. Lớp AuthController hashPassword().
-12. Lớp AuthController gọi phương thức updatePassword() của lớp User.
-13. Lớp User trả về true cho lớp AuthController.
-14. Lớp AuthController gọi phương thức revokeAllSessions() của lớp User.
-15. Lớp User trả về void cho lớp AuthController.
-16. Lớp AuthController trả về true cho lớp ChangePasswordPage.
-17. Lớp ChangePasswordPage showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.").
+1. Người dùng → ChangePasswordPage: truy cập URL /security.
+2. ChangePasswordPage → ChangePasswordPage: formLoad().
+3. ChangePasswordPage → Người dùng: render form đổi mật khẩu.
+4. Người dùng → ChangePasswordPage: nhập txtCurrentPassword, txtNewPassword, txtConfirmNewPassword.
+5. Người dùng → ChangePasswordPage: click btnSave.
+6. ChangePasswordPage → ChangePasswordPage: btnLuuClick().
+7. ChangePasswordPage → AuthController: changePassword().
+8. AuthController → User: findById().
+9. User → AuthController: return User.
+10. AuthController → AuthController: checkPassword().
+11. AuthController → AuthController: hashPassword().
+12. AuthController → User: updatePassword().
+13. User → AuthController: return true.
+14. AuthController → User: revokeAllSessions().
+15. User → AuthController: return void.
+16. AuthController → ChangePasswordPage: return true.
+17. ChangePasswordPage → Người dùng: showMessage("Đổi mật khẩu thành công. Vui lòng đăng nhập lại.").
 
 #### 5.4. Quản lý TTCN
 
@@ -1025,26 +1024,26 @@ deactivate B1
 
 **Kịch bản phiên bản 3 – UC04 Quản lý TTCN**
 
-1. Khách hàng click avatar / tên tài khoản.
-2. Lớp ProfilePage gọi phương thức formLoad().
-3. Lớp ProfilePage gọi phương thức getProfile() của lớp ProfileController.
-4. Lớp ProfileController gọi phương thức findById() của lớp User.
-5. Lớp User trả về User cho lớp ProfileController.
-6. Lớp ProfileController trả về User cho lớp ProfilePage.
-7. Lớp ProfilePage gọi phương thức displayProfile().
-8. Lớp ProfilePage render hồ sơ cá nhân.
-9. Khách hàng click nút [Chỉnh sửa].
-10. Khách hàng sửa Họ tên và Email.
-11. Khách hàng click nút [Lưu].
-12. Lớp ProfilePage gọi phương thức btnChinhSuaClick().
-13. Lớp ProfilePage gọi phương thức updateProfile() của lớp ProfileController.
-14. Lớp ProfileController gọi phương thức checkEmail() của lớp User.
-15. Lớp User trả về true cho lớp ProfileController.
-16. Lớp ProfileController gọi phương thức save() của lớp User.
-17. Lớp User trả về User cho lớp ProfileController.
-18. Lớp ProfileController trả về User cho lớp ProfilePage.
-19. Lớp ProfilePage gọi phương thức displayProfile().
-20. Lớp ProfilePage showMessage("Cập nhật thành công!").
+1. KH → ProfilePage: click avatar / tên tài khoản.
+2. ProfilePage → ProfilePage: formLoad().
+3. ProfilePage → ProfileController: getProfile().
+4. ProfileController → User: findById().
+5. User → ProfileController: return User.
+6. ProfileController → ProfilePage: return User.
+7. ProfilePage → ProfilePage: displayProfile().
+8. ProfilePage → KH: render hồ sơ cá nhân.
+9. KH → ProfilePage: click btnEdit.
+10. KH → ProfilePage: sửa lblFullName và lblEmail.
+11. KH → ProfilePage: click [Lưu].
+12. ProfilePage → ProfilePage: btnChinhSuaClick().
+13. ProfilePage → ProfileController: updateProfile().
+14. ProfileController → User: checkEmail().
+15. User → ProfileController: return true.
+16. ProfileController → User: save().
+17. User → ProfileController: return User.
+18. ProfileController → ProfilePage: return User.
+19. ProfilePage → ProfilePage: displayProfile().
+20. ProfilePage → KH: showMessage("Cập nhật thành công!").
 
 #### 5.5. Quản lý nhân viên
 
@@ -1158,29 +1157,29 @@ deactivate B1
 
 **Kịch bản phiên bản 3 – UC20 Quản lý nhân viên**
 
-1. Admin truy cập URL /admin/staff.
-2. Lớp StaffManagePage gọi phương thức formLoad().
-3. Lớp StaffManagePage gọi phương thức getAllStaff() của lớp StaffController.
-4. Lớp StaffController gọi phương thức findAll() của lớp Employee.
-5. Lớp Employee trả về List<Employee> cho lớp StaffController.
-6. Lớp StaffController trả về List<Employee> cho lớp StaffManagePage.
-7. Lớp StaffManagePage gọi phương thức displayStaffList().
-8. Lớp StaffManagePage render bảng nhân viên.
-9. Admin click nút [Thêm nhân viên].
-10. Admin nhập Họ tên và Vai trò.
-11. Admin click nút [Lưu].
-12. Lớp StaffManagePage gọi phương thức btnThemClick().
-13. Lớp StaffManagePage gọi phương thức saveStaff() của lớp StaffController.
-14. Lớp StaffController gọi phương thức save() của lớp Employee.
-15. Lớp Employee trả về Employee cho lớp StaffController.
-16. Lớp StaffController trả về true cho lớp StaffManagePage.
-17. Lớp StaffManagePage gọi phương thức displayStaffList().
-18. Lớp StaffManagePage showMessage("Thêm nhân viên thành công!").
-19. Admin click nút [Xóa] trên một dòng nhân viên.
-20. Lớp StaffManagePage gọi phương thức btnXoaClick().
-21. Lớp StaffManagePage gọi phương thức deleteStaff() của lớp StaffController.
-22. Lớp StaffController gọi phương thức deleteById() của lớp Employee.
-23. Lớp Employee trả về true cho lớp StaffController.
-24. Lớp StaffController trả về true cho lớp StaffManagePage.
-25. Lớp StaffManagePage gọi phương thức displayStaffList().
-26. Lớp StaffManagePage showMessage("Xóa nhân viên thành công!").
+1. Admin → StaffManagePage: truy cập URL /admin/staff.
+2. StaffManagePage → StaffManagePage: formLoad().
+3. StaffManagePage → StaffController: getAllStaff().
+4. StaffController → Employee: findAll().
+5. Employee → StaffController: return List<Employee>.
+6. StaffController → StaffManagePage: return List<Employee>.
+7. StaffManagePage → StaffManagePage: displayStaffList().
+8. StaffManagePage → Admin: render tblStaffList.
+9. Admin → StaffManagePage: click btnAdd.
+10. Admin → StaffManagePage: nhập fullName và staffRole.
+11. Admin → StaffManagePage: click [Lưu].
+12. StaffManagePage → StaffManagePage: btnThemClick().
+13. StaffManagePage → StaffController: saveStaff().
+14. StaffController → Employee: save().
+15. Employee → StaffController: return Employee.
+16. StaffController → StaffManagePage: return true.
+17. StaffManagePage → StaffManagePage: displayStaffList().
+18. StaffManagePage → Admin: showMessage("Thêm nhân viên thành công!").
+19. Admin → StaffManagePage: click btnDelete trên dòng nhân viên.
+20. StaffManagePage → StaffManagePage: btnXoaClick().
+21. StaffManagePage → StaffController: deleteStaff().
+22. StaffController → Employee: deleteById().
+23. Employee → StaffController: return true.
+24. StaffController → StaffManagePage: return true.
+25. StaffManagePage → StaffManagePage: displayStaffList().
+26. StaffManagePage → Admin: showMessage("Xóa nhân viên thành công!").
