@@ -31,7 +31,7 @@ DIAGRAM_MAP = {
     'booking_uc_overview':  os.path.join(REPO_DIR, 'exports', 'booking',  'screenshots', 'image_01.png'),
     'services_uc_overview': os.path.join(REPO_DIR, 'exports', 'services', 'screenshots', 'image_01.png'),
     'core_uc_overview':     os.path.join(REPO_DIR, 'exports', 'core',     'screenshots', 'image_01.png'),
-    'hr_uc_overview':       os.path.join(REPO_DIR, 'exports', 'hr',       'screenshots', 'image_03.png'),
+    'hr_uc_overview':       os.path.join(REPO_DIR, 'docs', 'tabs', 'exports', 'report', 'screenshots', 'image_01.png'),
 }
 
 # Markdown files to process in order
