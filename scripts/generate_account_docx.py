@@ -560,7 +560,7 @@ def process_file(doc, md_file, start_heading=None):
         if bm:
             text = bm.group(1).strip()
             # Detect kịch bản phiên bản header → enable numbered list mode
-            if text.startswith('Kịch bản phiên bản 3'):
+            if text.startswith('Kịch bản phiên bản'):
                 in_scenario_section = True
             content_level = determine_heading_level(text)
             if content_level:
