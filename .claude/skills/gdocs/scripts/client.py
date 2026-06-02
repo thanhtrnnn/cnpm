@@ -134,6 +134,113 @@ class GDocsClient:
                     text_parts.append(' | '.join(row_texts))
         return ''.join(text_parts)
 
+    def tab_to_markdown(self, document_id: str, tab_title: str) -> tuple[str, list]:
+        """Convert a tab's content to markdown, preserving document order.
+
+        Tables are rendered as markdown tables; images get placeholder references.
+        Returns:
+            (markdown_str, image_list)
+            image_list: [{'index': int, 'contentUri': str}, ...]
+        """
+        tab = self.find_tab_by_title(document_id, tab_title)
+        if not tab:
+            raise ValueError(f"Tab '{tab_title}' not found in document")
+
+        body = tab.get('documentTab', {}).get('body', {})
+        content = body.get('content', [])
+        inline_objects = tab.get('documentTab', {}).get('inlineObjects', {})
+
+        lines = []
+        images = []
+        img_counter = [0]  # use list for closure mutation
+
+        def extract_cell_text(cell):
+            parts = []
+            for cell_content in cell.get('content', []):
+                if 'paragraph' not in cell_content:
+                    continue
+                for elem in cell_content['paragraph'].get('elements', []):
+                    if 'textRun' in elem:
+                        parts.append(elem['textRun'].get('content', ''))
+                    elif 'inlineObjectElement' in elem:
+                        obj_id = elem['inlineObjectElement']['inlineObjectId']
+                        if obj_id in inline_objects:
+                            img_counter[0] += 1
+                            n = img_counter[0]
+                            obj = inline_objects[obj_id]
+                            props = obj.get('inlineObjectProperties', {}).get('embeddedObject', {})
+                            uri = props.get('imageProperties', {}).get('contentUri', '')
+                            images.append({'index': n, 'contentUri': uri})
+                            parts.append(f'![image_{n:02d}](screenshots/image_{n:02d}.png)')
+            return ''.join(parts).strip().replace('\n', ' ')
+
+        HEADING_PREFIX = {
+            'HEADING_1': '# ',
+            'HEADING_2': '## ',
+            'HEADING_3': '### ',
+            'HEADING_4': '#### ',
+            'HEADING_5': '##### ',
+            'HEADING_6': '###### ',
+        }
+
+        for element in content:
+            if 'paragraph' in element:
+                para = element['paragraph']
+                style = para.get('paragraphStyle', {})
+                named = style.get('namedStyleType', 'NORMAL_TEXT')
+                heading = style.get('headingType', named)
+
+                para_text = ''
+                for elem in para.get('elements', []):
+                    if 'textRun' in elem:
+                        para_text += elem['textRun'].get('content', '')
+                    elif 'inlineObjectElement' in elem:
+                        obj_id = elem['inlineObjectElement']['inlineObjectId']
+                        if obj_id in inline_objects:
+                            img_counter[0] += 1
+                            n = img_counter[0]
+                            obj = inline_objects[obj_id]
+                            props = obj.get('inlineObjectProperties', {}).get('embeddedObject', {})
+                            uri = props.get('imageProperties', {}).get('contentUri', '')
+                            images.append({'index': n, 'contentUri': uri})
+                            para_text += f'![image_{n:02d}](screenshots/image_{n:02d}.png)'
+
+                prefix = HEADING_PREFIX.get(heading, '')
+                text = prefix + para_text.rstrip('\n')
+                lines.append(text)
+
+            elif 'table' in element:
+                table = element['table']
+                rows = table.get('tableRows', [])
+                if not rows:
+                    continue
+
+                md_rows = []
+                for row in rows:
+                    cells = [extract_cell_text(cell) for cell in row.get('tableCells', [])]
+                    md_rows.append(cells)
+
+                if not md_rows:
+                    continue
+
+                ncols = max(len(r) for r in md_rows)
+                # Pad rows
+                for r in md_rows:
+                    while len(r) < ncols:
+                        r.append('')
+
+                # Render as markdown table
+                lines.append('')
+                header = '| ' + ' | '.join(md_rows[0]) + ' |'
+                separator = '| ' + ' | '.join(['---'] * ncols) + ' |'
+                lines.append(header)
+                lines.append(separator)
+                for row in md_rows[1:]:
+                    lines.append('| ' + ' | '.join(row) + ' |')
+                lines.append('')
+
+        return '\n'.join(lines), images
+
     def get_tab_structure(self, document_id: str, tab_title: str) -> dict:
         """Get structured content from a specific tab (text, tables, images).
 

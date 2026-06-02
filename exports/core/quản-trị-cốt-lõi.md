@@ -1,62 +1,134 @@
 # Quản trị cốt lõi
 
 
-MỤC LỤC
+
+| HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG KHOA CÔNG NGHỆ THÔNG TIN 1 ______________ |
+| --- |
+| ![image_01](screenshots/image_01.png) |
+| BÁO CÁO BÀI TẬP LỚN HỌC PHẦN: NHẬP MÔN CÔNG NGHỆ PHẦN MỀM Module: Quản trị cốt lõi |
+| Giảng viên hướng dẫn: Đỗ Thị Liên Lớp học phần: D23CQCE01-B Nhóm thực hiện: Nhóm 7 SV thực hiện: Bế Quốc Khánh MSV: B23DCCE049 |
+| HÀ NỘI, THÁNG 5/2026 |
+
+# MỤC LỤC
 
 
+# 
+# I. PHA XÁC ĐỊNH YÊU CẦU
+## Mô hình nghiệp vụ bằng UML
+### 1.1. Danh sách các Actor cho module
 
-I. PHA XÁC ĐỊNH YÊU CẦU
-Mô hình nghiệp vụ bằng UML
-1.1. Danh sách các Actor cho module
+| STT | Actor | Mô tả |
+| --- | --- | --- |
+| 1 | Chủ doanh nghiệp | Là người có quyền hạn cao nhất trong hệ thống, chịu trách nhiệm quản lý toàn diện chuỗi nhà hàng Karaoke. Actor này thực hiện các tác vụ quản trị mang tính toàn cục và định hướng như: thiết lập danh sách chi nhánh, cấu hình danh mục loại phòng chuẩn, quy định chính sách hạng hội viên, đồng thời kiểm soát thông tin và tài khoản của toàn bộ khách hàng trên toàn hệ thống. |
+| 2 | Quản lý chi nhánh | Là người được phân công điều hành trực tiếp tại một cơ sở Karaoke cụ thể. Actor này có quyền hạn hẹp hơn, quản lý các dữ liệu vật lý và kinh doanh cục bộ thuộc phạm vi chi nhánh của mình. Tiêu biểu nhất là thao tác thiết lập, thêm mới và bảo trì trạng thái của các phòng hát thực tế dựa trên bộ danh mục chuẩn do Chủ doanh nghiệp đã quy định. |
 
-1.2. Các Use Case cho Actor
+### 
+### 1.2. Các Use Case cho Actor
 
+| Actor | Use Case |
+| --- | --- |
+| Chủ doanh nghiệp | UC16 - Quản lý hệ thống chi nhánh |
+|  | UC17 - Quản lý khách hàng toàn hệ thống |
+|  | UC18 - Quản lý hạng hội viên |
+|  | UC19 - Quản lý danh mục loại phòng, |
+| Quản lý chi nhánh | UC20 - Quản lý phòng hát tại chi nhánh |
 
-
-
-
-
-
-1.3. Biểu đồ Use Case tổng quan của mô-đun 
-
-
-
-1.4. Biểu đồ Use Case phân rã của mô-đun
-Use Case 16 - Quản lý hệ thống chi nhánh
-
-Use Case 17 - Quản lý khách hàng toàn hệ thống
-
-Use Case 18 - Quản lý hạng hội viên
-
-Use Case 19 - Quản lý danh mục loại phòng
-
-Use Case 20 - Quản lý phòng hát tại chi nhánh
-
-
-
-II. PHA PHÂN TÍCH
-1. Mô hình hóa chức năng
-1.1. Kịch bản “Quản lý hệ thống chi nhánh”
-
-
-
-1.2. Kịch bản “Quản lý khách hàng toàn hệ thống”
+### 
 
 
 
 
-1.3. Kịch bản “Quản lý hạng hội viên”
+
+
+### 1.3. Biểu đồ Use Case tổng quan của mô-đun 
+
+### 
+
+### 1.4. Biểu đồ Use Case phân rã của mô-đun
+#### Use Case 16 - Quản lý hệ thống chi nhánh
+![image_02](screenshots/image_02.png)
+#### Use Case 17 - Quản lý khách hàng toàn hệ thống
+![image_03](screenshots/image_03.png)
+#### Use Case 18 - Quản lý hạng hội viên
+![image_04](screenshots/image_04.png)
+#### Use Case 19 - Quản lý danh mục loại phòng
+![image_05](screenshots/image_05.png)
+#### Use Case 20 - Quản lý phòng hát tại chi nhánh
+![image_06](screenshots/image_06.png)
+
+
+# II. PHA PHÂN TÍCH
+## 1. Mô hình hóa chức năng
+### 1.1. Kịch bản “Quản lý hệ thống chi nhánh”
+
+
+| Use case | Quản lý hệ thống chi nhánh |
+| --- | --- |
+| Actor | Chủ doanh nghiệp (Admin) |
+| Tiền điều kiện | Admin đã đăng nhập thành công vào hệ thống |
+| Hậu điều kiện | Thông tin chi nhánh được cập nhật trong CSDL |
+| Kịch bản chính | (1) Admin chọn chức năng "Quản lý hệ thống chi nhánh" trên giao diện chính (2) Hệ thống hiển thị danh sách chi nhánh với bảng thông tin bao gồm: Mã chi nhánh, tên chi nhánh, địa chỉ, số điện thoại, thao tác (thêm sửa xóa) (3) Admin chọn một trong ba thao tác: Thêm mới, Sửa thông tin, hoặc Xóa. — Nếu chọn "Thêm mới": (4a) Hệ thống hiển thị form: Tên chi nhánh, Địa chỉ, Số điện thoại. (5a) Admin nhập: Tên = "Karaoke Star Cần Thơ", Địa chỉ = "12 Nguyễn Văn Cừ, Cần Thơ", SĐT = "0292-3654789". (6a) Admin nhấn "Lưu". (7a) Hệ thống kiểm tra hợp lệ (tên không trùng, SĐT đúng định dạng). (8a) Hệ thống lưu vào CSDL, quay về danh sách, thông báo "Thêm chi nhánh thành công".  — Nếu chọn "Sửa thông tin": (4b) Admin nhấn nút "Sửa thông tin" (5b) Hệ thống hiển thị form đã điền sẵn: Tên, địa chỉ, số điện thoại chi nhánh. (6b) Admin thay đổi thông tin của chi nhánh. (7b) Hệ thống kiểm tra hợp lệ. (8b) Hệ thống cập nhật CSDL, quay về danh sách, thông báo "Cập nhật thành công".  — Nếu chọn "Xóa": (4c) Admin nhấn nút "Xóa" trên dòng CN01. (5c) Hệ thống kiểm tra ràng buộc: chi nhánh có phòng hoặc đặt phòng đang hoạt động không? (6c) Nếu có → thông báo "Không thể xóa chi nhánh đang có phòng hoạt động", kết thúc. (7c) Nếu không → hiển thị xác nhận: "Bạn có chắc muốn xóa Karaoke Star Hà Nội?". (8c) Admin nhấn "Xác nhận". (9c) Hệ thống xóa khỏi CSDL, cập nhật danh sách, thông báo "Xóa chi nhánh thành công". |
+| Ngoại lệ | (7a) Tên chi nhánh đã tồn tại → thông báo "Tên chi nhánh đã tồn tại", Admin nhập lại. (7a) Số điện thoại sai định dạng → thông báo "Số điện thoại không hợp lệ", Admin nhập lại. (6c) Chi nhánh đang có phòng hoạt động → thông báo "Không thể xóa chi nhánh đang có phòng hoạt động". |
 
 
 
-1.4. Kịch bản “Quản lý danh mục loại phòng”
+### 1.2. Kịch bản “Quản lý khách hàng toàn hệ thống”
+
+
+| Trường | Nội dung |
+| --- | --- |
+| Use case | Quản lý khách hàng toàn hệ thống |
+| Actor | Chủ doanh nghiệp (Admin) |
+| Tiền điều kiện | Admin đã đăng nhập thành công vào hệ thống |
+| Hậu điều kiện | Thông tin khách hàng được hiển thị hoặc trạng thái tài khoản được cập nhật |
+| Kịch bản chính | (1) Admin chọn chức năng "Quản lý khách hàng toàn hệ thống" từ giao diện chính. (2) Hệ thống hiển thị giao diện tìm kiếm khách hàng với ô nhập từ khóa, dropdown chọn tiêu chí (Tên/Số điện thoại/Mã KH), nút "Tìm kiếm". (3) Admin nhập từ khóa "Nguyễn Văn An", chọn tiêu chí "Tên" và nhấn nút "Tìm kiếm". (4) Hệ thống hiển thị danh sách khách hàng khớp từ khóa trên toàn chuỗi:   (5) Admin chọn một trong hai thao tác: Xem lịch sử sử dụng hoặc Khóa tài khoản. — Nếu chọn "Xem lịch sử sử dụng": (6a) Admin nhấn nút "Xem" trên dòng KH001. (7a) Hệ thống hiển thị chi tiết khách hàng: thông tin cá nhân và lịch sử sử dụng:   (8a) Admin xem thông tin và nhấn "Đóng" để quay về danh sách. — Nếu chọn "Khóa tài khoản": (6b) Admin nhấn nút "Khóa TK" trên dòng KH001. (7b) Hệ thống hiển thị xác nhận: "Bạn có chắc muốn khóa tài khoản Nguyễn Văn An (KH001)?". (8b) Admin nhấn "Xác nhận". (9b) Hệ thống cập nhật trạng thái tài khoản thành "Đã khóa", thông báo "Khóa tài khoản thành công". |
+| Ngoại lệ | (3) Để trống ô tìm kiếm → thông báo "Vui lòng nhập từ khóa tìm kiếm",  Admin nhập lại. (4) Không tìm thấy khách hàng → thông báo "Không tìm thấy khách hàng nào", Admin nhập lại từ khóa khác. (6b) Tài khoản đã bị khóa trước đó → thông báo "Tài khoản này đã bị khóa", nút chuyển thành "Mở khóa". |
 
 
 
 
-1.5. Kịch bản “Quản lý phòng hát chi nhánh”
+### 1.3. Kịch bản “Quản lý hạng hội viên”
 
-2. Mô hình hóa lớp
+
+| Trường | Nội dung |
+| --- | --- |
+| Use case | Quản lý hạng hội viên |
+| Actor | Chủ doanh nghiệp (Admin) |
+| Tiền điều kiện | Admin đã đăng nhập thành công vào hệ thống |
+| Hậu điều kiện | Cấu hình hạng hội viên được cập nhật trong CSDL |
+| Kịch bản chính | (1) Admin chọn chức năng "Quản lý hạng hội viên" từ giao diện chính. (2) Hệ thống hiển thị giao diện cấu hình hạng hội viên với bảng:   Và nút "Thay đổi hạng thủ công" ở phía trên. (3) Admin chọn một trong hai thao tác: Sửa cấu hình hạng hoặc Thay đổi hạng thủ công.  — Nếu chọn "Sửa cấu hình hạng": (4a) Admin nhấn nút "Sửa" trên dòng HH02 – Bạc. (5a) Hệ thống hiển thị form đã điền sẵn: Tên hạng = "Bạc", Ngưỡng điểm = 500, Giảm giá = 5%, Điểm thưởng nhân = x1.5. (6a) Admin thay đổi Ngưỡng điểm = 600, Giảm giá = 7%. (7a) Admin nhấn "Lưu". (8a) Hệ thống kiểm tra hợp lệ (ngưỡng điểm không trùng hạng khác, giảm giá từ 0–100%). (9a) Hệ thống cập nhật CSDL, quay về danh sách, thông báo "Cập nhật thành công".  — Nếu chọn "Thay đổi hạng thủ công": (4b) Admin nhấn nút "Thay đổi hạng thủ công". (5b) Hệ thống hiển thị form tìm kiếm khách hàng: ô nhập mã/tên KH, nút "Tìm". (6b) Admin nhập "KH001" và nhấn "Tìm". (7b) Hệ thống hiển thị thông tin: Tên = Nguyễn Văn An, Hạng hiện tại = Bạc, Điểm = 850. (8b) Admin chọn hạng mới = "Vàng" từ dropdown. (9b) Admin nhấn "Xác nhận". (10b) Hệ thống cập nhật hạng hội viên cho khách hàng và thông báo "Thay đổi hạng thành công". |
+| Ngoại lệ | (6a) Ngưỡng điểm trùng với hạng khác → thông báo "Ngưỡng điểm đã tồn tại ở hạng khác", Admin nhập lại. (8a) Giảm giá ngoài khoảng 0–100% → thông báo "Giảm giá phải từ 0% đến 100%", Admin nhập lại. (6b) Không tìm thấy khách hàng → thông báo "Không tìm thấy khách hàng", Admin nhập lại mã khác. |
+
+
+
+### 1.4. Kịch bản “Quản lý danh mục loại phòng”
+
+
+| Trường | Nội dung |
+| --- | --- |
+| Use case | Quản lý danh mục loại phòng |
+| Actor | Chủ doanh nghiệp (Admin) |
+| Tiền điều kiện | Admin đã đăng nhập thành công vào hệ thống |
+| Hậu điều kiện | Cấu hình loại phòng được cập nhật trong CSDL |
+| Kịch bản chính | (1) Admin chọn chức năng "Quản lý loại phòng" từ giao diện chính. (2) Hệ thống hiển thị danh mục các loại phòng chuẩn với nút "Thêm mới" và bảng: (3) Admin chọn một trong ba thao tác: Thêm mới, Sửa thông tin, hoặc Xóa. — Nếu chọn "Thêm mới": (4a) Hệ thống hiển thị form: Tên loại phòng, Sức chứa chuẩn, Giá cước chung. (5a) Admin nhập: Tên = "Party", Sức chứa = 30, Giá = 500.000đ. (6a) Admin nhấn "Lưu". (7a) Hệ thống kiểm tra hợp lệ (tên không trùng, sức chứa và giá > 0). (8a) Hệ thống lưu vào CSDL, quay về danh mục, thông báo "Thêm loại phòng thành công".  — Nếu chọn "Sửa thông tin": (4b) Admin nhấn nút "Sửa" trên dòng LP02. (5b) Hệ thống hiển thị form đã điền sẵn: Tên = "VIP", Sức chứa = 15, Giá = 250.000đ. (6b) Admin thay đổi Giá = 280.000đ và nhấn "Lưu". (7b) Hệ thống kiểm tra hợp lệ. (8b) Hệ thống cập nhật CSDL toàn chuỗi, quay về danh mục, thông báo "Cập nhật thành công".  — Nếu chọn "Xóa": (4c) Admin nhấn nút "Xóa" trên dòng LP01. (5c) Hệ thống kiểm tra ràng buộc: có chi nhánh nào đang sử dụng loại phòng này không? (6c) Nếu có → thông báo "Không thể xóa do loại phòng đang được sử dụng tại các chi nhánh", kết thúc. (7c) Nếu không → hiển thị xác nhận: "Bạn có chắc muốn xóa loại phòng Standard?". (8c) Admin nhấn "Xác nhận". (9c) Hệ thống xóa khỏi CSDL, cập nhật danh mục, thông báo "Xóa loại phòng thành công". |
+| Ngoại lệ | (7a) Tên loại phòng đã tồn tại → thông báo "Loại phòng này đã tồn tại", Admin nhập lại. (7a) Sức chứa hoặc giá ≤ 0 → thông báo "Sức chứa và giá phải lớn hơn 0", Admin nhập lại. (6c) Loại phòng đang được sử dụng → thông báo "Không thể xóa do loại phòng đang được sử dụng tại các chi nhánh". |
+
+
+
+
+### 1.5. Kịch bản “Quản lý phòng hát chi nhánh”
+
+| Trường | Nội dung |
+| --- | --- |
+| Use case | Quản lý phòng hát chi nhánh |
+| Actor | Quản lý chi nhánh |
+| Tiền điều kiện | Quản lý chi nhánh đã đăng nhập thành công vào hệ thống |
+| Hậu điều kiện | Thông tin phòng hát lẻ của chi nhánh được cập nhật trong CSDL |
+| Kịch bản chính | (1) Quản lý chi nhánh chọn chức năng "Quản lý phòng hát". (2) Hệ thống tự động lấy mã chi nhánh của tài khoản và hiển thị danh sách phòng hiện có với nút "Thêm mới" và bảng:  (3) Quản lý chọn một trong ba thao tác: Thêm mới, Sửa thông tin, hoặc Xóa. — Nếu chọn "Thêm mới": (4a) Hệ thống hiển thị form: Tên phòng, Loại phòng (dropdown lấy từ danh mục chuẩn Admin đã tạo). (5a) Quản lý nhập: Tên = "VIP-02", chọn Loại = "VIP". (Sức chứa và Giá sẽ tự động áp dụng theo chuẩn Admin). (6a) Quản lý nhấn "Lưu". (7a) Hệ thống kiểm tra hợp lệ (tên phòng không trùng trong chi nhánh). (8a) Hệ thống lưu phòng mới, thông báo "Thêm phòng thành công". — Nếu chọn "Sửa thông tin": (4b) Quản lý nhấn nút "Sửa" trên dòng P001. (5b) Hệ thống hiển thị form: Tên = "VIP-01", Loại = "Super VIP", Trạng thái = "Trống". (6b) Quản lý đổi Trạng thái = "Bảo trì" và nhấn "Lưu". (7b) Hệ thống cập nhật CSDL, thông báo "Cập nhật thành công".  — Nếu chọn "Xóa": (4c) Quản lý nhấn nút "Xóa" trên dòng P001. (5c) Hệ thống kiểm tra: phòng có đặt phòng đang hoạt động không? (6c) Nếu có → thông báo "Không thể xóa phòng đang có khách", kết thúc. (7c) Nếu không → hiển thị popup xác nhận: "Xóa phòng VIP-01?". (8c) Quản lý nhấn "Xác nhận". (9c) Hệ thống xóa khỏi CSDL, thông báo "Xóa phòng thành công". |
+| Ngoại lệ | (7a) Tên phòng đã tồn tại trong cùng chi nhánh → thông báo "Tên phòng đã tồn tại", Quản lý nhập lại. (6c) Phòng đang có khách → thông báo "Không thể xóa phòng đang có đặt phòng hoạt động". |
+
+
+## 2. Mô hình hóa lớp
 Bước 1 – Mô tả Module bằng 1 đoạn văn:
 Module Quản trị cốt lõi cho phép Admin và Quản lý chi nhánh thực hiện các thao tác quản lý dữ liệu nền tảng. Admin có thể quản lý hệ thống chi nhánh: thêm, sửa, xóa chi nhánh với các thông tin như tên chi nhánh, địa chỉ, điện thoại chi nhánh. Admin quản lý khách hàng: tìm kiếm, xem lịch sử sử dụng và khóa tài khoản khách hàng trên toàn chuỗi với các thông tin tên khách hàng, số điện thoại, điểm tích lũy, trạng thái tài khoản. Admin quản lý hạng hội viên: cấu hình ngưỡng điểm, ưu đãi giảm giá và thay đổi hạng. Admin quản lý danh mục loại phòng: định nghĩa các chuẩn phòng, sức chứa và trạng thái dùng chung cho toàn chuỗi. Bên cạnh đó, Quản lý chi nhánh được cấp quyền quản lý phòng hát lẻ tại chi nhánh của mình: thêm các phòng vật lý theo loại phòng Admin đã tạo, cập nhật tên phòng và trạng thái phòng.
 
@@ -70,6 +142,23 @@ Module Quản trị cốt lõi cho phép Admin và Quản lý chi nhánh thực 
 
 
 Bước 2 – Trích danh từ và đánh giá:
+
+
+| Danh từ | Kết luận | Lý do |
+| --- | --- | --- |
+| Admin, Quản lý chi nhánh | Loại (Actor) | Là người dùng tương tác với hệ thống, không phải dữ liệu lưu trong CSDL. |
+| Hệ thống, Dữ liệu nền tảng | Loại | Danh từ chung chung, trừu tượng, không có thuộc tính cụ thể. |
+| Chi nhánh | Branch | Tồn tại độc lập trong CSDL. |
+| Tên chi nhánh, Địa chỉ, Điện thoại chi nhánh | Thuộc tính của Branch | Mô tả thông tin của chi nhánh. |
+| Khách hàng | Customer | Tồn tại độc lập trong CSDL. |
+| Tên khách hàng, Số điện thoại, Điểm tích lũy, Trạng thái tài khoản | Thuộc tính của Customer | Mô tả thông tin của khách hàng. |
+| Hạng hội viên | MembershipTier | Tồn tại độc lập trong CSDL. |
+| Ngưỡng điểm, Ưu đãi giảm giá | Thuộc tính của MembershipTier | Mô tả thông tin hạng hội viên. |
+| Loại phòng | RoomType | Tồn tại độc lập trong CSDL. |
+| Sức chứa, Trạng thái (loại phòng) | Thuộc tính của RoomType | Mô tả thông tin loại phòng chuẩn. |
+| Phòng hát | Room | Tồn tại độc lập trong CSDL. |
+| Tên phòng, Trạng thái (phòng hát) | Thuộc tính của Room | Mô tả thông tin của phòng hát. |
+| Lịch sử sử dụng, Đặt phòng | Booking | Cần truy vấn lịch sử khách hàng và kiểm tra khi xóa phòng. (Thuộc module Quản lý đặt phòng). |
 
 
 => Các lớp thực thể: Branch, Customer, MembershipTier, RoomType, Room, Booking (Ngoại lai).
@@ -102,6 +191,7 @@ Customer và Room có quan hệ liên kết (association) với Booking: dùng �
 
 
 Biểu đồ lớp thực thể pha phân tích:
+![image_07](screenshots/image_07.png)
 
 
 
@@ -109,9 +199,8 @@ Biểu đồ lớp thực thể pha phân tích:
 
 
 
-
-3. Mô hình hóa tĩnh - Biểu đồ phân tích chức năng
-3.1. Chức năng Quản lý hệ thống chi nhánh (UC16)
+## 3. Mô hình hóa tĩnh - Biểu đồ phân tích chức năng
+### 3.1. Chức năng Quản lý hệ thống chi nhánh (UC16)
 Phân tích chi tiết chức năng Quản lý hệ thống chi nhánh:
 Admin đăng nhập vào hệ thống -> giao diện chính hiện lên -> đề xuất lớp AdminHomeView, có nút Quản lý hệ thống chi nhánh.
 Admin chọn nút Quản lý hệ thống chi nhánh -> giao diện danh sách chi nhánh hiện lên -> đề xuất lớp BranchPage, hiển thị danh sách các chi nhánh kèm nút Thêm mới, ô tìm kiếm và nút Sửa, Xóa.
@@ -120,8 +209,8 @@ Admin click nút Thêm mới -> giao diện form nhập liệu hiện lên -> đ
 Sau khi Admin điền thông tin và ấn nút Lưu, hệ thống phải thực hiện lưu thông tin chi nhánh xuống CSDL -> cần chức năng addBranch() -> chức năng này là hành động của đối tượng Branch.
 Tương tự, khi Admin thao tác sửa hoặc xóa chi nhánh, hệ thống đề xuất các hàm updateBranch() và deleteBranch() của lớp Branch.
 Cập nhật xong, hệ thống quay về giao diện danh sách chi nhánh BranchPage để Admin tiếp tục quản lý.
-
-3.2. Chức năng Quản lý khách hàng toàn hệ thống
+![image_08](screenshots/image_08.png)
+### 3.2. Chức năng Quản lý khách hàng toàn hệ thống
 Phân tích chi tiết chức năng Quản lý khách hàng toàn hệ thống:
 Vào hệ thống -> giao diện chính hiện lên -> đề xuất lớp AdminHomeView, có nút Quản lý khách hàng.
 Admin click nút Quản lý khách hàng -> giao diện tìm kiếm khách hàng hiện lên -> đề xuất lớp CustomerPage, hiển thị ô nhập từ khóa, tiêu chí tìm kiếm, nút Tìm kiếm và bảng danh sách khách hàng.
@@ -130,9 +219,9 @@ Admin click chọn một khách hàng và ấn Xem -> giao diện chi tiết kh�
 Khi giao diện chi tiết hiển thị, hệ thống truy xuất thông tin chi tiết bằng hàm getCustomerDetails() của lớp Customer, đồng thời gọi hàm getBookingHistory() của lớp Booking để lấy lịch sử sử dụng.
 Sau khi Admin ấn nút Khóa tài khoản -> hệ thống thực hiện cập nhật trạng thái khóa xuống CSDL -> cần chức năng lockAccount() -> chức năng này là hành động của đối tượng Customer.
 Cập nhật xong, hệ thống thông báo thành công và cập nhật lại giao diện CustomerDetailPanel để Admin tiếp tục thao tác.
+![image_09](screenshots/image_09.png)
 
-
-3.3. Chức năng Quản lý hạng hội viên
+### 3.3. Chức năng Quản lý hạng hội viên
 Phân tích chi tiết chức năng Quản lý hạng hội viên:
 Vào hệ thống -> giao diện chính hiện lên -> đề xuất lớp AdminHomeView, có nút Quản lý hạng hội viên.
 Admin click nút Quản lý hạng hội viên -> giao diện cấu hình hạng hiện lên -> đề xuất lớp MembershipTierPage, hiển thị bảng danh sách các hạng hội viên, nút Thay đổi hạng thủ công và nút Sửa.
@@ -143,10 +232,10 @@ Nếu Admin ấn nút Thay đổi hạng thủ công -> giao diện tìm kiếm 
 Sau khi Admin ấn nút Xác nhận -> hệ thống thực hiện cập nhật hạng cho khách hàng xuống CSDL -> cần chức năng upgradeMembershipManual() -> chức năng này là hành động của đối tượng Customer.
 Cập nhật xong, hệ thống quay về giao diện MembershipTierPage để Admin tiếp tục cấu hình.
 
+![image_10](screenshots/image_10.png)
+### 
 
-
-
-3.4. Chức năng Quản lý danh mục loại phòng
+### 3.4. Chức năng Quản lý danh mục loại phòng
 Phân tích chi tiết chức năng Quản lý danh mục loại phòng:
 Vào hệ thống -> giao diện chính hiện lên -> đề xuất lớp AdminHomeView, có nút Quản lý danh mục loại phòng.
 Admin click nút Quản lý danh mục loại phòng -> giao diện danh mục loại phòng hiện lên -> đề xuất lớp RoomTypePage, hiển thị bảng danh sách loại phòng chuẩn và nút Thêm mới.
@@ -156,10 +245,10 @@ Admin điền thông tin và ấn nút Lưu -> hệ thống thực hiện lưu l
 Tương tự, khi Admin thao tác sửa hoặc xóa loại phòng, hệ thống đề xuất các hàm updateRoomType() và deleteRoomType() của lớp RoomType.
 Cập nhật xong, hệ thống quay về giao diện danh mục RoomTypePage để Admin tiếp tục quản lý.
 
+![image_11](screenshots/image_11.png)
 
-
-
-3.5. Chức năng Quản lý phòng hát chi nhánh
+### 
+### 3.5. Chức năng Quản lý phòng hát chi nhánh
 Phân tích chi tiết chức năng Quản lý phòng hát chi nhánh:
 Vào hệ thống -> giao diện chính hiện lên -> đề xuất lớp BranchManagerHomeView, có nút Quản lý phòng hát.
 Quản lý chi nhánh click nút Quản lý phòng hát -> giao diện danh sách phòng hiện lên -> đề xuất lớp RoomPage, hiển thị bảng danh sách phòng thuộc chi nhánh, trạng thái và nút Thêm mới.
@@ -168,10 +257,10 @@ Quản lý chi nhánh click nút Thêm mới -> giao diện form nhập phòng h
 Quản lý chi nhánh nhập thông tin và ấn nút Lưu -> hệ thống thực hiện kiểm tra và lưu phòng mới xuống CSDL -> cần chức năng addRoom() -> chức năng này là hành động của đối tượng Room.
 Tương tự, khi Quản lý thao tác Sửa phòng, hệ thống đề xuất hàm updateRoom() của lớp Room. Khi thao tác Xóa phòng, hệ thống sẽ gọi checkActiveBooking() của lớp Booking để kiểm tra, sau đó gọi deleteRoom() của lớp Room.
 Cập nhật xong, hệ thống quay về giao diện danh sách phòng RoomPage để Quản lý chi nhánh tiếp tục quản lý.
+![image_12](screenshots/image_12.png)
 
-
-4. Mô hình hóa động - Biểu đồ tuần tự
-4.1. Chức năng Quản lý hệ thống chi nhánh
+## 4. Mô hình hóa động - Biểu đồ tuần tự
+### 4.1. Chức năng Quản lý hệ thống chi nhánh
 Kịch bản chi tiết:
 Chủ doanh nghiệp (Admin) click vào chức năng "Quản lý hệ thống chi nhánh" trên giao diện AdminHomeView.
 Lớp AdminHomeView gọi sang lớp BranchPage.
@@ -192,9 +281,9 @@ Lớp BranchForm hiển thị.
  Lớp Branch trả kết quả về cho lớp BranchPage.
  Lớp BranchPage hiển thị.
 
+### ![image_13](screenshots/image_13.png)
 
-
-4.2. Chức năng Quản lý khách hàng toàn hệ thống
+### 4.2. Chức năng Quản lý khách hàng toàn hệ thống
 Kịch bản chi tiết:
 Chủ doanh nghiệp click vào chức năng "Quản lý khách hàng" trên giao diện AdminHomeView.
 Lớp AdminHomeView gọi sang lớp CustomerPage.
@@ -218,9 +307,9 @@ Chủ doanh nghiệp chọn thông tin khách hàng tương ứng và click "Xem
  Lớp Customer gọi hàm lockAccount().
  Lớp Customer trả kết quả về cho lớp CustomerDetailPanel.
  Lớp CustomerDetailPanel hiện thông báo thành công.
-
-
-4.3. Chức năng Quản lý hạng hội viên
+![image_14](screenshots/image_14.png)
+### 
+### 4.3. Chức năng Quản lý hạng hội viên
 Kịch bản chi tiết:
 Chủ doanh nghiệp click chức năng "Quản lý hạng hội viên" trên giao diện AdminHomeView.
 Lớp AdminHomeView gọi sang lớp MembershipTierPage.
@@ -240,8 +329,8 @@ Lớp MembershipTierForm hiển thị.
  Lớp MembershipTier gọi hàm getAllTiers().
  Lớp MembershipTier trả kết quả về cho lớp MembershipTierPage.
  Lớp MembershipTierPage hiển thị.
-
-4.4. Chức năng Quản lý danh mục loại phòng
+![image_15](screenshots/image_15.png)
+### 4.4. Chức năng Quản lý danh mục loại phòng
 Kịch bản chi tiết:
 Chủ doanh nghiệp click chức năng "Quản lý danh mục loại phòng" trên giao diện AdminHomeView.
 Lớp AdminHomeView gọi sang lớp RoomTypePage.
@@ -261,8 +350,8 @@ Lớp RoomTypeForm hiển thị.
  Lớp RoomType gọi hàm getAllRoomTypes().
  Lớp RoomType trả kết quả về cho lớp RoomTypePage.
  Lớp RoomTypePage hiển thị.
-
-4.5. Chức năng Quản lý phòng hát chi nhánh
+![image_16](screenshots/image_16.png)
+### 4.5. Chức năng Quản lý phòng hát chi nhánh
 Kịch bản chi tiết:
 Quản lý chi nhánh click chức năng "Quản lý phòng hát" trên giao diện BranchManagerHomeView.
 Lớp BranchManagerHomeView gọi sang lớp RoomPage.
@@ -282,18 +371,18 @@ Lớp Booking gọi hàm checkActiveBooking().
  Lớp Room trả kết quả về cho lớp RoomPage.
  Lớp RoomPage hiển thị danh sách cập nhật.
 
+![image_17](screenshots/image_17.png)
 
 
 
-
-III. PHA THIẾT KẾ
-1. Thiết kế lớp thực thể
-
-2. Thiết kế CSDL
-
-3.  Thiết kế tĩnh
-3.1. Thiết kế giao diện
-Chức năng Quản lý hệ thống chi nhánh
+# III. PHA THIẾT KẾ
+## 1. Thiết kế lớp thực thể
+![image_18](screenshots/image_18.png)
+## 2. Thiết kế CSDL
+![image_19](screenshots/image_19.png)
+## 3.  Thiết kế tĩnh
+### 3.1. Thiết kế giao diện
+#### Chức năng Quản lý hệ thống chi nhánh
 Màn hình 1: Quản lý hệ thống chi nhánh (BranchPage)
 ┌──────────────────────────────────────────────────────────┐
 │                  QUẢN LÝ CHI NHÁNH                       │
@@ -318,7 +407,7 @@ Màn hình 1: Quản lý hệ thống chi nhánh (BranchPage)
 │                                      │
 │           [ Hủy ]  [ Lưu ]           │
 └──────────────────────────────────────┘
-Chức năng Quản lý khách hàng toàn hệ thống
+#### Chức năng Quản lý khách hàng toàn hệ thống
 Màn hình 3: Quản lý hệ thống chi nhánh (BranchPage)
 ┌──────────────────────────────────────────────────────────┐
 │              QUẢN LÝ KHÁCH HÀNG TOÀN HỆ THỐNG            │
@@ -351,7 +440,7 @@ Màn hình 4: Chi tiết khách hàng (CustomerDetailPanel)
 │                                                          │
 │  [ Đóng ]  [ Khóa tài khoản ]                            │
 └──────────────────────────────────────────────────────────┘
-Chức năng Quản lý hạng hội viên
+#### Chức năng Quản lý hạng hội viên
 Màn hình 5: Quản lý hạng hội viên (MembershipTierPage)
 |──────────────────────────────────────────────────────────┐
 │              QUẢN LÝ HẠNG HỘI VIÊN                       │
@@ -374,7 +463,7 @@ Màn hình 5: Quản lý hạng hội viên (MembershipTierPage)
 
 
 
-Chức năng Quản lý danh mục loại phòng
+#### Chức năng Quản lý danh mục loại phòng
 Màn hình 6: Danh mục loại phòng (RoomTypePage)
 ┌──────────────────────────────────────────────────────────┐
 │              QUẢN LÝ DANH MỤC LOẠI PHÒNG                 │
@@ -390,7 +479,7 @@ Màn hình 6: Danh mục loại phòng (RoomTypePage)
 │ └────────┴──────────┴───────────┴──────────┴─────────┘   │
       └──────────────────────────────────────────────────────────┘
 
-Chức năng Quản lý phòng hát chi nhánh
+#### Chức năng Quản lý phòng hát chi nhánh
 Màn hình 7: Quản lý phòng hát chi nhánh (RoomPage)
 
 ┌──────────────────────────────────────────────────────────┐
@@ -406,59 +495,185 @@ Màn hình 7: Quản lý phòng hát chi nhánh (RoomPage)
 │ └────────┴──────────┴───────────┴──────────┴──────────┘  │
       └──────────────────────────────────────────────────────────┘
 
-3.2. Thiết kế mô hình MVC
+### 3.2. Thiết kế mô hình MVC
 Mô hình MVC được thiết kế theo kiến trúc BCE (Boundary – Control – Entity) với 3 tầng:
 Boundary (Giao diện): React components xử lý giao diện người dùng
 Control (Điều khiển): Spring Boot Controllers xử lý nghiệp vụ
 Entity (Thực thể): JPA Entities biểu diễn dữ liệu lưu trữ
 
-Chức năng Quản lý hệ thống chi nhánh
+#### Chức năng Quản lý hệ thống chi nhánh
 Tầng giao diện (Boundary): 
+
+
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| AdminHomeView | Thuộc tính | - btnManageBranch : Button | Nút ấn chức năng quản lý hệ thống chi nhánh. |
+|  | Phương thức | + btnManageBranchClick() : void | Sự kiện click nút, mở giao diện BranchPage. |
+| BranchPage | Thuộc tính | - tblBranch : Table | Bảng hiển thị danh sách các chi nhánh. |
+|  |  | - btnAddBranch : Button | Nút nhấn để thêm chi nhánh mới. |
+|  | Phương thức | + formLoad() : void | Hàm chạy khi khởi tạo, gọi Controller lấy danh sách. |
+|  |  | + DisplayDSBranch(branches : List<Branch>) : void | Hàm render danh sách chi nhánh lên bảng. |
+|  |  | + tblBranchClick(branchId : int) : void | Hàm bắt sự kiện click trên bảng để chọn chi nhánh. |
+|  |  | + btnAddBranchClick() : void | Hàm bắt sự kiện thêm mới, mở giao diện BranchForm. |
+| BranchForm | Thuộc tính | - txtName : TextBox | Ô nhập tên chi nhánh. |
+|  |  | - txtAddress : TextBox | Ô nhập địa chỉ chi nhánh. |
+|  |  | - txtPhone : TextBox | Ô nhập số điện thoại chi nhánh. |
+|  |  | - btnSave : Button | Nút xác nhận lưu thông tin chi nhánh. |
+|  | Phương thức | + formLoad(branch : Branch) : void | Load dữ liệu cũ vào form nếu là thao tác sửa. |
+|  |  | + btnSaveClick() : void | Thu thập thông tin từ form và gọi Controller để lưu trữ. |
 
 
 
 Tầng điều khiển (Control): 
 
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| BranchController | + getAllBranches() : List<Branch> | Truy vấn cơ sở dữ liệu lấy toàn bộ danh sách chi nhánh. |
+|  | + saveBranch(branch : Branch) : boolean | Thực hiện thêm mới hoặc cập nhật thông tin chi nhánh vào CSDL. |
+|  | + deleteBranch(id : int) : boolean | Thực thi lệnh xóa một chi nhánh khỏi CSDL dựa vào ID. |
+
+
 Tầng thực thể (Entity): Branch
 
-Chức năng Quản lý khách hàng toàn hệ thống
+#### Chức năng Quản lý khách hàng toàn hệ thống
 Tầng giao diện (Boundary): 
 
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| AdminHomeView | Thuộc tính | - btnManageCustomer : Button | Nút ấn chức năng quản lý khách hàng. |
+|  | Phương thức | + btnManageCustomerClick() : void | Chuyển hướng sang giao diện CustomerPage. |
+| CustomerPage | Thuộc tính | - txtKeyword : TextBox | Ô nhập từ khóa tìm kiếm khách hàng. |
+|  |  | - btnSearch : Button | Nút thực thi tìm kiếm. |
+|  |  | - tblCustomers : Table | Bảng hiển thị kết quả tìm kiếm. |
+|  | Phương thức | + formLoad() : void | Load danh sách khách hàng mặc định. |
+|  |  | + btnSearchClick() : void | Gọi Controller lọc khách hàng theo từ khóa. |
+|  |  | + displayCustomers(customers : List<Customer>) : void | Đổ danh sách khách hàng lên bảng. |
+|  |  | + tblCustomersClick(customerId : int) : void | Chọn 1 khách hàng và mở CustomerDetailPanel. |
+| CustomerDetailPanel | Thuộc tính | - lblFullName : Label | Nhãn hiển thị tên khách hàng. |
+|  |  | - tblBookingHistory : Table | Bảng hiển thị lịch sử sử dụng dịch vụ của khách. |
+|  |  | - btnLockAccount : Button | Nút khóa tài khoản khách hàng. |
+|  | Phương thức | + formLoad(customer : Customer) : void | Hiển thị thông tin chi tiết của khách hàng lên panel. |
+|  |  | + displayBookingHistory(history : List<Booking>) : void | Render lịch sử đặt phòng lên bảng. |
+|  |  | + btnLockAccountClick() : void | Gửi yêu cầu khóa tài khoản sang Controller. |
+
+
 Tầng điều khiển (Control)
+
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| CustomerController | + searchCustomers(keyword : String) : List<Customer> | Lọc dữ liệu khách hàng theo tên, sđt... |
+| CustomerController | + getCustomerById(id : int) : Customer | Truy vấn thông tin chi tiết của một khách hàng cụ thể. |
+| CustomerController | + lockAccount(id : int) : boolean | Thay đổi trạng thái tài khoản thành "Đã khóa". |
+
 
 Tầng thực thể (Entity): Customer
 
 
-Chức năng Quản lý hạng hội viên
+#### Chức năng Quản lý hạng hội viên
 Tầng giao diện (Boundary): 
+
+
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| AdminHomeView | Thuộc tính | - btnManageTier : Button | Nút ấn chức năng quản lý hạng hội viên. |
+|  | Phương thức | + btnManageTierClick() : void | Mở giao diện MembershipTierPage. |
+| MembershipTierPage | Thuộc tính | - tblTiers : Table | Bảng hiển thị danh sách các hạng hội viên. |
+|  |  | - btnEditTier : Button | Nút sửa thông tin cấu hình hạng. |
+|  |  | - btnManualUpgrade : Button | Nút thay đổi hạng thủ công cho một khách hàng. |
+|  | Phương thức | + formLoad() : void | Lấy toàn bộ danh sách hạng đổ lên bảng. |
+|  |  | + displayTiers(tiers : List<MembershipTier>) : void | Render danh sách lên giao diện. |
+| MembershipTierForm | Thuộc tính | - txtTierName : TextBox | Ô hiển thị tên hạng (không thể sửa). |
+|  |  | - txtThreshold : TextBox | Ô nhập ngưỡng điểm để đạt hạng. |
+|  |  | - txtDiscount : TextBox | Ô nhập tỷ lệ giảm giá ưu đãi. |
+|  |  | - txtBonus : TextBox | Ô nhập hệ số điểm thưởng nhân. |
+|  |  | - btnSave : Button | Nút lưu cấu hình hạng. |
+|  | Phương thức | + formLoad(tier : MembershipTier) : void | Điền thông tin cấu hình cũ của hạng hội viên lên form. |
+|  |  | + btnSaveClick() : void | Thu thập thông số và gửi sang Controller để lưu. |
+| ManualUpgradeModal | Thuộc tính | - txtCustomerId : TextBox | Ô nhập mã khách hàng cần đổi hạng. |
+|  |  | - cboNewTier : ComboBox | Dropdown chọn hạng mục tiêu mới. |
+|  |  | - btnConfirm : Button | Nút xác nhận đổi hạng. |
+|  | Phương thức | + btnConfirmClick() : void | Gọi Controller đổi hạng thủ công. |
 
 
 Tầng điều khiển (Control)
 
 
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| MembershipTierController | + getAllTiers() : List<MembershipTier> | Lấy danh sách hạng và thông số hiện tại. |
+| MembershipTierController | + updateTier(tier : MembershipTier) : boolean | Cập nhật tham số cấu hình của hạng vào CSDL. |
+| MembershipTierController | + manualUpgrade(customerId : int, tierId : int) : boolean | Ghi đè cập nhật lại FK tier_id của một khách hàng cụ thể. |
+
+
 Tầng thực thể (Entity): MembershipTier, Customer.
 
-Chức năng Quản lý danh mục loại phòng
+#### Chức năng Quản lý danh mục loại phòng
 Tầng giao diện (Boundary): 
+
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| AdminHomeView | Thuộc tính | - btnManageRoomType : Button | Nút ấn chức năng quản lý danh mục loại phòng. |
+|  | Phương thức | + btnManageRoomTypeClick() : void | Mở giao diện RoomTypePage. |
+| RoomTypePage | Thuộc tính | - tblRoomTypes : Table | Bảng hiển thị danh mục các loại phòng chuẩn. |
+|  |  | - btnAddType : Button | Nút thêm danh mục mới. |
+|  | Phương thức | + formLoad() : void | Gọi Controller lấy toàn bộ danh mục lên bảng. |
+|  |  | + displayRoomTypes(types : List<RoomType>) : void | Vẽ bảng dữ liệu loại phòng. |
+| RoomTypeForm | Thuộc tính | - txtTypeName : TextBox | Ô nhập tên loại phòng. |
+|  |  | - txtCapacity : TextBox | Ô nhập sức chứa chuẩn. |
+|  |  | - txtBasePrice : TextBox | Ô nhập giá cơ sở chung cho toàn hệ thống. |
+|  |  | - btnSave : Button | Nút lưu loại phòng. |
+|  | Phương thức | + formLoad(type : RoomType) : void | Đổ dữ liệu lên form để sửa (nếu có). |
+|  |  | + btnSaveClick() : void | Gửi dữ liệu cập nhật sang Controller. |
+
 
 Tầng điều khiển (Control): 
 
+
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| RoomTypeController | + getAllRoomTypes() : List<RoomType> | Truy vấn danh mục các loại phòng. |
+|  | + saveRoomType(type : RoomType) : boolean | Thêm mới hoặc cập nhật một loại phòng chuẩn. |
+|  | + deleteRoomType(id : int) : boolean | Xóa một loại phòng khỏi danh mục. |
+
 Tầng thực thể (Entity): RoomType.
 
-Chức năng Quản lý phòng hát chi nhánh
+#### Chức năng Quản lý phòng hát chi nhánh
 Tầng giao diện (Boundary):
+
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| BranchManagerHomeView | Thuộc tính | - btnManageRoom : Button | Nút ấn chức năng quản lý phòng hát tại chi nhánh. |
+|  | Phương thức | + btnManageRoomClick() : void | Mở giao diện RoomPage. |
+| RoomPage | Thuộc tính | - tblRooms : Table | Bảng hiển thị danh sách phòng vật lý của chi nhánh. |
+|  |  | - btnAddRoom : Button | Nút thêm phòng mới. |
+|  | Phương thức | + formLoad() : void | Gọi Controller lọc các phòng thuộc chi nhánh hiện tại. |
+|  |  | + displayRooms(rooms : List<Room>) : void | Vẽ bảng dữ liệu phòng vật lý. |
+| RoomForm | Thuộc tính | - txtRoomName : TextBox | Ô nhập tên/số phòng. |
+|  |  | - cboStatus : ComboBox | Tình trạng phòng hiện tại. |
+|  |  | - cboRoomType : ComboBox | Liên kết phòng này thuộc cấu hình loại phòng nào. |
+|  |  | - btnSave : Button | Nút lưu dữ liệu phòng. |
+|  | Phương thức | + formLoad(room : Room) : void | Gọi danh mục RoomType để đổ vào ComboBox và điền thông tin cũ nếu sửa. |
+|  |  | + btnSaveClick() : void | Gửi dữ liệu tạo mới phòng sang Controller. |
+
 
 Tầng điều khiển (Control):
 
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| RoomController | + getRoomsByBranch(branchId : int) : List<Room> | Lấy danh sách các phòng hát thuộc phạm vi quản lý của 1 chi nhánh. |
+|  | + saveRoom(room : Room) : boolean | Cập nhật trạng thái hoặc thêm mới thông tin phòng. |
+|  | + deleteRoom(id : int) : boolean | Xóa phòng khỏi chi nhánh. |
+
+
 Tầng điều khiển (Control): Room, RoomType.
-3.3. Sơ đồ lớp thiết kế:
+### 3.3. Sơ đồ lớp thiết kế:
 Chức năng Quản lý hệ thống chi nhánh
-
+![image_20](screenshots/image_20.png)
 Chức năng Quản lý khách hàng toàn hệ thống
-
+![image_21](screenshots/image_21.png)
 
 Chức năng Quản lý hạng hội viên
-
+![image_22](screenshots/image_22.png)
 
 
 
@@ -471,17 +686,17 @@ Chức năng Quản lý hạng hội viên
 
 
 Chức năng Quản lý danh mục loại phòng
-
+![image_23](screenshots/image_23.png)
 
 
 
 Chức năng Quản lý phòng hát chi nhánh
+![image_24](screenshots/image_24.png)
 
 
 
-
-4.  Thiết kế động
-4.1. Chức năng quản lý hệ thống chi nhánh	
+## 4.  Thiết kế động
+### 4.1. Chức năng quản lý hệ thống chi nhánh	
 1. Chủ doanh nghiệp nhấn "Quản lý hệ thống chi nhánh" trên giao diện AdminHomeView.
 2. Giao diện AdminHomeView gọi phương thức btnManageBranchClick().
 3. AdminHomeView gọi điều hướng (navigate) mở lớp BranchPage.
@@ -519,10 +734,10 @@ Chức năng Quản lý phòng hát chi nhánh
 35. Controller trả danh sách mới về cho BranchPage.
 36. BranchPage gọi lại displayDSBranch() để cập nhật giao diện.
 
+![image_25](screenshots/image_25.png)
 
 
-
-4.2. Chức năng Quản lý khách hàng toàn hệ thống
+### 4.2. Chức năng Quản lý khách hàng toàn hệ thống
 1. Chủ doanh nghiệp nhấn nút "Quản lý khách hàng" trên giao diện AdminHomeView.
 2. AdminHomeView gọi phương thức btnManageCustomerClick().
 3. AdminHomeView gọi điều hướng (navigate) mở lớp CustomerPage.
@@ -561,10 +776,10 @@ Chức năng Quản lý phòng hát chi nhánh
 36. CustomerDetailPanel hiển thị thông báo "Khóa thành công".
 37. Chủ doanh nghiệp nhấn nút OK để đóng thông báo.
 38. CustomerDetailPanel tự gọi lại formLoad(customerId) để cập nhật giao diện chi tiết.
-
-
-
-4.3. Chức năng Quản lý hạng hội viên
+![image_26](screenshots/image_26.png)
+# 
+# 
+### 4.3. Chức năng Quản lý hạng hội viên
 1. Chủ doanh nghiệp nhấn nút "Quản lý hạng hội viên" trên AdminHomeView.
 2. AdminHomeView gọi phương thức btnManageTierClick().
 3. AdminHomeView gọi navigate mở lớp MembershipTierPage.
@@ -600,13 +815,13 @@ Chức năng Quản lý phòng hát chi nhánh
 33. Chủ doanh nghiệp nhấn OK để đóng thông báo.
 34. ManualUpgradeModal tự gọi close() đóng popup và trở về Page.
 35. MembershipTierPage gọi lại formLoad() để làm mới cấu hình hiển thị nếu cần.
+![image_27](screenshots/image_27.png)
 
 
 
 
 
-
-4.4. Chức năng Quản lý danh mục loại phòng
+### 4.4. Chức năng Quản lý danh mục loại phòng
 1. Chủ doanh nghiệp nhấn "Quản lý danh mục loại phòng" trên AdminHomeView.
 2. AdminHomeView gọi phương thức btnManageRoomTypeClick().
 3. AdminHomeView navigate mở lớp RoomTypePage.
@@ -641,13 +856,13 @@ Chức năng Quản lý phòng hát chi nhánh
 32. Controller trả danh sách mới về cho Page.
 33. RoomTypePage gọi displayRoomTypes() để cập nhật bảng.
 
+![image_28](screenshots/image_28.png)
 
+### 
+### 
+### 
 
-
-
-
-
-4.5. Chức năng Quản lý phòng hát chi nhánh
+### 4.5. Chức năng Quản lý phòng hát chi nhánh
 1. Quản lý chi nhánh nhấn nút "Quản lý phòng hát" trên BranchManagerHomeView.
 2. BranchManagerHomeView gọi phương thức btnManageRoomClick().
 3. BranchManagerHomeView navigate gọi hiển thị lớp RoomPage.
@@ -683,10 +898,10 @@ Chức năng Quản lý phòng hát chi nhánh
 33. RoomForm tự gọi hàm close() để đóng popup.
 34. Lớp RoomPage gọi lại formLoad() và cập nhật lại bảng giao diện hiện tại.
 
-
-
-IV. PHA CÀI ĐẶT VÀ KIỂM THỬ
-1. Lập kế hoạch test
+![image_29](screenshots/image_29.png)
+# 
+# IV. PHA CÀI ĐẶT VÀ KIỂM THỬ
+## 1. Lập kế hoạch test
 Phạm vi test: Module "Quản trị cốt lõi" - 5 chức năng: 
 Quản lý chi nhánh (UC16)
 Quản lý khách hàng toàn hệ thống (UC17) 
@@ -699,16 +914,44 @@ Mỗi test case bao gồm: CSDL trước test → Kịch bản thực hiện (t�
 CSDL mẫu dùng dữ liệu tiếng Việt, tên riêng Việt Nam.
 Test case bao gồm cả trường hợp thành công và trường hợp thất bại.
 
-2. Trạng thái CSDL mẫu trước khi test toàn bộ
+## 2. Trạng thái CSDL mẫu trước khi test toàn bộ
 Trước khi thực hiện các test case, CSDL cần được thiết lập ở trạng thái ban đầu như sau:
 
 tblBranch:
 
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
+| 3 | Karaoke Star Đà Nẵng | 789 Bạch Đằng, Đà Nẵng | 0236-3789456 |
+
+
 tblMembershipTier:
+
+| id | tenHang | nguongDiem | giamGia | diemThuongNhan |
+| --- | --- | --- | --- | --- |
+| 1 | Thường | 0 | 0 | 1 |
+| 2 | Bạc | 500 | 5 | 1.5 |
+| 3 | Vàng | 2000 | 10 | 2 |
+
 
 tblCustomer:
 
+| id | hoTen | soDienThoai | email | trangThai | diemTichLuy | Tier_id |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | an@gmail.com | Hoạt động | 2500 | 3 |
+| 2 | Trần Thị Bình | 0912345678 | binh@gmail.com | Hoạt động | 300 | 2 |
+| 3 | Lê Văn Cường | 0923456789 | cuong@gmail.com | Hoạt động | 100 | 1 |
+
+
 tblRoomType:
+
+| id | tenLoai | moTa | sucChua | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 250000 | Hoạt động |
+| 3 | Super VIP | Phòng hạng sang | 20 | 300000 | Hoạt động |
+
 
 
 
@@ -717,29 +960,76 @@ tblRoomType:
 
 tblRoom:
 
-3. Các test case cho từng chức năng
-3.1.  Chức năng "Quản lý hệ thống chi nhánh" (UC16)
-TC01: Thêm chi nhánh mới thành công (tên chưa tồn tại)
+| id | tenPhong | trangThai | Branch_id | RoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+| 3 | VIP-02 | Trống | 2 | 2 |
+
+
+## 3. Các test case cho từng chức năng
+### 3.1.  Chức năng "Quản lý hệ thống chi nhánh" (UC16)
+#### TC01: Thêm chi nhánh mới thành công (tên chưa tồn tại)
 Bước thực hiện:
+
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hệ thống chi nhánh" trên giao diện chính | BranchPage hiển thị danh sách 3 chi nhánh hiện có |
+| 2 | Admin nhấn nút [ + Thêm mới chi nhánh ] | BranchForm mở ra với form nhập liệu trống |
+| 3 | Admin nhập: Tên = "Karaoke Star Cần Thơ", Địa chỉ = "12 Nguyễn Văn Cừ, Cần Thơ", SĐT = "0292-3654789" | Form hiển thị dữ liệu đã nhập |
+| 4 | Admin nhấn [ Lưu ] | BranchForm kiểm tra hợp lệ → BranchController.save() → Branch.save() → CSDL lưu thành công |
+| 5 | Thông báo "Thêm chi nhánh thành công" | BranchForm đóng, quay về BranchPage |
+| 6 | BranchPage tải lại danh sách | Bảng hiển thị 4 chi nhánh, có thêm "Karaoke Star Cần Thơ" |
 
 
 CSDL trước khi test:
 tblBranch:
+
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
+| 3 | Karaoke Star Đà Nẵng | 789 Bạch Đằng, Đà Nẵng | 0236-3789456 |
+
 
 CSDL sau khi test:
 tblBranch:
 
 
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
+| 3 | Karaoke Star Đà Nẵng | 789 Bạch Đằng, Đà Nẵng | 0236-3789456 |
+| 4 | Karaoke Star Cần Thơ | 12 Nguyễn Văn Cừ, Cần Thơ | 0292-3654789 |
 
 
 
-TC02: Thêm chi nhánh mới thất bại (tên đã tồn tại)
+
+
+#### TC02: Thêm chi nhánh mới thất bại (tên đã tồn tại)
 Bước thực hiện:
+
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hệ thống chi nhánh" | BranchPage hiển thị danh sách chi nhánh |
+| 2 | Admin nhấn [ + Thêm mới chi nhánh ] | BranchForm mở ra với form nhập liệu trống |
+| 3 | Admin nhập: Tên = "Karaoke Star Hà Nội" (đã tồn tại), Địa chỉ = "100 Giải Phóng, Hà Nội", SĐT = "024-1111222" | Form hiển thị dữ liệu đã nhập |
+| 4 | Admin nhấn [ Lưu ] | BranchForm kiểm tra hợp lệ → phát hiện tên trùng |
+| 5 | Thông báo lỗi "Tên chi nhánh đã tồn tại" | Form vẫn mở, Admin nhập lại tên |
 
 
 CSDL trước khi test:
 tblBranch:
 
+
+
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
 
 
 CSDL sau khi test:
@@ -747,8 +1037,18 @@ Không thay đổi.
 
 
 
-TC03: Sửa thông tin chi nhánh thành công
+#### TC03: Sửa thông tin chi nhánh thành công
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hệ thống chi nhánh" | BranchPage hiển thị danh sách chi nhánh |
+| 2 | Admin nhấn nút Sửa trên dòng CN02 (Karaoke Star HCM) | BranchForm mở ra với dữ liệu đã điền sẵn: Tên = "Karaoke Star HCM", Địa chỉ = "456 Lê Lợi, TP.HCM", SĐT = "028-3987654" |
+| 3 | Admin thay đổi Địa chỉ = "789 Nguyễn Huệ, TP.HCM" | Form hiển thị địa chỉ mới |
+| 4 | Admin nhấn [ Lưu ] | BranchForm kiểm tra hợp lệ → BranchController.update() → Branch.update() → CSDL cập nhật |
+| 5 | Thông báo "Cập nhật thành công" | BranchForm đóng, quay về BranchPage |
+| 6 | BranchPage tải lại danh sách | Bảng hiển thị CN02 có địa chỉ mới "789 Nguyễn Huệ, TP.HCM" |
+
 
 
 
@@ -758,26 +1058,74 @@ Bước thực hiện:
 CSDL trước khi test: 
 tblBranch:
 
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
+
+
 CSDL sau khi test: 
 tblBranch:
 
-TC04: Xóa chi nhánh không có phòng hoạt động → thành công
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 789 Nguyễn Huệ, TP.HCM | 028-3987654 |
+
+
+#### TC04: Xóa chi nhánh không có phòng hoạt động → thành công
 Bước thực hiện:
+
+| Bước | Thao tác | kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hệ thống chi nhánh" | BranchPage hiển thị danh sách chi nhánh |
+| 2 | Admin nhấn nút Xóa trên dòng CN03 (Karaoke Star Đà Nẵng — không có phòng nào) | Hệ thống kiểm tra ràng buộc: chi nhánh không có phòng |
+| 3 | Hiển thị popup xác nhận: "Bạn có chắc muốn xóa Karaoke Star Đà Nẵng?" | Popup hiển thị với nút [ Xác nhận ] và [ Hủy ] |
+| 4 | Admin nhấn [ Xác nhận ] | BranchController.delete(3) → Branch.delete() → CSDL xóa thành công |
+| 5 | Thông báo "Xóa chi nhánh thành công" | BranchPage tải lại danh sách |
+| 6 | BranchPage hiển thị danh sách mới | Bảng chỉ còn 2 chi nhánh (HN, HCM) |
+
 
 CSDL trước khi test:
  tblBranch:
 
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
+| 3 | Karaoke Star Đà Nẵng | 789 Bạch Đằng, Đà Nẵng | 0236-3789456 |
+
+
 tblRoom: (không có phòng thuộc chi nhánh 3)
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
 
 
 
 CSDL sau khi test: 
 tblBranch:
 
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+| 2 | Karaoke Star HCM | 456 Lê Lợi, TP.HCM | 028-3987654 |
+
+
 tblRoom: không thay đổi.
 
-TC05: Xóa chi nhánh có phòng đang hoạt động → thất bại
+#### TC05: Xóa chi nhánh có phòng đang hoạt động → thất bại
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hệ thống chi nhánh" | BranchPage hiển thị danh sách chi nhánh |
+| 2 | Admin nhấn nút Xóa trên dòng CN01 (Karaoke Star Hà Nội — có phòng VIP-01, STD-01) | Hệ thống kiểm tra ràng buộc: chi nhánh có phòng đang hoạt động |
+| 3 | Thông báo lỗi "Không thể xóa chi nhánh đang có phòng hoạt động" | Dữ liệu không đổi, danh sách giữ nguyên |
+
 
 
 
@@ -786,191 +1134,540 @@ Bước thực hiện:
 CSDL trước khi test: 
 tblBranch:
 
+| id | ten | diaChi | soDienThoai |
+| --- | --- | --- | --- |
+| 1 | Karaoke Star Hà Nội | 123 Nguyễn Huệ, Hà Nội | 024-3456789 |
+
+
 tblRoom:
+
+| id | tenPhong | trangThai | tblBranch_id |
+| --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 |
+| 2 | STD-01 | Đang phục vụ | 1 |
+
 
 CSDL sau khi test: Không thay đổi.
 
 
-3.2.  Chức năng "Quản lý khách hàng toàn hệ thống" (UC17)
-TC06: Tìm kiếm khách hàng theo tên → tìm thấy kết quả
+### 3.2.  Chức năng "Quản lý khách hàng toàn hệ thống" (UC17)
+#### TC06: Tìm kiếm khách hàng theo tên → tìm thấy kết quả
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý khách hàng toàn hệ thống" | CustomerPage hiển thị giao diện tìm kiếm với ô nhập từ khóa, dropdown tiêu chí, nút [ Tìm ] |
+| 2 | Admin nhập từ khóa "Nguyễn Văn An", chọn tiêu chí "Tên" | Form hiển thị dữ liệu đã nhập |
+| 3 | Admin nhấn [ Tìm ] | CustomerController.search("Nguyễn Văn An", "Tên") → Customer.searchCustomer() |
+| 4 | Hệ thống hiển thị danh sách kết quả | Bảng hiển thị 1 khách hàng: KH001 - Nguyễn Văn An, SĐT 0901234567, Hạng Vàng, Trạng thái Hoạt động, Thao tác: Xem · Khóa TK |
+
 
 CSDL trước khi test: 
 tblCustomer:
+
+| id | hoTen | soDienThoai | email | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | an@gmail.com | Hoạt động | 2500 | 3 |
+| 2 | Trần Thị Bình | 0912345678 | binh@gmail.com | Hoạt động | 300 | 2 |
+| 3 | Lê Văn Cường | 0923456789 | cuong@gmail.com | Hoạt động | 100 | 1 |
+
 
 CSDL sau khi test: Không thay đổi (chỉ truy vấn, không ghi).
 
 
-TC07: Tìm kiếm khách hàng → không tìm thấy
+#### TC07: Tìm kiếm khách hàng → không tìm thấy
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý khách hàng toàn hệ thống" | CustomerPage hiển thị giao diện tìm kiếm |
+| 2 | Admin nhập từ khóa "Phạm Thị Dünya", chọn tiêu chí "Tên" | Form hiển thị dữ liệu đã nhập |
+| 3 | Admin nhấn [ Tìm ] | CustomerController.search("Phạm Thị Dünya", "Tên") → trả về danh sách rỗng |
+| 4 | Thông báo "Không tìm thấy khách hàng nào" | CustomerPage giữ nguyên giao diện tìm kiếm |
+
 
 CSDL trước khi test: 
 tblCustomer: 
+
+| id | hoTen | soDienThoai | email | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | an@gmail.com | Hoạt động | 2500 | 3 |
+| 2 | Trần Thị Bình | 0912345678 | binh@gmail.com | Hoạt động | 300 | 2 |
+| 3 | Lê Văn Cường | 0923456789 | cuong@gmail.com | Hoạt động | 100 | 1 |
+
 
 CSDL sau khi test: Không thay đổi.
-TC08: Xem lịch sử sử dụng của khách hàng
+#### TC08: Xem lịch sử sử dụng của khách hàng
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin tìm khách hàng "Nguyễn Văn An" và nhấn Xem | CustomerDetailPanel hiển thị thông tin chi tiết |
+| 2 | Hệ thống hiển thị thông tin cá nhân | Mã KH: KH001, Họ tên: Nguyễn Văn An, SĐT: 0901234567, Email: an@gmail.com, Hạng: Vàng, Điểm: 2500, Trạng thái: Hoạt động |
+| 3 | Hệ thống hiển thị lịch sử sử dụng | Bảng lịch sử: BK1023 - Hà Nội - VIP-01 - 10/05 - 19:00-22:00 - 1.500.000đ; BK1056 - Hà Nội - STD-03 - 18/05 - 20:00-23:00 - 900.000đ |
+| 4 | Admin nhấn [ Đóng ] | Quay về CustomerPage hiển thị danh sách |
+
 
 CSDL trước khi test: 
 tblCustomer: 
+
+
+| id | hoTen | soDienThoai | email | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | an@gmail.com | Hoạt động | 2500 | 3 |
+| 2 | Trần Thị Bình | 0912345678 | binh@gmail.com | Hoạt động | 300 | 2 |
+| 3 | Lê Văn Cường | 0923456789 | cuong@gmail.com | Hoạt động | 100 | 1 |
 
 
 CSDL sau khi test: Không thay đổi (chỉ truy vấn).
 
-TC09: Khóa tài khoản khách hàng thành công
+#### TC09: Khóa tài khoản khách hàng thành công
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin tìm khách hàng "Nguyễn Văn An" và nhấn Xem | CustomerDetailPanel hiển thị thông tin chi tiết |
+| 2 | Admin nhấn nút [ Khóa tài khoản ] | Hiển thị popup xác nhận: "Bạn có chắc muốn khóa tài khoản Nguyễn Văn An (KH001)?" |
+| 3 | Admin nhấn [ Xác nhận ] | CustomerController.lockAccount(1) → Customer.lockAccount() → CSDL cập nhật trangThai = "Đã khóa" |
+| 4 | Thông báo "Khóa tài khoản thành công" | CustomerDetailPanel cập nhật Trạng thái = "Đã khóa", nút chuyển thành [ Mở khóa ] |
+
 
 CSDL trước khi test:
 tblCustomer:
 
+| id | hoTen | soDienThoai | email | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | an@gmail.com | Hoạt động | 2500 | 3 |
+
+
 CSDL sau khi test: 
 tblCustomer:
 
+| id | hoTen | soDienThoai | email | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | an@gmail.com | Đã khóa | 2500 | 3 |
 
-3.3 Chức năng "Quản lý hạng hội viên" (UC18)
-TC10: Xem cấu hình hạng hội viên
+
+
+### 3.3 Chức năng "Quản lý hạng hội viên" (UC18)
+#### TC10: Xem cấu hình hạng hội viên
 Bước thực hiện:
 
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hạng hội viên" | MembershipTierPage hiển thị danh sách hạng |
+| 2 | Hệ thống tải danh sách hạng từ CSDL | Bảng hiển thị 3 hạng: HH01-Thường(0đ,0%,x1), HH02-Bạc(500đ,5%,x1.5), HH03-Vàng(2000đ,10%,x2) |
+| 3 | Mỗi dòng có nút Sửa, nút [ Thay đổi hạng thủ công ] ở phía trên | Giao diện đầy đủ |
+
+
 CSDL trước khi test: tblMembershipTier:
+
+
+| id | tenHang | nguongDiem | giamGia | diemThuongNhan |
+| --- | --- | --- | --- | --- |
+| 1 | Thường | 0 | 0 | 1 |
+| 2 | Bạc | 500 | 5 | 1.5 |
+| 3 | Vàng | 2000 | 10 | 2 |
 
 
 CSDL sau khi test: Không thay đổi (chỉ truy vấn).
 
 
 
-TC11: Sửa ngưỡng điểm hạng Bạc thành công
+#### TC11: Sửa ngưỡng điểm hạng Bạc thành công
 Bước thực hiện:
 
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hạng hội viên" | MembershipTierPage hiển thị danh sách hạng |
+| 2 | Admin nhấn Sửa trên dòng HH02 (Bạc) | MembershipTierForm mở ra với dữ liệu: Tên = "Bạc", Ngưỡng = 500, Giảm giá = 5%, Điểm thưởng = x1.5 |
+| 3 | Admin thay đổi: Ngưỡng điểm = 600, Giảm giá = 7% | Form hiển thị giá trị mới |
+| 4 | Admin nhấn [ Lưu ] | MembershipTierForm kiểm tra hợp lệ → MembershipTierController.update() → MembershipTier.update() → CSDL cập nhật |
+| 5 | Thông báo "Cập nhật thành công" | MembershipTierForm đóng, quay về MembershipTierPage |
+| 6 | MembershipTierPage tải lại danh sách | Bảng hiển thị HH02-Bạc có ngưỡng = 600, giảm giá = 7% |
+
+
 CSDL trước khi test: tblMembershipTier:
+
+| id | tenHang | nguongDiem | giamGia | diemThuongNhan |
+| --- | --- | --- | --- | --- |
+| 1 | Thường | 0 | 0 | 1 |
+| 2 | Bạc | 500 | 5 | 1.5 |
+| 3 | Vàng | 2000 | 10 | 2 |
+
 
 CSDL sau khi test: tblMembershipTier:
 
 
+| id | tenHang | nguongDiem | giamGia | diemThuongNhan |
+| --- | --- | --- | --- | --- |
+| 1 | Thường | 0 | 0 | 1 |
+| 2 | Bạc | 600 | 7 | 1.5 |
+| 3 | Vàng | 2000 | 10 | 2 |
 
 
-TC12: Thay đổi hạng thủ công cho khách hàng thành công
+
+
+#### TC12: Thay đổi hạng thủ công cho khách hàng thành công
 
 Bước thực hiện:
+
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý hạng hội viên" | MembershipTierPage hiển thị danh sách hạng |
+| 2 | Admin nhấn [ Thay đổi hạng thủ công ] | ManualUpgradeModal mở ra với form tìm kiếm |
+| 3 | Admin nhập mã KH001 nhấn [ Tìm ] | ManualUpgradeModal hiển thị: Tên = Nguyễn Văn An, Hạng hiện tại = Vàng, Điểm = 2500 |
+| 4 | Admin chọn hạng mới = "Bạc" từ dropdown | Dropdown hiển thị hạng đã chọn |
+| 5 | Admin nhấn [ Xác nhận ] | MembershipTierController.manualUpgrade(1, 2) → Customer.updateMembershipTier() → CSDL cập nhật |
+| 6 | Thông báo "Thay đổi hạng thành công" | ManualUpgradeModal đóng, quay về MembershipTierPage |
 
 
 CSDL trước khi test: tblCustomer:
 
 
+| id | hoTen | soDienThoai | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | Hoạt động | 2500 | 3 (Vàng) |
+
+
 CSDL sau khi test: tblCustomer:
 
 
+| id | hoTen | soDienThoai | trangThai | diemTichLuy | tblMembershipTier_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Văn An | 0901234567 | Hoạt động | 2500 | 2 (Bạc) |
 
-3.4. Chức năng "Quản lý danh mục loại phòng" (UC19)
-TC13: Thêm loại phòng mới thành công
+
+
+### 3.4. Chức năng "Quản lý danh mục loại phòng" (UC19)
+#### TC13: Thêm loại phòng mới thành công
 Bước thực hiện:
 
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý danh mục loại phòng" | RoomTypePage hiển thị danh sách 3 loại phòng |
+| 2 | Admin nhấn [ + Thêm loại phòng mới ] | RoomTypeForm mở ra với form nhập liệu trống |
+| 3 | Admin nhập: Tên = "Party", Sức chứa = 30, Giá = 500000 | Form hiển thị dữ liệu đã nhập |
+| 4 | Admin nhấn [ Lưu ] | RoomTypeForm kiểm tra hợp lệ → RoomTypeController.save() → RoomType.save() → CSDL lưu thành công |
+| 5 | Thông báo "Thêm loại phòng thành công" | RoomTypeForm đóng, quay về RoomTypePage |
+| 6 | RoomTypePage tải lại danh mục | Bảng hiển thị 4 loại phòng, có thêm "Party" |
+
+
 CSDL trước khi test: tblRoomType:
+
+
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 250000 | Hoạt động |
+| 3 | Super VIP | Phòng hạng sang | 20 | 300000 | Hoạt động |
 
 
 CSDL sau khi test: tblRoomType:
 
 
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 250000 | Hoạt động |
+| 3 | Super VIP | Phòng hạng sang | 20 | 300000 | Hoạt động |
+| 4 | Party | Phòng tiệc | 30 | 500000 | Hoạt động |
 
 
 
 
-TC14: Thêm loại phòng mới thất bại (tên trùng)
+
+
+#### TC14: Thêm loại phòng mới thất bại (tên trùng)
 Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý danh mục loại phòng" | RoomTypePage hiển thị danh sách |
+| 2 | Admin nhấn [ + Thêm loại phòng mới ] | RoomTypeForm mở ra |
+| 3 | Admin nhập: Tên = "VIP" (đã tồn tại), Sức chứa = 25, Giá = 350000 | Form hiển thị dữ liệu đã nhập |
+| 4 | Admin nhấn [ Lưu ] | RoomTypeForm kiểm tra → phát hiện tên trùng |
+| 5 | Thông báo lỗi "Tên loại phòng đã tồn tại" | Form vẫn mở, Admin nhập lại tên |
+
 
 CSDL trước khi test: tblRoomType: (giống TC13)
 
 CSDL sau khi test: Không thay đổi.
 
 
-TC15: Sửa thông tin loại phòng thành công
+#### TC15: Sửa thông tin loại phòng thành công
 Bước thực hiện:
 
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý danh mục loại phòng" | RoomTypePage hiển thị danh sách |
+| 2 | Admin nhấn Sửa trên dòng LP02 (VIP) | RoomTypeForm mở ra với dữ liệu: Tên = "VIP", Sức chứa = 15, Giá = 250000 |
+| 3 | Admin thay đổi Giá = 280000 | Form hiển thị giá mới |
+| 4 | Admin nhấn [ Lưu ] | RoomTypeForm kiểm tra hợp lệ → RoomTypeController.update() → RoomType.update() → CSDL cập nhật |
+| 5 | Thông báo "Cập nhật thành công" | RoomTypeForm đóng, quay về RoomTypePage |
+| 6 | RoomTypePage tải lại danh mục | Bảng hiển thị LP02-VIP có giá = 280000 |
+
+
 CSDL trước khi test: tblRoomType:
+
+
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 250000 | Hoạt động |
 
 
 CSDL sau khi test: tblRoomType:
 
 
-TC16: Xóa loại phòng không có phòng vật lý sử dụng → thành công
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 280000 | Hoạt động |
+
+
+#### TC16: Xóa loại phòng không có phòng vật lý sử dụng → thành công
 Bước thực hiện:
 
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý danh mục loại phòng" | RoomTypePage hiển thị danh sách |
+| 2 | Admin nhấn Xóa trên dòng LP03 (Super VIP — không có phòng vật lý sử dụng) | Hệ thống kiểm tra ràng buộc: không có phòng nào đang dùng loại này |
+| 3 | Hiển thị popup xác nhận: "Bạn có chắc muốn xóa loại phòng Super VIP?" | Popup hiển thị |
+| 4 | Admin nhấn [ Xác nhận ] | RoomTypeController.delete(3) → RoomType.delete() → CSDL xóa thành công |
+| 5 | Thông báo "Xóa loại phòng thành công" | RoomTypePage tải lại danh mục |
+| 6 | RoomTypePage hiển thị danh sách mới | Bảng chỉ còn 2 loại (Standard, VIP) |
+
+
 CSDL trước khi test: tblRoomType:
+
+
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 250000 | Hoạt động |
+| 3 | Super VIP | Phòng hạng sang | 20 | 300000 | Hoạt động |
 
 
 tblRoom: (không có phòng nào dùng loại Super VIP)
 
 
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 2 |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+
+
 CSDL sau khi test: tblRoomType:
+
+
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
+| 2 | VIP | Phòng cao cấp | 15 | 250000 | Hoạt động |
 
 
 tblRoom: không thay đổi.
 
 
-TC17: Xóa loại phòng đang được sử dụng → thất bại
+#### TC17: Xóa loại phòng đang được sử dụng → thất bại
 Bước thực hiện:
 
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Admin chọn chức năng "Quản lý danh mục loại phòng" | RoomTypePage hiển thị danh sách |
+| 2 | Admin nhấn Xóa trên dòng LP01 (Standard — có phòng STD-01 đang sử dụng) | Hệ thống kiểm tra ràng buộc: có phòng đang sử dụng loại này |
+| 3 | Thông báo lỗi "Không thể xóa do loại phòng đang được sử dụng tại các chi nhánh" | Dữ liệu không đổi |
+
+
 CSDL trước khi test: tblRoomType:
+
+
+| id | tenLoai | moTa | sucChuaChuan | giaChung | trangThai |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Standard | Phòng phổ thông | 10 | 150000 | Hoạt động |
 
 
 tblRoom:
 
 
-CSDL sau khi test: Không thay đổi.
-
-
-3.5 Chức năng "Quản lý phòng hát chi nhánh" (UC20)
-TC18: Thêm phòng mới tại chi nhánh thành công
-Bước thực hiện:
-
-CSDL trước khi test: tblRoom:
-
-
-CSDL sau khi test: tblRoom:
-
-
-TC19: Thêm phòng mới thất bại (tên trùng trong chi nhánh)
-Bước thực hiện:
-
-CSDL trước khi test: tblRoom:
-
-
-CSDL sau khi test: Không thay đổi.
-
-TC20: Sửa trạng thái phòng thành công
-Bước thực hiện:
-
-CSDL trước khi test: tblRoom:
-
-
-CSDL sau khi test: tblRoom:
-
-
-
-
-TC21: Xóa phòng không có đặt phòng hoạt động → thành công
-Bước thực hiện:
-
-CSDL trước khi test: tblRoom:
-
-
-CSDL sau khi test: tblRoom:
-
-
-
-
-
-
-TC22: Xóa phòng có đặt phòng đang hoạt động → thất bại
-Bước thực hiện:
-
-CSDL trước khi test: tblRoom:
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
 
 
 CSDL sau khi test: Không thay đổi.
 
 
-4. Tóm tắt kết quả test
+### 3.5 Chức năng "Quản lý phòng hát chi nhánh" (UC20)
+#### TC18: Thêm phòng mới tại chi nhánh thành công
+Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Quản lý chi nhánh chọn chức năng "Quản lý phòng hát" | RoomPage hiển thị danh sách phòng thuộc chi nhánh |
+| 2 | Quản lý nhấn [ + Thêm phòng mới ] | RoomForm mở ra với form nhập liệu trống |
+| 3 | Quản lý nhập: Tên = "VIP-02", chọn Loại = "VIP" (tự động áp dụng sức chứa và giá theo chuẩn Admin) | Form hiển thị dữ liệu đã nhập |
+| 4 | Quản lý nhấn [ Lưu ] | RoomForm kiểm tra hợp lệ (tên không trùng trong chi nhánh) → RoomController.save() → Room.save() → CSDL lưu thành công |
+| 5 | Thông báo "Thêm phòng thành công" | RoomForm đóng, quay về RoomPage |
+| 6 | RoomPage tải lại danh sách | Bảng hiển thị phòng mới "VIP-02" với loại VIP, trạng thái Trống |
+
+
+CSDL trước khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+
+
+CSDL sau khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+| 3 | VIP-02 | Trống | 1 | 2 |
+
+
+#### TC19: Thêm phòng mới thất bại (tên trùng trong chi nhánh)
+Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Quản lý chọn chức năng "Quản lý phòng hát" | RoomPage hiển thị danh sách |
+| 2 | Quản lý nhấn [ + Thêm phòng mới ] | RoomForm mở ra |
+| 3 | Quản lý nhập: Tên = "VIP-01" (đã tồn tại trong chi nhánh), chọn Loại = "VIP" | Form hiển thị dữ liệu đã nhập |
+| 4 | Quản lý nhấn [ Lưu ] | RoomForm kiểm tra → phát hiện tên trùng trong cùng chi nhánh |
+| 5 | Thông báo lỗi "Tên phòng đã tồn tại" | Form vẫn mở, quản lý nhập lại tên |
+
+
+CSDL trước khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+
+
+CSDL sau khi test: Không thay đổi.
+
+#### TC20: Sửa trạng thái phòng thành công
+Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Quản lý chọn chức năng "Quản lý phòng hát" | RoomPage hiển thị danh sách |
+| 2 | Quản lý nhấn Sửa trên dòng P001 (VIP-01) | RoomForm mở ra với dữ liệu: Tên = "VIP-01", Loại = "Super VIP", Trạng thái = "Trống" |
+| 3 | Quản lý đổi Trạng thái = "Bảo trì" | Form hiển thị trạng thái mới |
+| 4 | Quản lý nhấn [ Lưu ] | RoomForm kiểm tra hợp lệ → RoomController.update() → Room.update() → CSDL cập nhật |
+| 5 | Thông báo "Cập nhật thành công" | RoomForm đóng, quay về RoomPage |
+| 6 | RoomPage tải lại danh sách | Bảng hiển thị P001-VIP-01 có trạng thái = "Bảo trì" |
+
+
+CSDL trước khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+
+
+CSDL sau khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Bảo trì | 1 | 3 |
+
+
+
+
+#### TC21: Xóa phòng không có đặt phòng hoạt động → thành công
+Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Quản lý chọn chức năng "Quản lý phòng hát" | RoomPage hiển thị danh sách |
+| 2 | Quản lý nhấn Xóa trên dòng P001 (VIP-01 — Trống, không có booking) | Hệ thống kiểm tra ràng buộc: phòng không có booking đang hoạt động |
+| 3 | Hiển thị popup xác nhận: "Xóa phòng VIP-01?" | Popup hiển thị |
+| 4 | Quản lý nhấn [ Xác nhận ] | RoomController.delete(1) → Room.delete() → CSDL xóa thành công |
+| 5 | Thông báo "Xóa phòng thành công" | RoomPage tải lại danh sách |
+| 6 | RoomPage hiển thị danh sách mới | Bảng chỉ còn STD-01 |
+
+
+CSDL trước khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 1 | VIP-01 | Trống | 1 | 3 |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+
+
+CSDL sau khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+
+
+
+
+
+
+#### TC22: Xóa phòng có đặt phòng đang hoạt động → thất bại
+Bước thực hiện:
+
+| Bước | Thao tác | Kết quả mong đợi |
+| --- | --- | --- |
+| 1 | Quản lý chọn chức năng "Quản lý phòng hát" | RoomPage hiển thị danh sách |
+| 2 | Quản lý nhấn Xóa trên dòng P002 (STD-01 — Đang phục vụ, có booking đang hoạt động) | Hệ thống kiểm tra ràng buộc: phòng có booking đang hoạt động |
+| 3 | Thông báo lỗi "Không thể xóa phòng đang có khách" | Dữ liệu không đổi |
+
+
+CSDL trước khi test: tblRoom:
+
+
+| id | tenPhong | trangThai | tblBranch_id | tblRoomType_id |
+| --- | --- | --- | --- | --- |
+| 2 | STD-01 | Đang phục vụ | 1 | 1 |
+
+
+CSDL sau khi test: Không thay đổi.
+
+
+## 4. Tóm tắt kết quả test
+
+| STT | Test Case | Chức năng | Kết quả |
+| --- | --- | --- | --- |
+| 1 | TC01: Thêm chi nhánh mới thành công | UC16 | Đạt |
+| 2 | TC02: Thêm chi nhánh mới thất bại (tên trùng) | UC16 | Đạt |
+| 3 | TC03: Sửa thông tin chi nhánh thành công | UC16 | Đạt |
+| 4 | TC04: Xóa chi nhánh không có phòng → thành công | UC16 | Đạt |
+| 5 | TC05: Xóa chi nhánh có phòng → thất bại | UC16 | Đạt |
+| 6 | TC06: Tìm kiếm KH theo tên → tìm thấy | UC17 | Đạt |
+| 7 | TC07: Tìm kiếm KH → không tìm thấy | UC17 | Đạt |
+| 8 | TC08: Xem lịch sử sử dụng KH | UC17 | Đạt |
+| 9 | TC09: Khóa tài khoản KH thành công | UC17 | Đạt |
+| 10 | TC10: Xem cấu hình hạng hội viên | UC18 | Đạt |
+| 11 | TC11: Sửa ngưỡng điểm hạng Bạc thành công | UC18 | Đạt |
+| 12 | TC12: Thay đổi hạng thủ công cho KH thành công | UC18 | Đạt |
+| 13 | TC13: Thêm loại phòng mới thành công | UC19 | Đạt |
+| 14 | TC14: Thêm loại phòng mới thất bại (tên trùng) | UC19 | Đạt |
+| 15 | TC15: Sửa thông tin loại phòng thành công | UC19 | Đạt |
+| 16 | TC16: Xóa loại phòng không có phòng vật lý → thành công | UC19 | Đạt |
+| 17 | TC17: Xóa loại phòng đang sử dụng → thất bại | UC19 | Đạt |
+| 18 | TC18: Thêm phòng mới tại chi nhánh thành công | UC20 | Đạt |
+| 19 | TC19: Thêm phòng mới thất bại (tên trùng) | UC20 | Đạt |
+| 20 | TC20: Sửa trạng thái phòng thành công | UC20 | Đạt |
+| 21 | TC21: Xóa phòng không có booking → thành công | UC20 | Đạt |
+| 22 | TC22: Xóa phòng có booking → thất bại | UC20 | Đạt |
+
 
 Tỷ lệ đạt: 22/22 = 100%
 Kết luận: Tất cả các test case đều đạt yêu cầu. Module "Quản trị cốt lõi" hoạt động đúng theo thiết kế, bao gồm đầy đủ 5 chức năng: quản lý chi nhánh, quản lý khách hàng, quản lý hạng hội viên, quản lý danh mục loại phòng và quản lý phòng hát chi nhánh. Các trường hợp thành công và thất bại đều được xử lý đúng theo kịch bản và ràng buộc nghiệp vụ.
-

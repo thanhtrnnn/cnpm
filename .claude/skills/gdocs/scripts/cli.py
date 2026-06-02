@@ -82,33 +82,37 @@ def cmd_tabs(args):
 
 
 def cmd_tab_read(args):
-    """Handle tab-read subcommand - read tab content with images."""
+    """Handle tab-read subcommand - read tab content with images and tables."""
     try:
         import os
+        import urllib.request
         client = GDocsClient()
-        result = client.get_tab_structure(args.document_id, args.tab)
+
+        # Use new tab_to_markdown which preserves document order (text + tables + images)
+        markdown, images = client.tab_to_markdown(args.document_id, args.tab)
 
         # Create output directory
         output_dir = args.output or os.path.join(os.getcwd(), 'docs', 'tabs')
         os.makedirs(output_dir, exist_ok=True)
         os.makedirs(os.path.join(output_dir, 'screenshots'), exist_ok=True)
 
-        # Save text
-        md_path = os.path.join(output_dir, f"{args.tab.lower().replace(' ', '-').replace('&', 'va')}.md")
+        # Save markdown (includes tables and image refs in document order)
+        slug = args.tab.lower().replace(' ', '-').replace('&', 'va')
+        md_path = os.path.join(output_dir, f'{slug}.md')
         with open(md_path, 'w', encoding='utf-8') as f:
-            f.write(f'# {result["title"]}\n\n')
-            f.write(result['text'])
+            f.write(f'# {args.tab}\n\n')
+            f.write(markdown)
         print(f'Text saved: {md_path}')
 
         # Download images
-        if result['images']:
-            import urllib.request
+        if images:
             downloaded = 0
-            for i, img in enumerate(result['images']):
+            for img in images:
                 uri = img.get('contentUri', '')
                 if not uri:
                     continue
-                filename = f'image_{i+1:02d}.png'
+                n = img['index']
+                filename = f'image_{n:02d}.png'
                 filepath = os.path.join(output_dir, 'screenshots', filename)
                 try:
                     req = urllib.request.Request(uri, headers={'User-Agent': 'Mozilla/5.0'})
@@ -118,7 +122,7 @@ def cmd_tab_read(args):
                             f.write(data)
                     downloaded += 1
                 except Exception as e:
-                    print(f'  Warning: Failed to download image {i+1}: {e}')
+                    print(f'  Warning: Failed to download image {n}: {e}')
             print(f'Images: {downloaded} downloaded to {os.path.join(output_dir, "screenshots")}')
 
     except Exception as e:

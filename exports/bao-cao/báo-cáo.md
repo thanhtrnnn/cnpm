@@ -2,13 +2,29 @@
 
 
 
-PHẦN I. MÔ TẢ HỆ THỐNG
+| Trần Xuân Thành | B23DCAT280 |
+| --- | --- |
+| Vũ Hùng Anh | B23DCDT022 |
+| Phạm Tuấn Anh | B23DCDT018 |
+| Bế Quốc Khánh | B23DCCE049 |
+| Nguyễn Gia Đức Trung | B23DCVT423 |
+
+
+
+| HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG KHOA CÔNG NGHỆ THÔNG TIN 1 ______________ |
+| --- |
+| ![image_01](screenshots/image_01.png) |
+| BÁO CÁO BÀI TẬP LỚN NHẬP MÔN CÔNG NGHỆ PHẦN MỀM Chủ đề: Hệ thống quản lý chuỗi nhà hàng karaoke |
+| Giảng viên hướng dẫn: Đỗ Thị Liên Lớp học phần: D23CQCE01-B Nhóm thực hiện: Nhóm 7 |
+| HÀ NỘI, THÁNG 5/2026 |
+
+# PHẦN I. MÔ TẢ HỆ THỐNG
 Mô tả hệ thống và khảo sát hệ thống tương tự
-1. Mô tả chung về hệ thống
-1.1. Bài toán thực tế
+## 1. Mô tả chung về hệ thống
+### 1.1. Bài toán thực tế
 Hệ thống được định hướng như một nền tảng quản lý tập trung cho chuỗi nhà hàng karaoke, với mục tiêu giảm sai sót thủ công trong quản lý phòng, gọi món, thanh toán, đồng bộ dữ liệu giữa các chi nhánh, nâng cao trải nghiệm khách hàng qua đặt phòng online và tích điểm thành viên, đồng thời hỗ trợ chủ doanh nghiệp ra quyết định bằng báo cáo doanh thu theo thời gian.
 Từ góc nhìn thực tiễn, bài toán này xuất phát từ đặc thù của mô hình karaoke: một phiên phục vụ luôn đi kèm nhiều biến số vận hành cùng lúc như thời gian sử dụng phòng, trạng thái phòng, order đồ ăn thức uống, khuyến mãi khách quen, ca làm của nhân viên và tồn kho tiêu hao. Khi quy mô phát triển từ một cơ sở sang nhiều chi nhánh, các thao tác rời rạc hoặc phụ thuộc ghi chép thủ công rất dễ tạo ra sai lệch doanh thu, nhầm trạng thái phòng và chậm phản hồi cho khách.
-1.2. Phạm vi chức năng
+### 1.2. Phạm vi chức năng
 Hệ thống gồm sáu phân hệ cốt lõi: quản lý đặt phòng, gọi món và dịch vụ, quản lý hội viên, quản lý kho, quản lý nhân sự và báo cáo doanh thu.
 Cụ thể hơn, mỗi phân hệ không chỉ là một nhóm tính năng độc lập mà còn tạo thành chuỗi nghiệp vụ xuyên suốt một phiên phục vụ:
 Quản lý đặt phòng: tiếp nhận đặt trước, bố trí phòng trực tiếp, theo dõi trạng thái phòng trống, đang dùng hoặc bảo trì.
@@ -17,59 +33,107 @@ Quản lý hội viên: lưu thông tin khách, lịch sử sử dụng, tích �
 Quản lý kho: theo dõi nhập xuất hàng hóa, cảnh báo tồn kho và kiểm soát tiêu hao giữa các điểm bán.
 Quản lý nhân sự: phân ca, chấm công, kiểm soát vai trò và trách nhiệm của từng nhóm nhân viên.
 Báo cáo doanh thu: tổng hợp doanh thu theo ngày, tháng, năm và theo chi nhánh để phục vụ điều hành.
-1.3. Đối tượng sử dụng
+### 1.3. Đối tượng sử dụng
 Hệ thống hướng đến năm nhóm người dùng chính: khách hàng, nhân viên lễ tân, nhân viên phục vụ, quản lý chi nhánh và chủ doanh nghiệp.
 Điểm đáng chú ý là cấu trúc người dùng này phản ánh đúng chuỗi giá trị vận hành của mô hình karaoke. Khách hàng cần trải nghiệm đặt chỗ và sử dụng dịch vụ thuận tiện; lễ tân cần điều phối phòng nhanh; phục vụ cần thao tác order ít sai sót; quản lý chi nhánh cần nhìn được dòng vận hành trong ngày; còn chủ doanh nghiệp cần dữ liệu tổng hợp để ra quyết định ở cấp chuỗi.
-1.4. Kiến trúc và định hướng triển khai
+### 1.4. Kiến trúc và định hướng triển khai
 Kiến trúc được triển khai theo mô hình MVC 3 tầng, gồm lớp giao diện với React.js cho web và React Native cho ứng dụng di động, lớp xử lý nghiệp vụ bằng Node.js/Express, cùng lớp dữ liệu sử dụng PostgreSQL kết hợp Redis; ngoài ra còn đặt mục tiêu cho mỗi chi nhánh có thể hoạt động offline và đồng bộ khi có mạng.
 Trong vận hành karaoke, trạng thái phòng và order thay đổi liên tục theo thời gian thực; vì vậy một kiến trúc tách lớp rõ ràng giúp hệ thống dễ mở rộng khi thêm chi nhánh, còn cơ chế đồng bộ giúp giảm phụ thuộc tuyệt đối vào đường truyền. Nói cách khác, kiến trúc ở đây không chỉ để xây được phần mềm mà để giữ cho quán vẫn vận hành được khi tải tăng, ca cao điểm xảy ra hoặc mạng không ổn định.
-1.5. Lý do lựa chọn đề tài
+### 1.5. Lý do lựa chọn đề tài
 Lý do lựa chọn hệ thống này có thể làm rõ ở ba lớp.
 Thứ nhất, đây là bài toán có độ thực tiễn cao vì nó chạm đúng các điểm nghẽn phổ biến của quán karaoke: tính tiền theo giờ phải chính xác, quản lý phòng phải trực quan, order phải chuyển nhanh, kiểm soát thất thoát phải chặt và báo cáo phải đủ nhanh để người quản lý xử lý ngay trong ngày.
 Thứ hai, hệ thống có chiều sâu nghiệp vụ hơn nhiều mô hình bán hàng thông thường. Một quán karaoke không chỉ bán hàng hóa mà đồng thời bán thời gian sử dụng dịch vụ, không gian phòng, chất lượng phục vụ và các dịch vụ gia tăng. Vì vậy đây là đề tài phù hợp để thể hiện tư duy phân tích hệ thống, mô hình hóa actor, use case và thiết kế quy trình phần mềm theo Unified Process.
 Thứ ba, đề tài có giá trị mở rộng. Nếu chỉ xây cho một quán đơn lẻ, hệ thống dừng ở mức phần mềm tính tiền; nhưng khi mở rộng lên chuỗi, bài toán lập tức chuyển thành quản trị tập trung, đồng bộ dữ liệu, phân quyền đa vai trò và báo cáo đa chi nhánh. Chính yếu tố này làm cho đề tài có chiều sâu đủ lớn để làm báo cáo môn học mà vẫn giữ liên hệ sát với thực tiễn kinh doanh.
 Điều quan trọng nhất là hệ thống này không nên được nhìn như một phần mềm tính tiền karaoke, mà nên được nhìn như hạ tầng vận hành số cho chuỗi karaoke. Các trang giới thiệu của KiotViet, POS365 và Sapo đều nhấn mạnh những nhu cầu rất thực như theo dõi phòng trống, tính tiền theo giờ, quản lý hàng hóa, báo cáo doanh thu, order trên nhiều thiết bị và quản lý từ xa; điều đó cho thấy thị trường đang coi quản lý karaoke là một bài toán vận hành tổng thể chứ không còn là bài toán thu ngân đơn lẻ.
-2. Khảo sát hệ thống tương tự
-2.1. Mục tiêu khảo sát
+## 2. Khảo sát hệ thống tương tự
+### 2.1. Mục tiêu khảo sát
 Mục tiêu của phần khảo sát là xác định các hệ thống gần nhất với bài toán quản lý karaoke, từ đó chỉ ra những gì thị trường đã giải quyết tốt, những khoảng trống còn tồn tại và vị trí hợp lý cho hệ thống đề xuất của nhóm.
-2.2. Hệ thống 1: KiotViet
+### 2.2. Hệ thống 1: KiotViet
 Trang sản phẩm cho karaoke của KiotViet cho biết hệ thống hỗ trợ quản lý phòng bàn, hiển thị chi tiết phòng trống, phòng đang order hoặc đang sử dụng, tính tiền theo giờ, quản lý hàng hóa, quản lý khách hàng, theo dõi nhân viên, kết nối máy in và két tiền, đồng thời có thể dùng trên POS, máy tính, điện thoại và máy tính bảng.
 Liên hệ thực tiễn cho thấy KiotViet phù hợp với mô hình quán muốn chuẩn hóa thao tác thu ngân và vận hành cơ bản thật nhanh. Điểm mạnh của KiotViet là biến các nghiệp vụ hay bị thủ công hóa như check giờ vào ra, theo dõi trạng thái phòng và lưu lịch sử khách thành các thao tác có cấu trúc. Tuy nhiên, nội dung công bố hiện tại cho thấy trọng tâm của KiotViet vẫn nghiêng về tối ưu quản lý tại điểm bán hơn là mô tả sâu bài toán chuỗi karaoke nhiều chi nhánh với cơ chế đồng bộ nghiệp vụ phức tạp.
-2.3. Hệ thống 2: POS365
+### 2.3. Hệ thống 2: POS365
 Các trang của POS365 mô tả phần mềm karaoke theo hướng quản lý phòng, thời gian thuê, tính tiền, quản lý hàng hóa, cảnh báo tồn kho, phân quyền nhân viên, báo cáo doanh thu và quản lý từ xa. POS365 cũng tự giới thiệu là giải pháp ứng dụng điện toán đám mây cho quản lý quán karaoke.
 Về mặt thực tiễn, POS365 phản ánh khá rõ nhu cầu của các quán karaoke đang muốn vận hành bài bản hơn: phải có kiểm soát tồn kho, phải có báo cáo nhanh, phải có phân quyền và phải theo dõi phòng đang trống hay đang sử dụng trên nhiều thiết bị. Điều này cho thấy khi quán vượt khỏi quy mô nhỏ, bài toán quản lý karaoke bắt đầu hội tụ với bài toán vận hành F&B và POS hiện đại. Tuy vậy, phần công bố công khai vẫn chủ yếu nhấn mạnh quản lý vận hành và báo cáo, chưa cho thấy rõ một cấu trúc dành riêng cho quản lý chuỗi karaoke theo kiến trúc tập trung như mục tiêu của đề tài.
-2.4. Hệ thống 3: Sapo
+### 2.4. Hệ thống 3: Sapo
 Trang sản phẩm karaoke của Sapo cho biết hệ thống hỗ trợ theo dõi số lượng phòng bàn trống, phòng đặt trước hoặc đang sử dụng, order qua tablet và điện thoại, tự động gửi order tới quầy bar, lưu và phân loại khách hàng để triển khai tích điểm hoặc khuyến mãi, đồng thời hỗ trợ theo dõi nhân viên và phân ca làm việc.
 Liên hệ thực tiễn ở đây khá rõ: Sapo tiếp cận karaoke như một biến thể của vận hành dịch vụ có bàn, có phòng, có order và có chăm sóc khách hàng. Cách tiếp cận này phù hợp với các quán karaoke đang muốn số hóa nhanh mà không cần đầu tư hệ thống quá đặc thù. Tuy nhiên, chính vì tiếp cận theo hướng nền tảng quản lý bán hàng mở rộng, Sapo phù hợp hơn với bài toán quản trị dịch vụ tại cửa hàng hơn là bài toán thiết kế một hệ thống chuyên biệt cho chuỗi karaoke với nhiều lớp điều phối dữ liệu.
-2.5. Bài tổng hợp thị trường dùng để đối chiếu
+### 2.5. Bài tổng hợp thị trường dùng để đối chiếu
 Bài tổng hợp của POS365 liệt kê nhiều phần mềm quản lý karaoke như POS365, KiotViet, Vietbill, OXU và Sapo, đồng thời mô tả một số tính năng phổ biến như quản lý phòng đặt trước, thống kê phòng trống, tính tiền phụ thu, tính tiền theo block và hỗ trợ nhiều thiết bị.
 Dù đây là nguồn mang tính marketing, nó vẫn có giá trị tham khảo vì cho thấy cách thị trường Việt Nam đang đóng gói nhu cầu quản lý karaoke thành một cụm tính năng tương đối ổn định. Cụm tính năng đó gồm ba lớp rõ rệt: vận hành phòng, xử lý order và thanh toán, theo dõi khách hàng và báo cáo.
-2.6. So sánh đối chiếu
+### 2.6. So sánh đối chiếu
 Từ đây, ta có thể đúc kết được ba điều:
 Thứ nhất là thị trường đã chuẩn hóa khá rõ bộ tính năng tối thiểu cho phần mềm karaoke. Dù là KiotViet, POS365 hay Sapo, các trang giới thiệu đều xoay quanh bốn việc cốt lõi: nhìn được trạng thái phòng, tính tiền theo giờ, xử lý order trên nhiều thiết bị và theo dõi khách hàng hoặc doanh thu.
 Thứ hai là phần lớn giải pháp đang tiếp cận karaoke từ góc độ phần mềm quản lý bán hàng hoặc POS mở rộng. Điều đó giúp triển khai nhanh, nhưng cũng tạo ra khoảng trống cho một hệ thống được thiết kế từ đầu cho mô hình chuỗi karaoke, nơi đồng bộ dữ liệu, phân quyền nhiều lớp và báo cáo liên chi nhánh là yêu cầu trung tâm chứ không phải tính năng mở rộng.
 Thứ ba là bài toán thực tế của karaoke không dừng ở thanh toán. Nếu chỉ giải quyết thu ngân, thị trường đã có nhiều lựa chọn. Giá trị khác biệt chỉ xuất hiện khi hệ thống gắn được đặt phòng, vận hành phòng, phục vụ, kho, hội viên và báo cáo vào một dòng dữ liệu thống nhất. Đây chính là chỗ đề tài của nhóm có thể đứng riêng so với các phần mềm thiên về POS thuần túy.
-3. Tiểu kết
+### 3. Tiểu kết
 Hệ thống được lựa chọn trong đề tài là Hệ thống Quản lý Tập trung Chuỗi Nhà hàng Karaoke. Đây không chỉ là một phần mềm tính tiền hay quản lý phòng hát, mà là một nền tảng hỗ trợ vận hành toàn bộ chuỗi nghiệp vụ của mô hình karaoke, bao gồm đặt phòng, phục vụ, gọi món, quản lý hội viên, quản lý kho, quản lý nhân sự và báo cáo doanh thu.
 Việc lựa chọn đề tài này xuất phát từ nhu cầu thực tế của ngành karaoke hiện nay. Các giải pháp đang được thị trường cung cấp như KiotViet, POS365 và Sapo đều tập trung giải quyết những vấn đề rất cụ thể như theo dõi trạng thái phòng, tính tiền theo giờ, order trên nhiều thiết bị, quản lý khách hàng và theo dõi doanh thu từ xa, cho thấy hoạt động karaoke đã và đang được số hóa theo hướng ngày càng bài bản hơn.
 Tuy vậy, phần lớn các hệ thống thương mại hiện có được tiếp cận theo hướng phần mềm bán hàng hoặc POS mở rộng cho karaoke. Trong khi đó, hệ thống của đề tài hướng đến bài toán rộng hơn là quản lý tập trung cho mô hình chuỗi, nơi dữ liệu phải được đồng bộ giữa nhiều vai trò người dùng và nhiều chi nhánh.
-
-PHẦN II. XÁC ĐỊNH YÊU CẦU
+# 
+# PHẦN II. XÁC ĐỊNH YÊU CẦU
 Hệ thống Quản lý Chuỗi Nhà hàng Karaoke
-1. Bảng thuật ngữ
+## 1. Bảng thuật ngữ
 Bảng thuật ngữ dưới đây định nghĩa các khái niệm nghiệp vụ chính trong hệ thống quản lý chuỗi nhà hàng karaoke, giúp toàn nhóm phát triển hiểu thống nhất các thuật ngữ sử dụng trong tài liệu.
-2. Mô hình nghiệp vụ bằng ngôn ngữ tự nhiên
-2.1. Mục tiêu và phạm vi hệ thống
+
+| Thuật ngữ | Tên tiếng Anh | Định nghĩa |
+| --- | --- | --- |
+| 1. Nhóm thuật ngữ liên quan đến Cơ sở vật chất & Phòng hát (Facilities & Rooms) |  |  |
+| Loại phòng | Room Type / Room Category | Phân loại phòng hát dựa trên tiêu chuẩn, diện tích và trang thiết bị (VD: Standard, VIP, Super VIP, Party). |
+| Sức chứa | Capacity | Số lượng khách tối đa mà một phòng hát có thể phục vụ thoải mái nhất. |
+| Trạng thái phòng | Room Status | Tình trạng hiện tại của phòng trên hệ thống (Trống, Đang phục vụ, Đã đặt trước, Đang dọn dẹp, Bảo trì). |
+| Giá theo giờ | Hourly Rate | Mức giá áp dụng cho mỗi giờ hát. Có thể thay đổi linh hoạt theo khung giờ (ngày/đêm) hoặc ngày Lễ/Tết. |
+| Thiết bị KTV | KTV Equipment | Các thiết bị đặc thù trong phòng hát (Màn hình cảm ứng chọn bài, micro, hệ thống âm thanh, đèn laser). |
+| Báo cáo hỏng hóc | Report Damage | Thao tác nhân viên phục vụ ghi nhận thiết bị trong phòng bị lỗi, hỏng để báo kỹ thuật. |
+| 2. Nhóm thuật ngữ liên quan đến Đặt phòng & Vận hành (Booking & Operations) |  |  |
+| Đặt phòng tại quầy | Book on site / Walk-in | Khách hàng đến trực tiếp chi nhánh để yêu cầu xếp phòng hát. |
+| Đặt phòng trực tuyến | Book Online | Giao dịch giữ phòng trước cho khách thông qua hệ thống web/app. |
+| Tiền cọc | Deposit | Khoản tiền khách thanh toán trước để đảm bảo cho việc đặt phòng. |
+| Nhận phòng / Trả phòng | Check-in / Check-out | Thao tác bắt đầu tính giờ sử dụng phòng và thao tác kết thúc tính giờ để thanh toán. |
+| Hủy đặt phòng | Cancel Booking | Thao tác khách hàng hủy yêu cầu giữ phòng trước thời điểm nhận phòng. |
+| 3. Nhóm thuật ngữ: Dịch vụ, Gọi món & Quản lý Kho (F&B, Order & Inventory) |  |  |
+| Yêu cầu gọi món | Order / Order Note | Yêu cầu dịch vụ ăn uống từ phòng hát, được phục vụ tiếp nhận và chuyển đến bếp/bar. |
+| Tồn kho | Inventory | Số lượng hàng hóa (nguyên liệu, đồ uống, vật tư) còn lại tại mỗi chi nhánh. |
+| Phiếu nhập hàng | Goods Receipt | Chứng từ ghi nhận số lượng hàng hóa được nhập thêm vào kho chi nhánh. |
+| Kiểm kê định kỳ | Periodic Inventory | Quá trình kiểm đếm số lượng thực tế tại kho để so sánh với số liệu trên hệ thống. |
+| Đối soát kho | Reconciliation | Xử lý các chênh lệch (Handle quantity differences) khi số lượng thực tế khác với hệ thống. |
+| Báo cáo thiếu hụt | Report Shortage | Cảnh báo từ nhân viên hoặc hệ thống khi một mặt hàng sắp hoặc đã hết trong kho. |
+| 4. Nhóm thuật ngữ: Quản lý Hội viên (Membership Management) |  |  |
+| Dịch vụ / Món ăn | Services | Các sản phẩm đồ ăn, thức uống và dịch vụ bổ sung (khăn lạnh, trái cây...) mà khách hàng có thể gọi thêm. |
+| Tồn kho (Inventory) | Inventory | Số lượng hàng hóa (nguyên liệu, đồ uống, vật tư) còn lại tại mỗi chi nhánh, cần được theo dõi và bổ sung. |
+| Nhân viên lễ tân | Receptionist | Nhân viên tại quầy tiếp tân, phụ trách xếp phòng, check-in/out, lập hóa đơn và thu tiền. |
+| Nhân viên phục vụ | Waiter | Nhân viên phụ trách nhận order gọi món từ phòng, phục vụ đồ ăn/uống và báo cáo tình trạng hàng hóa. |
+| Quản lý chi nhánh | Branch Manager | Người quản lý một chi nhánh cụ thể: điều phối nhân viên, giám sát kho và xem báo cáo hoạt động. |
+| Chủ doanh nghiệp | Founder | Người sở hữu toàn bộ chuỗi karaoke, có quyền quản lý tất cả chi nhánh, nhân viên, menu, giá và xem báo cáo tổng hợp. |
+| Hội viên | Member | Khách hàng đã đăng ký thẻ, được tích điểm và hưởng ưu đãi theo hạng. |
+| Kiểm tra hạng thẻ | Check Membership Class | Truy xuất cấp bậc hiện tại của hội viên (Thường, Bạc, Vàng...) trên hệ thống. |
+| Nâng hạng thẻ | Upgrade Membership Class | Quá trình hệ thống tự động hoặc thủ công nâng cấp bậc cho hội viên khi đủ điều kiện. |
+| Quản lý thông tin | Manage Personal Info | Các thao tác cập nhật số điện thoại, mật khẩu, họ tên của người dùng. |
+| 5. Nhóm thuật ngữ: Thanh toán & Báo cáo Doanh thu (Payment & Reporting) |  |  |
+| Thanh toán | Payment | Chứng từ tổng hợp bao gồm tiền phòng và tiền dịch vụ/gọi món cho một lượt sử dụng. |
+| Áp dụng Voucher | Apply Voucher | Thao tác nhập mã giảm giá hoặc sử dụng điểm hội viên để trừ vào tổng hóa đơn. |
+| Tiêu chí thời gian | Time Criteria | Các mốc lọc dữ liệu báo cáo (Theo ngày, tuần, tháng, quý, năm). |
+| So sánh hiệu suất | Compare Branches Efficiency | Báo cáo đối chiếu doanh thu, công suất hoạt động giữa các chi nhánh khác nhau trong chuỗi. |
+| Tổng doanh thu | Total Revenue | Báo cáo gộp số tiền thu về của toàn bộ chuỗi karaoke do Admin quản lý. |
+| 6. Nhóm thuật ngữ: Quản trị Hệ thống & Nhân sự (Admin, Branch & HR) |  |  |
+| Danh mục chung | General Categories | Các dữ liệu gốc do Chủ doanh nghiệp quản lý (Menu F&B, Bảng giá phòng, Khuyến mãi). |
+| Chi nhánh | Branch | Cơ sở kinh doanh karaoke thuộc chuỗi, có địa chỉ, nhân viên và phòng hát riêng. |
+| Phân ca | Assign Shifts | Việc Quản lý chi nhánh sắp xếp lịch làm việc cho từng nhân viên theo ngày/tuần. |
+| Theo dõi chấm công | Timekeeping Tracking | Việc quản lý ghi nhận và theo dõi thời gian làm việc thực tế của nhân viên. |
+| Đánh giá nhân sự | Evaluate Employee | Quy trình nhận xét hiệu suất làm việc của nhân viên tại chi nhánh. |
+| Khen thưởng / Kỷ luật | Award / Discipline | Các quyết định thưởng hoặc phạt nhân viên dựa trên đánh giá hiệu suất hoặc vi phạm. |
+
+## 2. Mô hình nghiệp vụ bằng ngôn ngữ tự nhiên
+### 2.1. Mục tiêu và phạm vi hệ thống
 Mục tiêu: Xây dựng hệ thống phần mềm quản lý tập trung cho chuỗi nhà hàng karaoke, cho phép quản lý đặt phòng, gọi món, thanh toán, nhân sự, kho hàng và báo cáo doanh thu trên nhiều chi nhánh.
 Phạm vi: Hệ thống bao phủ toàn bộ quy trình vận hành từ khi khách hàng đặt phòng đến khi thanh toán, đồng thời hỗ trợ quản lý nội bộ (nhân sự, kho, báo cáo) cho từng chi nhánh và toàn chuỗi. Hệ thống được triển khai trên nền tảng web và ứng dụng di động, phục vụ cả người dùng bên ngoài (khách hàng) lẫn người dùng nội bộ (nhân viên, quản lý, chủ doanh nghiệp).
-2.2. Ai có thể sử dụng phần mềm?
+### 2.2. Ai có thể sử dụng phần mềm?
 Hệ thống phục vụ 5 nhóm người dùng chính:
 Khách hàng là nhóm người dùng bên ngoài, sử dụng web hoặc ứng dụng di động để đặt phòng trực tuyến, theo dõi lịch sử sử dụng, quản lý điểm thưởng hội viên và tương tác dịch vụ trực tiếp khi đang ở phòng hát.
 Nhân viên lễ tân là người dùng nội bộ tại quầy tiếp tân của mỗi chi nhánh. Họ trực tiếp xử lý các thao tác đặt phòng walk-in, thực hiện check-in/check-out, tổng hợp hóa đơn và thu tiền của khách, đồng thời kiểm kê hàng hóa tại quầy.
 Nhân viên phục vụ là người dùng nội bộ sử dụng thiết bị tablet hoặc ứng dụng di động để tiếp nhận order gọi món từ các phòng, chuyển yêu cầu đến bếp/bar, theo dõi và cập nhật trạng thái phục vụ, đồng thời báo cáo tình trạng hàng hóa và cơ sở vật chất trong phòng.
 Quản lý chi nhánh là người dùng nội bộ phụ trách điều hành toàn bộ một chi nhánh: phân ca làm việc cho nhân viên, theo dõi chấm công, đánh giá hiệu suất, quản lý kho hàng, xem thông tin khách hàng của chi nhánh và xem báo cáo doanh thu chi nhánh.
 Chủ doanh nghiệp là người dùng cấp cao nhất, có quyền quản lý toàn bộ chuỗi karaoke: thêm/sửa/xóa chi nhánh, quản lý danh mục chung (menu, bảng giá phòng, chương trình khuyến mãi), quản lý toàn bộ danh sách khách hàng, cấu hình hạng hội viên, quản lý phòng hát và xem báo cáo tổng hợp toàn chuỗi.
-2.3. Người dùng có những chức năng gì?
+### 2.3. Người dùng có những chức năng gì?
 Khách hàng
 Đặt phòng trực tuyến hoặc trực tiếp tại chi nhánh.
 Quản lý thông tin cá nhân (tên, số điện thoại, hạng hội viên).
@@ -95,7 +159,7 @@ Quản lý khách hàng toàn hệ thống: xem/tìm kiếm khách hàng toàn c
 Quản lý hạng hội viên: cấu hình điều kiện nâng hạng và ưu đãi theo hạng (rule hệ thống); thay đổi hạng thủ công cho khách hàng cụ thể khi cần.
 Quản lý tài khoản nhân viên: tạo tài khoản mới, phân quyền, khóa/mở tài khoản, reset mật khẩu.
 Tổng hợp báo cáo: so sánh hiệu suất chi nhánh, doanh thu toàn chuỗi, xuất file báo cáo.
-2.4. Mỗi chức năng hoạt động như thế nào?
+### 2.4. Mỗi chức năng hoạt động như thế nào?
 UC01 – Đăng nhập
 Người dùng nhập SĐT/Email và mật khẩu → Hệ thống xác thực thông tin đăng nhập → Hệ thống tạo phiên đăng nhập → Hệ thống chuyển người dùng đến trang chủ tương ứng vai trò.
 Người dùng nhập sai mật khẩu → Hệ thống thông báo lỗi xác thực → Người dùng nhập lại (tối đa 5 lần).
@@ -162,7 +226,7 @@ UC20 – Quản lý tài khoản nhân viên
 Chủ doanh nghiệp xem danh sách tài khoản nhân viên → Chủ doanh nghiệp tạo tài khoản mới (Họ tên, SĐT, Vai trò, Chi nhánh) → Hệ thống tạo tài khoản và mã hóa mật khẩu mặc định → Chủ doanh nghiệp gán phân quyền phù hợp với vai trò → Khi cần, Chủ doanh nghiệp khóa, mở hoặc reset mật khẩu tài khoản → Hệ thống cập nhật trạng thái tài khoản.
 UC21 – Tổng hợp báo cáo toàn chuỗi
 Chủ doanh nghiệp chọn khoảng thời gian và các chi nhánh cần xem → Hệ thống tổng hợp số liệu toàn chuỗi → Hệ thống hiển thị biểu đồ so sánh hiệu suất giữa các chi nhánh và tổng doanh thu → Chủ doanh nghiệp xuất file báo cáo (Excel/PDF).
-2.5. Những thông tin/đối tượng mà hệ thống cần xử lý
+### 2.5. Những thông tin/đối tượng mà hệ thống cần xử lý
 Hệ thống cần quản lý và xử lý các đối tượng thông tin chính sau:
 Chi nhánh: Mã chi nhánh, tên, địa chỉ, số điện thoại.
 Khách hàng: Mã khách hàng, họ tên, số điện thoại, địa chỉ, hạng hội viên (Thường/Bạc/Vàng), trạng thái tài khoản.
@@ -178,7 +242,7 @@ Tồn kho: Mã tồn kho, chi nhánh, dịch vụ/hàng hóa, số lượng tồ
 Phiếu nhập hàng: Mã phiếu, chi nhánh, danh sách hàng nhập, số lượng, ngày nhập, người duyệt, trạng thái.
 Ca làm việc: Mã ca, nhân viên, ngày làm việc, giờ bắt đầu/kết thúc, trạng thái chấm công.
 Khuyến mãi: Mã khuyến mãi, tên, loại (voucher/giảm giá %), điều kiện áp dụng, thời hạn hiệu lực.
-2.6. Quan hệ giữa các đối tượng
+### 2.6. Quan hệ giữa các đối tượng
 Các đối tượng trong hệ thống có mối quan hệ chặt chẽ với nhau:
 Một Chi nhánh có nhiều Phòng hát, nhiều Nhân viên và nhiều bản ghi Tồn kho.
 Một Khách hàng thuộc một Hạng hội viên (Thường/Bạc/Vàng) và có thể có một Tài khoản đăng nhập.
@@ -190,8 +254,45 @@ Một Hóa đơn chứa nhiều Chi tiết gọi món. Một Hóa đơn có th�
 Mỗi Chi tiết gọi món tham chiếu đến một Dịch vụ/Món ăn và một Nhân viên phục vụ.
 Tồn kho theo dõi số lượng của mỗi Dịch vụ/Hàng hóa tại mỗi Chi nhánh.
 Một Phiếu nhập hàng thuộc một Chi nhánh và ghi nhận nhiều mặt hàng được nhập.
-3. Mô hình nghiệp vụ bằng UML
-3.1. Danh sách Actor
-3.2. Các Use Case cho từng Actor
- 
+## 3. Mô hình nghiệp vụ bằng UML
+### 3.1. Danh sách Actor
 
+| STT | Actor | Mô tả |
+| --- | --- | --- |
+| 1 | Khách hàng | Người sử dụng dịch vụ karaoke, truy cập qua web/app để đặt phòng và quản lý tài khoản cá nhân. |
+| 2 | Nhân viên lễ tân | Nhân viên tại quầy, xử lý đặt phòng, check-in/check-out và thanh toán. |
+| 3 | Nhân viên phục vụ | Nhân viên nhận order gọi món, phục vụ đồ ăn/uống và báo cáo tình trạng hàng hóa trong phòng. |
+| 4 | Quản lý chi nhánh | Quản lý một chi nhánh: nhân sự, kho hàng, menu, phòng hát và xem báo cáo hoạt động. |
+| 5 | Chủ doanh nghiệp | Chủ sở hữu toàn chuỗi, quản lý chi nhánh, danh mục, khách hàng, hạng hội viên và xem báo cáo tổng hợp. |
+| 6 | Thành viên | Actor trừu tượng, là cha của tất cả actor cụ thể trong hệ thống. |
+| 7 | Nhân viên | Actor trừu tượng, là cha của NV lễ tân và NV phục vụ. |
+
+### 3.2. Các Use Case cho từng Actor
+
+| Actor | Use Case |
+| --- | --- |
+| Thành viên (tổng quát) | UC01 – Đăng nhập |
+|  | UC03 – Đổi mật khẩu |
+| Khách hàng | UC02 – Đăng ký |
+|  | UC04 – Quản lý thông tin cá nhân |
+|  | UC05 – Đặt phòng |
+|  | UC06 – Gọi món / Quản lý order |
+| NV lễ tân | UC05 – Đặt phòng |
+|  | UC07 – Quản lý đặt phòng (check-in) |
+|  | UC08 – Quản lý trả phòng (check-out) |
+| NV phục vụ | UC06 – Gọi món / Quản lý order |
+|  | UC10 – Báo cáo tình trạng hàng hóa |
+| Quản lý chi nhánh | UC11 – Quản lý nhân viên chi nhánh |
+|  | UC12 – Quản lý kho |
+|  | UC13 – Báo cáo số liệu chi nhánh |
+|  | UC14 – Xem thông tin khách hàng chi nhánh |
+|  | UC15 – Quản lý menu |
+|  | UC19 – Quản lý phòng hát |
+| Chủ doanh nghiệp | UC16 – Quản lý hệ thống chi nhánh |
+|  | UC17 – Quản lý khách hàng toàn hệ thống |
+|  | UC18 – Quản lý hạng hội viên |
+|  | UC19 – Quản lý phòng hát |
+|  | UC20 – Quản lý tài khoản nhân viên |
+|  | UC21 – Tổng hợp báo cáo toàn chuỗi |
+
+ 
