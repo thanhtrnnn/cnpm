@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor "Quản lý CN" as BM
+actor "Chủ DN\n(Admin)" as Admin
+
+rectangle "Module Nhân sự & Báo cáo" {
+  usecase "Quản lý nhân viên chi nhánh" as UC11
+  usecase "Báo cáo số liệu chi nhánh" as UC13
+  usecase "Xem thông tin KH chi nhánh" as UC14
+  usecase "Tổng hợp báo cáo toàn chuỗi" as UC21
+  usecase "Login" as Login
+}
+
+BM --> UC11
+BM --> UC13
+BM --> UC14
+Admin --> UC21
+
+UC11 ..> Login : <<include>>
+UC13 ..> Login : <<include>>
+UC14 ..> Login : <<include>>
+UC21 ..> Login : <<include>>
+@enduml

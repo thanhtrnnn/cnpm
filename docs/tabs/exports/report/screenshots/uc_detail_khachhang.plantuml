@@ -1,0 +1,15 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+rectangle "Xem thông tin KH chi nhánh" {
+  usecase "Tìm kiếm KH" as UC1
+  usecase "Xem lịch sử" as UC2
+
+  usecase "Không tìm thấy KH" as Ex1
+  usecase "KH chưa có giao dịch" as Ex2
+}
+
+UC1 ..> Ex1 : <<extend>>
+UC2 ..> Ex2 : <<extend>>
+@enduml

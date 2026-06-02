@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+rectangle "Tổng hợp báo cáo toàn chuỗi" {
+  usecase "Chọn chi nhánh" as UC1
+  usecase "Tổng hợp số liệu" as UC2
+  usecase "Xuất file" as UC3
+
+  usecase "Không chọn CN" as Ex1
+  usecase "CN không có dữ liệu" as Ex2
+}
+
+UC2 ..> Ex1 : <<extend>>
+UC2 ..> Ex2 : <<extend>>
+@enduml

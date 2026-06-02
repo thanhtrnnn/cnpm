@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+rectangle "Quản lý nhân viên chi nhánh" {
+  usecase "Phân ca làm việc" as UC1
+  usecase "Chấm công" as UC2
+  usecase "Đánh giá hiệu suất" as UC3
+  usecase "Khen thưởng/Kỷ luật" as UC4
+
+  usecase "Trùng ca" as Ex1
+  usecase "Ngoài kỳ đánh giá" as Ex2
+  usecase "Vượt phạm vi CN" as Ex3
+}
+
+UC1 ..> Ex1 : <<extend>>
+UC3 ..> Ex2 : <<extend>>
+UC1 ..> Ex3 : <<extend>>
+UC4 ..> UC3 : <<include>>
+@enduml

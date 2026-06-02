@@ -23,6 +23,7 @@ Actor | Use Case | Diễn tả ngắnQuản lý chi nhánh | Quản lý nhân vi
 
 3.3. Biểu đồ UC tổng quan của module
 
+![UC Tổng quan module Nhân sự & Báo cáo](screenshots/image_01.png)
 
 3.4. Các biểu đồ Use Case phân rã của module
 
@@ -30,10 +31,11 @@ Actor | Use Case | Diễn tả ngắnQuản lý chi nhánh | Quản lý nhân vi
 
 Quản lý nhân viên chi nhánh:
 
+![UC Quản lý nhân viên chi nhánh](screenshots/image_02.png)
+
 Báo cáo số liệu chi nhánh:
 
-
-
+![UC Báo cáo số liệu chi nhánh](screenshots/image_03.png)
 
 
 
@@ -42,7 +44,11 @@ Báo cáo số liệu chi nhánh:
 
 Xem thông tin khách hàng chi nhánh:
 
+![UC Xem thông tin khách hàng chi nhánh](screenshots/image_04.png)
+
 Tổng hợp báo cáo toàn chuỗi:
+
+![UC Tổng hợp báo cáo toàn chuỗi](screenshots/image_05.png)
 
 
 II. PHA PHÂN TÍCH
@@ -186,6 +192,7 @@ Employee và KhachHang thuộc về ChiNhanh (aggregation – có thể chuyển
 
 ⇒ Biểu đồ lớp thực thể pha phân tích:
 
+![Biểu đồ thực thể module Nhân sự & Báo cáo](screenshots/image_06.png)
 
 3. Mô hình hóa tĩnh - Biểu đồ phân tích chức năng
 3.1. Chức năng Quản lý nhân viên chi nhánh
@@ -580,6 +587,8 @@ Tầng thực thể (Entity): Employee, ChiNhanh, HoaDon, BaoCao.
 
 
 3.3. Sơ đồ lớp thiết kế
+
+![Sơ đồ lớp BCE module Nhân sự & Báo cáo](screenshots/image_07.png)
 a) Quản lý nhân viên chi nhánh:
 
 
