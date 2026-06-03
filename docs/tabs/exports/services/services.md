@@ -1,105 +1,113 @@
 
-HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG
-KHOA CÔNG NGHỆ THÔNG TIN 1
-______________BÁO CÁO BÀI TẬP LỚN
-HỌC PHẦN: NHẬP MÔN CÔNG NGHỆ PHẦN MỀM
-Module: Dịch vụ & Sản phẩmGiảng viên hướng dẫn: Đỗ Thị Liên
-Lớp học phần: D23CQCE01-B
-Nhóm thực hiện: Nhóm 7
-SV thực hiện: Nguyễn Gia Đức Trung
-MSV: B23DCVT423HÀ NỘI, THÁNG 5/2026
-MỤC LỤC
 
-I. PHA XÁC ĐỊNH YÊU CẦU 
-3. Mô hình nghiệp vụ bằng UML
-3.1. Danh sách các Actor cho module
+| HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG KHOA CÔNG NGHỆ THÔNG TIN 1 ______________ |
+| --- |
+| ![image_01](screenshots/image_01.png) |
+| BÁO CÁO BÀI TẬP LỚN HỌC PHẦN: NHẬP MÔN CÔNG NGHỆ PHẦN MỀM Module: Dịch vụ & Sản phẩm |
+| Giảng viên hướng dẫn: Đỗ Thị Liên Lớp học phần: D23CQCE01-B Nhóm thực hiện: Nhóm 7 SV thực hiện: Nguyễn Gia Đức Trung MSV: B23DCVT423 |
+| HÀ NỘI, THÁNG 5/2026 |
+
+# MỤC LỤC
+# 
+
+
+
+
+
+
+
+
+
+
+
+
+
+# I. PHA XÁC ĐỊNH YÊU CẦU 
+## 3. Mô hình nghiệp vụ bằng UML
+### 3.1. Danh sách các Actor cho module
 Actor trực tiếp: Nhân viên phục vụ (Service Staff), Nhân viên lễ tân (Receptionist), Nhân viên quản lý chi nhánh (Branch manager). Các actor này kế thừa từ actor Nhân viên (Employee).
 Actor gián tiếp: Khách hàng (Client).
 
-3.2. Các Use Case cho từng Actor
-
-Actor | Use caseNhân viên phục vụ | Quản lý order | Báo cáo tình trạng hàng hóaNhân viên quản lý chi nhánh | Quản lý kho | Quản lý menuKhách hàng | Order
-3.3. Biểu đồ UC tổng quan của module
+### 3.2. Các Use Case cho từng Actor
 
 
-3.4. Các biểu đồ Use Case phân rã của module
+| Actor | Use case |
+| --- | --- |
+| Nhân viên phục vụ | Quản lý order |
+|  | Báo cáo tình trạng hàng hóa |
+| Nhân viên quản lý chi nhánh | Quản lý kho |
+|  | Quản lý menu |
+| Khách hàng | Order |
+
+
+### 3.3. Biểu đồ UC tổng quan của module
+![image_02](screenshots/image_02.png)
+
+### 3.4. Các biểu đồ Use Case phân rã của module
 a) Use case Quản lý order
-
+![image_03](screenshots/image_03.png)
 
 b) Báo cáo tình trạng hàng hóa
-
+![image_04](screenshots/image_04.png)
 
 c) Quản lý menu
-
+![image_05](screenshots/image_05.png)
 
 d) Quản lý kho
+![image_06](screenshots/image_06.png)
+
+# II. PHA PHÂN TÍCH
+## 1. Mô hình hóa chức năng
+### 1.1. Kịch bản “Tạo order”
 
 
-II. PHA PHÂN TÍCH
-1. Mô hình hóa chức năng
-1.1. Kịch bản “Tạo order”
+| Tên UC | Tạo order |
+| --- | --- |
+| Actor | Nhân viên phục vụ, khách hàng |
+| Tiền điều kiện | Khách hàng gọi điện yêu cầu order |
+| Hậu điều kiện | Đơn gọi món lưu vào CSDL |
+| Kịch bản chính | (1) Khách hàng gọi điện thoại để order sản phẩm. Nhân viên phục vụ click vào chức năng tìm phòng. (2) Hệ thống hiển thị danh sách các phòng đang hoạt động. (3) Nhân viên nhập số phòng mà khách nói và tìm kiếm. (4) Giao diện hiển thị phòng tương ứng. (5) Nhân viên click vào phòng tương ứng và click tạo order. (6) Giao diện hiện lên danh sách các sản phẩm. (7) Nhân viên A hỏi lại khách hàng B về sản phẩm muốn order kèm số lượng. (8) Khách hàng B trả lời sản phẩm kèm số lượng. (9) Nhân viên A gõ tên sản phẩm vào thanh tìm kiếm và click nút tìm kiếm. (10) Hệ thống hiển thị danh sách các sản phẩm theo từ khóa đã nhập. (11) Nhân viên A click vào nút “Thêm” ở các sản phẩm tương ứng và click xác nhận. (12) Hệ thống hiển thị thông báo "Tạo order thành công" trên màn hình của nhân viên A và cơ sở dữ liệu tự động trừ số lượng sản phẩm và cộng dồn tiền dịch vụ ở Hóa đơn phòng. (13) Sau khi đơn hàng được phục vụ, nhân viên A cập nhật trạng thái đơn hàng thành “Đã phục vụ”. |
+| Ngoại lệ | (4) Phòng mà khách trả lời không có trong danh sách đang hoạt động. (10) Sản phẩm khách yêu cầu không có trong danh sách sản phẩm. (11) Nhân viên click nút “Thêm” nhưng tồn kho của sản phẩm không còn. |
 
-Tên UC | Tạo orderActor | Nhân viên phục vụ, khách hàngTiền điều kiện | Khách hàng gọi điện yêu cầu orderHậu điều kiện | Đơn gọi món lưu vào CSDLKịch bản chính | (1) Khách hàng gọi điện thoại để order sản phẩm. Nhân viên phục vụ click vào chức năng tìm phòng.
-(2) Hệ thống hiển thị danh sách các phòng đang hoạt động.
-(3) Nhân viên nhập số phòng mà khách nói và tìm kiếm.
-(4) Giao diện hiển thị phòng tương ứng.
-(5) Nhân viên click vào phòng tương ứng và click tạo order.
-(6) Giao diện hiện lên danh sách các sản phẩm.
-(7) Nhân viên A hỏi lại khách hàng B về sản phẩm muốn order kèm số lượng.
-(8) Khách hàng B trả lời sản phẩm kèm số lượng.
-(9) Nhân viên A gõ tên sản phẩm vào thanh tìm kiếm và click nút tìm kiếm.
-(10) Hệ thống hiển thị danh sách các sản phẩm theo từ khóa đã nhập.
-(11) Nhân viên A click vào nút “Thêm” ở các sản phẩm tương ứng và click xác nhận.
-(12) Hệ thống hiển thị thông báo "Tạo order thành công" trên màn hình của nhân viên A và cơ sở dữ liệu tự động trừ số lượng sản phẩm và cộng dồn tiền dịch vụ ở Hóa đơn phòng.
-(13) Sau khi đơn hàng được phục vụ, nhân viên A cập nhật trạng thái đơn hàng thành “Đã phục vụ”.Ngoại lệ | (4) Phòng mà khách trả lời không có trong danh sách đang hoạt động.
-(10) Sản phẩm khách yêu cầu không có trong danh sách sản phẩm.
-(11) Nhân viên click nút “Thêm” nhưng tồn kho của sản phẩm không còn.
-1.2. Kịch bản “Báo cáo tình trạng hàng”
 
-Tên UC | Báo cáo tình trạng hàngActor | Nhân viên phục vụTiền điều kiện | Khách trả phòngHậu điều kiện | Báo cáo lưu vào CSDLKịch bản chính | (1) Nhân viên phục vụ A vào phòng và mở hệ thống để tiến hành kiểm tra cơ sở vật chất.
-(2) Hệ thống hiển thị các phòng ở trạng thái “Chờ dọn”.
-(3) Nhân viên chọn phòng tương ứng và bắt đầu tạo báo cáo tình trạng phòng.
-(4) Hệ thống hiển thị giao diện danh sách các cơ sở vật chất.
-(5) Nhân viên A nhập tên cơ sở vật chất và ấn tìm kiếm.
-(6) Hệ thống hiện lên csvc tương ứng.
-(7) Nhân viên nhập báo cáo tình trạng lên giao diện hệ thống và ấn lưu lại báo cáo.
-(8) Hệ thống tự động tìm kiếm hóa đơn phòng và cộng thêm tiền vào cột damage_fee. Đồng thời, ghi nhận trừ số lượng trong Database cơ sở vật chất.
-(9) Sau khi dọn xong, nhân viên cập nhật trạng thái phòng từ "Đang chờ dọn" sang "Trống".Ngoại lệ | (6) Cơ sở vật chất chưa có trong CSDL.
-1.3. Kịch bản “Quản lý menu”
+### 1.2. Kịch bản “Báo cáo tình trạng hàng”
 
-Tên UC | Sửa menuActor | Nhân viên quản lýTiền điều kiện | Quản lý cần sửa thông tin của sản phẩmHậu điều kiện | Thông tin sản phẩm được cập nhật vào CSDLKịch bản chính | (1) Quản lý chi nhánh truy cập vào hệ thống để sửa thông tin sản phẩm.
-(2) Hệ thống hiện giao diện đăng nhập, có ô nhập tên đăng nhập, mật khẩu, và nút đăng nhập.
-(3) Quản lý nhập thông tin tài khoản của mình và click đăng nhập.
-(4) Hệ thống hiện giao diện chính của nhân viên quản lí, có chức năng lựa chọn: quản lí menu.
-(5) Quản lý chọn chức năng quản lí menu.
-(6) Hệ thống hiện giao diện danh sách các sản phẩm, có 3 chức năng lựa chọn: thêm, sửa, xóa sản phẩm.
-(7) Quản lý tìm kiếm sản phẩm cần thực hiện thao tác.
-(8) Hệ thống hiển thị sản phẩm tương ứng.
-(9) Quản lý click vào sản phẩm và click nút sửa.
-(10) Hệ thống hiển thị thông tin chi tiết của sản phẩm.
-(11) Quản lý sửa giá sản phẩm và click nút cập nhật.
-(12) Hệ thống thông báo thành công.
-(13) Quản lý click OK.
-(14) Hệ thống cập nhật thông tin về CSDL và trở về giao diện chính của quản lý.Ngoại lệ | (8) Hệ thống báo không có sản phẩm nào trong kết quả tìm kiếm.
 
-1.4. Kịch bản “Quản lý kho”
+| Tên UC | Báo cáo tình trạng hàng |
+| --- | --- |
+| Actor | Nhân viên phục vụ |
+| Tiền điều kiện | Khách trả phòng |
+| Hậu điều kiện | Báo cáo lưu vào CSDL |
+| Kịch bản chính | (1) Nhân viên phục vụ A vào phòng và mở hệ thống để tiến hành kiểm tra cơ sở vật chất. (2) Hệ thống hiển thị các phòng ở trạng thái “Chờ dọn”. (3) Nhân viên chọn phòng tương ứng và bắt đầu tạo báo cáo tình trạng phòng. (4) Hệ thống hiển thị giao diện danh sách các cơ sở vật chất. (5) Nhân viên A nhập tên cơ sở vật chất và ấn tìm kiếm. (6) Hệ thống hiện lên csvc tương ứng. (7) Nhân viên nhập báo cáo tình trạng lên giao diện hệ thống và ấn lưu lại báo cáo. (8) Hệ thống tự động tìm kiếm hóa đơn phòng và cộng thêm tiền vào cột damage_fee. Đồng thời, ghi nhận trừ số lượng trong Database cơ sở vật chất. (9) Sau khi dọn xong, nhân viên cập nhật trạng thái phòng từ "Đang chờ dọn" sang "Trống". |
+| Ngoại lệ | (6) Cơ sở vật chất chưa có trong CSDL. |
 
-Tên UC | Quản lý khoActor | Nhân viên quản lýTiền điều kiện | Quản lý cần kiểm tra tồn kho của các sản phẩmHậu điều kiện | Phiếu nhập sản phẩm lưu vào CSDLKịch bản chính | (1) Quản lý chi nhánh truy cập vào tác vụ Quản lý kho trên phần mềm để kiểm tra số lượng tồn kho của các sản phẩm và csvc.
-(2) Hệ thống hiển thị danh sách các sản phẩm.
-(3) Quản lý kiểm tra thấy một số sản phẩm thông báo đỏ vì sắp hết hàng vì vậy click vào chức năng Nhập hàng.
-(4) Hệ thống hiển thị giao diện danh sách các nhà cung cấp có trong CSDL.
-(5) Quản lý nhập tên nhà cung cấp muốn nhập hàng và click tìm.
-(6) Hệ thống hiển thị thông tin của nhà cung cấp.
-(7) Quản lý click vào nhà cung cấp muốn nhập hàng.
-(8) Hệ thống hiển thị phiếu nhập hàng.
-(9) Quản lý tìm kiếm sản phẩm.
-(10) Hệ thống hiển thị sản phẩm.
-(9) Quản lý nhập các thông tin lên phiếu và ấn xác nhận.
-(10) Hệ thống thông báo tạo phiếu thành công.
-(11) Quản lý click OK.
-(12) Hệ thống lưu phiếu vào CSDL và cập nhật lại số lượng của từng sản phẩm.Ngoại lệ | (6) Hệ thống thông báo không có nhà cung cấp nào trong kết quả tìm kiếm.
-(10) Sản phẩm không có trong CSDL.
-2. Mô hình hóa lớp
+
+### 1.3. Kịch bản “Quản lý menu”
+
+
+| Tên UC | Sửa menu |
+| --- | --- |
+| Actor | Nhân viên quản lý |
+| Tiền điều kiện | Quản lý cần sửa thông tin của sản phẩm |
+| Hậu điều kiện | Thông tin sản phẩm được cập nhật vào CSDL |
+| Kịch bản chính | (1) Quản lý chi nhánh truy cập vào hệ thống để sửa thông tin sản phẩm. (2) Hệ thống hiện giao diện đăng nhập, có ô nhập tên đăng nhập, mật khẩu, và nút đăng nhập. (3) Quản lý nhập thông tin tài khoản của mình và click đăng nhập. (4) Hệ thống hiện giao diện chính của nhân viên quản lí, có chức năng lựa chọn: quản lí menu. (5) Quản lý chọn chức năng quản lí menu. (6) Hệ thống hiện giao diện danh sách các sản phẩm, có 3 chức năng lựa chọn: thêm, sửa, xóa sản phẩm. (7) Quản lý tìm kiếm sản phẩm cần thực hiện thao tác. (8) Hệ thống hiển thị sản phẩm tương ứng. (9) Quản lý click vào sản phẩm và click nút sửa. (10) Hệ thống hiển thị thông tin chi tiết của sản phẩm. (11) Quản lý sửa giá sản phẩm và click nút cập nhật. (12) Hệ thống thông báo thành công. (13) Quản lý click OK. (14) Hệ thống cập nhật thông tin về CSDL và trở về giao diện chính của quản lý. |
+| Ngoại lệ | (8) Hệ thống báo không có sản phẩm nào trong kết quả tìm kiếm. |
+
+
+
+### 1.4. Kịch bản “Quản lý kho”
+
+
+| Tên UC | Quản lý kho |
+| --- | --- |
+| Actor | Nhân viên quản lý |
+| Tiền điều kiện | Quản lý cần kiểm tra tồn kho của các sản phẩm |
+| Hậu điều kiện | Phiếu nhập sản phẩm lưu vào CSDL |
+| Kịch bản chính | (1) Quản lý chi nhánh truy cập vào tác vụ Quản lý kho trên phần mềm để kiểm tra số lượng tồn kho của các sản phẩm và csvc. (2) Hệ thống hiển thị danh sách các sản phẩm. (3) Quản lý kiểm tra thấy một số sản phẩm thông báo đỏ vì sắp hết hàng vì vậy click vào chức năng Nhập hàng. (4) Hệ thống hiển thị giao diện danh sách các nhà cung cấp có trong CSDL. (5) Quản lý nhập tên nhà cung cấp muốn nhập hàng và click tìm. (6) Hệ thống hiển thị thông tin của nhà cung cấp. (7) Quản lý click vào nhà cung cấp muốn nhập hàng. (8) Hệ thống hiển thị phiếu nhập hàng. (9) Quản lý tìm kiếm sản phẩm. (10) Hệ thống hiển thị sản phẩm. (9) Quản lý nhập các thông tin lên phiếu và ấn xác nhận. (10) Hệ thống thông báo tạo phiếu thành công. (11) Quản lý click OK. (12) Hệ thống lưu phiếu vào CSDL và cập nhật lại số lượng của từng sản phẩm. |
+| Ngoại lệ | (6) Hệ thống thông báo không có nhà cung cấp nào trong kết quả tìm kiếm. (10) Sản phẩm không có trong CSDL. |
+
+
+## 2. Mô hình hóa lớp
 Mô tả module bằng 1 đoạn văn:
 “Trong module Dịch vụ và Kho, khách hàng hoặc Nhân viên phục vụ thực hiện yêu cầu gọi món bằng cách tạo Đơn hàng. Ngay lập tức, hệ thống sẽ tự động trừ số lượng tương ứng trong tồn kho hệ thống và ghi nhận chi phí dịch vụ vào hóa đơn phòng. Sau khi khách trả phòng, Nhân viên phục vụ tiến hành dọn dẹp; nếu phát hiện tài sản vỡ hỏng, nhân viên sẽ lập báo cáo tình trạng. Dựa vào báo cáo này, hệ thống tiếp tục trừ kho và có thể sinh ra phí đền bù. Khi một sản phẩm rơi xuống dưới định mức an toàn, Quản lý sẽ lập liên hệ đặt hàng với Nhà cung cấp. Khi hàng được giao đến, Quản lý tiến hành đếm số lượng và tạo phiếu nhập kho, cấu trúc dữ liệu sẽ tự động thêm số lượng của các sản phẩm tương ứng”.
 
@@ -145,10 +153,10 @@ Order và Product liên kết tạo ra Order_detail.
 Import_receipt và Product liên kết tạo ra Import_detail.
 
 ⇒ Biểu đồ lớp thực thể pha phân tích:
+![image_07](screenshots/image_07.png)
 
-
-3. Mô hình hóa tĩnh - Biểu đồ phân tích chức năng
-3.1. Chức năng Tạo order
+## 3. Mô hình hóa tĩnh - Biểu đồ phân tích chức năng
+### 3.1. Chức năng Tạo order
 Phân tích chi tiết chức năng Tạo Order:
 Vào hệ thống -> giao diện login hiện lên -> đề xuất lớp LoginView, có 2 ô nhập username, password và nút Login.
 Nhập username/password -> hệ thống phải kiểm tra thông tin đăng nhập -> cần chức năng checkLogin() -> chức năng này là hành động của đối tượng Employee.
@@ -161,9 +169,9 @@ Sau khi nhân viên ấn nút lưu, giao diện hiện lên thông báo tạo or
 Nhân viên nhấn nút "Xác nhận" -> hệ thống thực hiện lưu đơn hàng xuống CSDL -> cần chức năng addOrder() -> chức năng này là hành động chính của đối tượng Order.
 Sau đó, hệ thống tự động cộng dồn phí dịch vụ -> cần chức năng updateServiceFee() của đổi tượng Room_receipt.
 Cập nhật xong, hệ thống quay về giao diện chi tiết phòng StaffHomeView để nhân viên tiếp tục phục vụ.
+![image_08](screenshots/image_08.png)
 
-
-3.2. Chức năng Báo cáo tình trạng hàng hóa
+### 3.2. Chức năng Báo cáo tình trạng hàng hóa
 Phân tích chi tiết chức năng Báo cáo tình trạng hàng hóa:
 Vào hệ thống -> giao diện login hiện lên -> đề xuất lớp LoginView, có 2 ô nhập username, password và nút Login.
 Nhập username/password -> hệ thống kiểm tra thông tin đăng nhập -> cần chức năng checkLogin() -> chức năng này là hành động của đối tượng Employee.
@@ -175,9 +183,9 @@ Nhân viên nhập tên csvc bị hỏng và click tìm kiếm -> hệ thống t
 Sau khi đã nhập các csvc bị hỏng vào báo cáo, nhân viên click nút lưu -> hệ thống hiện giao diện tạo báo cáo thành công -> đề xuất lớp ConfirmReportView, có thông báo hoàn tất và nút xác nhận.
 Nhân viên click nút xác nhận, hệ thống thực hiện lưu báo cáo vào CSDL -> cần chức năng addDamageReport() của lớp DamageReport.
 Sau đó hệ thống tự động cập nhật lại phí hỏng hóc -> cần chức năng updateDamageFee() của đối tượng Room_receipt.
+![image_09](screenshots/image_09.png)
 
-
-3.3. Chức năng Quản lý menu
+### 3.3. Chức năng Quản lý menu
 Phân tích chi tiết chức năng quản lý menu:
 Vào hệ thống -> giao diện login hiện lên -> đề xuất lớp LoginView, có 2 ô nhập username, password và nút Login.
 Nhập username/password -> hệ thống kiểm tra thông tin đăng nhập -> cần chức năng checkLogin() -> chức năng này là hành động của đối tượng Employee.
@@ -187,9 +195,9 @@ Quản lý tìm kiếm sản phẩm, hệ thống cần tìm thông tin sản ph
 Quản lý ấn vào nút sửa -> đề xuất lớp EditMenuView, hiển thị thông tin chi tiết của sản phẩm và nút xác lưu.
 Quản lý thay đổi thông tin của sản phẩm và ấn nút lưu, hệ thống thực hiện lưu vào CSDL -> cần chức năng updateProduct() của lớp Product.
 Sau khi hoàn tất, quay trở lại MenuView.
+![image_10](screenshots/image_10.png)
 
-
-3.4. Chức năng Quản lý kho
+### 3.4. Chức năng Quản lý kho
 Phân tích chi tiết chức năng Quản lý kho:
 Vào hệ thống -> giao diện login hiện lên -> đề xuất lớp LoginView, có 2 ô nhập username, password và nút Login.
 Nhập username/password -> hệ thống kiểm tra thông tin đăng nhập -> cần chức năng checkLogin() của đối tượng Employee.
@@ -201,10 +209,10 @@ Sau khi ấn nút tạo phiếu nhập -> đề xuất lớp ImportReceiptView, 
 Lớp ImportReceiptView cần tìm sản phẩm -> cần chức năng searchProduct() của đối tượng Product.
 Sau khi ấn nút xác nhận, hệ thống lưu vào CSDL và tự động cập nhật số lượng sản phẩm -> cần chức năng addImportReceipt() của đối tượng Import_receipt và updateQuantity() của đổi tượng Product.
 Hoàn tất, hệ thống hiển thị thông báo "Thành công" và quay về giao diện chính của Quản lý ManagerHomeView.
+![image_11](screenshots/image_11.png)
 
-
-4. Mô hình hóa động - Biểu đồ tuần tự
-4.1. Chức năng Tạo order
+## 4. Mô hình hóa động - Biểu đồ tuần tự
+### 4.1. Chức năng Tạo order
 Kịch bản chi tiết:
 Nhân viên phục vụ nhập username/password vào giao diện đăng nhập và click nút Login.
 Lớp LoginView gọi đến lớp Employee để xử lí.
@@ -246,9 +254,9 @@ Lớp ConfirmOrderView gọi lại lớp StaffHomeView.
 Lớp StaffHomeView hiển thị lại cho nhân viên phục vụ.
 Nhân viên thông báo order thành công.
 
+![image_12](screenshots/image_12.png)
 
-
-4.2. Chức năng Báo cáo tình trạng hàng
+### 4.2. Chức năng Báo cáo tình trạng hàng
 Kịch bản chi tiết:
 Nhân viên phục vụ nhập username/password vào giao diện đăng nhập và click nút Login.
 Lớp LoginView gọi đến lớp Employee để xử lí.
@@ -284,9 +292,9 @@ Lớp Room_receipt trả kết quả về cho lớp ConfirmReportView.
 Lớp ConfirmReportView gọi về lớp StaffHomeView.
 Lớp StaffHomeView hiển thị cho nhân viên.
 
+![image_13](screenshots/image_13.png)
 
-
-4.3. Chức năng Quản lý menu
+### 4.3. Chức năng Quản lý menu
 Kịch bản chi tiết:
 Nhân viên quản lý nhập username/password vào giao diện đăng nhập và click nút Login.
 Lớp LoginView gọi đến lớp Employee để xử lí.
@@ -312,9 +320,9 @@ Lớp Product trả lại kết quả cho lớp EditMenuView.
 Lớp EditMenuView gọi lớp MenuView.
 Lớp MenuView hiển thị.
 
+![image_14](screenshots/image_14.png)
 
-
-4.4. Chức năng Quản lý kho
+### 4.4. Chức năng Quản lý kho
 Kịch bản chi tiết:
 Nhân viên quản lí nhập username/password vào giao diện đăng nhập và click nút Login.
 Lớp LoginView gọi đến lớp Employee để xử lí.
@@ -352,74 +360,74 @@ Quản lý click OK.
 Lớp ImportReceiptView gọi lại lớp ManagerHomeView.
 Lớp ManagerHomeView hiển thị lại cho nhân viên quản lí.
 
+![image_15](screenshots/image_15.png)
 
+# III. PHA THIẾT KẾ
+## 1. Thiết kế lớp thực thể
+![image_16](screenshots/image_16.png)
+## 2. Thiết kế CSDL
+![image_17](screenshots/image_17.png)
 
-III. PHA THIẾT KẾ
-1. Thiết kế lớp thực thể
-
-2. Thiết kế CSDL
-
-
-3.  Thiết kế tĩnh
-3.1. Thiết kế giao diện
+## 3.  Thiết kế tĩnh
+### 3.1. Thiết kế giao diện
 a) Chức năng Tạo order
 Giao diện đăng nhập:
-
+![image_18](screenshots/image_18.png)
 
 Giao diện chính của phục vụ:
-
+![image_19](screenshots/image_19.png)
 
 Giao diện tìm phòng:
-
+![image_20](screenshots/image_20.png)
 
 Giao diện tạo order:
-
+![image_21](screenshots/image_21.png)
 
 Giao diện xác nhận order:
-
+![image_22](screenshots/image_22.png)
 
 b) Chức năng báo cáo tình trạng hàng
-Giao diện đăng nhập:
+Giao diện đăng nhập:![image_23](screenshots/image_23.png)
 
 Giao diện chính của phục vụ:
-
+![image_24](screenshots/image_24.png)
 
 Giao diện tìm phòng:
-
+![image_25](screenshots/image_25.png)
 
 Giao diện báo cáo hư hỏng:
-
+![image_26](screenshots/image_26.png)
 
 Giao diện xác nhận báo cáo:
-
+![image_27](screenshots/image_27.png)
 
 c) Chức năng Quản lý order
 Giao diện đăng nhập:
-
+![image_28](screenshots/image_28.png)
 
 Giao diện chính của nhân viên quản lý:
-
+![image_29](screenshots/image_29.png)
 
 Giao diện menu:
-
+![image_30](screenshots/image_30.png)
 
 Giao diện sửa thông tin:
-
+![image_31](screenshots/image_31.png)
 
 d) Chức năng quản lý kho
 Giao diện đăng nhập:
-
+![image_32](screenshots/image_32.png)
 
 Giao diện chính của nhân viên quản lý
-
+![image_33](screenshots/image_33.png)
 
 Giao diện quản lý kho:
-
+![image_34](screenshots/image_34.png)
 
 Giao diện phiếu nhập:
+![image_35](screenshots/image_35.png)
 
-
-3.2. Thiết kế mô hình MVC
+### 3.2. Thiết kế mô hình MVC
 Mô hình MVC được thiết kế theo kiến trúc BCE (Boundary – Control – Entity) với 3 tầng:
 Boundary (Giao diện): React components xử lý giao diện người dùng
 Control (Điều khiển): Spring Boot Controllers xử lý nghiệp vụ
@@ -428,59 +436,251 @@ Entity (Thực thể): JPA Entities biểu diễn dữ liệu lưu trữ
 a) Chức năng Tạo order
 Tầng giao diện (Boundary): 
 
-Lớp | Các thành phần | Chi tiết thành phần | Chức năngLoginPage | Thuộc tính | - txtUsername : TextBox | Ô nhập liệu để nhân viên điền tên tài khoản. |  | - txtPassword : TextBox | Ô nhập liệu để nhân viên điền mật khẩu. |  | - btnLogin : Button | Nút nhấn xác nhận đăng nhập. | Phương thức | + btnLoginClick() : void | Hàm bắt sự kiện khi người dùng click vào nút btnLogin. |  | + showMessage(msg : String) : void | Hàm hiển thị thông báo lỗi khi sai tài khoản hoặc mật khẩuStaffHomePage | Thuộc tính | - btnManageOrder : Button | Nút ấn chức năng quản lý order | Phương thức | + StaffHomePage() : void | Hàm khởi tạoSearchRoomPage | Thuộc tính | - tblActiveRooms : Table | Bảng hiển thị danh sách các phòng hiện đang ở trạng thái đang hoạt động. |  | - txtRoomName : TextBox | Ô nhập liệu để nhân viên gõ tên phòng cần tìm kiếm |  | - btnSearchRoom : Button | Nút kích hoạt lệnh tìm kiếm phòng. |  | - btnCreateOrder : Button | Nút nhấn để mở giao diện chọn món | Phương thức | + formLoad() : void | Hàm tự động chạy khi giao diện vừa được mở lên. Làm nhiệm vụ gọi Controller đi lấy danh sách toàn bộ phòng trống mặc định để chuẩn bị hiển thị. |  | + btnSearchRoomClick() : void | Hàm bắt sự kiện tìm kiếm khi nhấn nút btnSearchRoom. |  | + displayActiveRooms(rooms : List<Room>) : void | Hàm nhận dữ liệu danh sách phòng từ Controller và thực hiện render lên bảng tblActiveRooms. |  | + tblEmptyRoomsClick(selectedRow : int) : void | Hàm bắt sự kiện click chuột vào một dòng trên bảng tblEmptyRooms để hệ thống lưu lại trạng thái phòng đang được chọn. |  | + btnCreateOrderClick() : void | Hàm bắt sự kiện chuyển trang. Nếu nhân viên đã chọn 1 phòng, hàm này gọi Controller để mở giao diện CreateOrderView. |  | + showMessage(msg : String) : void | Hàm hiển thị cảnh báo (ví dụ: "Vui lòng chọn một phòng trước khi tạo order!"). |  | + SearchRoomPage() : void | Hàm khởi tạoCreateOrderPage | Thuộc tính | - lblRoomName : Label | Nhãn văn bản hiển thị tên của phòng |  | - txtProductName : TextBox | Ô nhập liệu để gõ tên sản phẩm. |  | - btnSearchProduct : Button | Nút tìm kiếm sản phẩm trong menu. |  | - tblProducts : Table | Bảng hiển thị danh sách các sản phẩm. |  | - tblOrderDetails : Table | Bảng hiển thị danh sách các sản phẩm trong giỏ hàng hiện tại. |  | - btnSaveOrder : Button | Nút chốt đơn hàng. | Phương thức | + formLoad() : void | Hàm tự động chạy khi cửa sổ này mở lên, gọi Controller lấy danh sách thực đơn mặc định để đổ vào bảng tblProducts. |  | + btnSearchProductClick() : void | Hàm bắt sự kiện click nút tìm món. |  | + btnAddClick() : void | Hàm bắt sự kiện click nút thêm. |  | + btnSaveOrderClick() : void | Hàm bắt sự kiện nhấn nút Lưu. |  | + displayProducts(products : List<Product>) : void | Hàm nhận danh sách sản phẩm từ Controller và hiển thị lên bảng thực đơn tblProducts. |  | + displayOrderCart(orderDetails : List<OrderDetail>) : void | Hàm nhận danh sách giỏ hàng hiện tại (sau mỗi lần thêm/bớt món) từ Controller và làm mới lại dữ liệu hiển thị trên bảng tblOrderDetails. |  | + showMessage(msg : String) : void | Hàm hiển thị các thông báo từ hệ thống (ví dụ: "Kho đã hết mặt hàng này" hoặc "Lỗi lưu dữ liệu"). |  | + CreateOrderPage() : void | Hàm khởi tạoConfirmOrderPage | Thuộc tính | - lblMessage : Label | Nhãn hiển thị nội dung thông báo thành công. |  | - btnConfirm : Button | Nút xác nhận (OK) để đóng cửa sổ. | Phương thức | + btnConfirmClick() : void | Hàm bắt sự kiện khi click nút Xác nhận. |  | + ConfirmOrderPage() : void | Hàm khởi tạo
+
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| LoginPage | Thuộc tính | - txtUsername : TextBox | Ô nhập liệu để nhân viên điền tên tài khoản. |
+|  |  | - txtPassword : TextBox | Ô nhập liệu để nhân viên điền mật khẩu. |
+|  |  | - btnLogin : Button | Nút nhấn xác nhận đăng nhập. |
+|  | Phương thức | + btnLoginClick() : void | Hàm bắt sự kiện khi người dùng click vào nút btnLogin. |
+|  |  | + showMessage(msg : String) : void | Hàm hiển thị thông báo lỗi khi sai tài khoản hoặc mật khẩu |
+| StaffHomePage | Thuộc tính | - btnManageOrder : Button | Nút ấn chức năng quản lý order |
+|  | Phương thức | + StaffHomePage() : void | Hàm khởi tạo |
+| SearchRoomPage | Thuộc tính | - tblActiveRooms : Table | Bảng hiển thị danh sách các phòng hiện đang ở trạng thái đang hoạt động. |
+|  |  | - txtRoomName : TextBox | Ô nhập liệu để nhân viên gõ tên phòng cần tìm kiếm |
+|  |  | - btnSearchRoom : Button | Nút kích hoạt lệnh tìm kiếm phòng. |
+|  |  | - btnCreateOrder : Button | Nút nhấn để mở giao diện chọn món |
+|  | Phương thức | + formLoad() : void | Hàm tự động chạy khi giao diện vừa được mở lên. Làm nhiệm vụ gọi Controller đi lấy danh sách toàn bộ phòng trống mặc định để chuẩn bị hiển thị. |
+|  |  | + btnSearchRoomClick() : void | Hàm bắt sự kiện tìm kiếm khi nhấn nút btnSearchRoom. |
+|  |  | + displayActiveRooms(rooms : List<Room>) : void | Hàm nhận dữ liệu danh sách phòng từ Controller và thực hiện render lên bảng tblActiveRooms. |
+|  |  | + tblEmptyRoomsClick(selectedRow : int) : void | Hàm bắt sự kiện click chuột vào một dòng trên bảng tblEmptyRooms để hệ thống lưu lại trạng thái phòng đang được chọn. |
+|  |  | + btnCreateOrderClick() : void | Hàm bắt sự kiện chuyển trang. Nếu nhân viên đã chọn 1 phòng, hàm này gọi Controller để mở giao diện CreateOrderView. |
+|  |  | + showMessage(msg : String) : void | Hàm hiển thị cảnh báo (ví dụ: "Vui lòng chọn một phòng trước khi tạo order!"). |
+|  |  | + SearchRoomPage() : void | Hàm khởi tạo |
+| CreateOrderPage | Thuộc tính | - lblRoomName : Label | Nhãn văn bản hiển thị tên của phòng |
+|  |  | - txtProductName : TextBox | Ô nhập liệu để gõ tên sản phẩm. |
+|  |  | - btnSearchProduct : Button | Nút tìm kiếm sản phẩm trong menu. |
+|  |  | - tblProducts : Table | Bảng hiển thị danh sách các sản phẩm. |
+|  |  | - tblOrderDetails : Table | Bảng hiển thị danh sách các sản phẩm trong giỏ hàng hiện tại. |
+|  |  | - btnSaveOrder : Button | Nút chốt đơn hàng. |
+|  | Phương thức | + formLoad() : void | Hàm tự động chạy khi cửa sổ này mở lên, gọi Controller lấy danh sách thực đơn mặc định để đổ vào bảng tblProducts. |
+|  |  | + btnSearchProductClick() : void | Hàm bắt sự kiện click nút tìm món. |
+|  |  | + btnAddClick() : void | Hàm bắt sự kiện click nút thêm. |
+|  |  | + btnSaveOrderClick() : void | Hàm bắt sự kiện nhấn nút Lưu. |
+|  |  | + displayProducts(products : List<Product>) : void | Hàm nhận danh sách sản phẩm từ Controller và hiển thị lên bảng thực đơn tblProducts. |
+|  |  | + displayOrderCart(orderDetails : List<OrderDetail>) : void | Hàm nhận danh sách giỏ hàng hiện tại (sau mỗi lần thêm/bớt món) từ Controller và làm mới lại dữ liệu hiển thị trên bảng tblOrderDetails. |
+|  |  | + showMessage(msg : String) : void | Hàm hiển thị các thông báo từ hệ thống (ví dụ: "Kho đã hết mặt hàng này" hoặc "Lỗi lưu dữ liệu"). |
+|  |  | + CreateOrderPage() : void | Hàm khởi tạo |
+| ConfirmOrderPage | Thuộc tính | - lblMessage : Label | Nhãn hiển thị nội dung thông báo thành công. |
+|  |  | - btnConfirm : Button | Nút xác nhận (OK) để đóng cửa sổ. |
+|  | Phương thức | + btnConfirmClick() : void | Hàm bắt sự kiện khi click nút Xác nhận. |
+|  |  | + ConfirmOrderPage() : void | Hàm khởi tạo |
+
+
 
 Tầng điều khiển (Control):
 
-Lớp | Phương thức | Chức năngLoginController | + checkLogin(username : String, password : String) : boolean | Nhận tham số từ ô text của View, kiểm tra DB và trả về kết quả.RoomController | + getActiveRooms() : List<Room> | Được gọi bởi formLoad() của SearchRoomPage để lấy danh sách toàn bộ phòng đang hoạt động lên màn hình. | + searchRoomByName(roomName : String) : List<Room> | Được gọi bởi btnSearchRoomClick() khi nhân viên gõ tên phòng và tìm kiếm.ProductController | + getAllProducts() : List<Product> | Được gọi bởi formLoad() của CreateOrderPage để hiển thị menu mặc định. | + searchProductByName(productName : String) : List<Product> | Hàm được gọi khi bấm nút btnSearchProductClick().OrderController | + saveOrder(order : Order) : boolean | Hàm nhận đối tượng Order (bên trong chứa sẵn danh sách các OrderDetail) để thực thi câu lệnh INSERT xuống cơ sở dữ liệu. Nếu thành công, trả về true để View biết và mở màn hình ConfirmOrderPage.
+
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| LoginController | + checkLogin(username : String, password : String) : boolean | Nhận tham số từ ô text của View, kiểm tra DB và trả về kết quả. |
+| RoomController | + getActiveRooms() : List<Room> | Được gọi bởi formLoad() của SearchRoomPage để lấy danh sách toàn bộ phòng đang hoạt động lên màn hình. |
+|  | + searchRoomByName(roomName : String) : List<Room> | Được gọi bởi btnSearchRoomClick() khi nhân viên gõ tên phòng và tìm kiếm. |
+| ProductController | + getAllProducts() : List<Product> | Được gọi bởi formLoad() của CreateOrderPage để hiển thị menu mặc định. |
+|  | + searchProductByName(productName : String) : List<Product> | Hàm được gọi khi bấm nút btnSearchProductClick(). |
+| OrderController | + saveOrder(order : Order) : boolean | Hàm nhận đối tượng Order (bên trong chứa sẵn danh sách các OrderDetail) để thực thi câu lệnh INSERT xuống cơ sở dữ liệu. Nếu thành công, trả về true để View biết và mở màn hình ConfirmOrderPage. |
+
+
 
 Tầng thực thể (Entity): Employee, Room, Order, Order_detail, Product, Room_receipt.
 
 b) Chức năng báo cáo tình trạng hàng
 Tầng giao diện:
 
-Lớp | Các thành phần | Chi tiết thành phần | Chức năngStaffHomePage | Thuộc tính | - btnReportDamage : Button | Nút bấm báo cáo tài sản hỏng. | Phương thức | + btnReportDamageClick() : void | Hàm bắt sự kiện khi click vào nút btnReportDamage. |  | + StaffHomePage() : void | Hàm khởi tạoSearchRoomPage | Thuộc tính | - txtRoomName : TextBox | Ô nhập liệu để nhân viên gõ tên/số phòng cần tìm kiếm. |  | - btnSearchRoom : Button | Nút nhấn kích hoạt chức năng tìm kiếm phòng. |  | - tblPendingRooms : Table | Bảng hiển thị danh sách các phòng đang chờ thanh toán để nhân viên vào kiểm tra tài sản. |  | - btnCreateDamageReport : Button | Nút nhấn để chuyển sang bước lập báo cáo. | Phương thức | + formLoad() : void | Tự động gọi RoomController lấy danh sách các phòng trạng thái Pending. |  | + btnSearchRoomClick() : void | Gửi từ khóa từ ô txtSearchRoom sang Controller để lọc danh sách phòng. |  | + tblPendingRoomsClick(roomId : int) : void | Lưu lại trạng thái/ID của phòng mà nhân viên vừa click chọn trên bảng. |  | + btnCreateDamageReportClick() : void | Kiểm tra xem nhân viên đã chọn phòng chưa, nếu rồi thì mở giao diện DamageReportView và truyền ID phòng đó sang. |  | + displayPendingRooms(rooms : List<Room>) : void | Nhận danh sách phòng từ Controller và đổ dữ liệu lên bảng tblPendingRooms. |  | + showMessage(msg : String) : void | Hiển thị popup cảnh báo (VD: "Vui lòng chọn phòng trước"). |  | + SearchRoomPage() : void | Hàm khởi tạo.DamageReportPage | Thuộc tính | - lblRoomName : Label | Hiển thị dòng chữ thông báo phòng đang được lập báo cáo. |  | - txtFacilityName : TextBox | Ô nhập tên csvc để tìm kiếm nhanh. |  | - btnSearchFacility : Button | Nút nhấn để tìm kiếm tài sản trong kho. |  | - tblFacilities : Table | Bảng danh sách csvc. |  | - tblDamageDetails : Table | Bảng hiển thị danh sách các tài sản đã bị khách làm hỏng, kèm cột cho phép nhập số lượng hỏng. |  | - btnSaveReport : Button | Nút chốt lại danh sách đồ hỏng và gửi dữ liệu đi lưu. | Phương thức | + formLoad() : void | Gọi FacilityController lấy danh mục tài sản mặc định đưa lên bảng tblFacilities. |  | + btnSearchFacilityClick() : void | Hàm bắt sự kiện ấn nút tìm. |  | + tblFacilitiesClick(FacilityId : int) : void | Chức năng thêm một tài sản từ bảng danh mục sang bảng chi tiết đồ hỏng tblDamageDetails khi nhân viên click chọn. |  | + btnSaveReportClick() : void | Hàm bắt sự kiện ấn nút lưu. |  | + displayFacilities(facilities : List<Facility>) : void | Đổ dữ liệu danh mục tài sản lên bảng. |  | + displayDamageCart(details : List<Damage_detail>) : void | Cập nhật liên tục bảng chi tiết đồ hỏng mỗi khi nhân viên thêm món đồ hoặc thay đổi số lượng. |  | + showMessage(msg : String) : void | Hiện thông báo lỗi hoặc xác nhận. |  | + DamageReportPage() : void | Hàm khởi tạo.ConfirmReportPage | Thuộc tính | - lblMessage : Label | Dòng chữ thông báo kết quả |  | - btnConfirm : Button | Nút OK để xác nhận đã đọc thông báo. | Phương thức | + btnConfirmClick() : void | Hàm bắt sự kiện click nút OK. |  | + ConfirmReportPage() : void | Hàm khởi tạo.
+
+| Lớp | Các thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| StaffHomePage | Thuộc tính | - btnReportDamage : Button | Nút bấm báo cáo tài sản hỏng. |
+|  | Phương thức | + btnReportDamageClick() : void | Hàm bắt sự kiện khi click vào nút btnReportDamage. |
+|  |  | + StaffHomePage() : void | Hàm khởi tạo |
+| SearchRoomPage | Thuộc tính | - txtRoomName : TextBox | Ô nhập liệu để nhân viên gõ tên/số phòng cần tìm kiếm. |
+|  |  | - btnSearchRoom : Button | Nút nhấn kích hoạt chức năng tìm kiếm phòng. |
+|  |  | - tblPendingRooms : Table | Bảng hiển thị danh sách các phòng đang chờ thanh toán để nhân viên vào kiểm tra tài sản. |
+|  |  | - btnCreateDamageReport : Button | Nút nhấn để chuyển sang bước lập báo cáo. |
+|  | Phương thức | + formLoad() : void | Tự động gọi RoomController lấy danh sách các phòng trạng thái Pending. |
+|  |  | + btnSearchRoomClick() : void | Gửi từ khóa từ ô txtSearchRoom sang Controller để lọc danh sách phòng. |
+|  |  | + tblPendingRoomsClick(roomId : int) : void | Lưu lại trạng thái/ID của phòng mà nhân viên vừa click chọn trên bảng. |
+|  |  | + btnCreateDamageReportClick() : void | Kiểm tra xem nhân viên đã chọn phòng chưa, nếu rồi thì mở giao diện DamageReportView và truyền ID phòng đó sang. |
+|  |  | + displayPendingRooms(rooms : List<Room>) : void | Nhận danh sách phòng từ Controller và đổ dữ liệu lên bảng tblPendingRooms. |
+|  |  | + showMessage(msg : String) : void | Hiển thị popup cảnh báo (VD: "Vui lòng chọn phòng trước"). |
+|  |  | + SearchRoomPage() : void | Hàm khởi tạo. |
+| DamageReportPage | Thuộc tính | - lblRoomName : Label | Hiển thị dòng chữ thông báo phòng đang được lập báo cáo. |
+|  |  | - txtFacilityName : TextBox | Ô nhập tên csvc để tìm kiếm nhanh. |
+|  |  | - btnSearchFacility : Button | Nút nhấn để tìm kiếm tài sản trong kho. |
+|  |  | - tblFacilities : Table | Bảng danh sách csvc. |
+|  |  | - tblDamageDetails : Table | Bảng hiển thị danh sách các tài sản đã bị khách làm hỏng, kèm cột cho phép nhập số lượng hỏng. |
+|  |  | - btnSaveReport : Button | Nút chốt lại danh sách đồ hỏng và gửi dữ liệu đi lưu. |
+|  | Phương thức | + formLoad() : void | Gọi FacilityController lấy danh mục tài sản mặc định đưa lên bảng tblFacilities. |
+|  |  | + btnSearchFacilityClick() : void | Hàm bắt sự kiện ấn nút tìm. |
+|  |  | + tblFacilitiesClick(FacilityId : int) : void | Chức năng thêm một tài sản từ bảng danh mục sang bảng chi tiết đồ hỏng tblDamageDetails khi nhân viên click chọn. |
+|  |  | + btnSaveReportClick() : void | Hàm bắt sự kiện ấn nút lưu. |
+|  |  | + displayFacilities(facilities : List<Facility>) : void | Đổ dữ liệu danh mục tài sản lên bảng. |
+|  |  | + displayDamageCart(details : List<Damage_detail>) : void | Cập nhật liên tục bảng chi tiết đồ hỏng mỗi khi nhân viên thêm món đồ hoặc thay đổi số lượng. |
+|  |  | + showMessage(msg : String) : void | Hiện thông báo lỗi hoặc xác nhận. |
+|  |  | + DamageReportPage() : void | Hàm khởi tạo. |
+| ConfirmReportPage | Thuộc tính | - lblMessage : Label | Dòng chữ thông báo kết quả |
+|  |  | - btnConfirm : Button | Nút OK để xác nhận đã đọc thông báo. |
+|  | Phương thức | + btnConfirmClick() : void | Hàm bắt sự kiện click nút OK. |
+|  |  | + ConfirmReportPage() : void | Hàm khởi tạo. |
+
+
 Tầng điều khiển:
 
-Lớp | Phương thức | Chức năngRoomController | + searchPendingRoom(keyword : String) : List<Room> | Tiếp nhận từ khóa từ giao diện, truy vấn CSDL để tìm các phòng đang chờ thanh toán khớp với tên, trả về danh sách cho View hiển thị.FacilityController | + searchFacility(keyword : String) : List<Facility> | Truy vấn cơ sở dữ liệu bảng Tài sản để lấy ra danh mục các trang thiết bị có tên khớp với từ khóa tìm kiếm. | + getAllFacility() : List<Facility> | Được gọi bởi formLoad() của DamageReportPage để hiển thị danh sách tài sản.DamageReportController | + saveDamageReport(report : DamageReport) : boolean | Nhận đối tượng báo cáo từ View, kiểm tra tính hợp lệ của dữ liệu, sau đó gọi xuống tầng Entity để tiến hành lưu dữ liệu vào các bảng DamageReport và Damage_detail. | + updateReceipt(receiptId : int, totalFine : float) : boolean | Sau khi hàm saveDamageReport chạy thành công, hàm này sẽ lấy tổng số tiền phạt của báo cáo đó và gọi sang Entity Room_receipt để cộng dồn tiền đền bù vào hóa đơn của phòng.
+
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| RoomController | + searchPendingRoom(keyword : String) : List<Room> | Tiếp nhận từ khóa từ giao diện, truy vấn CSDL để tìm các phòng đang chờ thanh toán khớp với tên, trả về danh sách cho View hiển thị. |
+| FacilityController | + searchFacility(keyword : String) : List<Facility> | Truy vấn cơ sở dữ liệu bảng Tài sản để lấy ra danh mục các trang thiết bị có tên khớp với từ khóa tìm kiếm. |
+|  | + getAllFacility() : List<Facility> | Được gọi bởi formLoad() của DamageReportPage để hiển thị danh sách tài sản. |
+| DamageReportController | + saveDamageReport(report : DamageReport) : boolean | Nhận đối tượng báo cáo từ View, kiểm tra tính hợp lệ của dữ liệu, sau đó gọi xuống tầng Entity để tiến hành lưu dữ liệu vào các bảng DamageReport và Damage_detail. |
+|  | + updateReceipt(receiptId : int, totalFine : float) : boolean | Sau khi hàm saveDamageReport chạy thành công, hàm này sẽ lấy tổng số tiền phạt của báo cáo đó và gọi sang Entity Room_receipt để cộng dồn tiền đền bù vào hóa đơn của phòng. |
+
+
 
 Tầng thực thể: Employee, Facility, Damage_report, Room, Damage_detail, Room_receipt.
 
 c) Chức năng quản lý menu
 Tầng giao diện:
 
-Lớp | Thành phần | Chi tiết thành phần | Chức năngManagerHomePage | Thuộc tính | - btnManageMenu : Button | Nút nhấn để mở phân hệ quản lý thực đơn. | Phương thức | + btnManageMenuClick() : void | Sự kiện click nút, điều hướng hệ thống mở giao diện MenuView. |  | + ManagerHomePage() : void | Hàm khởi tạo.MenuPage | Thuộc tính | - txtProductName : TextBox | Ô nhập tên sản phẩm để tìm kiếm. |  | - btnSearchProduct : Button | Nút kích hoạt lệnh tìm kiếm. |  | - tblProducts : Table | Bảng hiển thị danh sách sản phẩm. |  | - btnAdd : Button | Nút mở giao diện thêm sản phẩm mới. |  | - btnEdit : Button | Nút mở giao diện sửa thông tin sản phẩm (chỉ bấm được khi đã chọn 1 dòng trên bảng). |  | - btnDelete : Button | Nút xóa sản phẩm đã chọn khỏi cơ sở dữ liệu. | Phương thức | + formLoad() : void | Gọi Controller lấy toàn bộ danh sách sản phẩm khi vừa mở trang. |  | + btnSearchClick() : void | Truyền từ khóa tìm kiếm sang Controller để lọc danh sách. |  | + tblProductsClick(productId : int) : void | Lấy ID của sản phẩm đang được click chọn trên bảng để chuẩn bị cho thao tác Sửa hoặc Xóa. |  | + btnAddClick() : void | Mở giao diện thêm sản phẩm (với trường hợp thêm sản phẩm) |  | + btnEditClick() : void | Mở giao diện EditMenuView ở trạng thái "Cập nhật" (đẩy thông tin của sản phẩm vừa chọn sang để điền sẵn vào các ô). |  | + btnDeleteClick() : void | Gọi Controller thực thi lệnh xóa sản phẩm đang chọn, sau đó làm mới lại bảng. |  | + displayProducts(products : List<Product>) : void | Đổ dữ liệu danh sách sản phẩm lên bảng tblProducts. |  | + showMessage(msg : String) : void | Hiển thị thông báo (VD: "Xóa thành công" hoặc "Vui lòng chọn sản phẩm cần sửa"). |  | + MenuPage() : void | Hàm khởi tạo.EditMenuPage | Thuộc tính | - lblId : Label | Hiển thị Id của sản phẩm (không thể sửa) |  | - txtCategory : TextBox | Ô nhập/chọn danh mục (VD: Đồ ăn, Đồ uống). |  | - txtName : TextBox | Ô nhập tên sản phẩm. |  | - txtUnit : TextBox | Ô nhập đơn vị tính. |  | - txtPrice : TextBox | Ô nhập giá bán. |  | - txtCurrentStock : TextBox | Ô nhập số lượng tồn kho hiện tại. |  | - txtSafetyStock : TextBox | Ô nhập số lượng tồn kho an toàn. |  | - btnSave : Button | Nút lưu thông tin. | Phương thức | + formLoad(productId : int) : void | Truyền vào Id của sản phẩm để lấy thông tin sản phẩm tương ứng. |  | + btnSaveClick() : void | Thu thập dữ liệu từ tất cả các ô TextBox, đóng gói thành một đối tượng Product, và gọi Controller để lưu trữ. |  | + showMessage(msg : String) : void | Thông báo kết quả lưu ("Thành công" hoặc "Lỗi dữ liệu"). |  | + EditMenuPage() : void | Hàm khởi tạo.
+
+| Lớp | Thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| ManagerHomePage | Thuộc tính | - btnManageMenu : Button | Nút nhấn để mở phân hệ quản lý thực đơn. |
+|  | Phương thức | + btnManageMenuClick() : void | Sự kiện click nút, điều hướng hệ thống mở giao diện MenuView. |
+|  |  | + ManagerHomePage() : void | Hàm khởi tạo. |
+| MenuPage | Thuộc tính | - txtProductName : TextBox | Ô nhập tên sản phẩm để tìm kiếm. |
+|  |  | - btnSearchProduct : Button | Nút kích hoạt lệnh tìm kiếm. |
+|  |  | - tblProducts : Table | Bảng hiển thị danh sách sản phẩm. |
+|  |  | - btnAdd : Button | Nút mở giao diện thêm sản phẩm mới. |
+|  |  | - btnEdit : Button | Nút mở giao diện sửa thông tin sản phẩm (chỉ bấm được khi đã chọn 1 dòng trên bảng). |
+|  |  | - btnDelete : Button | Nút xóa sản phẩm đã chọn khỏi cơ sở dữ liệu. |
+|  | Phương thức | + formLoad() : void | Gọi Controller lấy toàn bộ danh sách sản phẩm khi vừa mở trang. |
+|  |  | + btnSearchClick() : void | Truyền từ khóa tìm kiếm sang Controller để lọc danh sách. |
+|  |  | + tblProductsClick(productId : int) : void | Lấy ID của sản phẩm đang được click chọn trên bảng để chuẩn bị cho thao tác Sửa hoặc Xóa. |
+|  |  | + btnAddClick() : void | Mở giao diện thêm sản phẩm (với trường hợp thêm sản phẩm) |
+|  |  | + btnEditClick() : void | Mở giao diện EditMenuView ở trạng thái "Cập nhật" (đẩy thông tin của sản phẩm vừa chọn sang để điền sẵn vào các ô). |
+|  |  | + btnDeleteClick() : void | Gọi Controller thực thi lệnh xóa sản phẩm đang chọn, sau đó làm mới lại bảng. |
+|  |  | + displayProducts(products : List<Product>) : void | Đổ dữ liệu danh sách sản phẩm lên bảng tblProducts. |
+|  |  | + showMessage(msg : String) : void | Hiển thị thông báo (VD: "Xóa thành công" hoặc "Vui lòng chọn sản phẩm cần sửa"). |
+|  |  | + MenuPage() : void | Hàm khởi tạo. |
+| EditMenuPage | Thuộc tính | - lblId : Label | Hiển thị Id của sản phẩm (không thể sửa) |
+|  |  | - txtCategory : TextBox | Ô nhập/chọn danh mục (VD: Đồ ăn, Đồ uống). |
+|  |  | - txtName : TextBox | Ô nhập tên sản phẩm. |
+|  |  | - txtUnit : TextBox | Ô nhập đơn vị tính. |
+|  |  | - txtPrice : TextBox | Ô nhập giá bán. |
+|  |  | - txtCurrentStock : TextBox | Ô nhập số lượng tồn kho hiện tại. |
+|  |  | - txtSafetyStock : TextBox | Ô nhập số lượng tồn kho an toàn. |
+|  |  | - btnSave : Button | Nút lưu thông tin. |
+|  | Phương thức | + formLoad(productId : int) : void | Truyền vào Id của sản phẩm để lấy thông tin sản phẩm tương ứng. |
+|  |  | + btnSaveClick() : void | Thu thập dữ liệu từ tất cả các ô TextBox, đóng gói thành một đối tượng Product, và gọi Controller để lưu trữ. |
+|  |  | + showMessage(msg : String) : void | Thông báo kết quả lưu ("Thành công" hoặc "Lỗi dữ liệu"). |
+|  |  | + EditMenuPage() : void | Hàm khởi tạo. |
+
+
 
 Tầng điều khiển:
 
-Lớp | Phương thức | Chức năngProductController | + getAllProducts() : List<Product> | Truy vấn CSDL trả về toàn bộ thực đơn. | + searchProduct(keyword : String) : List<Product> | Lọc sản phẩm theo tên hoặc danh mục. | + getProductById(id : int) : Product | Lấy chi tiết 1 sản phẩm để hiển thị lên form EditMenuView. | + updateProduct(product : Product) : boolean | Hàm cập nhật thông tin sản phẩm | + addProduct(product : Product) : boolean | Hàm thêm sản phẩm | + deleteProduct(id : int) : boolean | Xóa sản phẩm khỏi hệ thống.
+
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| ProductController | + getAllProducts() : List<Product> | Truy vấn CSDL trả về toàn bộ thực đơn. |
+|  | + searchProduct(keyword : String) : List<Product> | Lọc sản phẩm theo tên hoặc danh mục. |
+|  | + getProductById(id : int) : Product | Lấy chi tiết 1 sản phẩm để hiển thị lên form EditMenuView. |
+|  | + updateProduct(product : Product) : boolean | Hàm cập nhật thông tin sản phẩm |
+|  | + addProduct(product : Product) : boolean | Hàm thêm sản phẩm |
+|  | + deleteProduct(id : int) : boolean | Xóa sản phẩm khỏi hệ thống. |
+
+
 Tầng thực thể: Employee, Product.
 
 d) Chức năng quản lý kho
 Tầng giao diện:
 
-Lớp | Thành phần | Chi tiết thành phần | Chức năngManagerHomePage | Thuộc tính | - btnManageWarehouse : Button | Nút nhấn để mở phân hệ quản lý kho. | Phương thức | + btnManageWarehouseClick() : void | Sự kiện click để hệ thống mở giao diện WarehouseManageView. |  | + ManagerHomePage() : void | Hàm khởi tạo.WarehouseManagePage | Thuộc tính | - tblProducts : Table | Bảng hiển thị danh sách sản phẩm. |  | - btnImport : Button | Nút kích hoạt quy trình nhập hàng mới. | Phương thức | + formLoad() : void | Lấy danh sách tồn kho từ CSDL đổ lên bảng. |  | + btnImportClick() : void | Mở giao diện SearchProviderView để bắt đầu quy trình chọn nhà cung cấp. |  | + displayProducts(products : List<Product>) : void | Hàm render dữ liệu lên bảng. |  | + WarehouseManagePage() : void | Hàm khởi tạo.SearchProviderPage | Thuộc tính | - txtProviderName : TextBox | Ô nhập từ khóa tìm kiếm nhà cung cấp. |  | - btnSearch : Button | Nút tìm kiếm. |  | - tblProviders : Table | Bảng danh sách các nhà cung cấp thỏa mãn từ khóa. |  | - btnCreateImportReceipt : Button | Nút xác nhận chọn nhà cung cấp và chuyển sang bước tạo phiếu nhập. | Phương thức | + formLoad() : void | Load danh sách nhà cung cấp mặc định. |  | + btnSearchClick() : void | Gọi Controller để lọc nhà cung cấp. |  | + tblProvidersClick(providerId : int) : void | Lưu lại ID của nhà cung cấp vừa được chọn trên bảng. |  | + btnCreateImportReceiptClick() : void | Mở giao diện ImportReceiptView và truyền thông tin nhà cung cấp sang. |  | + displayProviders(providers : List<Provider>) : void | Đổ dữ liệu lên bảng. |  | + SearchProviderPage() : void | Hàm khởi tạo.ImportReceiptPage | Thuộc tính | - lblProviderName : Label | Hiển thị tên nhà cung cấp đang chọn. |  | - dtpImportDate : DatePicker | Bộ chọn ngày nhập hàng (mặc định là ngày hôm nay). |  | - txtProductName : TextBox | Ô tìm kiếm mặt hàng |  | - btnSearch : Button | Nút tìm kiếm mặt hàng. |  | - tblProducts : Table | Bảng danh mục sản phẩm |  | - txtQuantity : TextBox | Ô nhập số lượng nhập |  | - txtUnitCost : TextBox | Ô nhập giá nhập. |  | - btnAdd : Button | Nút thêm mặt hàng vào phiếu nhập |  | - tblImportDetails : Table | Bảng giỏ hàng phiếu nhập |  | - lblTotalCost : Label | Hiển thị tổng tiền của phiếu nhập. |  | - btnSave : Button | Nút chốt phiếu nhập. | Phương thức | + formLoad() : void | Load danh mục sản phẩm lên bảng trên. |  | + btnSearchClick() : void | Lọc sản phẩm theo tên. |  | + btnAddClick() : void | Lấy số lượng và giá nhập, tính thành tiền và đẩy xuống bảng tblImportDetails. |  | + btnSaveClick() : void | Đóng gói dữ liệu thành phiếu nhập và gọi Controller. |  | + displayProducts(products : List<Product>) : void | Vẽ dữ liệu bảng Product. |  | + displayImportDetails(details : List<Import_detail>) : void | Vẽ dữ liệu bảng ImportDetails. |  | + updateTotalCost() : void | Hàm tự động tính toán tổng các dòng line_total và cập nhật lên lblTotalCost. |  | + showMessage(msg : String) : void | Hiện thông báo. |  | + ImportReceiptPage() : void | Hàm khởi tạo.
+
+| Lớp | Thành phần | Chi tiết thành phần | Chức năng |
+| --- | --- | --- | --- |
+| ManagerHomePage | Thuộc tính | - btnManageWarehouse : Button | Nút nhấn để mở phân hệ quản lý kho. |
+|  | Phương thức | + btnManageWarehouseClick() : void | Sự kiện click để hệ thống mở giao diện WarehouseManageView. |
+|  |  | + ManagerHomePage() : void | Hàm khởi tạo. |
+| WarehouseManagePage | Thuộc tính | - tblProducts : Table | Bảng hiển thị danh sách sản phẩm. |
+|  |  | - btnImport : Button | Nút kích hoạt quy trình nhập hàng mới. |
+|  | Phương thức | + formLoad() : void | Lấy danh sách tồn kho từ CSDL đổ lên bảng. |
+|  |  | + btnImportClick() : void | Mở giao diện SearchProviderView để bắt đầu quy trình chọn nhà cung cấp. |
+|  |  | + displayProducts(products : List<Product>) : void | Hàm render dữ liệu lên bảng. |
+|  |  | + WarehouseManagePage() : void | Hàm khởi tạo. |
+| SearchProviderPage | Thuộc tính | - txtProviderName : TextBox | Ô nhập từ khóa tìm kiếm nhà cung cấp. |
+|  |  | - btnSearch : Button | Nút tìm kiếm. |
+|  |  | - tblProviders : Table | Bảng danh sách các nhà cung cấp thỏa mãn từ khóa. |
+|  |  | - btnCreateImportReceipt : Button | Nút xác nhận chọn nhà cung cấp và chuyển sang bước tạo phiếu nhập. |
+|  | Phương thức | + formLoad() : void | Load danh sách nhà cung cấp mặc định. |
+|  |  | + btnSearchClick() : void | Gọi Controller để lọc nhà cung cấp. |
+|  |  | + tblProvidersClick(providerId : int) : void | Lưu lại ID của nhà cung cấp vừa được chọn trên bảng. |
+|  |  | + btnCreateImportReceiptClick() : void | Mở giao diện ImportReceiptView và truyền thông tin nhà cung cấp sang. |
+|  |  | + displayProviders(providers : List<Provider>) : void | Đổ dữ liệu lên bảng. |
+|  |  | + SearchProviderPage() : void | Hàm khởi tạo. |
+| ImportReceiptPage | Thuộc tính | - lblProviderName : Label | Hiển thị tên nhà cung cấp đang chọn. |
+|  |  | - dtpImportDate : DatePicker | Bộ chọn ngày nhập hàng (mặc định là ngày hôm nay). |
+|  |  | - txtProductName : TextBox | Ô tìm kiếm mặt hàng |
+|  |  | - btnSearch : Button | Nút tìm kiếm mặt hàng. |
+|  |  | - tblProducts : Table | Bảng danh mục sản phẩm |
+|  |  | - txtQuantity : TextBox | Ô nhập số lượng nhập |
+|  |  | - txtUnitCost : TextBox | Ô nhập giá nhập. |
+|  |  | - btnAdd : Button | Nút thêm mặt hàng vào phiếu nhập |
+|  |  | - tblImportDetails : Table | Bảng giỏ hàng phiếu nhập |
+|  |  | - lblTotalCost : Label | Hiển thị tổng tiền của phiếu nhập. |
+|  |  | - btnSave : Button | Nút chốt phiếu nhập. |
+|  | Phương thức | + formLoad() : void | Load danh mục sản phẩm lên bảng trên. |
+|  |  | + btnSearchClick() : void | Lọc sản phẩm theo tên. |
+|  |  | + btnAddClick() : void | Lấy số lượng và giá nhập, tính thành tiền và đẩy xuống bảng tblImportDetails. |
+|  |  | + btnSaveClick() : void | Đóng gói dữ liệu thành phiếu nhập và gọi Controller. |
+|  |  | + displayProducts(products : List<Product>) : void | Vẽ dữ liệu bảng Product. |
+|  |  | + displayImportDetails(details : List<Import_detail>) : void | Vẽ dữ liệu bảng ImportDetails. |
+|  |  | + updateTotalCost() : void | Hàm tự động tính toán tổng các dòng line_total và cập nhật lên lblTotalCost. |
+|  |  | + showMessage(msg : String) : void | Hiện thông báo. |
+|  |  | + ImportReceiptPage() : void | Hàm khởi tạo. |
+
+
 Tầng điều khiển:
 
-Lớp | Phương thức | Chức năngProviderController | + searchProvider(keyword : String) : List<Provider> | Tìm kiếm thông tin nhà cung cấp trong CSDL | + getAllProviders() : List<Provider> | Truy vấn CSDL trả về toàn bộ nhà cung cấp.ProductController | + searchProduct(keyword : String) : List<Product> | Nhận yêu cầu từ btnSearchClick của form nhập kho để gọi xuống Entity Product | + getAllProducts() : List<Product> | Truy vấn CSDL trả về toàn bộ sản phẩm.ImportController | + saveImportReceipt(receipt : Import_receipt) : boolean | Lưu phiếu nhập kho. | + updateProductStock(productId : int, addedQuantity : int) : boolean | Hàm nhận trách nhiệm gọi xuống Entity Product để cộng dồn tồn kho sau khi lưu phiếu nhập thành công.
+
+| Lớp | Phương thức | Chức năng |
+| --- | --- | --- |
+| ProviderController | + searchProvider(keyword : String) : List<Provider> | Tìm kiếm thông tin nhà cung cấp trong CSDL |
+|  | + getAllProviders() : List<Provider> | Truy vấn CSDL trả về toàn bộ nhà cung cấp. |
+| ProductController | + searchProduct(keyword : String) : List<Product> | Nhận yêu cầu từ btnSearchClick của form nhập kho để gọi xuống Entity Product |
+|  | + getAllProducts() : List<Product> | Truy vấn CSDL trả về toàn bộ sản phẩm. |
+| ImportController | + saveImportReceipt(receipt : Import_receipt) : boolean | Lưu phiếu nhập kho. |
+|  | + updateProductStock(productId : int, addedQuantity : int) : boolean | Hàm nhận trách nhiệm gọi xuống Entity Product để cộng dồn tồn kho sau khi lưu phiếu nhập thành công. |
+
+
 Tầng thực thể: Employee, Provider, Import_receipt, Product, Import_detail.
 
 
-3.3. Sơ đồ lớp thiết kế
+### 3.3. Sơ đồ lớp thiết kế
 a) Chức năng tạo order
-
+![image_36](screenshots/image_36.png)
 
 b) Chức năng báo cáo tình trạng hàng hóa
-
+![image_37](screenshots/image_37.png)
 
 c) Chức năng quản lý menu
-
+![image_38](screenshots/image_38.png)
 
 d) Chức năng quản lý kho
+![image_39](screenshots/image_39.png)
 
-
-4. Thiết kế động
-4.1. Chức năng quản lý order
+## 4. Thiết kế động
+### 4.1. Chức năng quản lý order
 Nhân viên nhập username, password trên giao diện LoginPage và nhấn nút Login.
 Giao diện LoginPage gọi phương thức btnLoginClick().
 LoginPage gửi thông tin đăng nhập sang lớp LoginController thông qua hàm checkLogin(username, password).
@@ -527,9 +727,9 @@ ConfirmOrderView hiển thị thông báo order thành công cho nhân viên.
 Nhân viên thông báo lại cho khách và ấn nút Xác nhận.
 ConfirmOrderView gọi hàm btnConfirmClick(), popup đóng lại và hệ thống quay trở về màn hình StaffHomeView.
 
+![image_40](screenshots/image_40.png)
 
-
-4.2. Chức năng báo cáo tình trạng hàng hóa
+### 4.2. Chức năng báo cáo tình trạng hàng hóa
 Nhân viên nhập username, password trên giao diện LoginPage và nhấn nút Login.
 Giao diện LoginPage tự gọi hàm btnLoginClick() của chính nó.
 LoginPage gửi thông tin đăng nhập sang lớp LoginController thông qua hàm checkLogin(username, password).
@@ -575,9 +775,9 @@ Nhân viên ấn nút Xác nhận.
 ConfirmReportPage tự gọi hàm btnConfirmClick().
 Lớp ConfirmReportPage gọi về lớp StaffHomePage.
 
+![image_41](screenshots/image_41.png)
 
-
-4.3. Chức năng quản lý menu
+### 4.3. Chức năng quản lý menu
 Quản lý nhập username, password trên giao diện LoginPage và nhấn nút Login.
 Giao diện LoginPage tự gọi sự kiện btnLoginClick() của chính nó.
 LoginPage gửi thông tin đăng nhập sang lớp LoginController thông qua hàm checkLogin(username, password).
@@ -615,8 +815,8 @@ ProductController trả kết quả xử lý thành công về cho giao diện E
 EditMenuPage tự gọi hàm showMessage(msg) để hiển thị popup thông báo "Cập nhật sản phẩm thành công".
 EditMenuPage gọi lại lớp MenuPage.
 
-
-4.4. Chức năng quản lý kho
+![image_42](screenshots/image_42.png)
+### 4.4. Chức năng quản lý kho
 Quản lý nhập username, password trên giao diện LoginPage và nhấn nút Login.
 Giao diện LoginPage tự gọi sự kiện btnLoginClick() của chính nó.
 LoginPage gửi thông tin đăng nhập sang lớp LoginController thông qua hàm checkLogin(username, password).
@@ -667,296 +867,749 @@ ImportReceiptPage tự gọi hàm showMessage(msg) hiển thị thông báo "Nh�
 Quản lý click OK.
 ImportReceiptPage gọi lại lớp ManagerHomePage.
 
+![image_43](screenshots/image_43.png)
+
+# IV. PHA CÀI ĐẶT VÀ KIỂM THỬ
+## 1. Lập kế hoạch test
 
 
-IV. PHA CÀI ĐẶT VÀ KIỂM THỬ
-1. Lập kế hoạch test
+| STT | Chức năng | Trường hợp cần test |
+| --- | --- | --- |
+| 1 | Tạo order | Không tìm thấy phòng |
+| 2 |  | Không tìm thấy sản phẩm |
+| 3 |  | Tìm thấy phòng và có sản phẩm trong CSDL |
+| 4 |  | Tồn kho sản phẩm không còn |
+| 5 | Báo cáo tình trạng hàng | Cơ sở vật chất chưa có trong CSDL |
+| 6 |  | Cơ sở vật chất đã có trong CSDL |
+| 7 | Quản lý menu | Sản phẩm chưa có trong CSDL |
+| 8 |  | Sản phẩm đã có trong CSDL |
+| 9 | Quản lý kho | Không có nhà cung cấp trong CSDL |
+| 10 |  | Có nhà cung cấp trong CSDL |
 
-STT | Chức năng | Trường hợp cần test1 | Tạo order | Không tìm thấy phòng2 |  | Không tìm thấy sản phẩm3 |  | Tìm thấy phòng và có sản phẩm trong CSDL4 |  | Tồn kho sản phẩm không còn5 | Báo cáo tình trạng hàng | Cơ sở vật chất chưa có trong CSDL6 |  | Cơ sở vật chất đã có trong CSDL7 | Quản lý menu | Sản phẩm chưa có trong CSDL8 |  | Sản phẩm đã có trong CSDL9 | Quản lý kho | Không có nhà cung cấp trong CSDL10 |  | Có nhà cung cấp trong CSDL
-2. Các test case cho từng chức năng
-a) Chức năng tạo order
+
+## 2. Các test case cho từng chức năng
+### a) Chức năng tạo order
 - Test case 1: Không tìm thấy phòng trong CSDL:CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Lễ tân | receptionist | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Lễ tân | receptionist | hanh@123 | Working |
+
+
 tblRoom:
 
-id | name | type | price | capacity | status1 | 101 | Normal | 200,000 | 20 | Active2 | 102 | VIP | 350,000 | 25 | Active3 | 103 | Normal | 200,000 | 20 | Active4 | 104 | VIP | 350,000 | 25 | Active
+
+| id | name | type | price | capacity | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | Normal | 200,000 | 20 | Active |
+| 2 | 102 | VIP | 350,000 | 25 | Active |
+| 3 | 103 | Normal | 200,000 | 20 | Active |
+| 4 | 104 | VIP | 350,000 | 25 | Active |
+
+
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
+
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+
+
 tblOrder:
 
-id | order_time | total_amount | status | room_receipt_id | employee_id1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 22 | 01/01/2020 20:14 | 66,000 | Served | 1 | 23 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2
+
+| id | order_time | total_amount | status | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 2 |
+| 2 | 01/01/2020 20:14 | 66,000 | Served | 1 | 2 |
+| 3 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2 |
+
+
 tblOrderDetail:
 
-id | order_id | product_id | quantity | unit_price | line_total1 | 1 | 1 | 5 | 20,000 | 100,0002 | 2 | 2 | 3 | 12,000 | 36,0003 | 2 | 3 | 10 | 10,000 | 30,0004 | 3 | 1 | 10 | 20,000 | 200,0005 | 3 | 3 | 5 | 10,000 | 50,000
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên phục vụ (id = 2) đã đăng nhập. | Giao diện tìm phòng đang hoạt động hiện ra, có ô nhập tên phòng và nút tìm.2. Nhập 107 và click nút tìm | Kết quả hiện lên:3. Click OK | Quay về giao diện chính của nhân viên phục vụ.
+| id | order_id | product_id | quantity | unit_price | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 5 | 20,000 | 100,000 |
+| 2 | 2 | 2 | 3 | 12,000 | 36,000 |
+| 3 | 2 | 3 | 10 | 10,000 | 30,000 |
+| 4 | 3 | 1 | 10 | 20,000 | 200,000 |
+| 5 | 3 | 3 | 5 | 10,000 | 50,000 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên phục vụ (id = 2) đã đăng nhập. | Giao diện tìm phòng đang hoạt động hiện ra, có ô nhập tên phòng và nút tìm. |
+| 2. Nhập 107 và click nút tìm | Kết quả hiện lên: |
+| 3. Click OK | Quay về giao diện chính của nhân viên phục vụ. |
+
+
 CSDL sau khi test: không có gì thay đổi.
 
 - Test case 2: có phòng nhưng không tìm thấy sản phẩm.
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Lễ tân | receptionist | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Lễ tân | receptionist | hanh@123 | Working |
+
+
 tblRoom:
 
-id | name | type | price | capacity | status1 | 101 | Normal | 200,000 | 20 | Active2 | 102 | VIP | 3530,000 | 25 | Active3 | 103 | Normal | 200,000 | 20 | Active4 | 104 | VIP | 350,000 | 25 | Active
+
+| id | name | type | price | capacity | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | Normal | 200,000 | 20 | Active |
+| 2 | 102 | VIP | 3530,000 | 25 | Active |
+| 3 | 103 | Normal | 200,000 | 20 | Active |
+| 4 | 104 | VIP | 350,000 | 25 | Active |
+
+
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
+
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+
+
 tblOrder:
 
-id | order_time | total_amount | status | room_receipt_id | employee_id1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 22 | 01/01/2020 20:14 | 66,000 | Served | 1 | 23 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2
+
+| id | order_time | total_amount | status | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 2 |
+| 2 | 01/01/2020 20:14 | 66,000 | Served | 1 | 2 |
+| 3 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2 |
+
+
 tblOrderDetail:
 
-id | order_id | product_id | quantity | unit_price | line_total1 | 1 | 1 | 5 | 20,000 | 100,0002 | 2 | 2 | 3 | 12,000 | 36,0003 | 2 | 3 | 10 | 10,000 | 30,0004 | 3 | 1 | 10 | 20,000 | 200,0005 | 3 | 3 | 5 | 10,000 | 50,000
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên phục vụ (id = 2) đăng nhập thành công | Giao diện tìm phòng đang hoạt động hiện ra, có ô nhập tên phòng và nút tìm.2. Nhập 104 và click tìm | Kết quả hiện lên:3. Click vào phòng 104 và click nút tạo order | Giao diện “Tạo order” hiển thị gồm:
-- Tên phòng
-- Danh sách các sản phẩm
-- Nút thêm
-- Ô nhập tên sản phẩm
-- Nút tìm.4. Nhập “Kem” | Kết quả hiện lên:5. Click OK | Quay về giao diện tạo order
+| id | order_id | product_id | quantity | unit_price | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 5 | 20,000 | 100,000 |
+| 2 | 2 | 2 | 3 | 12,000 | 36,000 |
+| 3 | 2 | 3 | 10 | 10,000 | 30,000 |
+| 4 | 3 | 1 | 10 | 20,000 | 200,000 |
+| 5 | 3 | 3 | 5 | 10,000 | 50,000 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên phục vụ (id = 2) đăng nhập thành công | Giao diện tìm phòng đang hoạt động hiện ra, có ô nhập tên phòng và nút tìm. |
+| 2. Nhập 104 và click tìm | Kết quả hiện lên: |
+| 3. Click vào phòng 104 và click nút tạo order | Giao diện “Tạo order” hiển thị gồm: - Tên phòng - Danh sách các sản phẩm - Nút thêm - Ô nhập tên sản phẩm - Nút tìm. |
+| 4. Nhập “Kem” | Kết quả hiện lên: |
+| 5. Click OK | Quay về giao diện tạo order |
+
+
 CSDL sau khi test: không có gì thay đổi.
 
 - Test case 3: Tìm thấy phòng và sản phẩm trong CSDL:
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblRoom:
 
-id | name | type | price | capacity | status1 | 101 | Normal | 200,000 | 20 | Active2 | 102 | VIP | 350,000 | 25 | Active3 | 103 | Normal | 200,000 | 20 | Active4 | 104 | VIP | 350,000 | 25 | Active
+
+| id | name | type | price | capacity | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | Normal | 200,000 | 20 | Active |
+| 2 | 102 | VIP | 350,000 | 25 | Active |
+| 3 | 103 | Normal | 200,000 | 20 | Active |
+| 4 | 104 | VIP | 350,000 | 25 | Active |
+
+
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
+
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+
+
 tblOrder:
 
-id | order_time | total_amount | status | room_receipt_id | employee_id1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 22 | 01/01/2020 20:14 | 66,000 | Served | 1 | 23 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2
+
+| id | order_time | total_amount | status | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 2 |
+| 2 | 01/01/2020 20:14 | 66,000 | Served | 1 | 2 |
+| 3 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2 |
+
+
 tblOrderDetail:
 
-id | order_id | product_id | quantity | unit_price | line_total1 | 1 | 1 | 5 | 20,000 | 100,0002 | 2 | 2 | 3 | 12,000 | 36,0003 | 2 | 3 | 10 | 10,000 | 30,0004 | 3 | 1 | 10 | 20,000 | 200,0005 | 3 | 3 | 5 | 10,000 | 50,000
+
+| id | order_id | product_id | quantity | unit_price | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 5 | 20,000 | 100,000 |
+| 2 | 2 | 2 | 3 | 12,000 | 36,000 |
+| 3 | 2 | 3 | 10 | 10,000 | 30,000 |
+| 4 | 3 | 1 | 10 | 20,000 | 200,000 |
+| 5 | 3 | 3 | 5 | 10,000 | 50,000 |
 
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên phục vụ (id = 3) đăng nhập thành công | Giao diện hiện lên, bao gồm:
-- Danh sách phòng đang hoạt động, 
-- Có ô nhập tên phòng
-- Nút tìm.2. Nhập 104 và click tìm | Kết quả hiện lên:3. Click vào phòng 104 và click nút tạo order | Giao diện hiển thị bao gồm:
-- Tên phòng
-- Danh sách các sản phẩm
-- Nút thêm, ô nhập tên sản phẩm và nút tìm.4. Nhập “Bia Heniken”, “Bim Bim” | Kết quả hiện lên:5. Click nút “THÊM” | Kết quả hiện lên:6. Click nút gửi order | Kết quả hiện lên:7. Click nút OK | Lưu order vào CSDL và quay trở về trang chủ của nhân viên phục vụ.
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên phục vụ (id = 3) đăng nhập thành công | Giao diện hiện lên, bao gồm: - Danh sách phòng đang hoạt động,  - Có ô nhập tên phòng - Nút tìm. |
+| 2. Nhập 104 và click tìm | Kết quả hiện lên: |
+| 3. Click vào phòng 104 và click nút tạo order | Giao diện hiển thị bao gồm: - Tên phòng - Danh sách các sản phẩm - Nút thêm, ô nhập tên sản phẩm và nút tìm. |
+| 4. Nhập “Bia Heniken”, “Bim Bim” | Kết quả hiện lên: |
+| 5. Click nút “THÊM” | Kết quả hiện lên: |
+| 6. Click nút gửi order | Kết quả hiện lên: |
+| 7. Click nút OK | Lưu order vào CSDL và quay trở về trang chủ của nhân viên phục vụ. |
+
+
 CSDL sau khi test:
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 5 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 76 | 50
+
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 5 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 76 | 50 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 24 | 03/01/2020 09:00 | 03/01/2020 11:00 | 200,000 | 148,000 | 0 | 348,000 | UNPAID | 4 | 3
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+| 4 | 03/01/2020 09:00 | 03/01/2020 11:00 | 200,000 | 148,000 | 0 | 348,000 | UNPAID | 4 | 3 |
+
+
 tblOrder:
 
-id | order_time | total_amount | status | room_receipt_id | employee_id1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 22 | 01/01/2020 20:14 | 66,000 | Served | 1 | 23 | 02/01/2020 19:22 | 250,000 | Served | 3 | 24 | 03/01/2020 09:14 | 148,000 | Preparing | 4 | 3
+
+| id | order_time | total_amount | status | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 2 |
+| 2 | 01/01/2020 20:14 | 66,000 | Served | 1 | 2 |
+| 3 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2 |
+| 4 | 03/01/2020 09:14 | 148,000 | Preparing | 4 | 3 |
+
+
 tblOrderDetail:
 
-id | order_id | product_id | quantity | unit_price | line_total1 | 1 | 1 | 5 | 20,000 | 100,0002 | 2 | 2 | 3 | 12,000 | 36,0003 | 2 | 3 | 10 | 10,000 | 30,0004 | 3 | 1 | 10 | 20,000 | 200,0005 | 3 | 3 | 5 | 10,000 | 50,0006 | 4 | 1 | 5 | 20,000 | 100,0007 | 4 | 3 | 4 | 12,000 | 48,000
+
+| id | order_id | product_id | quantity | unit_price | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 5 | 20,000 | 100,000 |
+| 2 | 2 | 2 | 3 | 12,000 | 36,000 |
+| 3 | 2 | 3 | 10 | 10,000 | 30,000 |
+| 4 | 3 | 1 | 10 | 20,000 | 200,000 |
+| 5 | 3 | 3 | 5 | 10,000 | 50,000 |
+| 6 | 4 | 1 | 5 | 20,000 | 100,000 |
+| 7 | 4 | 3 | 4 | 12,000 | 48,000 |
+
+
 
 - Test case 4: ấn nút thêm khi đã quá số lượng tồn kho của sản phẩm
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblRoom:
 
-id | name | type | price | capacity | status1 | 101 | Normal | 200,000 | 20 | Active2 | 102 | VIP | 350,000 | 25 | Active3 | 103 | Normal | 200,000 | 20 | Active4 | 104 | VIP | 350,000 | 25 | Active
+
+| id | name | type | price | capacity | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | Normal | 200,000 | 20 | Active |
+| 2 | 102 | VIP | 350,000 | 25 | Active |
+| 3 | 103 | Normal | 200,000 | 20 | Active |
+| 4 | 104 | VIP | 350,000 | 25 | Active |
+
+
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
+
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+
+
 tblOrder:
 
-id | order_time | total_amount | status | room_receipt_id | employee_id1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 22 | 01/01/2020 20:14 | 66,000 | Served | 1 | 23 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2
+
+| id | order_time | total_amount | status | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:50 | 100,000 | Served | 1 | 2 |
+| 2 | 01/01/2020 20:14 | 66,000 | Served | 1 | 2 |
+| 3 | 02/01/2020 19:22 | 250,000 | Served | 3 | 2 |
+
+
 tblOrderDetail:
 
-id | order_id | product_id | quantity | unit_price | line_total1 | 1 | 1 | 5 | 20,000 | 100,0002 | 2 | 2 | 3 | 12,000 | 36,0003 | 2 | 3 | 10 | 10,000 | 30,0004 | 3 | 1 | 10 | 20,000 | 200,0005 | 3 | 3 | 5 | 10,000 | 50,000
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên phục vụ (id = 3) đăng nhập thành công | Giao diện hiện lên, bao gồm:
-- Danh sách phòng đang hoạt động, 
-- Có ô nhập tên phòng
-- Nút tìm.2. Nhập 104 và click tìm | Kết quả hiện lên:3. Click vào phòng 104 và click nút tạo order | Giao diện hiển thị bao gồm:
-- Tên phòng
-- Danh sách các sản phẩm
-- Nút thêm, ô nhập tên sản phẩm và nút tìm.4. Nhập “Bia Heniken”, “Bim Bim” | Kết quả hiện lên:5. Click nút “THÊM” | Kết quả hiện lên:6. Tiếp tục click nút “THÊM”” hoặc click “+” | Kết quả hiện lên:7. Click OK | Quay về giao diện tạo order.
+| id | order_id | product_id | quantity | unit_price | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 5 | 20,000 | 100,000 |
+| 2 | 2 | 2 | 3 | 12,000 | 36,000 |
+| 3 | 2 | 3 | 10 | 10,000 | 30,000 |
+| 4 | 3 | 1 | 10 | 20,000 | 200,000 |
+| 5 | 3 | 3 | 5 | 10,000 | 50,000 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên phục vụ (id = 3) đăng nhập thành công | Giao diện hiện lên, bao gồm: - Danh sách phòng đang hoạt động,  - Có ô nhập tên phòng - Nút tìm. |
+| 2. Nhập 104 và click tìm | Kết quả hiện lên: |
+| 3. Click vào phòng 104 và click nút tạo order | Giao diện hiển thị bao gồm: - Tên phòng - Danh sách các sản phẩm - Nút thêm, ô nhập tên sản phẩm và nút tìm. |
+| 4. Nhập “Bia Heniken”, “Bim Bim” | Kết quả hiện lên: |
+| 5. Click nút “THÊM” | Kết quả hiện lên: |
+| 6. Tiếp tục click nút “THÊM”” hoặc click “+” | Kết quả hiện lên: |
+| 7. Click OK | Quay về giao diện tạo order. |
+
+
 CSDL sau khi test: không có gì thay đổi.
 
-b) Chức năng Báo cáo tình trạng hàng
+### b) Chức năng Báo cáo tình trạng hàng
 - Test case 1: cơ sở vật chất chưa có trong CSDL
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblRoom:
 
-id | name | type | price | capacity | status1 | 101 | Normal | 200,000 | 20 | Active2 | 102 | VIP | 350,000 | 25 | Active3 | 103 | Normal | 200,000 | 20 | Active4 | 104 | VIP | 350,000 | 25 | Active
+
+| id | name | type | price | capacity | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | Normal | 200,000 | 20 | Active |
+| 2 | 102 | VIP | 350,000 | 25 | Active |
+| 3 | 103 | Normal | 200,000 | 20 | Active |
+| 4 | 104 | VIP | 350,000 | 25 | Active |
+
+
 tblFacility:
 
-id | name | unit | compensation_price | stock1 | Cốc thủy tinh | Cái | 100,000 | 402 | Đĩa thủy tinh | Cái | 200,000 | 403 | Micro | Cái | 1,500,000 | 20
+
+| id | name | unit | compensation_price | stock |
+| --- | --- | --- | --- | --- |
+| 1 | Cốc thủy tinh | Cái | 100,000 | 40 |
+| 2 | Đĩa thủy tinh | Cái | 200,000 | 40 |
+| 3 | Micro | Cái | 1,500,000 | 20 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+
+
 tblDamageReport:
 
-id | report_time | total_fine | room_receipt_id | employee_id1 | 02/01/2020 21:05 | 100,000 | 3 | 3
+
+| id | report_time | total_fine | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- |
+| 1 | 02/01/2020 21:05 | 100,000 | 3 | 3 |
+
+
 tblDamageDetail:
 
-id | facility_id | room_receipt_id | quantity | unit_fine_amount | line_total1 | 1 | 3 | 1 | 100,000 | 100,000
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên phục vụ (id = 2) đăng nhập thành công và ấn vào chức năng báo cáo tình trạng hàng. | Giao diện hiện lên gồm:
-- Các phòng đang ở trạng thái chờ dọn.
-- Ô nhập tên phòng
-- Nút tìm2. Nhập 104 và click tìm | Kết quả hiện lên:3. Click vào phòng 104 và click nút tạo báo cáo | Giao diện hiển thị bao gồm:
-- Tên phòng
-- Danh sách các cơ sở vật chất
-- Ô nhập tên csvc
-- Nút tìm
-- Ô nhập số lượng4. Nhập “Thìa” và click tìm | Giao diện hiện lên:5. Click OK | Quay về giao diện báo cáo.
+| id | facility_id | room_receipt_id | quantity | unit_fine_amount | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 3 | 1 | 100,000 | 100,000 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên phục vụ (id = 2) đăng nhập thành công và ấn vào chức năng báo cáo tình trạng hàng. | Giao diện hiện lên gồm: - Các phòng đang ở trạng thái chờ dọn. - Ô nhập tên phòng - Nút tìm |
+| 2. Nhập 104 và click tìm | Kết quả hiện lên: |
+| 3. Click vào phòng 104 và click nút tạo báo cáo | Giao diện hiển thị bao gồm: - Tên phòng - Danh sách các cơ sở vật chất - Ô nhập tên csvc - Nút tìm - Ô nhập số lượng |
+| 4. Nhập “Thìa” và click tìm | Giao diện hiện lên: |
+| 5. Click OK | Quay về giao diện báo cáo. |
+
+
 CSDL sau khi test: không có gì thay đổi.
 
 - Test case 2: cơ sở vật chất có trong CSDL:
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblRoom:
 
-id | name | type | price | capacity | status1 | 101 | Normal | 200,000 | 20 | Active2 | 102 | VIP | 350,000 | 25 | Active3 | 103 | Normal | 200,000 | 20 | Active4 | 104 | VIP | 350,000 | 25 | Active
+
+| id | name | type | price | capacity | status |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 101 | Normal | 200,000 | 20 | Active |
+| 2 | 102 | VIP | 350,000 | 25 | Active |
+| 3 | 103 | Normal | 200,000 | 20 | Active |
+| 4 | 104 | VIP | 350,000 | 25 | Active |
+
+
 tblFacility:
 
-id | name | unit | compensation_price | stock1 | Cốc thủy tinh | Cái | 100,000 | 402 | Đĩa thủy tinh | Cái | 200,000 | 403 | Micro | Cái | 1,500,000 | 20
+
+| id | name | unit | compensation_price | stock |
+| --- | --- | --- | --- | --- |
+| 1 | Cốc thủy tinh | Cái | 100,000 | 40 |
+| 2 | Đĩa thủy tinh | Cái | 200,000 | 40 |
+| 3 | Micro | Cái | 1,500,000 | 20 |
+
+
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+
+
 tblDamageReport:
 
-id | report_time | total_fine | room_receipt_id | employee_id1 | 02/01/2020 21:05 | 100,000 | 3 | 3
+
+| id | report_time | total_fine | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- |
+| 1 | 02/01/2020 21:05 | 100,000 | 3 | 3 |
+
+
 tblDamageDetail:
 
-id | facility_id | room_receipt_id | quantity | unit_fine_amount | line_total1 | 1 | 3 | 1 | 100,000 | 100,000
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên phục vụ (id = 2) đăng nhập thành công và ấn vào chức năng báo cáo tình trạng hàng. | Giao diện hiện lên gồm:
-- Các phòng đang ở trạng thái chờ dọn.
-- Ô nhập tên phòng
-- Nút tìm2. Nhập 104 và click tìm | Kết quả hiện lên:3. Click vào phòng 104 và click nút tạo báo cáo | Giao diện hiển thị bao gồm:
-- Tên phòng
-- Danh sách các cơ sở vật chất
-- Ô nhập tên csvc
-- Nút tìm
-- Ô nhập số lượng4. Nhập “Cốc thủy tinh” và click tìm | Giao diện hiện lên:5. Nhập số lượng “2” và click lưu | Kết quả hiện lên:6. Click OK | Hệ thống tự động trừ số lượng vào bảng tblFacility và quay về giao diện chính của nhân viên phục vụ.
+| id | facility_id | room_receipt_id | quantity | unit_fine_amount | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 3 | 1 | 100,000 | 100,000 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên phục vụ (id = 2) đăng nhập thành công và ấn vào chức năng báo cáo tình trạng hàng. | Giao diện hiện lên gồm: - Các phòng đang ở trạng thái chờ dọn. - Ô nhập tên phòng - Nút tìm |
+| 2. Nhập 104 và click tìm | Kết quả hiện lên: |
+| 3. Click vào phòng 104 và click nút tạo báo cáo | Giao diện hiển thị bao gồm: - Tên phòng - Danh sách các cơ sở vật chất - Ô nhập tên csvc - Nút tìm - Ô nhập số lượng |
+| 4. Nhập “Cốc thủy tinh” và click tìm | Giao diện hiện lên: |
+| 5. Nhập số lượng “2” và click lưu | Kết quả hiện lên: |
+| 6. Click OK | Hệ thống tự động trừ số lượng vào bảng tblFacility và quay về giao diện chính của nhân viên phục vụ. |
+
+
 CSDL sau khi test:
 tblFacility:
 
-id | name | unit | compensation_price | stock1 | Cốc thủy tinh | Cái | 100,000 | 382 | Đĩa thủy tinh | Cái | 200,000 | 403 | Micro | Cái | 1,500,000 | 20
+
+| id | name | unit | compensation_price | stock |
+| --- | --- | --- | --- | --- |
+| 1 | Cốc thủy tinh | Cái | 100,000 | 38 |
+| 2 | Đĩa thủy tinh | Cái | 200,000 | 40 |
+| 3 | Micro | Cái | 1,500,000 | 20 |
+
+
 
 tblRoomReceipt:
 
-id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 12 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 23 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 24 | 03/01/2020 09:00 | 03/01/2020 11:00 | 200,000 | 148,000 | 100,000 | 448,000 | UNPAID | 4 | 3
+
+| id | checkin_time | checkout_time | room_fee | service_fee | damage_fee | total_amount | status | employee_id | room_id |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 01/01/2020 18:00 | 01/01/2020 21:00 | 200,000 | 166,000 | 0 | 366,000 | PAID | 4 | 1 |
+| 2 | 01/01/2020 18:00 | 03/01/2020 21:00 | 350,000 | 0 | 0 | 350,000 | PAID | 4 | 2 |
+| 3 | 02/01/2020 19:00 | 02/01/2020 21:00 | 350,000 | 250,000 | 100,000 | 700,000 | PAID | 4 | 2 |
+| 4 | 03/01/2020 09:00 | 03/01/2020 11:00 | 200,000 | 148,000 | 100,000 | 448,000 | UNPAID | 4 | 3 |
+
+
 tblDamageReport:
 
-id | report_time | total_fine | room_receipt_id | employee_id1 | 02/01/2020 21:05 | 100,000 | 3 | 32 | 03/01/2020 11:10 | 100,000 | 4 | 2
+
+| id | report_time | total_fine | room_receipt_id | employee_id |
+| --- | --- | --- | --- | --- |
+| 1 | 02/01/2020 21:05 | 100,000 | 3 | 3 |
+| 2 | 03/01/2020 11:10 | 100,000 | 4 | 2 |
+
+
 tblDamageDetail:
 
-id | facility_id | room_receipt_id | quantity | unit_fine_amount | line_total1 | 1 | 3 | 1 | 100,000 | 100,0002 | 1 | 4 | 1 | 100,000 | 100,000
 
-c) Chức năng quản lý menu
+| id | facility_id | room_receipt_id | quantity | unit_fine_amount | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 3 | 1 | 100,000 | 100,000 |
+| 2 | 1 | 4 | 1 | 100,000 | 100,000 |
+
+
+
+### c) Chức năng quản lý menu
 - Test case 1: sản phẩm chưa có trong CSDL
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
 
-Các bước thực hiện | Kết quả mong đợi1. Nhân viên quản lý (id = 1) đăng nhập thành công và click vào chức năng quản lý menu. | Giao diện hiển thị:
-- Danh sách các sản phẩm
-- Ô nhập tên sản phẩm
-- Nút tìm
-- Nút thêm
-- Nút sửa
-- Nút xóa2. Nhập “Cơm rang” và ấn tìm kiếm | Kết quả hiển thị:
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong đợi |
+| --- | --- |
+| 1. Nhân viên quản lý (id = 1) đăng nhập thành công và click vào chức năng quản lý menu. | Giao diện hiển thị: - Danh sách các sản phẩm - Ô nhập tên sản phẩm - Nút tìm - Nút thêm - Nút sửa - Nút xóa |
+| 2. Nhập “Cơm rang” và ấn tìm kiếm | Kết quả hiển thị: |
+
+
 CSDL sau khi test: không có gì thay đổi.
 
 - Test case 2: có sản phẩm trong CSDL:
 CSDL trước khi test:
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
 
-Các bước thực hiện | Kết quả mong muốn1. Nhân viên quản lý (id = 1) đăng nhập thành công và click vào chức năng quản lý menu. | Giao diện hiển thị:
-- Danh sách các sản phẩm
-- Ô nhập tên sản phẩm
-- Nút tìm
-- Nút thêm
-- Nút sửa
-- Nút xóa2. Nhập “Bia Heniken” và click tìm kiếm | Giao diện hiển thị:3. Click vào chức năng “Sửa” | Giao diện hiển thị:4. Sửa giá sản phẩm thành “25,000” | Giao diện hiển thị:5. Click “Lưu” | Thông báo hiện lên “Sửa thành công”6. Click OK | Hệ thống cập nhật lại vào CSDL, về lại giao diện Menu.
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 20,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong muốn |
+| --- | --- |
+| 1. Nhân viên quản lý (id = 1) đăng nhập thành công và click vào chức năng quản lý menu. | Giao diện hiển thị: - Danh sách các sản phẩm - Ô nhập tên sản phẩm - Nút tìm - Nút thêm - Nút sửa - Nút xóa |
+| 2. Nhập “Bia Heniken” và click tìm kiếm | Giao diện hiển thị: |
+| 3. Click vào chức năng “Sửa” | Giao diện hiển thị: |
+| 4. Sửa giá sản phẩm thành “25,000” | Giao diện hiển thị: |
+| 5. Click “Lưu” | Thông báo hiện lên “Sửa thành công” |
+| 6. Click OK | Hệ thống cập nhật lại vào CSDL, về lại giao diện Menu. |
+
+
 CSDL sau khi test: chỉ có tblProduct thay đổi
 tblProduct:
 
-id | name | category | unit | price | current_stock | safety_stock1 | Bia Heniken | Đồ uống | Lon | 25,000 | 10 | 502 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 303 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50
-d) Chức năng quản lý kho
+
+| id | name | category | unit | price | current_stock | safety_stock |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | Bia Heniken | Đồ uống | Lon | 25,000 | 10 | 50 |
+| 2 | Nước lọc | Đồ uống | Chai | 12,000 | 50 | 30 |
+| 3 | Bim Bim | Đồ ăn | Gói | 10,000 | 80 | 50 |
+
+
+### d) Chức năng quản lý kho
 - Test case 1: không có tên nhà cung cấp trong CSDL
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblProvider:
 
-id | name | tel | address1 | Công ty cổ phần bia-rượu-nước giải khát | 123456 | abcd2 | Công ty Cổ phần Acecook Việt Nam | 246357 | xyzt
 
-Các bước thực hiện | Kết quả mong muốn1. Nhân viên quản lý đăng nhập thành công và click vào chức năng quản lý kho. | Giao diện hiển thị danh sách thông tin các sản phẩm và có nút nhập hàng.2. Quản lý thấy một số sản phẩm sắp hết (báo đỏ) và click vào nút nhập hàng. | Giao diện hiển thị:
-- Danh sách các nhà cung cấp
-- Ô nhập tên nhà cung cấp
-- Nút tìm
-- Nút tạo phiếu nhập hàng3. Quản lý nhập “Thực phẩm Tân Việt” | Giao diện hiển thị:
+| id | name | tel | address |
+| --- | --- | --- | --- |
+| 1 | Công ty cổ phần bia-rượu-nước giải khát | 123456 | abcd |
+| 2 | Công ty Cổ phần Acecook Việt Nam | 246357 | xyzt |
+
+
+
+
+| Các bước thực hiện | Kết quả mong muốn |
+| --- | --- |
+| 1. Nhân viên quản lý đăng nhập thành công và click vào chức năng quản lý kho. | Giao diện hiển thị danh sách thông tin các sản phẩm và có nút nhập hàng. |
+| 2. Quản lý thấy một số sản phẩm sắp hết (báo đỏ) và click vào nút nhập hàng. | Giao diện hiển thị: - Danh sách các nhà cung cấp - Ô nhập tên nhà cung cấp - Nút tìm - Nút tạo phiếu nhập hàng |
+| 3. Quản lý nhập “Thực phẩm Tân Việt” | Giao diện hiển thị: |
+
+
 CSDL sau khi test: không có gì thay đổi
 
 - Test case 2: đã có tên nhà cung cấp trong CSDL
 CSDL trước khi test:
 tblEmployee:
 
-id | full_name | dob | tel | role | username | password | status1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working
+
+| id | full_name | dob | tel | role | username | password | status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Nguyễn Gia Đức Trung | 10/09/2005 | 123456 | Quản lý | manager | trung@123 | Working |
+| 2 | Trần Xuân Thành | 20/08/2005 | 112233 | Phục vụ | staff | thanh@123 | Working |
+| 3 | Phạm Tuấn Anh | 14/01/2005 | 224466 | Phục vụ | staff | tuan@123 | Working |
+| 4 | Vũ Hùng Anh | 03/01/2005 | 445566 | Phục vụ | staff | hanh@123 | Working |
+
+
 tblProvider:
 
-id | name | tel | address1 | Công ty cổ phần bia-rượu-nước giải khát | 123456 | abcd2 | Công ty Cổ phần Acecook Việt Nam | 246357 | xyzt
+
+| id | name | tel | address |
+| --- | --- | --- | --- |
+| 1 | Công ty cổ phần bia-rượu-nước giải khát | 123456 | abcd |
+| 2 | Công ty Cổ phần Acecook Việt Nam | 246357 | xyzt |
+
+
 tblImportReceipt:
 
-id | import_date | total_cost | employee_id | provider_id1 | 02/01/2020 | 100,000 | 1 | 1
+
+| id | import_date | total_cost | employee_id | provider_id |
+| --- | --- | --- | --- | --- |
+| 1 | 02/01/2020 | 100,000 | 1 | 1 |
+
+
 tblImportDetail:
 
-id | product_id | import_receipt_id | quantity | unit_cost | line_total1 | 1 | 1 | 50 | 18,000 | 900,000
 
-Các bước thực hiện | Kết quả mong muốn1. Nhân viên quản lý đăng nhập thành công và click vào chức năng quản lý kho. | Giao diện hiển thị danh sách thông tin các sản phẩm và có nút nhập hàng.2. Quản lý thấy một số sản phẩm sắp hết (báo đỏ) và click vào nút nhập hàng. | Giao diện hiển thị:
-- Danh sách các nhà cung cấp
-- Ô nhập tên nhà cung cấp
-- Nút tìm
-- Nút tạo phiếu nhập hàng3. Quản lý nhập “Bia-rượu-nước giải khát” | Giao diện hiển thị:4. Click vào nhà cung cấp và click nút tạo phiếu nhập hàng. | Giao diện hiển thị:5. Nhập các thông tin “Bia Heniken”, “50”, “18,000” vàclick “LƯU” | Hiển thị thông báo thành công.6. Click OK | Hệ thống lưu phiếu vào CSDL và quay lại màn hình chính của quản lý.
+| id | product_id | import_receipt_id | quantity | unit_cost | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 1 | 1 | 50 | 18,000 | 900,000 |
+
+
+
+
+| Các bước thực hiện | Kết quả mong muốn |
+| --- | --- |
+| 1. Nhân viên quản lý đăng nhập thành công và click vào chức năng quản lý kho. | Giao diện hiển thị danh sách thông tin các sản phẩm và có nút nhập hàng. |
+| 2. Quản lý thấy một số sản phẩm sắp hết (báo đỏ) và click vào nút nhập hàng. | Giao diện hiển thị: - Danh sách các nhà cung cấp - Ô nhập tên nhà cung cấp - Nút tìm - Nút tạo phiếu nhập hàng |
+| 3. Quản lý nhập “Bia-rượu-nước giải khát” | Giao diện hiển thị: |
+| 4. Click vào nhà cung cấp và click nút tạo phiếu nhập hàng. | Giao diện hiển thị: |
+| 5. Nhập các thông tin “Bia Heniken”, “50”, “18,000” vàclick “LƯU” | Hiển thị thông báo thành công. |
+| 6. Click OK | Hệ thống lưu phiếu vào CSDL và quay lại màn hình chính của quản lý. |
+
+
 CSDL sau khi test:
 tblImportReceipt:
 
-id | import_date | total_cost | employee_id | provider_id1 | 02/01/2020 | 100,000 | 1 | 22 | 04/01/2020 | 900,000 | 1 | 1
+
+| id | import_date | total_cost | employee_id | provider_id |
+| --- | --- | --- | --- | --- |
+| 1 | 02/01/2020 | 100,000 | 1 | 2 |
+| 2 | 04/01/2020 | 900,000 | 1 | 1 |
+
+
 tblImportDetail:
 
-id | product_id | import_receipt_id | quantity | unit_cost | line_total1 | 3 | 1 | 10 | 10,000 | 100,0002 | 1 | 2 | 50 | 18,000 | 900,000
+
+| id | product_id | import_receipt_id | quantity | unit_cost | line_total |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 3 | 1 | 10 | 10,000 | 100,000 |
+| 2 | 1 | 2 | 50 | 18,000 | 900,000 |
 
 
