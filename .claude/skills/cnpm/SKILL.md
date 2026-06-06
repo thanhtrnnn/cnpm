@@ -23,14 +23,19 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 1. **Hướng Use-case:** Mọi phân tích, thiết kế đều xuất phát từ Use-case.
 2. **BCE:** Luôn phân rã theo Boundary – Control – Entity.
 3. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
-   - **Pha Phân tích:** Thông điệp sequence diagram = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản (VD: `"Lớp Room gọi phương thức searchFreeRoom()"`, `"nhập ngày + nhấn Tìm"`)
-   - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (VD: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`)
-4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến — MỌI pha đều dùng tiếng Anh).
+   - **Pha Phân tích:** Arrow labels trong PlantUML = tiếng Anh ngắn gọn (`click btnSearch`, `display room list`). Kịch bản phiên bản 2 text = tiếng Việt tự nhiên.
+   - **Pha Thiết kế:** Arrow labels = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (`searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`).
+   - **Tên class và tên bảng DB từ pha II trở đi:** BẮT BUỘC tiếng Anh PascalCase (`Client`, `Employee`, `tblClient`). Tên tiếng Việt chỉ dùng trong văn xuôi phân tích, không dùng làm tên class/bảng.
+   - **Tên attribute:** Nhất quán tiếng Anh xuyên suốt II→III. Đã dùng `fullName` ở II.2 thì giữ `fullName` ở III.1, không đổi thành `hoTen`.
+4. **Văn bản:** 100% tiếng Việt (trừ tên hàm/biến/class/bảng).
 5. **UML:** PlantUML trong code block plantuml.
 6. **Công nghệ giao diện:** Hỏi người dùng chọn JFrame (Java Swing) hoặc HTML (React) ngay từ BƯỚC 0 PLAN. Toàn bộ Boundary classes, wireframe, và sequence diagram phải thống nhất theo lựa chọn này.
 7. **Diễn giải tuần tự (BẮT BUỘC cho II.4 và III.4):** Bên cạnh biểu đồ sequence diagram, PHẢI viết block diễn giải tuần tự dạng danh sách đánh số trong callout:
-   - **II.4 (Phân tích):** Kịch bản phiên bản 2 — tiếng Việt tự nhiên, mô tả Actor ↔ Boundary ↔ Entity. Xem `references/ii.4_tuantu_phantich.md`.
-   - **III.4 (Thiết kế):** Kịch bản phiên bản 3 — có tên hàm Java + kiểu dữ liệu, mô tả Actor ↔ Boundary ↔ DAO ↔ Entity. Xem `references/iii.4_tuantu_thietke.md`.
+   - **II.4 (Phân tích):** Kịch bản phiên bản 2 — tiếng Việt tự nhiên, **bullet** (gạch đầu dòng), mô tả Actor ↔ Boundary ↔ Entity. Xem `references/ii.4_tuantu_phantich.md`.
+   - **III.4 (Thiết kế):** Kịch bản phiên bản 3 — có tên hàm Java + kiểu dữ liệu, **danh sách đánh số**, mô tả Actor ↔ Boundary ↔ Controller ↔ Entity. Xem `references/iii.4_tuantu_thietke.md`.
+8. **Sequence diagram: TOÀN BỘ tiếng Anh trong `@startuml…@enduml`** — bao gồm `title`, actor display name (`actor "Staff" as Actor`), và arrow labels (`enter keyword + click Search`, `display results`, `saveOrder(order: Order): boolean`). KHÔNG có tiếng Việt bên trong block PlantUML. Kịch bản phiên bản 2/3 text bên ngoài PlantUML giữ tiếng Việt bình thường.
+9. **Mỗi mũi tên = 1 bước đánh số** — kể cả return arrow `-->`. Tổng N bước ghi trong `(N bước)` ở heading, title PlantUML, và bold kịch bản PHẢI khớp chính xác số mũi tên trong sơ đồ.
+10. **Không dùng `alt` trong sequence diagram** — cả pha phân tích lẫn thiết kế chỉ vẽ luồng chính. Ngoại lệ xử lý bằng block text "Ngoại lệ" đặt sau biểu đồ (không nhúng vào PlantUML).
 
 ---
 
@@ -115,7 +120,7 @@ Plan phải:
 |-----|-----|----------------------|
 | II.1 | Mô hình hóa chức năng | UC [X]: [N] bước, ngoại lệ tại bước [3, 10, 24] |
 | II.2 | Mô hình hóa lớp | Lớp dự kiến: [A, B, C, D]; quan hệ n-n: [A–B] |
-| II.3 | Sơ đồ lớp phân tích | Boundary: [Frm1, Frm2]; Entity: [A, B, C] |
+| II.3 | Sơ đồ lớp phân tích | Boundary: [XxxView, YyyView]; Entity: [A, B, C] |
 | II.4 | Biểu đồ tuần tự phân tích | [N] biểu đồ cho [N] UC |
 
 ### Pha III – Design
@@ -134,6 +139,21 @@ Plan phải:
 ```
 
 Sau khi sinh plan, **chờ user xác nhận hoặc điều chỉnh** trước khi viết bất kỳ nội dung thật nào. Nếu user chỉ muốn làm một vài mục, chỉ giữ lại những mục đó trong plan rồi xác nhận lại.
+
+**Khi hệ thống có ≥ 2 module**, plan PHẢI bao gồm thêm **Bảng entity chuẩn toàn hệ thống** (xác lập trước khi viết bất kỳ module nào):
+
+```markdown
+## Bảng entity chuẩn toàn hệ thống
+
+| Khái niệm | Tên class (EN) | Tên bảng DB | Xuất hiện ở module |
+|-----------|---------------|------------|-------------------|
+| Khách hàng | Client | tblClient | booking, services, core |
+| Nhân viên | Employee | tblEmployee | account, booking, core |
+| Hạng hội viên | MembershipTier | tblMembershipTier | account, core |
+| ...       | ...           | ...        | ...               |
+```
+
+Mọi module PHẢI tham chiếu bảng này. Không được tự đặt tên khác cho cùng một khái niệm giữa các module.
 
 ---
 
@@ -236,14 +256,49 @@ Dùng `` `text` `` cho:
 - Nếu bước chứa bảng → tối đa 2 cột trong Notion
 
 ### Heading hierarchy
-- `##` = section chính (II.3, III.2)
-- `###` = sub-section (a, b, c, d)
-- `**bold paragraph**` = tiêu đề con (1. Tầng giao diện)
+
+Cấp bậc cứng — KHÔNG tự ý thêm cấp:
+
+| Pattern | Heading | Ví dụ |
+|---------|---------|-------|
+| `N.` | `##` (H2) | `## II.3. Sơ đồ lớp phân tích` |
+| `N.N.` | `###` (H3) | `### II.3.1. Boundary` |
+| `N.N.N.` | `####` (H4) | `#### II.3.1.1. LoginView` |
+| `a) b) c)` | `**bold paragraph**` (KHÔNG phải heading) | `**a) Tầng giao diện**` |
+| ý con | `- bullet` | `- Mô tả chi tiết` |
 
 ### PlantUML
 - Luôn dùng code block `plantuml`, KHÔNG dùng `javascript`
 - Class diagram: 3 cột Boundary | Control | Entity
 - **Đồng nhất 1 sơ đồ cho toàn module** (không tách theo chức năng)
+
+---
+
+## Nhất quán Analysis ↔ Design (BẮT BUỘC)
+
+### Entity class: phải khớp 1:1 giữa pha II và pha III
+
+Bộ Entity class trong **III.3.2** (gói `<<Entity>>`) PHẢI khớp hoàn toàn với bộ lớp thực thể xác định ở **II.2**:
+- **Không thừa:** Không được thêm Entity class trong thiết kế mà analysis không có.
+- **Không thiếu:** Không được bỏ sót Entity class đã xác định ở analysis.
+
+Nếu phát hiện không khớp → phải sửa II.2 hoặc III.3.2 trước khi tiếp tục.
+
+### Naming convention Boundary theo pha
+
+| Pha | Variant | Suffix | Ví dụ |
+|-----|---------|--------|-------|
+| II.3 / II.4 (Phân tích) | Chung | `...View` | `LoginView`, `SearchRoomView` |
+| III.3.2 / III.4 (Thiết kế) | JFrame | `...Frm` (tiếng Anh) | `LoginFrm`, `SearchRoomFrm`, `EditRoomFrm` |
+| III.3.2 / III.4 (Thiết kế) | React | `...Page` | `LoginPage`, `SearchRoomPage`, `CreateOrderPage` |
+
+### Gọi liên module (cross-module API)
+
+Khi một module gọi method hoặc dùng dữ liệu từ module khác → khai báo rõ bằng comment trong PlantUML:
+```plantuml
+' [cross-module] BookingModule.getBookingHistory(clientId)
+```
+và ghi chú trong II.1 hoặc III.4 phần mô tả actor/precondition.
 
 ---
 
@@ -536,9 +591,9 @@ Invoice --> ServiceOrder
 ### Biểu đồ Tuần tự (Sequence Diagram)
 
 - Participants xếp theo thứ tự: Actor → Boundary → [Control] → DAO → Entity
-- Thông điệp đánh số liên tục
-- Dùng `alt` cho ngoại lệ
-- Phân tích: thông điệp tiếng Việt + tên hàm tiếng Anh đơn giản · Thiết kế: tên hàm tiếng Anh + kiểu dữ liệu
+- Thông điệp đánh số liên tục — mỗi mũi tên (kể cả return `-->`) = 1 bước
+- **Không dùng `alt`** — chỉ vẽ luồng chính; ngoại lệ → block text sau biểu đồ
+- Arrow labels: tiếng Anh trong `@startuml` (cả phân tích lẫn thiết kế)
 - **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation): dùng `boundary "Name"`, `entity "Name"`, `control "Name"` khi khai báo participant. KHÔNG dùng `participant "Name"` (sẽ hiển thị khung).
 - **Activation bar màu xanh:** `skinparam SequenceLifeLineBackgroundColor #7AD2FF`
 

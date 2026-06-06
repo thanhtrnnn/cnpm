@@ -4,29 +4,29 @@
 
 Vẽ **đầy đủ cho MỌI UC** trong module — không bỏ sót UC nào. Mỗi UC một biểu đồ riêng.
 Luồng chuẩn: `Actor → Boundary → [Control] → Entity`.
-Thông điệp **PHẢI bằng tiếng Việt tự nhiên**, đánh số thứ tự liên tục trong mỗi biểu đồ.
-Phải thể hiện cả nhánh `alt` cho các kịch bản ngoại lệ đã viết ở II.1.
+Arrow labels trong `@startuml` **PHẢI tiếng Anh ngắn gọn** (`click btnSearch`, `display results`, `enter keyword`). Kịch bản phiên bản 2 text bên ngoài PlantUML giữ tiếng Việt.
+**Biểu đồ chỉ thể hiện luồng chính. Không dùng `alt`.** Ngoại lệ → viết block text riêng sau biểu đồ.
 
 ### Diễn giải tuần tự (Kịch bản phiên bản 2) — BẮT BUỘC
 
-Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tuần tự** dưới dạng danh sách đánh số, theo format "Kịch bản phiên bản 2". Block này mô tả chi tiết từng bước tương tác giữa Actor, Boundary và Entity bằng tiếng Việt tự nhiên.
+Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tuần tự** dạng **danh sách bullet (gạch đầu dòng)**, theo format "Kịch bản phiên bản 2". Block này mô tả chi tiết từng bước tương tác giữa Actor, Boundary và Entity bằng tiếng Việt tự nhiên.
 
 **Format:**
 
 ```
 **Kịch bản phiên bản 2 – UC [Tên UC]**
 
-1. [Actor] [hành động] để [mục đích].
-2. [Actor] chọn chức năng [tên chức năng] trên giao diện [BoundaryName].
-3. Lớp [BoundaryName] gọi lớp [NextBoundary].
-4. Lớp [NextBoundary] hiển thị giao diện cho [Actor].
-5. [Actor] hỏi [thông tin] từ [đối tượng].
-6. [đối tượng] trả lời [thông tin].
-7. [Actor] nhập [thông tin] và nhấn nút [hành động].
-8. Lớp [Boundary] gọi lớp [Entity] để xử lý.
-9. Lớp [Entity] gọi phương thức [simpleMethodName].
-10. Lớp [Entity] trả kết quả về cho lớp [Boundary].
-11. Lớp [Boundary] hiển thị kết quả cho [Actor].
+- [Actor] [hành động] để [mục đích].
+- [Actor] chọn chức năng [tên chức năng] trên giao diện [BoundaryName].
+- Lớp [BoundaryName] gọi lớp [NextBoundary].
+- Lớp [NextBoundary] hiển thị giao diện cho [Actor].
+- [Actor] hỏi [thông tin] từ [đối tượng].
+- [đối tượng] trả lời [thông tin].
+- [Actor] nhập [thông tin] và nhấn nút [hành động].
+- Lớp [Boundary] gọi lớp [Entity] để xử lý.
+- Lớp [Entity] gọi phương thức [simpleMethodName].
+- Lớp [Entity] trả kết quả về cho lớp [Boundary].
+- Lớp [Boundary] hiển thị kết quả cho [Actor].
 ...
 
 **Ngoại lệ: [tên ngoại lệ]**
@@ -35,16 +35,17 @@ Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tu�
 ```
 
 **Quy tắc:**
+- Kịch bản phiên bản 2 dùng **bullet** (gạch đầu dòng `- `), không đánh số
 - Mỗi bước là một câu hoàn chỉnh bằng tiếng Việt
-- Tên class giữ nguyên tiếng Việt, hậu tố `View` (LoginView, StaffHomeView, SearchRoomView, DamageReportView, ConfirmReportView...)
-- Tên hàm trong mô tả và biểu đồ PHẢI dùng tiếng Anh đơn giản (searchFreeRoom, checkLogin, addBooking...) — KHÔNG dùng tên tiếng Việt, KHÔNG có tham số/kiểu dữ liệu
+- Tên class giữ nguyên tiếng Anh, hậu tố `View` (LoginView, SearchRoomView, SearchXView, CreateXView...)
+- Tên hàm trong mô tả PHẢI dùng tiếng Anh đơn giản (searchFreeRoom, checkLogin, addBooking...) — KHÔNG dùng tên tiếng Việt, KHÔNG có tham số/kiểu dữ liệu
 - Mô tả cả Actor ↔ Boundary interaction (hỏi khách, nhập thông tin, nhấn nút)
-- Mỗi nhánh ngoại lệ từ II.1 → một block "Ngoại lệ" riêng ở cuối
-- Số bước phải khớp chính xác với các mũi tên trong biểu đồ PlantUML
+- Mỗi nhánh ngoại lệ từ II.1 → một block "Ngoại lệ" riêng ở cuối (text only, không PlantUML)
+- Số bước trong kịch bản phải khớp chính xác với số mũi tên trong biểu đồ PlantUML (kể cả return `-->`)
 
 ```plantuml
 @startuml
-' --- Layout & Spacing Skinparams ---
+' --- Main flow only — no alt blocks ---
 skinparam shadowing false
 skinparam SequenceMessageAlign left
 
@@ -95,30 +96,30 @@ sequenceDiagram {
 }
 </style>
 
-title [Tên UC] – Tuần tự Phân tích
+title [UC Name] – Analysis Sequence ([N] steps)
 
-actor "Tên Actor" as Actor
+actor "Actor Name" as Actor
 boundary LoginView
 boundary SearchRoomView
 entity TenThucThe
 
-Actor -> LoginView : 1: click chức năng X
+Actor -> LoginView : 1: select function X
 activate LoginView
-LoginView -> SearchRoomView : 2: mở giao diện tìm X
+LoginView -> SearchRoomView : 2: open search screen
 activate SearchRoomView
-Actor -> SearchRoomView : 3: nhập từ khóa + nhấn Tìm
-SearchRoomView -> TenThucThe : 4: gọi searchX()
+Actor -> SearchRoomView : 3: enter keyword + click Search
+SearchRoomView -> TenThucThe : 4: searchX()
 activate TenThucThe
 TenThucThe -> TenThucThe : 5: searchX()
-TenThucThe --> SearchRoomView : 6: trả về danh sách
+TenThucThe --> SearchRoomView : 6: return results
 deactivate TenThucThe
-SearchRoomView --> Actor : 7: hiển thị kết quả
+SearchRoomView --> Actor : 7: display results
 deactivate SearchRoomView
 deactivate LoginView
-
-alt Ngoại lệ: không tìm thấy kết quả
-  TenThucThe --> SearchRoomView : trả về rỗng
-  SearchRoomView --> Actor : thông báo không tìm thấy
-end
 @enduml
 ```
+
+**Ngoại lệ: searchX() không tìm thấy kết quả**
+- Lớp `TenThucThe` trả về danh sách rỗng cho `SearchRoomView`.
+- `SearchRoomView` hiển thị thông báo "Không tìm thấy kết quả".
+- Actor nhập lại từ khóa khác (quay về bước 3).

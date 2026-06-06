@@ -2,6 +2,27 @@
 
 ## I.1. Mô hình nghiệp vụ bằng UML
 
+**Hai bảng BẮT BUỘC trình bày TRƯỚC biểu đồ PlantUML:**
+
+**Bảng UC chính thức (R01):**
+
+| Mã UC | Tên UC | Actor | Mô tả ngắn |
+|-------|--------|-------|-----------|
+| UC01 | [Tên UC đầy đủ] | [Actor chính] | [1–2 câu mô tả mục đích] |
+| UC02 | ... | ... | ... |
+
+**Bảng quan hệ Include/Extend (R03):**
+
+| UC | Quan hệ | UC liên quan | Ghi chú |
+|----|---------|-------------|---------|
+| UC01 | `<<include>>` | UC02 | UC02 bắt buộc mỗi lần thực hiện UC01 |
+| UC03 | `<<extend>>` | UC01 | UC03 chỉ kích hoạt khi [điều kiện X] |
+| UC04 | generalization | UC01 | UC04 là trường hợp riêng của UC01 |
+
+Nếu không có quan hệ include/extend → ghi rõ "Không có" thay vì bỏ trống bảng.
+
+---
+
 **Quy trình 4 bước (BẮT BUỘC thực hiện và trình bày):**
 
 - **Bước 1:** Copy các UC + actor liên quan từ UC tổng quan của hệ thống vào phạm vi module.

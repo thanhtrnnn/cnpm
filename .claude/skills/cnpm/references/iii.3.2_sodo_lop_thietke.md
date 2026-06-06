@@ -2,6 +2,8 @@
 
 ## III.3.2. Sơ đồ lớp thiết kế
 
+> **Kiểm tra nhất quán trước khi vẽ:** Bộ Entity class trong gói `<<Entity>>` PHẢI khớp 1:1 với lớp thực thể đã xác định ở II.2 — không thừa (class không có trong analysis), không thiếu (class có trong analysis bị bỏ). Nếu phát hiện lệch → sửa II.2 hoặc điều chỉnh trước khi tiếp tục.
+
 ### Kiến trúc React MVC (BẮT BUỘC cho React + Spring Boot)
 
 3 tầng: **Boundary** (React) → **Control** (Spring Boot) → **Entity** (JPA)
@@ -76,29 +78,45 @@ Với mỗi phương thức trong Control, trình bày:
 
 ### Variant JFrame (dự án JFrame)
 
+**Quy tắc Boundary JFrame:**
+
+| Quy tắc | Mẫu | Ví dụ |
+|---------|-----|-------|
+| Tên lớp | `[EnglishName]Frm` | `LoginFrm`, `SearchRoomFrm`, `EditRoomFrm`, `AddClientFrm` |
+| Extends | `JFrame implements ActionListener` | Mọi Frm đều kế thừa JFrame |
+| Attribute UI | `- txt[Name] : JTextField`, `- btn[Name] : JButton`, `- tbl[Name] : JTable` | `- txtKey : JTextField`, `- btnSearch : JButton` |
+| Attribute user | `- user : User` | Lưu user đăng nhập — mọi Frm cần phân quyền đều có |
+| Constructor | `+ FrmName(u : User)` hoặc `+ FrmName(u : User, obj : DomainObj)` | `+ SearchRoomFrm(u : User)`, `+ EditRoomFrm(u : User, r : Room)` |
+| Event handler | `+ actionPerformed(e : ActionEvent) : void` | Mọi Frm đều implement |
+
 ```plantuml
 @startuml
 title Biểu đồ lớp thiết kế – Module [Tên] (JFrame)
 
-class GDChinhFrm {
-  -nv : NhanVien
-  +btnChucNang : JButton
+class LoginFrm {
+  -txtUsername : JTextField
+  -txtPassword : JTextField
+  -btnLogin : JButton
+  +LoginFrm()
   +actionPerformed(e : ActionEvent) : void
 }
 
-class GDTimXFrm {
-  -inTen : JTextField
-  -subTim : JButton
-  -outsubDSX : JTable
+class SearchXFrm {
+  -txtKey : JTextField
+  -btnSearch : JButton
+  -tblResults : JTable
+  -user : User
+  +SearchXFrm(u : User)
   +actionPerformed(e : ActionEvent) : void
 }
 
-class GDThemXFrm {
-  -inTen : JTextField
-  -inThuocTinh : JTextField
-  -subThem : JButton
-  -subHuy : JButton
-  +ThemXFrm(x : TenEntity)
+class AddXFrm {
+  -txtName : JTextField
+  -txtAttribute : JTextField
+  -btnSave : JButton
+  -btnCancel : JButton
+  -user : User
+  +AddXFrm(u : User)
   +actionPerformed(e : ActionEvent) : void
 }
 
@@ -108,23 +126,25 @@ abstract class DAO {
 }
 
 class TenEntityDAO {
-  +timX(ten : String) : List<TenEntity>
-  +themX(x : TenEntity) : boolean
-  +luuX(x : TenEntity) : boolean
+  +TenEntityDAO()
+  +searchX(key : String) : List<TenEntity>
+  +addX(x : TenEntity) : boolean
+  +updateX(x : TenEntity) : boolean
 }
 
 class TenEntity {
-  -ma : int
-  -ten : String
-  +getTen() : String
-  +setTen(ten : String) : void
+  -id : int
+  -name : String
+  +getName() : String
+  +setName(name : String) : void
 }
 
 DAO <|-- TenEntityDAO
 TenEntityDAO --> TenEntity
-GDChinhFrm --> GDTimXFrm
-GDTimXFrm --> TenEntityDAO
-GDThemXFrm --> TenEntityDAO
+LoginFrm --> SearchXFrm
+SearchXFrm --> AddXFrm
+SearchXFrm --> TenEntityDAO
+AddXFrm --> TenEntityDAO
 @enduml
 ```
 
