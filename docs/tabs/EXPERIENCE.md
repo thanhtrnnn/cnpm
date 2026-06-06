@@ -54,6 +54,55 @@
 - **Kịch bản phiên bản 2/3 text (ngoài PlantUML): giữ tiếng Việt** theo skill — đây là phần tài liệu hóa bằng ngôn ngữ tự nhiên của UP, không phải code.
 - **Scenario text (kịch bản phiên bản 2) ở pha II phân tích → bullet; scenario (kịch bản phiên bản 3) ở pha III thiết kế → numbered list.**
 
+## Lưu ý từ dự án UniVerse (universe project, 2026-06-06)
+
+> Context: dùng skill `cnpm` để viết toàn bộ báo cáo TTCS (Nhập môn CNPM — PTIT) cho hệ thống UniVerse (NestJS + Next.js + PostgreSQL + MongoDB + Redis + Kafka). Sau đó sinh DOCX bằng `docx` npm v9.6.1 qua script Node.js.
+
+### Skill `cnpm` — hoạt động tốt
+
+- **BƯỚC 0 PLAN** rất hữu ích: xác nhận scope (all 3 modules, Pha II cho cả 3), xác nhận tech stack (React/HTML thay JFrame), chia việc 3 thành viên rõ ràng.
+- Pha II (Phân tích) × 3 module hoàn thành đầy đủ: UC diagram, kịch bản, BCE class diagram, sequence diagram — nhất quán về tên lớp với codebase thực (đọc entity từ branch `biden` bằng `git show biden:...`).
+- **Skill chỉ đăng ký trong project `cnpm-hrm`**, không tự dùng được ở project khác (`universe`). Khi `Skill("cnpm")` ở `universe` → "Unknown skill". Fix: implement thủ công theo SKILL.md.
+
+### Kịch bản (scenario) table có nested HTML table
+
+**Vấn đề:** Bảng kịch bản UC (Markdown table) có cột "Kịch bản chính" chứa các bước đánh số + **bảng dữ liệu mẫu inline** dạng `<table>…</table>` nằm trong cùng một cell của Markdown row. Khi split bằng `|`, cell text thu được bao gồm cả đoạn HTML. `parseInline()` không hiểu HTML → nội dung bảng con bị bỏ qua hoặc lọt ra dưới dạng text thô.
+
+**Fix trong docx generator:**
+```javascript
+// 1. Tách cell text thành segments text | html_table xen kẽ
+function splitCellContent(text) { /* regex /<table[\s\S]*?<\/table>/gi */ }
+
+// 2. Chuyển mỗi segment thành Paragraph[] | nested Table
+function makeCellChildren(cellText) {
+  // text segment: <br> → '\n', strip tags, parseInline() từng dòng
+  // table segment: parse <tr>/<th>/<td> → rows[] → makeTable() (đệ quy)
+}
+
+// 3. makeTable dùng makeCellChildren thay vì [new Paragraph({children: parseInline(cell)})]
+new TableCell({ children: makeCellChildren(cell.trim()), ... })
+```
+
+**Quan trọng:** `makeCellChildren` và `makeTable` gọi nhau đệ quy → PHẢI dùng `function` declaration (hoisted), KHÔNG dùng `const`. `TableCell.children` trong docx v9 chấp nhận cả `Paragraph` lẫn `Table` objects xen kẽ.
+
+### docx npm v9.6.1 — quirks cần nhớ
+
+| Tình huống | Cách làm đúng |
+|------------|---------------|
+| Ngắt trang | `new Paragraph({ children: [new PageBreak()] })` — KHÔNG dùng `pageBreakBefore: true` (không render trong một số viewer) |
+| Header shading | `shading: { type: ShadingType.CLEAR, color: 'auto', fill: 'D9D9D9' }` |
+| Nested table trong cell | `TableCell.children = [Paragraph, Table, Paragraph, ...]` — hợp lệ trong v9 |
+| Kích thước ảnh PNG | Đọc width/height từ header PNG (offset 16–23, big-endian UInt32) để tính aspect ratio |
+| Line spacing 1.5 | `spacing: { line: 360, lineRule: 'auto' }` (240 × 1.5) |
+| Millimeter → twip | `convertMillimetersToTwip` export sẵn từ `docx` |
+
+### PlantUML MCP tool trong context
+
+- `mcp__plantuml__generate_plantuml_diagram(plantuml_code, output_path, format)` — ghi thẳng PNG ra disk, trả về `{success, local_path}`.
+- Sinh 16 biểu đồ (4 batch × 4 parallel) không lỗi, các biểu đồ sequence phức tạp với `alt` block hoạt động tốt.
+- Map diagram → PNG file: duy trì danh sách theo thứ tự xuất hiện trong từng file markdown (`FILE_DIAGRAMS` constant), dùng index counter per-file trong `processFile()`.
+- Chú thích "Hình N: [title từ `title` line trong PlantUML]" — extract bằng regex `/^title\s+(.+)/m`.
+
 ## Vấn đề hạ tầng (không thuộc nội dung skill)
 
 - **`main` branch: `.claude/skills/cnpm/SKILL.md` còn dấu xung đột `git stash` (dòng ~541–548)** chưa giải quyết, bị commit nhầm. Cần sửa trước khi merge `report` → `main`. (Đang xử lý ở task riêng.)
