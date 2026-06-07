@@ -31,7 +31,7 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 5. **UML:** PlantUML trong code block plantuml.
 6. **Công nghệ giao diện:** Hỏi người dùng chọn JFrame (Java Swing) hoặc HTML (React) ngay từ BƯỚC 0 PLAN. Toàn bộ Boundary classes, wireframe, và sequence diagram phải thống nhất theo lựa chọn này.
 7. **Diễn giải tuần tự (BẮT BUỘC cho II.4 và III.4):** Bên cạnh biểu đồ sequence diagram, PHẢI viết block diễn giải tuần tự dạng danh sách đánh số trong callout:
-   - **II.4 (Phân tích):** Kịch bản phiên bản 2 — tiếng Việt tự nhiên, **bullet** (gạch đầu dòng), mô tả Actor ↔ Boundary ↔ Entity. Xem `references/ii.4_tuantu_phantich.md`.
+   - **II.4 (Phân tích):** Kịch bản phiên bản 2 — tiếng Việt tự nhiên, **đánh số (1,2,3…)** (khớp giáo trình UP), mô tả Actor ↔ Boundary ↔ Entity. Xem `references/ii.4_tuantu_phantich.md`.
    - **III.4 (Thiết kế):** Kịch bản phiên bản 3 — có tên hàm Java + kiểu dữ liệu, **danh sách đánh số**, mô tả Actor ↔ Boundary ↔ Controller ↔ Entity. Xem `references/iii.4_tuantu_thietke.md`.
 8. **Sequence diagram: TOÀN BỘ tiếng Anh trong `@startuml…@enduml`** — bao gồm `title`, actor display name (`actor "Staff" as Actor`), và arrow labels (`enter keyword + click Search`, `display results`, `saveOrder(order: Order): boolean`). KHÔNG có tiếng Việt bên trong block PlantUML. Kịch bản phiên bản 2/3 text bên ngoài PlantUML giữ tiếng Việt bình thường.
 9. **Mỗi mũi tên = 1 bước đánh số** — kể cả return arrow `-->`. Tổng N bước ghi trong `(N bước)` ở heading, title PlantUML, và bold kịch bản PHẢI khớp chính xác số mũi tên trong sơ đồ.

@@ -70,7 +70,7 @@ Dùng `addPackage` để tạo container, hoặc `addClass` với tham số `pac
 
 | Loại class | Stereotype | Ví dụ |
 |-----------|-----------|-------|
-| Boundary (JFrame) | `Boundary` | `<<Boundary>>` trên GDChinhFrm |
+| Boundary (JFrame) | `Boundary` | `<<Boundary>>` trên LoginFrm, SearchRoomFrm |
 | Boundary (React) | `Component` | `<<Component>>` trên RoomPage |
 | DAO | `DAO` | `<<DAO>>` trên SachDAO |
 | Entity | `Entity` | `<<Entity>>` trên Sach |
@@ -78,18 +78,21 @@ Dùng `addPackage` để tạo container, hoặc `addClass` với tham số `pac
 
 Dùng `addClass` với tham số `stereotype`. VP hiển thị stereotype dạng `<<tên>>` phía trên tên class.
 
-4. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
-   - **Pha Phân tích:** Thông điệp = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản (VD: `"nhập ngày + nhấn Tìm"`, `"searchFreeRoom()"`, `"hiển thị danh sách"`)
-   - **Pha Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (VD: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`)
+4. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT — khớp cnpm):**
+   - **Arrow label trong biểu đồ VP (@message):** TOÀN BỘ tiếng Anh ngắn gọn trong cả hai pha (`enter keyword + click Search`, `checkLogin()`, `display results`). KHÔNG dùng tiếng Việt trong message VP.
+   - **Pha Thiết kế:** Arrow = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (`searchFreeRoom(checkin: Date, checkout: Date): List<Room>`).
+   - **Kịch bản phiên bản 2/3 (text bên ngoài biểu đồ):** Giữ tiếng Việt tự nhiên.
+   - **Tên class/bảng DB:** BẮT BUỘC tiếng Anh PascalCase (`Client`, `Employee`, `tblClient`). Tên Việt chỉ trong văn xuôi.
+   - **Tên method:** Luôn tiếng Anh mọi pha (`checkLogin`, `searchFreeRoom`).
 5. **UC Decomposition:** Include → Extend → Generalization. UC chính ở giữa, UC con tỏa ra.
-6. **Horizontal layout:** Classes trong cùng package phải dàn ngang, KHÔNG xếp dọc.
+6. **Horizontal layout:** `autoLayoutDiagram` cố gắng dàn ngang — nhưng **KHÔNG có tool đặt toạ độ**. Nếu layout chồng/dọc sau autoLayout, phải mở VP chỉnh tay. Kiểm tra bằng `getDiagramElements` (x positions khác nhau = đã dàn ngang).
 7. **Sequence participant order:** Actor → Boundary → [Control] → DAO → Entity
 8. **Công nghệ giao diện:** Phải thống nhất JFrame (Java Swing) hoặc HTML (React) từ đầu. Ảnh hưởng đến Boundary class attributes.
 
 ### Chọn công nghệ giao diện
 
 Hỏi người dùng ngay từ đầu:
-- **JFrame (Java Swing):** Boundary = JFrame, attributes = JTextField/JButton/JTable, event = `actionPerformed(e: ActionEvent)`. Tên class: `GD[TênMànHình]Frm`.
+- **JFrame (Java Swing):** Boundary = JFrame, attributes = JTextField/JButton/JTable, event = `actionPerformed(e: ActionEvent)`. Tên class: `[EnglishName]Frm` (VD: `LoginFrm`, `SearchRoomFrm`, `EditRoomFrm`). **KHÔNG dùng** tiền tố `GD` hay tên tiếng Việt.
 - **HTML (React):** Boundary = Component, attributes = State/JSX, event = `handleSubmit/onClick`. Tên class: tiếng Anh + hậu tố loại component:
 
 | Hậu tố | Loại component | Ví dụ |
@@ -101,28 +104,41 @@ Hỏi người dùng ngay từ đầu:
 | `Form` | Vùng nhập liệu | `OrderForm`, `AddClientForm` |
 | `Table` | Bảng dữ liệu | `RoomListTable` |
 
-### Tiền tố thuộc tính Boundary (Phân tích)
+### Tiền tố thuộc tính Boundary (Thiết kế — khớp cnpm)
 
-Boundary classes trong pha phân tích dùng tiền tố standardized:
+Boundary class trong pha **thiết kế** dùng tiền tố chuẩn sau (khớp với `cnpm/references/iii.3.2_sodo_lop_thietke.md`):
 
-| Tiền tố | Ý nghĩa | Ví dụ |
+**JFrame:**
+
+| Tiền tố | Kiểu VP | Ví dụ |
 |---------|---------|-------|
-| `in_` | Trường nhập liệu | `in_ten`, `in_username` |
-| `out_` | Hiển thị/output | `out_ketQua`, `out_danhSach` |
-| `sub_` | Nút bấm/submit | `sub_tim`, `sub_luu` |
-| `outsub_` | Bảng/danh sách có thể click | `outsub_danhSachX` |
-| `inout_` | Trường đọc-ghi | `inout_ten` |
+| `txt` | JTextField | `txtUsername`, `txtRoomName` |
+| `btn` | JButton | `btnLogin`, `btnSearch` |
+| `tbl` | JTable | `tblResults` |
+| `lbl` | JLabel | `lblMessage` |
+
+**React:**
+
+| Tiền tố | Kiểu | Ví dụ |
+|---------|------|-------|
+| `txt` | TextBox | `txtUsername`, `txtRoomName` |
+| `btn` | Button | `btnLogin`, `btnSearch` |
+| `tbl` | Table | `tblActiveRooms` |
+| `lbl` | Label | `lblRoomName` |
+
+Pha **phân tích:** attribute có thể để mô tả tự nhiên ngắn (không bắt buộc tiền tố).
 
 ---
 
-## Danh sách MCP Tools (39 tools)
+## Danh sách MCP Tools (38 tools)
 
 ### Diagram Management
 
 | Tool | Mô tả | Tham số chính |
 |------|-------|---------------|
 | `listDiagrams` | Liệt kê tất cả diagram (filter: UseCase/Class/Sequence/ER) | `type` ("" = all) |
-| `getDiagramElements` | Lấy tất cả elements trên diagram | `diagramName` |
+| `getDiagramElements` | Lấy tất cả elements + vị trí trên diagram | `diagramName` |
+| `getElementCounts` | Lấy summary số lượng element theo loại | `diagramName` |
 | `autoLayoutDiagram` | Tự động căn layout | `diagramName` |
 | `removeDiagramElement` | Xóa element khỏi diagram | `diagramName`, `elementName` |
 
@@ -133,7 +149,7 @@ Boundary classes trong pha phân tích dùng tiền tố standardized:
 | `createUseCaseDiagram` | Tạo diagram mới | `diagramName` |
 | `addActor` | Thêm actor | `actorName`, `diagramName` |
 | `addUseCase` | Thêm use case | `useCaseName`, `diagramName` |
-| `addRelationship` | Thêm Include/Extend/Generalization | `sourceName`, `targetName`, `relationshipType` |
+| `addRelationship` | Thêm Include/Extend/Generalization | `diagramName`, `sourceName`, `targetName`, `relationshipType` |
 | `generateUseCaseReport` | Sinh báo cáo phân tích | `diagramName` |
 
 ### Class Diagram
@@ -146,10 +162,10 @@ Boundary classes trong pha phân tích dùng tiền tố standardized:
 | `setClassColor` | Đặt màu nền class | `diagramName`, `className`, `backgroundColor` |
 | `addAttribute` | Thêm thuộc tính | `className`, `attributeName`, `attributeType`, `visibility` |
 | `addOperation` | Thêm phương thức | `className`, `operationName`, `returnType`, `params` |
-| `addAssociation` | Thêm association | `diagramName`, `fromClass`, `toClass`, multiplicities, `name` |
+| `addAssociation` | Thêm association | `diagramName`, `fromClass`, `toClass`, `fromMult`, `toMult`, `name` |
 | `addGeneralization` | Thêm kế thừa | `diagramName`, `fromClass`, `toClass` |
-| `addAggregation` | Thêm aggregation (◇) | `diagramName`, `fromClass`, `toClass`, multiplicities |
-| `addComposition` | Thêm composition (◆) | `diagramName`, `fromClass`, `toClass`, multiplicities |
+| `addAggregation` | Thêm aggregation (◇) | `diagramName`, `fromClass`, `toClass`, `fromMult`, `toMult` |
+| `addComposition` | Thêm composition (◆) | `diagramName`, `fromClass`, `toClass`, `fromMult`, `toMult` |
 | `addDependency` | Thêm dependency (-->) | `diagramName`, `fromClass`, `toClass` |
 | `addRealization` | Thêm implements | `diagramName`, `fromClass`, `toClass` |
 | `addInterface` | Thêm interface | `diagramName`, `interfaceName` |
@@ -162,8 +178,8 @@ Boundary classes trong pha phân tích dùng tiền tố standardized:
 | `createErd` | Tạo ERD mới | `diagramName` |
 | `addTable` | Thêm bảng | `diagramName`, `tableName` |
 | `addColumn` | Thêm cột | `tableName`, `columnName`, `columnType`, `length`, `scale`, `isPrimaryKey`, `isNullable` |
-| `addForeignKey` | Thêm FK | `diagramName`, `fromTable`, `toTable`, columns, `relationshipName` |
-| `addTableRelationship` | Thêm quan hệ bảng | `diagramName`, `fromTable`, `toTable`, `type`, multiplicities |
+| `addForeignKey` | Thêm FK | `diagramName`, `fromTable`, `toTable`, `fromColumn`, `toColumn`, `relationshipName` |
+| `addTableRelationship` | Thêm quan hệ bảng | `diagramName`, `fromTable`, `toTable`, `type`, `fromMult`, `toMult` |
 | `generateDdl` | Sinh DDL | `diagramName` |
 | `generateErdReport` | Sinh báo cáo | `diagramName` |
 
@@ -186,12 +202,13 @@ Boundary classes trong pha phân tích dùng tiền tố standardized:
 ### Use Case Diagram
 
 ```
+0. listDiagrams("UseCase") → xác nhận tên diagram chưa tồn tại (unique)
 1. createUseCaseDiagram(diagramName)
 2. addActor(actorName, diagramName)        — cho mỗi actor
 3. addUseCase(useCaseName, diagramName)    — cho mỗi UC (bao gồm UC con generalization)
-4. addRelationship(source, target, type)   — Include, Extend, hoặc Generalization
+4. addRelationship(diagramName, source, target, type)   — Include, Extend, hoặc Generalization
 5. autoLayoutDiagram(diagramName)          — LUÔN chạy cuối cùng
-6. generateUseCaseReport(diagramName)      — optional, kiểm tra kết quả
+6. generateUseCaseReport(diagramName)      — kiểm tra element counts
 ```
 
 **Thứ tự thêm relationships:**
@@ -210,9 +227,9 @@ addUseCase("Them moi khach hang", "UC - QuanLyKhachHang")
 addUseCase("Xac minh CCCD", "UC - QuanLyKhachHang")
 addUseCase("Tim theo ten", "UC - QuanLyKhachHang")
 addUseCase("Tim theo ma", "UC - QuanLyKhachHang")
-addRelationship("Tim kiem khach hang", "Xac minh CCCD", "Include")
-addRelationship("Tim theo ten", "Tim kiem khach hang", "Generalization")
-addRelationship("Tim theo ma", "Tim kiem khach hang", "Generalization")
+addRelationship("UC - QuanLyKhachHang", "Tim kiem khach hang", "Xac minh CCCD", "Include")
+addRelationship("UC - QuanLyKhachHang", "Tim theo ten", "Tim kiem khach hang", "Generalization")
+addRelationship("UC - QuanLyKhachHang", "Tim theo ma", "Tim kiem khach hang", "Generalization")
 autoLayoutDiagram("UC - QuanLyKhachHang")
 ```
 
@@ -220,7 +237,7 @@ autoLayoutDiagram("UC - QuanLyKhachHang")
 
 **Quy tắc BCE (BẮT BUỘC):** Class diagram PHẢI phân rõ 3 nhóm class:
 - **Boundary** (trái): Giao diện — JFrame (Swing) hoặc Component (React)
-  - **JFrame:** tên class = `GD[TênMànHình]Frm`
+  - **JFrame:** tên class = `[EnglishName]Frm`
   - **React:** tên class = tiếng Anh + hậu tố (`Page`, `Card`, `Panel`, `Modal`, `Form`, `Table`) — xem bảng ở mục "Chọn công nghệ giao diện"
 - **DAO/Control** (giữa): Abstract DAO + DAO con kế thừa
 - **Entity** (phải): Lớp thực thể từ phân tích
@@ -231,34 +248,39 @@ Class diagram thiết kế PHẢI có class AbstractDAO:
 1. addClass(diagram, "AbstractDAO", packageName="DAO", packageColor="#FFE0B2", stereotype="DAO", isAbstract=true)
 2. addAttribute("AbstractDAO", "conn", "Connection", "#")  // protected
 3. addOperation("AbstractDAO", "AbstractDAO", "void", "")  // constructor
-4. addGeneralization(diagram, "SachDAO", "AbstractDAO")    // mỗi DAO con kế thừa
+4. addGeneralization(diagram, "BookDAO", "AbstractDAO")    // mỗi DAO con kế thừa
 ```
 
 **Màu sắc package (BẮT BUỘC):**
 Dùng `addClass` với tham số `packageName` + `packageColor` để tự động đặt class vào package có màu:
 ```
-addClass("Class - Sach", "GDChinhFrm", "Boundary", "#DDEEFF", "Boundary", false, "", "")
-addClass("Class - Sach", "AbstractDAO", "DAO", "#FFE0B2", "DAO", true, "", "")
-addClass("Class - Sach", "SachDAO", "DAO", "#FFE0B2", "DAO", false, "AbstractDAO", "")
-addClass("Class - Sach", "Sach", "Entity", "#FFF3CD", "Entity", false, "", "")
+addClass("Class - BorrowBook", "LoginFrm", "Boundary", "#DDEEFF", "Boundary", false, "", "")
+addClass("Class - BorrowBook", "AbstractDAO", "DAO", "#FFE0B2", "DAO", true, "", "")
+addClass("Class - BorrowBook", "BookDAO", "DAO", "#FFE0B2", "DAO", false, "AbstractDAO", "")
+addClass("Class - BorrowBook", "Book", "Entity", "#FFF3CD", "Entity", false, "", "")
 ```
 
 **Thứ tự tạo class diagram:**
 ```
+0. listDiagrams("Class") → xác nhận tên diagram chưa tồn tại (unique)
+   ⚠️  addAttribute/addOperation tra class theo TOÀN PROJECT — nếu tên class trùng giữa
+   các module/diagram sẽ thêm nhầm. Đặt tên class UNIQUE toàn project (vd thêm module
+   prefix: "BorrowBook_Reader") hoặc hoàn thành diagram này trước khi tạo diagram khác.
 1. createClassDiagram(diagramName)
 2. addClass — Boundary classes (mỗi giao diện = 1 class)
 3. addClass — Abstract DAO class
 4. addClass — DAO classes (kế thừa Abstract DAO)
-5. addClass — Entity classes (từ phân tích thực thể)
-6. addAttribute — cho mỗi class (Boundary: UI components; Entity: private fields; DAO: methods)
-7. addOperation — cho mỗi class (Boundary: event handlers; DAO: CRUD methods)
-8. addRelationships — theo thứ tự:
+5. addClass — Entity classes (từ phân tích thực thể — khớp 1:1 với II.2)
+6. addAttribute — cho mỗi class (Boundary: UI components; Entity: private fields)
+7. addOperation — cho mỗi class (Boundary: actionPerformed; DAO: CRUD methods)
+8. addRelationships — theo thứ tự (sau khi thêm ĐỦ classes):
    a. addGeneralization — DAO extends Abstract DAO
-   b. addComposition — Entity lifetime-dependent (TheBanDoc◆BanDoc, CTPhieuMuon◆PhieuMuon)
-   c. addAggregation — Entity independent (DauSach◇CTPhieuMuon)
+   b. addComposition — Entity lifetime-dependent (ReaderCard◆Reader, SlipDetail◆BorrowSlip)
+   c. addAggregation — Entity independent (BookTitle◇SlipDetail)
    d. addDependency — Boundary --> DAO
    e. addAssociation — Entity ↔ Entity (structural links)
 9. autoLayoutDiagram(diagramName)
+10. getDiagramElements(diagramName) → kiểm tra x-positions khác nhau (= đã dàn ngang)
 ```
 
 **Bảng hướng dẫn chọn relationship:**
@@ -266,46 +288,46 @@ addClass("Class - Sach", "Sach", "Entity", "#FFF3CD", "Entity", false, "", "")
 | Quan hệ | Ký hiệu | Khi nào dùng |
 |---------|---------|---------------|
 | Generalization | Tam giác rỗng | DAO kế thừa AbstractDAO; UC con kế thừa UC cha |
-| Composition (◆) | Hình thoi đặc | Lifetime dependent — TheBanDoc-BanDoc, CTPhieuMuon-PhieuMuon |
-| Aggregation (◇) | Hình thoi rỗng | Independent, shared — DauSach-CTPhieuMuon |
+| Composition (◆) | Hình thoi đặc | Lifetime dependent — ReaderCard-Reader, SlipDetail-BorrowSlip |
+| Aggregation (◇) | Hình thoi rỗng | Independent, shared — BookTitle-SlipDetail |
 | Association | Đường liền | General structural link giữa entities |
 | Dependency | Đường chấm | Boundary "sử dụng" DAO |
 
 **Ví dụ: Biểu đồ lớp Module Mượn Sách (JFrame)**
 ```
-createClassDiagram("Class - MuonSach")
+createClassDiagram("Class - BorrowBook")
 // Boundary (package #DDEEFF)
-addClass("Class - MuonSach", "FrmMuonSach", "Boundary", "#DDEEFF", "Boundary", false, "", "")
-addAttribute("FrmMuonSach", "inMaBanDoc", "JTextField", "private")
-addAttribute("FrmMuonSach", "btnTimKiem", "JButton", "private")
-addAttribute("FrmMuonSach", "tblKetQua", "JTable", "private")
-addOperation("FrmMuonSach", "actionPerformed", "void", "e:ActionEvent")
+addClass("Class - BorrowBook", "BorrowBookFrm", "Boundary", "#DDEEFF", "Boundary", false, "", "")
+addAttribute("BorrowBookFrm", "txtReaderId", "JTextField", "private")
+addAttribute("BorrowBookFrm", "btnSearch", "JButton", "private")
+addAttribute("BorrowBookFrm", "tblResults", "JTable", "private")
+addOperation("BorrowBookFrm", "actionPerformed", "void", "e:ActionEvent")
 // Abstract DAO (package #FFE0B2)
-addClass("Class - MuonSach", "AbstractDAO", "DAO", "#FFE0B2", "DAO", true, "", "")
+addClass("Class - BorrowBook", "AbstractDAO", "DAO", "#FFE0B2", "DAO", true, "", "")
 addAttribute("AbstractDAO", "conn", "Connection", "#")
 addOperation("AbstractDAO", "AbstractDAO", "void", "")
 // DAO (kế thừa AbstractDAO)
-addClass("Class - MuonSach", "BanDocDAO", "DAO", "#FFE0B2", "DAO", false, "AbstractDAO", "")
-addClass("Class - MuonSach", "PhieuMuonDAO", "DAO", "#FFE0B2", "DAO", false, "AbstractDAO", "")
-addOperation("BanDocDAO", "timTheoMa", "BanDoc", "ma:String")
-addOperation("PhieuMuonDAO", "taoPhieu", "boolean", "pm:PhieuMuon")
+addClass("Class - BorrowBook", "ReaderDAO", "DAO", "#FFE0B2", "DAO", false, "AbstractDAO", "")
+addClass("Class - BorrowBook", "BorrowSlipDAO", "DAO", "#FFE0B2", "DAO", false, "AbstractDAO", "")
+addOperation("ReaderDAO", "findById", "Reader", "id:String")
+addOperation("BorrowSlipDAO", "createSlip", "boolean", "slip:BorrowSlip")
 // Entity (package #FFF3CD)
-addClass("Class - MuonSach", "BanDoc", "Entity", "#FFF3CD", "Entity", false, "", "")
-addClass("Class - MuonSach", "TheBanDoc", "Entity", "#FFF3CD", "Entity", false, "", "")
-addClass("Class - MuonSach", "PhieuMuon", "Entity", "#FFF3CD", "Entity", false, "", "")
-addClass("Class - MuonSach", "CTPhieuMuon", "Entity", "#FFF3CD", "Entity", false, "", "")
-addClass("Class - MuonSach", "DauSach", "Entity", "#FFF3CD", "Entity", false, "", "")
-addAttribute("BanDoc", "ma", "String", "private")
-addAttribute("BanDoc", "ten", "String", "private")
-addAttribute("PhieuMuon", "ngayMuon", "Date", "private")
+addClass("Class - BorrowBook", "Reader", "Entity", "#FFF3CD", "Entity", false, "", "")
+addClass("Class - BorrowBook", "ReaderCard", "Entity", "#FFF3CD", "Entity", false, "", "")
+addClass("Class - BorrowBook", "BorrowSlip", "Entity", "#FFF3CD", "Entity", false, "", "")
+addClass("Class - BorrowBook", "BorrowSlipDetail", "Entity", "#FFF3CD", "Entity", false, "", "")
+addClass("Class - BorrowBook", "BookTitle", "Entity", "#FFF3CD", "Entity", false, "", "")
+addAttribute("Reader", "id", "String", "private")
+addAttribute("Reader", "name", "String", "private")
+addAttribute("BorrowSlip", "borrowDate", "Date", "private")
 // Relationships
-addComposition("Class - MuonSach", "BanDoc", "TheBanDoc", "1", "1")
-addComposition("Class - MuonSach", "BanDoc", "PhieuMuon", "1", "n")
-addComposition("Class - MuonSach", "PhieuMuon", "CTPhieuMuon", "1", "n")
-addAggregation("Class - MuonSach", "DauSach", "CTPhieuMuon", "1", "n")
-addDependency("Class - MuonSach", "FrmMuonSach", "BanDocDAO")
-addDependency("Class - MuonSach", "FrmMuonSach", "PhieuMuonDAO")
-autoLayoutDiagram("Class - MuonSach")
+addComposition("Class - BorrowBook", "Reader", "ReaderCard", "1", "1")
+addComposition("Class - BorrowBook", "Reader", "BorrowSlip", "1", "n")
+addComposition("Class - BorrowBook", "BorrowSlip", "BorrowSlipDetail", "1", "n")
+addAggregation("Class - BorrowBook", "BookTitle", "BorrowSlipDetail", "1", "n")
+addDependency("Class - BorrowBook", "BorrowBookFrm", "ReaderDAO")
+addDependency("Class - BorrowBook", "BorrowBookFrm", "BorrowSlipDAO")
+autoLayoutDiagram("Class - BorrowBook")
 ```
 
 ### ERD
@@ -332,26 +354,26 @@ autoLayoutDiagram("Class - MuonSach")
 1. createErd(diagramName)
 2. addTable(diagramName, tableName)                               — cho mỗi bảng (dùng `tbl` + tên entity)
 3. addColumn(tableName, columnName, type, length, scale, PK, nullable)  — cho mỗi cột
-4. addForeignKey(diagramName, from, to, columns, fkName)          — cho mỗi FK
-5. addTableRelationship(diagramName, from, to, type, multiplicities)  — nếu cần
+4. addForeignKey(diagramName, from, to, fromColumn, toColumn, fkName)   — cho mỗi FK
+5. addTableRelationship(diagramName, from, to, type, fromMult, toMult)  — nếu cần
 6. autoLayoutDiagram(diagramName)
 7. generateDdl(diagramName)                                        — optional, sinh DDL
 ```
 
 **Ví dụ:**
 ```
-createErd("ERD - QuanLyKhachHang")
-addTable("ERD - QuanLyKhachHang", "tblKhachHang")
-addColumn("tblKhachHang", "ma", "INT", 10, 0, true, false)
-addColumn("tblKhachHang", "ten", "VARCHAR", 255, 0, false, false)
-addColumn("tblKhachHang", "cccd", "VARCHAR", 20, 0, false, false)
-addTable("ERD - QuanLyKhachHang", "tblHopDong")
-addColumn("tblHopDong", "ma", "INT", 10, 0, true, false)
-addColumn("tblHopDong", "ngayKy", "DATE", 0, 0, false, false)
-addColumn("tblHopDong", "tblKhachHangma", "INT", 10, 0, false, false)
-addForeignKey("ERD - QuanLyKhachHang", "tblHopDong", "tblKhachHang", "tblKhachHangma", "ma", "FK_KH_HD")
-autoLayoutDiagram("ERD - QuanLyKhachHang")
-generateDdl("ERD - QuanLyKhachHang")
+createErd("ERD - ClientManagement")
+addTable("ERD - ClientManagement", "tblClient")
+addColumn("tblClient", "id", "INT", 10, 0, true, false)
+addColumn("tblClient", "name", "VARCHAR", 255, 0, false, false)
+addColumn("tblClient", "idCard", "VARCHAR", 20, 0, false, false)
+addTable("ERD - ClientManagement", "tblContract")
+addColumn("tblContract", "id", "INT", 10, 0, true, false)
+addColumn("tblContract", "signDate", "DATE", 0, 0, false, false)
+addColumn("tblContract", "tblClientid", "INT", 10, 0, false, false)
+addForeignKey("ERD - ClientManagement", "tblContract", "tblClient", "tblClientid", "id", "FK_Client_Contract")
+autoLayoutDiagram("ERD - ClientManagement")
+generateDdl("ERD - ClientManagement")
 ```
 
 ### Sequence Diagram
@@ -394,10 +416,12 @@ Tất cả messages PHẢI được đánh số tuần tự:
 
 Ví dụ: 1, 2, 3, 4, 5 (trong alt: 5.1, 5.2), 6
 
-**Ngôn ngữ theo pha:**
-- **Phân tích:** Thông điệp = tiếng Việt tự nhiên + tên hàm tiếng Anh đơn giản: `"nhập ngày + nhấn Tìm"`, `"searchFreeRoom()"`, `"hiển thị kết quả"`
-- **Thiết kế:** Thông điệp = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu: `searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `btnSearchRoomClick()`
-- **Tên method PHẢI tiếng Anh trong MỌI pha** (checkLogin, searchProduct, addOrder...). KHÔNG dùng tên tiếng Việt.
+**Ngôn ngữ theo pha (khớp cnpm #8):**
+- **Arrow label trong VP (addMessage/addReturnMessage):** TOÀN BỘ tiếng Anh trong cả 2 pha (`enter keyword + click Search`, `checkLogin()`, `display results`, `List<Room>`).
+- **Phân tích:** Arrow ngắn gọn tiếng Anh (`click btnLogin`, `checkLogin()`, `display room list`).
+- **Thiết kế:** Arrow = tên hàm đầy đủ + kiểu (`searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `btnSearchRoomClick()`).
+- **Tên method luôn tiếng Anh** mọi pha (checkLogin, searchProduct, addOrder...).
+- **Kịch bản text (v2/v3 bên ngoài biểu đồ):** Giữ tiếng Việt.
 
 **Diễn giải tuần tự (BẮT BUỘC alongside diagram):**
 
@@ -408,19 +432,21 @@ Bên cạnh biểu đồ sequence diagram, PHẢI viết thêm block diễn gi�
 Block diễn giải giúp người đọc hiểu luồng xử lý mà không cần đọc biểu đồ UML. Luôn đặt ngay sau biểu đồ, trong callout `📖` màu green.
 
 ```
+0. listDiagrams("Sequence") → xác nhận tên diagram chưa tồn tại (unique)
 1. createSequenceDiagram(diagramName)
 2. addLifeline — theo thứ tự: Actor, Boundary, [Control], DAO, Entity
-3. addActivation — trước mỗi group message
-4. addMessage — sync message (thứ tự tăng dần)
+3. addActivation — 1 lần cho mỗi lifeline khi nó bắt đầu chuỗi xử lý (không cần mỗi message)
+4. addMessage — sync message (thứ tự tăng dần, tiếng Anh)
 5. addReturnMessage — return (mỗi sync cần 1 return)
-6. addCombinedFragment — alt cho ngoại lệ, opt cho tùy chọn, loop cho lặp
-7. autoLayoutDiagram(diagramName)
+6. autoLayoutDiagram(diagramName)
+7. getDiagramElements(diagramName) → xác nhận participants đúng thứ tự, message count đúng
 ```
 
-**Hướng dẫn Combined Fragment:**
-- `alt` + guard = ngoại lệ (VD: `"searchClient() trả về rỗng"`)
-- `opt` = bước tùy chọn
-- `loop` = lặp lại
+**Lưu ý Combined Fragment (khớp cnpm #10):**
+Biểu đồ sequence **chỉ vẽ luồng chính** — không dùng `alt` để mô tả ngoại lệ. Ngoại lệ → viết block text "Ngoại lệ" sau biểu đồ.
+Tool `addCombinedFragment` vẫn sẵn có (operators: `alt`, `opt`, `loop`, `break`, `par`) — chỉ dùng khi user yêu cầu tường minh hoặc cần `loop`/`opt` cho luồng chính.
+- `opt` = bước tùy chọn trong luồng chính
+- `loop` = lặp lại trong luồng chính
 
 **Ví dụ: Sequence Diagram "Tạo order" (Phân tích)**
 ```
@@ -431,16 +457,17 @@ addLifeline("SD - TaoOrder_PhanTich", "SearchRoomView", "SearchRoomView", "bound
 addLifeline("SD - TaoOrder_PhanTich", "Employee", "Employee", "entity", "E1")
 addLifeline("SD - TaoOrder_PhanTich", "Room", "Room", "entity", "E2")
 addActivation("SD - TaoOrder_PhanTich", "LoginView")
-addMessage("SD - TaoOrder_PhanTich", "Actor", "LoginView", "nhập username/password + click Login", "1", "sync")
+addMessage("SD - TaoOrder_PhanTich", "Actor", "LoginView", "enter username/password + click Login", "1", "sync")
 addMessage("SD - TaoOrder_PhanTich", "LoginView", "Employee", "checkLogin()", "2", "sync")
 addReturnMessage("SD - TaoOrder_PhanTich", "Employee", "LoginView", "true", "3")
-addMessage("SD - TaoOrder_PhanTich", "LoginView", "SearchRoomView", "mở giao diện tìm phòng", "4", "sync")
-addMessage("SD - TaoOrder_PhanTich", "Actor", "SearchRoomView", "nhập tên phòng + click Tìm", "5", "sync")
+addMessage("SD - TaoOrder_PhanTich", "LoginView", "SearchRoomView", "open search screen", "4", "sync")
+addMessage("SD - TaoOrder_PhanTich", "Actor", "SearchRoomView", "enter room name + click Search", "5", "sync")
 addMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Room", "searchActiveRoom()", "6", "sync")
 addReturnMessage("SD - TaoOrder_PhanTich", "Room", "SearchRoomView", "List<Room>", "7")
-addReturnMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Actor", "hiển thị danh sách phòng", "8")
-addCombinedFragment("SD - TaoOrder_PhanTich", "alt", "searchActiveRoom() trả về rỗng", "SearchRoomView,Actor")
+addReturnMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Actor", "display room list", "8")
 autoLayoutDiagram("SD - TaoOrder_PhanTich")
+// Ngoại lệ (text block bên ngoài biểu đồ):
+// - searchActiveRoom() trả về rỗng → SearchRoomView gọi showMessage("No rooms found")
 ```
 
 ---
@@ -449,7 +476,9 @@ autoLayoutDiagram("SD - TaoOrder_PhanTich")
 
 ### Cách xuất ảnh từ VP
 
-VP MCP hiện tại **không có tool export ảnh trực tiếp**. Các cách thay thế:
+> **⚠️ GIỚI HẠN QUAN TRỌNG:** VP MCP **KHÔNG CÓ tool export ảnh** (đã xác minh từ source code `tools/*.java`). Workflow "vẽ → tự lấy PNG" là **KHÔNG THỂ tự động hoàn toàn**. Khâu xuất ảnh là **thủ công bắt buộc** — đừng kỳ vọng MCP làm thay. `cnpm-vp` vẽ được biểu đồ trong VP; bạn phải mở VP và export tay.
+
+Các cách thay thế:
 
 **Cách 1 — Screenshot từ VP application (khuyến nghị):**
 1. Mở diagram trong Visual Paradigm
@@ -514,21 +543,22 @@ Sau khi tạo xong diagram, **BẮT BUỘC** chạy verification trước khi ex
 ### Class Diagram verification
 ```
 1. getDiagramElements(diagramName) → kiểm tra:
-   - Có đủ 3 nhóm: Boundary classes, DAO classes, Entity classes
-   - Mỗi Boundary class có attributes (JTextField/JButton hoặc State/JSX)
+   - Có đủ 3 nhóm: Boundary, DAO, Entity classes
+   - Mỗi Boundary class có attributes (JTextField/JButton/JTable hoặc TextBox/Button/Table)
    - Mỗi Entity class có private attributes với kiểu dữ liệu
-   - Mỗi DAO class extends abstract DAO
-   - Relationships: >= 1 Generalization (DAO→DAO), N Dependencies (Boundary→DAO), N Associations (DAO→Entity)
-2. autoLayoutDiagram(diagramName) → layout lại, kiểm tra không chồng chất
-3. getDiagramElements(diagramName) → xác nhận elements spread theo chiều ngang (x positions khác nhau)
+   - Mỗi DAO class extends AbstractDAO
+   - Relationships: >= 1 Generalization, N Dependencies (Boundary→DAO)
+2. autoLayoutDiagram(diagramName)
+3. getDiagramElements(diagramName) → xem x positions — nếu classes chồng (cùng x) →
+   mở VP chỉnh layout tay (MCP không thể đặt toạ độ)
 ```
 
 ### Sequence Diagram verification
 ```
 1. getDiagramElements(diagramName) → kiểm tra:
-   - Lifelines theo đúng thứ tự: Actor → Boundary → [Control] → DAO → Entity
+   - Lifelines đúng thứ tự: Actor → Boundary → [Control] → DAO → Entity
+   - Số message = số bước trong kịch bản
    - Mỗi sync message có ít nhất 1 return message
-   - Có combined fragments (alt) cho các ngoại lệ
 2. autoLayoutDiagram(diagramName)
 ```
 

@@ -9,24 +9,24 @@ Arrow labels trong `@startuml` **PHẢI tiếng Anh ngắn gọn** (`click btnSe
 
 ### Diễn giải tuần tự (Kịch bản phiên bản 2) — BẮT BUỘC
 
-Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tuần tự** dạng **danh sách bullet (gạch đầu dòng)**, theo format "Kịch bản phiên bản 2". Block này mô tả chi tiết từng bước tương tác giữa Actor, Boundary và Entity bằng tiếng Việt tự nhiên.
+Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tuần tự** dạng **danh sách đánh số (1,2,3…)**, theo format "Kịch bản phiên bản 2". Block này mô tả chi tiết từng bước tương tác giữa Actor, Boundary và Entity bằng tiếng Việt tự nhiên.
 
 **Format:**
 
 ```
 **Kịch bản phiên bản 2 – UC [Tên UC]**
 
-- [Actor] [hành động] để [mục đích].
-- [Actor] chọn chức năng [tên chức năng] trên giao diện [BoundaryName].
-- Lớp [BoundaryName] gọi lớp [NextBoundary].
-- Lớp [NextBoundary] hiển thị giao diện cho [Actor].
-- [Actor] hỏi [thông tin] từ [đối tượng].
-- [đối tượng] trả lời [thông tin].
-- [Actor] nhập [thông tin] và nhấn nút [hành động].
-- Lớp [Boundary] gọi lớp [Entity] để xử lý.
-- Lớp [Entity] gọi phương thức [simpleMethodName].
-- Lớp [Entity] trả kết quả về cho lớp [Boundary].
-- Lớp [Boundary] hiển thị kết quả cho [Actor].
+1. [Actor] [hành động] để [mục đích].
+2. [Actor] chọn chức năng [tên chức năng] trên giao diện [BoundaryName].
+3. Lớp [BoundaryName] gọi lớp [NextBoundary].
+4. Lớp [NextBoundary] hiển thị giao diện cho [Actor].
+5. [Actor] hỏi [thông tin] từ [đối tượng].
+6. [đối tượng] trả lời [thông tin].
+7. [Actor] nhập [thông tin] và nhấn nút [hành động].
+8. Lớp [Boundary] gọi lớp [Entity] để xử lý.
+9. Lớp [Entity] gọi phương thức [simpleMethodName].
+10. Lớp [Entity] trả kết quả về cho lớp [Boundary].
+11. Lớp [Boundary] hiển thị kết quả cho [Actor].
 ...
 
 **Ngoại lệ: [tên ngoại lệ]**
@@ -35,7 +35,7 @@ Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tu�
 ```
 
 **Quy tắc:**
-- Kịch bản phiên bản 2 dùng **bullet** (gạch đầu dòng `- `), không đánh số
+- Kịch bản phiên bản 2 dùng **danh sách đánh số (1,2,3…)** — khớp giáo trình UP
 - Mỗi bước là một câu hoàn chỉnh bằng tiếng Việt
 - Tên class giữ nguyên tiếng Anh, hậu tố `View` (LoginView, SearchRoomView, SearchXView, CreateXView...)
 - Tên hàm trong mô tả PHẢI dùng tiếng Anh đơn giản (searchFreeRoom, checkLogin, addBooking...) — KHÔNG dùng tên tiếng Việt, KHÔNG có tham số/kiểu dữ liệu
