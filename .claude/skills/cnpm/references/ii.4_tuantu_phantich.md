@@ -34,14 +34,24 @@ Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tu�
 - Lớp [Boundary] hiển thị [thông báo lỗi / nút thay thế].
 ```
 
-**Quy tắc:**
-- Kịch bản phiên bản 2 dùng **danh sách đánh số (1,2,3…)** — khớp giáo trình UP
+**Quy tắc kịch bản phiên bản 2 (text):**
+- Dùng **danh sách đánh số (1,2,3…)** — khớp giáo trình UP
 - Mỗi bước là một câu hoàn chỉnh bằng tiếng Việt
 - Tên class giữ nguyên tiếng Anh, hậu tố `View` (LoginView, SearchRoomView, SearchXView, CreateXView...)
-- Tên hàm trong mô tả PHẢI dùng tiếng Anh đơn giản (searchFreeRoom, checkLogin, addBooking...) — KHÔNG dùng tên tiếng Việt, KHÔNG có tham số/kiểu dữ liệu
+- Tên hàm trong mô tả dùng tiếng Anh + `()`: `searchFreeRoom()`, `list()`, `create()` — KHÔNG có tham số/kiểu dữ liệu ở pha phân tích
 - Mô tả cả Actor ↔ Boundary interaction (hỏi khách, nhập thông tin, nhấn nút)
 - Mỗi nhánh ngoại lệ từ II.1 → một block "Ngoại lệ" riêng ở cuối (text only, không PlantUML)
-- Số bước trong kịch bản phải khớp chính xác với số mũi tên trong biểu đồ PlantUML (kể cả return `-->`)
+- Số bước phải khớp chính xác với số mũi tên trong biểu đồ PlantUML (kể cả return `-->`)
+
+**Quy tắc arrow label trong PlantUML (BẮT BUỘC):**
+
+| Tình huống | Label | Ví dụ |
+|-----------|-------|-------|
+| Actor → Boundary hành động | short English | `1: click btnManage`, `3: input keyword + click btnSearch` |
+| Boundary kích hoạt Boundary | `call` | `2: call` |
+| Boundary gọi Entity method | `methodName()` | `4: searchX()`, `4: list()` |
+| Entity trả về | `return` | `5: return` |
+| Boundary hiển thị cho Actor | `display` / `showMessage()` | `6: display`, `6: showMessage("msg")` |
 
 ```plantuml
 @startuml
@@ -103,17 +113,16 @@ boundary LoginView
 boundary SearchRoomView
 entity TenThucThe
 
-Actor -> LoginView : 1: select function X
+Actor -> LoginView : 1: click btnX
 activate LoginView
-LoginView -> SearchRoomView : 2: open search screen
+LoginView -> SearchRoomView : 2: call
 activate SearchRoomView
-Actor -> SearchRoomView : 3: enter keyword + click Search
+Actor -> SearchRoomView : 3: input keyword + click btnSearch
 SearchRoomView -> TenThucThe : 4: searchX()
 activate TenThucThe
-TenThucThe -> TenThucThe : 5: searchX()
-TenThucThe --> SearchRoomView : 6: return results
+TenThucThe --> SearchRoomView : 5: return
 deactivate TenThucThe
-SearchRoomView --> Actor : 7: display results
+SearchRoomView --> Actor : 6: display
 deactivate SearchRoomView
 deactivate LoginView
 @enduml

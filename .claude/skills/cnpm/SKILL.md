@@ -33,7 +33,19 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 7. **Diễn giải tuần tự (BẮT BUỘC cho II.4 và III.4):** Bên cạnh biểu đồ sequence diagram, PHẢI viết block diễn giải tuần tự dạng danh sách đánh số trong callout:
    - **II.4 (Phân tích):** Kịch bản phiên bản 2 — tiếng Việt tự nhiên, **đánh số (1,2,3…)** (khớp giáo trình UP), mô tả Actor ↔ Boundary ↔ Entity. Xem `references/ii.4_tuantu_phantich.md`.
    - **III.4 (Thiết kế):** Kịch bản phiên bản 3 — có tên hàm Java + kiểu dữ liệu, **danh sách đánh số**, mô tả Actor ↔ Boundary ↔ Controller ↔ Entity. Xem `references/iii.4_tuantu_thietke.md`.
-8. **Sequence diagram: TOÀN BỘ tiếng Anh trong `@startuml…@enduml`** — bao gồm `title`, actor display name (`actor "Staff" as Actor`), và arrow labels (`enter keyword + click Search`, `display results`, `saveOrder(order: Order): boolean`). KHÔNG có tiếng Việt bên trong block PlantUML. Kịch bản phiên bản 2/3 text bên ngoài PlantUML giữ tiếng Việt bình thường.
+8. **Sequence diagram: TOÀN BỘ tiếng Anh trong `@startuml…@enduml`** — bao gồm `title`, actor display name (`actor "Staff" as Actor`), và arrow labels. KHÔNG có tiếng Việt bên trong block PlantUML. Kịch bản phiên bản 2/3 text bên ngoài PlantUML giữ tiếng Việt bình thường.
+   - **Quy tắc arrow label (BẮT BUỘC):**
+
+   | Tình huống | Label | Ví dụ |
+   |-----------|-------|-------|
+   | Actor → Boundary hành động | short English | `1: click btnManage`, `3: input keyword + click btnSearch` |
+   | Boundary/Controller kích hoạt | `call` | `2: call`, `4: call` |
+   | Boundary/Controller gọi Entity method | `methodName()` | `5: list()`, `5: searchX()`, `6: save(order)` |
+   | Entity/Controller trả về | `return` | `6: return`, `7: return` |
+   | Boundary hiển thị | `display` / `showMessage()` | `7: display`, `8: showMessage("saved")` |
+
+   Pha phân tích: `methodName()` không tham số. Pha thiết kế: `methodName(param: Type)` đầy đủ.
+
 9. **Mỗi mũi tên = 1 bước đánh số** — kể cả return arrow `-->`. Tổng N bước ghi trong `(N bước)` ở heading, title PlantUML, và bold kịch bản PHẢI khớp chính xác số mũi tên trong sơ đồ.
 10. **Không dùng `alt` trong sequence diagram** — cả pha phân tích lẫn thiết kế chỉ vẽ luồng chính. Ngoại lệ xử lý bằng block text "Ngoại lệ" đặt sau biểu đồ (không nhúng vào PlantUML).
 
@@ -590,10 +602,10 @@ Invoice --> ServiceOrder
 
 ### Biểu đồ Tuần tự (Sequence Diagram)
 
-- Participants xếp theo thứ tự: Actor → Boundary → [Control] → DAO → Entity
+- Participants xếp theo thứ tự: Actor → Boundary → [Control/DAO] → Entity
 - Thông điệp đánh số liên tục — mỗi mũi tên (kể cả return `-->`) = 1 bước
 - **Không dùng `alt`** — chỉ vẽ luồng chính; ngoại lệ → block text sau biểu đồ
-- Arrow labels: tiếng Anh trong `@startuml` (cả phân tích lẫn thiết kế)
+- Arrow labels: tiếng Anh ngắn trong `@startuml` (cả phân tích lẫn thiết kế) — xem nguyên tắc #8 để biết quy tắc `call`/`return`/`methodName()`
 - **Boundary & Entity PHẢI dùng ký hiệu tròn gạch** (circle notation): dùng `boundary "Name"`, `entity "Name"`, `control "Name"` khi khai báo participant. KHÔNG dùng `participant "Name"` (sẽ hiển thị khung).
 - **Activation bar màu xanh:** `skinparam SequenceLifeLineBackgroundColor #7AD2FF`
 
