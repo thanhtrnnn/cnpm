@@ -414,11 +414,11 @@ Tất cả messages PHẢI được đánh số tuần tự:
 - Return message dùng số thứ tự tiếp theo (hoặc cùng số với call)
 - Combined fragment: message bên trong tiếp tục đánh số
 
-Ví dụ: 1, 2, 3, 4, 5 (trong alt: 5.1, 5.2), 6
+Ví dụ: 1, 2, 3, 4, 5, 6 — nếu dùng opt/loop (luồng chính): sub-message = 5.1, 5.2 (không dùng alt)
 
 **Ngôn ngữ theo pha (khớp cnpm #8):**
 - **Arrow label trong VP (addMessage/addReturnMessage):** TOÀN BỘ tiếng Anh trong cả 2 pha (`enter keyword + click Search`, `checkLogin()`, `display results`, `List<Room>`).
-- **Phân tích:** Arrow ngắn gọn tiếng Anh (`click btnLogin`, `checkLogin()`, `display room list`).
+- **Phân tích:** Dùng từ khoá: `click btnX` (Actor→Boundary), `call` (kích hoạt Boundary/DAO), `return` (phản hồi), `methodName()` (gọi Entity), `display` (Boundary→Actor hiển thị).
 - **Thiết kế:** Arrow = tên hàm đầy đủ + kiểu (`searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `btnSearchRoomClick()`).
 - **Tên method luôn tiếng Anh** mọi pha (checkLogin, searchProduct, addOrder...).
 - **Kịch bản text (v2/v3 bên ngoài biểu đồ):** Giữ tiếng Việt.
@@ -542,39 +542,76 @@ Sau khi tạo xong diagram, **BẮT BUỘC** chạy verification trước khi ex
 
 ### Class Diagram verification
 ```
-1. getDiagramElements(diagramName) → kiểm tra:
-   - Có đủ 3 nhóm: Boundary, DAO, Entity classes
-   - Mỗi Boundary class có attributes (JTextField/JButton/JTable hoặc TextBox/Button/Table)
-   - Mỗi Entity class có private attributes với kiểu dữ liệu
+1. getDiagramElements(diagramName) → kiểm tra cấu trúc:
+   - Có đủ 3 nhóm: Boundary, DAO (thiết kế), Entity classes
+   - Phân tích BCE: Mỗi Boundary class có attributes với prefix in_/out_/sub_/outsub_
+     (VD: -inKeyword, -outClientList, -subSearch) — KHÔNG dùng txt/btn ở pha phân tích
+   - Thiết kế JFrame: attributes = JTextField/JButton/JTable
+   - Thiết kế React: attributes = State/JSX (VD: roomList, selectedRoom)
+   - Mỗi Entity class có private attributes với kiểu dữ liệu VÀ methods có ()
    - Mỗi DAO class extends AbstractDAO
-   - Relationships: >= 1 Generalization, N Dependencies (Boundary→DAO)
+   - Relationships: >= 1 Generalization (DAO→AbstractDAO), N Dependencies (Boundary→DAO)
 2. autoLayoutDiagram(diagramName)
-3. getDiagramElements(diagramName) → xem x positions — nếu classes chồng (cùng x) →
-   mở VP chỉnh layout tay (MCP không thể đặt toạ độ)
+3. getDiagramElements(diagramName) → kiểm tra bố cục x/y:
+   - Layout tốt: x positions phân tán theo nhóm
+     VD: Boundary x ≈ 100, DAO x ≈ 400, Entity x ≈ 700 — khoảng cách >= 200px mỗi nhóm
+   - Layout tốt: y positions đa dạng trong cùng nhóm — khoảng cách >= 100px giữa các class
+   - Layout xấu: nhiều class cùng x hoặc y → đang chồng chất → mở VP chỉnh tay
+   - MCP không có tool đặt toạ độ trực tiếp — phải chỉnh tay trong VP nếu layout xấu
 ```
 
 ### Sequence Diagram verification
 ```
-1. getDiagramElements(diagramName) → kiểm tra:
+1. getDiagramElements(diagramName) → kiểm tra cấu trúc:
    - Lifelines đúng thứ tự: Actor → Boundary → [Control] → DAO → Entity
-   - Số message = số bước trong kịch bản
+   - Số lifeline khớp với số participant đã lên kế hoạch
+   - Số message = số bước trong kịch bản (v2 hoặc v3)
    - Mỗi sync message có ít nhất 1 return message
+   - Arrow labels đúng quy ước:
+     · Actor→Boundary: "click btnX" hoặc "input X + click btnY"
+     · Boundary/Controller kích hoạt: "call"
+     · Entity/DAO method call: "methodName()" (phân tích không tham số; thiết kế có param:Type)
+     · Phản hồi: "return"
+     · Hiển thị kết quả: "display" hoặc "showMessage(\"msg\")"
+   - KHÔNG có combined fragment alt (ngoại lệ → viết text block bên ngoài biểu đồ)
 2. autoLayoutDiagram(diagramName)
 ```
 
 ### UC Diagram verification
 ```
-1. getDiagramElements(diagramName) → kiểm tra:
-   - Số actor đúng dự kiến
-   - Số UC đúng dự kiến (bao gồm UC con generalization)
-   - Có đủ relationship types: Include, Extend, Generalization
+1. getDiagramElements(diagramName) → kiểm tra cấu trúc:
+   - Số actor đúng dự kiến (thường 1 actor chính + 1 guest nếu có phân quyền)
+   - Số UC đúng dự kiến (= số chức năng trong module, gồm UC con generalization)
+   - Có đủ relationship types: Include (<<include>>), Extend (<<extend>>), Generalization
 2. autoLayoutDiagram(diagramName)
+3. getDiagramElements(diagramName) → kiểm tra bố cục:
+   - Actor nằm ngoài cụm UC: x của actor nhỏ hơn x nhỏ nhất của tất cả UC (actor bên trái)
+   - UC spread theo chiều dọc (y positions đa dạng, khoảng cách >= 80px) — tránh chồng
+   - Nếu có nhiều actor: actor thứ 2 nằm bên phải (x lớn hơn x lớn nhất của UC)
+```
+
+### ERD verification
+```
+1. getDiagramElements(diagramName) → kiểm tra cấu trúc:
+   - Số bảng đúng dự kiến (mỗi entity chính = 1 bảng)
+   - Mỗi bảng có primary key column (isPrimary=true hoặc PK stereotype)
+   - FK columns tồn tại ở bảng phía N của quan hệ 1:N
+   - Số relationship đúng dự kiến (mỗi cặp bảng liên quan có 1 relationship)
+   - Multiplicities đúng nghiệp vụ: "1..*" / "0..*" / "1" đặt đúng chiều
+2. autoLayoutDiagram(diagramName)
+3. getDiagramElements(diagramName) → kiểm tra bố cục:
+   - Bảng trung tâm (nhiều FK nhất) nằm gần trung tâm sơ đồ
+   - Các bảng liên quan spread xung quanh, x và y positions đa dạng
 ```
 
 ### Report verification
 ```
 generateUseCaseReport / generateClassReport / generateSequenceReport / generateErdReport
-→ trả về element counts — so sánh với expected counts từ plan
+→ trả về element counts — so sánh với expected counts từ plan:
+   UC: actor count, use case count, relationship count
+   Class: class count per package, attribute count, method count, relationship count
+   Sequence: lifeline count, message count
+   ERD: table count, column count, relationship count
 ```
 
 ---
