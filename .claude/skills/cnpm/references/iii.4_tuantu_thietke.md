@@ -18,11 +18,13 @@ Arrow labels theo quy tắc (giống II.4 nhưng có tham số+kiểu ở thiế
 | Tình huống | Label | Ví dụ |
 |-----------|-------|-------|
 | Actor → Boundary hành động | short English | `1: click btnManage`, `3: input info + click btnSave` |
-| Boundary kích hoạt Boundary/Controller | `call` | `2: call`, `4: call` |
-| Controller/DAO → Entity method | `methodName(param: Type)` | `5: list(branchId)`, `6: save(order: Order)` |
+| Boundary kích hoạt Boundary/Controller/DAO | `call` | `2: call`, `4: call` |
+| **Entity tự thực thi method (SELF `Entity -> Entity`)** | `methodName(param: Type)` | `5: list(branchId): List<X>`, `6: save(order: Order): boolean` |
 | Entity trả về | `return` | `7: return` |
 | Controller/DAO → Boundary trả | `return` | `8: return` |
 | Boundary → Actor hiển thị | `display` / `showMessage()` | `9: display`, `9: showMessage("saved")` |
+
+> Như pha phân tích: gọi nghiệp vụ Entity = `Controller/DAO -> Entity : call` → `Entity -> Entity : methodName(param: Type): ReturnType` (tự gọi) → `Entity --> Controller/DAO : return`. Pha thiết kế thêm tham số + kiểu trả về trên mũi tên self.
 
 ### Diễn giải tuần tự (Kịch bản phiên bản 3) — BẮT BUỘC
 
@@ -97,13 +99,14 @@ Actor -> SearchXFrm : 5: input keyword + click btnSearch
 SearchXFrm -> SearchXFrm : 6: actionPerformed(e: ActionEvent)
 SearchXFrm -> XxxDAO : 7: call
 activate XxxDAO
-XxxDAO -> XxxEntity : 8: searchX(keyword: String): List<XxxEntity>
+XxxDAO -> XxxEntity : 8: call
 activate XxxEntity
-XxxEntity --> XxxDAO : 9: return
+XxxEntity -> XxxEntity : 9: searchX(keyword: String): List<XxxEntity>
+XxxEntity --> XxxDAO : 10: return
 deactivate XxxEntity
-XxxDAO --> SearchXFrm : 10: return
+XxxDAO --> SearchXFrm : 11: return
 deactivate XxxDAO
-SearchXFrm --> Actor : 11: display
+SearchXFrm --> Actor : 12: display
 deactivate SearchXFrm
 deactivate LoginFrm
 @enduml
@@ -134,27 +137,29 @@ activate SearchRoomPage
 SearchRoomPage -> SearchRoomPage : 2: btnSearchRoomClick()
 SearchRoomPage -> OrderController : 3: call
 activate OrderController
-OrderController -> Room : 4: searchRoomByName(roomName: String): List<Room>
+OrderController -> Room : 4: call
 activate Room
-Room --> OrderController : 5: return
+Room -> Room : 5: searchRoomByName(roomName: String): List<Room>
+Room --> OrderController : 6: return
 deactivate Room
-OrderController --> SearchRoomPage : 6: return
+OrderController --> SearchRoomPage : 7: return
 deactivate OrderController
-SearchRoomPage --> Actor : 7: display
+SearchRoomPage --> Actor : 8: display
 deactivate SearchRoomPage
 
-Actor -> CreateOrderPage : 8: select room + click btnCreateOrder
+Actor -> CreateOrderPage : 9: select room + click btnCreateOrder
 activate CreateOrderPage
-CreateOrderPage -> CreateOrderPage : 9: formLoad()
-CreateOrderPage -> OrderController : 10: call
+CreateOrderPage -> CreateOrderPage : 10: formLoad()
+CreateOrderPage -> OrderController : 11: call
 activate OrderController
-OrderController -> Order : 11: save(order: Order): boolean
+OrderController -> Order : 12: call
 activate Order
-Order --> OrderController : 12: return
+Order -> Order : 13: save(order: Order): boolean
+Order --> OrderController : 14: return
 deactivate Order
-OrderController --> CreateOrderPage : 13: return
+OrderController --> CreateOrderPage : 15: return
 deactivate OrderController
-CreateOrderPage --> Actor : 14: showMessage("Order created")
+CreateOrderPage --> Actor : 16: showMessage("Order created")
 deactivate CreateOrderPage
 @enduml
 ```

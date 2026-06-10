@@ -48,10 +48,12 @@ Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tu�
 | Tình huống | Label | Ví dụ |
 |-----------|-------|-------|
 | Actor → Boundary hành động | short English | `1: click btnManage`, `3: input keyword + click btnSearch` |
-| Boundary kích hoạt Boundary | `call` | `2: call` |
-| Boundary gọi Entity method | `methodName()` | `4: searchX()`, `4: list()` |
-| Entity trả về | `return` | `5: return` |
-| Boundary hiển thị cho Actor | `display` / `showMessage()` | `6: display`, `6: showMessage("msg")` |
+| Boundary kích hoạt Boundary/Entity | `call` | `2: call`, `4: call` |
+| **Entity tự thực thi method (SELF-message `Entity -> Entity`)** | `methodName()` | `5: searchX()`, `3: checkLogin()`, `5: list()` |
+| Entity trả về | `return` | `6: return` |
+| Boundary hiển thị cho Actor | `display` / `showMessage()` | `7: display`, `7: showMessage("msg")` |
+
+> **Mẫu gọi nghiệp vụ Entity = 3 mũi tên** (khớp biểu đồ mẫu `image_12`): Boundary `-> Entity : call`, rồi Entity `-> Entity : methodName()` (tự gọi), rồi Entity `--> Boundary : return`. KHÔNG đặt tên hàm ngay trên mũi tên Boundary→Entity.
 
 ```plantuml
 @startuml
@@ -118,11 +120,12 @@ activate LoginView
 LoginView -> SearchRoomView : 2: call
 activate SearchRoomView
 Actor -> SearchRoomView : 3: input keyword + click btnSearch
-SearchRoomView -> TenThucThe : 4: searchX()
+SearchRoomView -> TenThucThe : 4: call
 activate TenThucThe
-TenThucThe --> SearchRoomView : 5: return
+TenThucThe -> TenThucThe : 5: searchX()
+TenThucThe --> SearchRoomView : 6: return
 deactivate TenThucThe
-SearchRoomView --> Actor : 6: display
+SearchRoomView --> Actor : 7: display
 deactivate SearchRoomView
 deactivate LoginView
 @enduml

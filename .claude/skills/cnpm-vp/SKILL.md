@@ -55,28 +55,14 @@ Sau đó restart Claude Code để nhận MCP config mới.
 
 Khi tạo biểu đồ trong VP, PHẢI tuân thủ các quy tắc cấu trúc sau:
 
-1. **BCE:** Class diagram PHẢI phân rõ 3 package: Boundary | DAO/Control | Entity
-2. **Màu sắc package BCE (BẮT BUỘC):** Mỗi package PHẢI có màu nền riêng:
-
-| Package | Màu | Hex |
-|---------|-----|-----|
-| Boundary | Xanh dương nhạt | `#DDEEFF` |
-| DAO/Control | Cam nhạt | `#FFE0B2` |
-| Entity | Vàng nhạt | `#FFF3CD` |
-
-Dùng `addPackage` để tạo container, hoặc `addClass` với tham số `packageName` + `packageColor`.
-
-3. **Stereotype class (BẮT BUỘC):** Mỗi class PHẢI có stereotype:
-
-| Loại class | Stereotype | Ví dụ |
-|-----------|-----------|-------|
-| Boundary (JFrame) | `Boundary` | `<<Boundary>>` trên LoginFrm, SearchRoomFrm |
-| Boundary (React) | `Component` | `<<Component>>` trên RoomPage |
-| DAO | `DAO` | `<<DAO>>` trên SachDAO |
-| Entity | `Entity` | `<<Entity>>` trên Sach |
-| Interface | `Interface` | `<<Interface>>` trên ISachService |
-
-Dùng `addClass` với tham số `stereotype`. VP hiển thị stereotype dạng `<<tên>>` phía trên tên class.
+1. **BCE — phân tách bằng TÊN + BỐ CỤC, KHÔNG bằng package màu:** Class diagram tách 3 vai trò Boundary | Control/DAO | Entity qua **tên hậu tố** (Boundary = `View` (phân tích) / `Page` hoặc `Frm` (thiết kế), Control = `Controller`, DAO = `DAO`, Entity = PascalCase trơn) và **bố cục** (hàng Boundary trên cùng, Entity bên dưới). KHÔNG cần package bao quanh.
+2. **Hộp lớp để TRẮNG (khớp biểu đồ mẫu):** Biểu đồ lớp tham chiếu của môn học (`exports/services/screenshots`, `exports/account/screenshots`) dùng **hộp trắng trơn — KHÔNG màu nền, KHÔNG package màu**.
+   - Mặc định: gọi `addClass` **KHÔNG** truyền `packageName`/`packageColor` (để trắng).
+   - Chỉ đóng package màu khi user yêu cầu tường minh.
+   - Màu xanh `#7AD2FF` **chỉ** áp dụng cho actor / use case / lifeline / activation — VP MCP **tự tô** (xem mục Render). KHÔNG tô màu hộp lớp.
+3. **Stereotype lớp: KHÔNG dùng trên class diagram (khớp mẫu):** Mẫu không hiển thị `<<Boundary>>`/`<<Entity>>` trên hộp lớp.
+   - Mặc định: `addClass` **KHÔNG** truyền `stereotype`.
+   - Ngoại lệ: sequence **lifeline** VẪN truyền `lifelineType` = `boundary`/`control`/`entity`/`actor` để VP hiển thị icon tròn-gạch đúng (đây là yêu cầu của mẫu tuần tự).
 
 4. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT — khớp cnpm):**
    - **Arrow label trong biểu đồ VP (@message):** TOÀN BỘ tiếng Anh ngắn gọn trong cả hai pha (`enter keyword + click Search`, `checkLogin()`, `display results`). KHÔNG dùng tiếng Việt trong message VP.
@@ -126,11 +112,27 @@ Boundary class trong pha **thiết kế** dùng tiền tố chuẩn sau (khớp 
 | `tbl` | Table | `tblActiveRooms` |
 | `lbl` | Label | `lblRoomName` |
 
-Pha **phân tích:** attribute có thể để mô tả tự nhiên ngắn (không bắt buộc tiền tố).
+### Tiền tố thuộc tính Boundary (Phân tích — khớp mẫu image_08)
+
+Boundary class pha **phân tích** dùng tiền tố **camelCase tiếng Anh, KHÔNG kiểu dữ liệu, KHÔNG dấu gạch dưới** (xác nhận từ `exports/services/screenshots/image_08.png`):
+
+| Tiền tố | Ý nghĩa | Ví dụ từ mẫu |
+|---------|---------|--------------|
+| `in` | Ô nhập liệu | `-inUsername`, `-inPassword`, `-inRoomName`, `-inProductName` |
+| `out` | Chỉ hiển thị | `-outRoomName`, `-outProductList`, `-outSuccess` |
+| `sub` | Nút hành động | `-subLogin`, `-subSearchRoom`, `-subCreateOrder`, `-subAdd`, `-subSave`, `-subConfirm` |
+| `outsub` | Bảng/danh sách click được | `-outsubRoomList` |
+
+- Boundary phân tích **chỉ có attributes, KHÔNG có method**.
+- Entity phân tích: attributes `-` (không kiểu) **VÀ** method `+methodName()` (có `()`, không tham số): `+checkLogin()`, `+searchActiveRoom()`, `+addOrder()`.
 
 ---
 
-## Danh sách MCP Tools (38 tools)
+## Render: màu sắc tự động (khớp biểu đồ mẫu)
+
+VP MCP **tự tô màu xanh `#7AD2FF`** cho actor / use case / lifeline / activation bar (biểu đồ UC + tuần tự) — không cần gọi tool tô màu. Hộp lớp (class) và bảng (ERD) giữ **trắng** mặc định. Đây là quy ước render khớp với biểu đồ mẫu của môn học và theme PlantUML của skill `cnpm`.
+
+## Danh sách MCP Tools (39 tools)
 
 ### Diagram Management
 
@@ -150,6 +152,7 @@ Pha **phân tích:** attribute có thể để mô tả tự nhiên ngắn (khô
 | `addActor` | Thêm actor | `actorName`, `diagramName` |
 | `addUseCase` | Thêm use case | `useCaseName`, `diagramName` |
 | `addRelationship` | Thêm Include/Extend/Generalization | `diagramName`, `sourceName`, `targetName`, `relationshipType` |
+| `addSystemBoundary` | Bao tất cả use case trong khung hệ thống (hộp module) — gọi **SAU** `autoLayoutDiagram` | `diagramName`, `systemName` |
 | `generateUseCaseReport` | Sinh báo cáo phân tích | `diagramName` |
 
 ### Class Diagram
@@ -207,9 +210,12 @@ Pha **phân tích:** attribute có thể để mô tả tự nhiên ngắn (khô
 2. addActor(actorName, diagramName)        — cho mỗi actor
 3. addUseCase(useCaseName, diagramName)    — cho mỗi UC (bao gồm UC con generalization)
 4. addRelationship(diagramName, source, target, type)   — Include, Extend, hoặc Generalization
-5. autoLayoutDiagram(diagramName)          — LUÔN chạy cuối cùng
-6. generateUseCaseReport(diagramName)      — kiểm tra element counts
+5. autoLayoutDiagram(diagramName)          — LUÔN chạy trước khi bao khung
+6. addSystemBoundary(diagramName, systemName)  — bao UC trong hộp module (tên module, VD "Dịch vụ và kho hàng"); actor nằm ngoài
+7. generateUseCaseReport(diagramName)      — kiểm tra element counts
 ```
+
+> Biểu đồ UC tổng quan của mẫu (image_02) có **khung hệ thống** bao quanh toàn bộ use case, gắn nhãn tên module, với actor ở ngoài hai bên. `addSystemBoundary` tạo đúng khung này — phải gọi **sau** `autoLayoutDiagram` để khung ôm trọn UC đã được dàn.
 
 **Thứ tự thêm relationships:**
 1. Include (UC chính → UC phụ bắt buộc)
@@ -418,8 +424,15 @@ Ví dụ: 1, 2, 3, 4, 5, 6 — nếu dùng opt/loop (luồng chính): sub-messag
 
 **Ngôn ngữ theo pha (khớp cnpm #8):**
 - **Arrow label trong VP (addMessage/addReturnMessage):** TOÀN BỘ tiếng Anh trong cả 2 pha (`enter keyword + click Search`, `checkLogin()`, `display results`, `List<Room>`).
-- **Phân tích:** Dùng từ khoá: `click btnX` (Actor→Boundary), `call` (kích hoạt Boundary/DAO), `return` (phản hồi), `methodName()` (gọi Entity), `display` (Boundary→Actor hiển thị).
-- **Thiết kế:** Arrow = tên hàm đầy đủ + kiểu (`searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `btnSearchRoomClick()`).
+- **Phân tích:** Dùng từ khoá: `click btnX` (Actor→Boundary), `call` (Boundary/Control kích hoạt lớp kế), `return` (phản hồi), `display` (Boundary→Actor hiển thị).
+- **`methodName()` là SELF-MESSAGE trên Entity (khớp mẫu image_12):** Khi Boundary/Control gọi nghiệp vụ của Entity, vẽ **3 bước**:
+  1. Boundary/Control → Entity: `call`
+  2. Entity → **chính Entity** (self): `methodName()` — VD `checkLogin()`, `searchActiveRoom()`, `addOrder()`
+  3. Entity → Boundary/Control: `return`
+
+  Trong VP MCP: bước 2 gọi `addMessage(diagram, "Entity", "Entity", "methodName()", n, "sync")` (from == to → VP vẽ mũi tên tự gọi).
+- **Tương tác Actor↔Actor:** mẫu có `ask X` / `reply X` giữa hai actor (VD Service Staff hỏi Client) — dùng câu tiếng Anh ngắn.
+- **Thiết kế:** `methodName()` self-message mang tham số + kiểu (`searchRoomByName(roomName: String): List<Room>`); event Boundary self-call `btnSearchRoomClick()` / `actionPerformed(e: ActionEvent)`.
 - **Tên method luôn tiếng Anh** mọi pha (checkLogin, searchProduct, addOrder...).
 - **Kịch bản text (v2/v3 bên ngoài biểu đồ):** Giữ tiếng Việt.
 
@@ -436,8 +449,8 @@ Block diễn giải giúp người đọc hiểu luồng xử lý mà không c�
 1. createSequenceDiagram(diagramName)
 2. addLifeline — theo thứ tự: Actor, Boundary, [Control], DAO, Entity
 3. addActivation — 1 lần cho mỗi lifeline khi nó bắt đầu chuỗi xử lý (không cần mỗi message)
-4. addMessage — sync message (thứ tự tăng dần, tiếng Anh)
-5. addReturnMessage — return (mỗi sync cần 1 return)
+4. addMessage — sync message (thứ tự tăng dần, tiếng Anh). Gọi nghiệp vụ Entity = 3 bước: `call` → `methodName()` self-message (from==to là Entity) → `return`
+5. addReturnMessage — return / display (mỗi `call` cần 1 `return`)
 6. autoLayoutDiagram(diagramName)
 7. getDiagramElements(diagramName) → xác nhận participants đúng thứ tự, message count đúng
 ```
@@ -457,17 +470,22 @@ addLifeline("SD - TaoOrder_PhanTich", "SearchRoomView", "SearchRoomView", "bound
 addLifeline("SD - TaoOrder_PhanTich", "Employee", "Employee", "entity", "E1")
 addLifeline("SD - TaoOrder_PhanTich", "Room", "Room", "entity", "E2")
 addActivation("SD - TaoOrder_PhanTich", "LoginView")
-addMessage("SD - TaoOrder_PhanTich", "Actor", "LoginView", "enter username/password + click Login", "1", "sync")
-addMessage("SD - TaoOrder_PhanTich", "LoginView", "Employee", "checkLogin()", "2", "sync")
-addReturnMessage("SD - TaoOrder_PhanTich", "Employee", "LoginView", "true", "3")
-addMessage("SD - TaoOrder_PhanTich", "LoginView", "SearchRoomView", "open search screen", "4", "sync")
-addMessage("SD - TaoOrder_PhanTich", "Actor", "SearchRoomView", "enter room name + click Search", "5", "sync")
-addMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Room", "searchActiveRoom()", "6", "sync")
-addReturnMessage("SD - TaoOrder_PhanTich", "Room", "SearchRoomView", "List<Room>", "7")
-addReturnMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Actor", "display room list", "8")
+// --- Đăng nhập: Boundary call Entity → Entity self-method() → return ---
+addMessage("SD - TaoOrder_PhanTich", "Actor", "LoginView", "Login", "1", "sync")
+addMessage("SD - TaoOrder_PhanTich", "LoginView", "Employee", "call", "2", "sync")
+addMessage("SD - TaoOrder_PhanTich", "Employee", "Employee", "checkLogin()", "3", "sync")   // self-message
+addReturnMessage("SD - TaoOrder_PhanTich", "Employee", "LoginView", "return", "4")
+addMessage("SD - TaoOrder_PhanTich", "LoginView", "SearchRoomView", "call", "5", "sync")
+addReturnMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Actor", "display", "6")
+// --- Tìm phòng: cùng mẫu call → searchActiveRoom() self → return → display ---
+addMessage("SD - TaoOrder_PhanTich", "Actor", "SearchRoomView", "enter room name and click search", "7", "sync")
+addMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Room", "call", "8", "sync")
+addMessage("SD - TaoOrder_PhanTich", "Room", "Room", "searchActiveRoom()", "9", "sync")       // self-message
+addReturnMessage("SD - TaoOrder_PhanTich", "Room", "SearchRoomView", "return", "10")
+addReturnMessage("SD - TaoOrder_PhanTich", "SearchRoomView", "Actor", "display", "11")
 autoLayoutDiagram("SD - TaoOrder_PhanTich")
 // Ngoại lệ (text block bên ngoài biểu đồ):
-// - searchActiveRoom() trả về rỗng → SearchRoomView gọi showMessage("No rooms found")
+// - searchActiveRoom() trả về rỗng → SearchRoomView hiển thị "No rooms found"
 ```
 
 ---

@@ -13,15 +13,17 @@ Phân tích rã lớp theo mô hình **Boundary – Entity** (pha phân tích kh
 
 **Bước 1:** Một giao diện người dùng — ngoại trừ cảnh báo/thông báo, hộp thoại xác nhận — tạo một **lớp Boundary** (`XxxView`).
 
-**Bước 2:** Xem xét các thành phần cần thiết trong mỗi giao diện, đặt tên thành phần với tiền tố:
+**Bước 2:** Xem xét các thành phần cần thiết trong mỗi giao diện, đặt tên thành phần **camelCase tiếng Anh, KHÔNG kiểu dữ liệu, KHÔNG dấu gạch dưới** (xác nhận từ biểu đồ mẫu `exports/services/screenshots/image_08.png`):
 
 | Tiền tố | Loại thành phần | Ví dụ |
 |---------|----------------|-------|
-| `in_` | Ô nhập liệu (text input, dropdown filter) | `-inKeyword`, `-inFullName`, `-inThreshold` |
-| `out_` | Chỉ hiển thị (bảng, nhãn không tương tác) | `-outClientList`, `-outRoomList`, `-outTierName` |
-| `sub_` | Nút hành động (Submit, Save, Search) | `-subSearch`, `-subEdit`, `-subSave` |
-| `outsub_` | Bảng hiển thị + có thể click/chọn | `-outsubListSession`, `-outsubRoomList` |
-| `inout_` | Vừa hiển thị vừa cho sửa inline | `-inoutScheduleTable` |
+| `in` | Ô nhập liệu (text input, dropdown filter) | `-inUsername`, `-inKeyword`, `-inFullName` |
+| `out` | Chỉ hiển thị (bảng, nhãn không tương tác) | `-outClientList`, `-outRoomName`, `-outSuccess` |
+| `sub` | Nút hành động (Submit, Save, Search) | `-subLogin`, `-subSearch`, `-subSave`, `-subConfirm` |
+| `outsub` | Bảng hiển thị + có thể click/chọn | `-outsubRoomList`, `-outsubListSession` |
+| `inout` | Vừa hiển thị vừa cho sửa inline | `-inoutScheduleTable` |
+
+> Tiền tố viết liền PascalCase phần tên (VD `subCreateOrder`, KHÔNG phải `sub_create_order`). Boundary phân tích **chỉ có attribute, KHÔNG có method**.
 
 **Bước 3:** Xem xét các hành động/chức năng cần thiết dưới lớp Boundary. Với mỗi chức năng, trả lời:
 - Tên phương thức là gì? (tiếng Anh + `()`, không tham số ở phân tích)
@@ -53,7 +55,7 @@ Narrative PHẢI bắt đầu từ giao diện **HomeView** của actor, không 
 **Quy tắc narrative:**
 - Dùng bullet points (`-`), KHÔNG dùng code block
 - Bắt đầu từ HomeView → màn hình chức năng
-- Liệt kê **đầy đủ** attributes (không bỏ sót `in_/out_/sub_`)
+- Liệt kê **đầy đủ** attributes (không bỏ sót `in`/`out`/`sub`/`outsub`)
 - Giải thích TẠI SAO method thuộc Entity nào (entity đó sở hữu thuộc tính gì)
 - Kết thúc flow: "hệ thống thông báo thành công, tải lại [outXxx] thông qua [listX()] và quay về [XxxView]"
 - Tên method: tiếng Anh + `()` — `list()`, `create()`, `searchX()`, `getBookingHistory()`

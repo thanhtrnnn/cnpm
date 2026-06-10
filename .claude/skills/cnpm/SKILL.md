@@ -39,12 +39,13 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
    | Tình huống | Label | Ví dụ |
    |-----------|-------|-------|
    | Actor → Boundary hành động | short English | `1: click btnManage`, `3: input keyword + click btnSearch` |
-   | Boundary/Controller kích hoạt | `call` | `2: call`, `4: call` |
-   | Boundary/Controller gọi Entity method | `methodName()` | `5: list()`, `5: searchX()`, `6: save(order)` |
+   | Boundary/Controller kích hoạt lớp kế | `call` | `2: call`, `4: call` |
+   | **Entity tự thực thi method (SELF `Entity -> Entity`)** | `methodName()` | `5: list()`, `5: searchX()`, `6: save(order)` |
    | Entity/Controller trả về | `return` | `6: return`, `7: return` |
    | Boundary hiển thị | `display` / `showMessage()` | `7: display`, `8: showMessage("saved")` |
 
    Pha phân tích: `methodName()` không tham số. Pha thiết kế: `methodName(param: Type)` đầy đủ.
+   **Gọi nghiệp vụ Entity = 3 mũi tên** (khớp mẫu VP image_12): `Boundary -> Entity : call` → `Entity -> Entity : methodName()` (tự gọi) → `Entity --> Boundary : return`. Tên hàm đặt trên mũi tên **self**, KHÔNG trên mũi tên Boundary→Entity.
 
 9. **Mỗi mũi tên = 1 bước đánh số** — kể cả return arrow `-->`. Tổng N bước ghi trong `(N bước)` ở heading, title PlantUML, và bold kịch bản PHẢI khớp chính xác số mũi tên trong sơ đồ.
 10. **Không dùng `alt` trong sequence diagram** — cả pha phân tích lẫn thiết kế chỉ vẽ luồng chính. Ngoại lệ xử lý bằng block text "Ngoại lệ" đặt sau biểu đồ (không nhúng vào PlantUML).
