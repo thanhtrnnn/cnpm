@@ -389,20 +389,16 @@ generateDdl("ERD - ClientManagement")
 Actor → [TênView] (Boundary) → [EntityController] (Control) → [Entity] (Entity)
 ```
 
-**Alias lifeline (BẮT BUỘC):**
-Mỗi lifeline PHẢI có alias ngắn gọn để layout đọc được:
+**Alias lifeline: ĐỂ TRỐNG (`alias=""`) — BẮT BUỘC:**
 
-| Vai trò | Mẫu alias | Ví dụ |
-|---------|----------|-------|
-| Actor | `Actor` | `Actor` |
-| Boundary | `B` + index | `B0`, `B1` |
-| Control | `C` + index | `C0` |
-| Entity | `E` + index | `E1` |
+KHÔNG đặt alias kiểu `B0`/`E1`. Lý do:
+1. **Nhãn lifeline = `lifelineName` = tên class** (`LoginView`, `Employee`) → khớp biểu đồ mẫu (mẫu hiển thị tên class, KHÔNG hiển thị `B0`).
+2. **Tránh lỗi mất mũi tên:** khi đặt alias, VP `getName()` trả về alias; nếu `addMessage` tham chiếu lifeline bằng `lifelineName` (cách tự nhiên) sẽ **không tìm thấy lifeline → biểu đồ rỗng mũi tên**. (Plugin đã vá lookup đa-trường, nhưng để trống alias là an toàn nhất + nhãn đúng mẫu.)
+
+→ Gọi `addLifeline(..., alias="")` và trong mọi `addMessage`/`addReturnMessage` tham chiếu lifeline bằng **đúng `lifelineName`** (VD `"LoginView"`, `"Employee"`).
 
 **Lifeline type (BẮT BUỘC):**
-Dùng `boundary`, `control`, `entity` khi khai báo lifeline (không dùng `participant`) để hiển thị ký hiệu tròn gạch.
-
-Dùng `addLifeline` với tham số `alias`. Alias xuất hiện làm label của lifeline.
+Truyền `lifelineType` = `actor`/`boundary`/`control`/`entity` (KHÔNG dùng `participant`) để VP hiển thị ký hiệu tròn-gạch.
 
 **Lifeline type (BẮT BUỘC):**
 Mỗi lifeline PHẢI có type stereotype để VP hiển thị icon đúng:
@@ -464,11 +460,12 @@ Tool `addCombinedFragment` vẫn sẵn có (operators: `alt`, `opt`, `loop`, `br
 **Ví dụ: Sequence Diagram "Tạo order" (Phân tích)**
 ```
 createSequenceDiagram("SD - TaoOrder_PhanTich")
-addLifeline("SD - TaoOrder_PhanTich", "Actor", "NhanVien", "actor", "Actor")
-addLifeline("SD - TaoOrder_PhanTich", "LoginView", "LoginView", "boundary", "B0")
-addLifeline("SD - TaoOrder_PhanTich", "SearchRoomView", "SearchRoomView", "boundary", "B1")
-addLifeline("SD - TaoOrder_PhanTich", "Employee", "Employee", "entity", "E1")
-addLifeline("SD - TaoOrder_PhanTich", "Room", "Room", "entity", "E2")
+// alias="" → nhãn lifeline = lifelineName (khớp mẫu); tham chiếu lifeline bằng lifelineName
+addLifeline("SD - TaoOrder_PhanTich", "Actor", "ServiceStaff", "actor", "")
+addLifeline("SD - TaoOrder_PhanTich", "LoginView", "LoginView", "boundary", "")
+addLifeline("SD - TaoOrder_PhanTich", "SearchRoomView", "SearchRoomView", "boundary", "")
+addLifeline("SD - TaoOrder_PhanTich", "Employee", "Employee", "entity", "")
+addLifeline("SD - TaoOrder_PhanTich", "Room", "Room", "entity", "")
 addActivation("SD - TaoOrder_PhanTich", "LoginView")
 // --- Đăng nhập: Boundary call Entity → Entity self-method() → return ---
 addMessage("SD - TaoOrder_PhanTich", "Actor", "LoginView", "Login", "1", "sync")
