@@ -642,3 +642,9 @@ generateUseCaseReport / generateClassReport / generateSequenceReport / generateE
 - `addCombinedFragment`: `operator` chỉ nhận `"alt"`, `"opt"`, `"loop"`, `"break"`, `"par"`
 - Relationship trong class diagram: thêm **sau khi** đã add tất cả classes và attributes
 - Sequence diagram: add lifelines **trước**, messages **sau**
+- **Class naming → ClassXXX:** Nếu cùng tên class ở nhiều diagram → VP sinh `ClassXXX`. Dùng tên unique (suffix số: `LecturerHomeFrm2`). Không có tool rename — phải sửa tay trong VP GUI.
+- **`addAttribute`/`addOperation` first-match:** Match class đầu tiên có tên đó trong toàn project. Dùng tên unique → không bao giờ nhầm.
+- **Sequential DAO addition:** Thêm DAO abstract vào diagram đầu tiên, rồi các diagram sau TUẦN TỰ (không song song).
+- **`autoLayoutDiagram` recreates packages:** KHÔNG gọi sau khi remove package.
+- **`addDependency` invisible:** `getDiagramElements` không liệt kê Dependency. Verify phải mở VP GUI.
+- **Không có tool export ảnh:** Phải mở VP Export as Image tay.

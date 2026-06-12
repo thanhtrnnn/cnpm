@@ -209,7 +209,6 @@ Sau mỗi pha, hỏi: *"Pha [X] đã hoàn thành. Bạn có muốn điều ch�
 - PlantUML đặt trong code block plantuml.
 - Wireframe dùng ASCII box diagram (xem ví dụ trong `references/module-phases.md`).
 - **Test case PHẢI có CSDL trước/sau** — liệt kê dữ liệu mẫu cụ thể cho MỌI bảng DB liên quan. Kết quả mong đợi PHẢI liệt kê TOÀN BỘ UI elements khi sang giao diện mới. Xem `references/iv_kiemthu.md`.
-- **Google Docs = nguồn chuẩn** — khi audit/review, PHẢI dựa trên export Google Docs, KHÔNG dựa trên bản nháp local (bản nháp có thể lệch/stale).
 
 ### Quy tắc Columns (BẮT BUỘC cho Notion output)
 
