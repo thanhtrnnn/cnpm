@@ -2,6 +2,11 @@
 
 ## I.1. Mô hình nghiệp vụ bằng UML
 
+> ⚠️ **KHÔNG chứa từ khóa hạ tầng/công nghệ** (Redis, token, HMAC, Kafka, TTL, tên cột DB, công thức). Nếu xuất hiện → sai pha, đẩy nội dung đó xuống Pha III.
+> - ❌ SAI: "hệ thống sinh token HMAC-SHA256, lưu Redis TTL 5s"
+> - ✅ ĐÚNG: "hệ thống hiển thị mã QR điểm danh"
+> - UC con phải là bước **NGHIỆP VỤ**, không phải bước kỹ thuật.
+
 **Hai bảng BẮT BUỘC trình bày TRƯỚC biểu đồ PlantUML:**
 
 **Bảng UC chính thức (R01):**

@@ -2,6 +2,11 @@
 
 ## II.1. Mô hình hóa chức năng
 
+> ⚠️ **KHÔNG chứa từ khóa hạ tầng/công nghệ** (Redis, token, HMAC, Kafka, TTL, tên cột DB, công thức). Nếu xuất hiện → sai pha, đẩy nội dung đó xuống Pha III.
+> - ❌ SAI: "hệ thống sinh token HMAC-SHA256, lưu Redis TTL 5s"
+> - ✅ ĐÚNG: "hệ thống hiển thị mã QR điểm danh"
+> - Chi tiết kỹ thuật chỉ được phép xuất hiện lại TỪ Pha III.
+
 Viết **một bảng 2 cột** cho **từng UC** trong module. Cột trái là tên trường, cột phải là nội dung. Các trường cố định theo thứ tự: Use case, Actor, Tiền điều kiện, Hậu điều kiện, Kịch bản chính, Ngoại lệ.
 
 **Yêu cầu bắt buộc:**
