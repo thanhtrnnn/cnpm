@@ -408,49 +408,43 @@ skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
 title Biểu đồ lớp – Module [Tên] (JFrame)
 
-package "Boundary" #DDEEFF {
-  together {
-    class FrmA extends JFrame implements ActionListener {
-      -inField : JTextField
-      -btnAction : JButton
-      +actionPerformed(e : ActionEvent) : void
-    }
-    class FrmB extends JFrame implements ActionListener {
-      -outTable : JTable
-      +actionPerformed(e : ActionEvent) : void
-    }
+together {
+  class FrmA extends JFrame implements ActionListener {
+    -inField : JTextField
+    -btnAction : JButton
+    +actionPerformed(e : ActionEvent) : void
+  }
+  class FrmB extends JFrame implements ActionListener {
+    -outTable : JTable
+    +actionPerformed(e : ActionEvent) : void
   }
 }
 
-package "DAO" #FFE0B2 {
-  abstract class DAO {
-    #conn : Connection
-    +DAO()
+abstract class DAO {
+  #conn : Connection
+  +DAO()
+}
+together {
+  class ADao extends DAO {
+    +findByName(name : String) : List<A>
+    +save(entity : A) : boolean
   }
-  together {
-    class ADao extends DAO {
-      +findByName(name : String) : List<A>
-      +save(entity : A) : boolean
-    }
-    class BDao extends DAO {
-      +findAll() : List<B>
-      +delete(id : int) : boolean
-    }
+  class BDao extends DAO {
+    +findAll() : List<B>
+    +delete(id : int) : boolean
   }
 }
 
-package "Entity" #FFF3CD {
-  together {
-    class A {
-      -id : int
-      -name : String
-      +getter/setter
-    }
-    class B {
-      -id : int
-      -value : String
-      +getter/setter
-    }
+together {
+  class A {
+    -id : int
+    -name : String
+    +getter/setter
+  }
+  class B {
+    -id : int
+    -value : String
+    +getter/setter
   }
 }
 
@@ -474,90 +468,84 @@ skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
 title Biểu đồ lớp – Module Dịch vụ & Sản phẩm (React MVC)
 
-package "<<Boundary>>" #E3F2FD {
-  together {
-    class OrderPage { +render() }
-    class RoomSelector { +render() }
-    class ProductSearchForm { +render() }
-    class ProductTable { +render() }
-    class OrderCartPanel { +render() }
-    class ConfirmOrderModal { +render() }
-  }
-  together {
-    class OrderManagement { +render() }
-    class StatusFilterTabs { +render() }
-    class OrderCard { +render() }
-    class StatusUpdateModal { +render() }
-  }
-  together {
-    class MenuManagement { +render() }
-    class CategoryFilter { +render() }
-    class MenuItemTable { +render() }
-    class MenuItemForm { +render() }
-  }
-  together {
-    class InventoryPage { +render() }
-    class StockTable { +render() }
-    class StockUpdateForm { +render() }
-  }
+together {
+  class OrderPage { +render() }
+  class RoomSelector { +render() }
+  class ProductSearchForm { +render() }
+  class ProductTable { +render() }
+  class OrderCartPanel { +render() }
+  class ConfirmOrderModal { +render() }
+}
+together {
+  class OrderManagement { +render() }
+  class StatusFilterTabs { +render() }
+  class OrderCard { +render() }
+  class StatusUpdateModal { +render() }
+}
+together {
+  class MenuManagement { +render() }
+  class CategoryFilter { +render() }
+  class MenuItemTable { +render() }
+  class MenuItemForm { +render() }
+}
+together {
+  class InventoryPage { +render() }
+  class StockTable { +render() }
+  class StockUpdateForm { +render() }
 }
 
-package "<<Control>>" #E8F5E9 {
-  class OrderController {
-    +createOrder(roomId, items) : OrderResponse
-    +getOrders(status) : List<OrderResponse>
-    +updateStatus(id, status) : OrderResponse
-  }
-  class MenuItemController {
-    +getAll(category) : List<MenuItem>
-    +getById(id) : MenuItem
-    +create(item) : MenuItem
-    +update(id, item) : MenuItem
-    +delete(id) : void
-  }
-  class InvoiceController {
-    +generate(bookingId) : Invoice
-  }
+class OrderController {
+  +createOrder(roomId, items) : OrderResponse
+  +getOrders(status) : List<OrderResponse>
+  +updateStatus(id, status) : OrderResponse
+}
+class MenuItemController {
+  +getAll(category) : List<MenuItem>
+  +getById(id) : MenuItem
+  +create(item) : MenuItem
+  +update(id, item) : MenuItem
+  +delete(id) : void
+}
+class InvoiceController {
+  +generate(bookingId) : Invoice
 }
 
-package "<<Entity>>" #FFF3E0 {
-  class ServiceOrder {
-    -id : String
-    -orderedAt : DateTime
-    -status : OrderStatus
-  }
-  class ServiceOrderItem {
-    -quantity : int
-    -unitPrice : double
-  }
-  class MenuItem {
-    -id : String
-    -name : String
-    -category : String
-    -price : double
-    -stock : int
-    -image : String
-    -active : boolean
-  }
-  enum OrderStatus {
-    PENDING
-    PREPARING
-    SERVED
-    CANCELLED
-  }
-  class Room {
-    -id : String
-    -name : String
-    -branch : String
-  }
-  class Invoice {
-    -id : String
-    -roomTotal : double
-    -serviceTotal : double
-    -discount : double
-    -grandTotal : double
-    -paidAt : DateTime
-  }
+class ServiceOrder {
+  -id : String
+  -orderedAt : DateTime
+  -status : OrderStatus
+}
+class ServiceOrderItem {
+  -quantity : int
+  -unitPrice : double
+}
+class MenuItem {
+  -id : String
+  -name : String
+  -category : String
+  -price : double
+  -stock : int
+  -image : String
+  -active : boolean
+}
+enum OrderStatus {
+  PENDING
+  PREPARING
+  SERVED
+  CANCELLED
+}
+class Room {
+  -id : String
+  -name : String
+  -branch : String
+}
+class Invoice {
+  -id : String
+  -roomTotal : double
+  -serviceTotal : double
+  -discount : double
+  -grandTotal : double
+  -paidAt : DateTime
 }
 
 ' Boundary -> Control
@@ -598,7 +586,7 @@ Invoice --> ServiceOrder
 - **Boundary:** React components, mỗi class chỉ có `+render()`. Tên class tiếng Anh + hậu tố (`Page`, `Form`, `Table`, `Panel`, `Modal`, `Card`).
 - **Control:** Spring Boot Controllers, methods theo RESTful CRUD (`getAll`, `getById`, `create`, `update`, `delete`). KHÔNG dùng DAO pattern.
 - **Entity:** JPA Entities, attributes private (`-`) với kiểu Java cụ thể. Relationships: `ManyToOne`, `OneToMany`.
-- **Package colors:** Boundary `#E3F2FD`, Control `#E8F5E9`, Entity `#FFF3E0` (không dùng BCE colors cũ cho React MVC).
+- **Hộp trắng:** KHÔNG dùng package colors hay stereotypes. BCE tách bằng tên hậu tố + bố cục.
 - **Entity naming:** Tên entity tiếng Anh, bảng DB dùng `tbl` + tên (VD: `tblOrder`, `tblProduct`, `tblRoom`). Quan hệ n-n qua bảng trung gian (VD: `Order_detail`, `Damage_detail`).
 
 ### Biểu đồ Tuần tự (Sequence Diagram)

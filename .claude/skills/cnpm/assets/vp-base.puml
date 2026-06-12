@@ -1,11 +1,11 @@
 ' VP Base Theme v2 — matches Visual Paradigm default styling
-' Font: Arial, 10pt
+' Font: Dialog (Java Swing default on ALL platforms)
 ' Sequence: #7AD2FF blue, transparent actor
 ' UC: #7ACFF5 blue fill
-' NOTE: skinparam overrides CSS <style> — use skinparam only
+' Class: white boxes, no package colors, no stereotypes
 
 skinparam linetype ortho
-skinparam defaultFontName "Arial"
+skinparam defaultFontName "Dialog"
 skinparam defaultFontSize 10
 skinparam shadowing false
 skinparam arrowColor #000000
@@ -31,14 +31,6 @@ skinparam class {
   AttributeFontSize 9
   AttributeIconSize 0
   BorderThickness 1
-}
-
-skinparam package {
-  Style rectangle
-  FontSize 11
-  MaxWidth 800
-  BackgroundColor #FFFFFF
-  BorderColor #000000
 }
 
 skinparam sequence {

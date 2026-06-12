@@ -78,6 +78,7 @@ N+4. Phương thức [methodName] trả về kết quả cho phương thức [bt
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
+skinparam defaultFontName "Dialog"
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
 
@@ -120,6 +121,7 @@ deactivate LoginFrm
 @startuml
 skinparam shadowing false
 skinparam SequenceMessageAlign left
+skinparam defaultFontName "Dialog"
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
 

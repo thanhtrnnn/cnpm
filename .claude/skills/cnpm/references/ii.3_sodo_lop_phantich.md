@@ -74,40 +74,36 @@ skinparam packageStyle rectangle
 
 title Biểu đồ lớp phân tích – [Tên UC] (Analysis)
 
-package "Boundary" #DDEEFF {
-  class ActorHomeView {
-    -subManageX
-  }
-  class SearchXView {
-    -inKeyword
-    -subSearch
-    -subAdd
-    -outsubListX
-  }
-  class CreateXView {
-    -inName
-    -inAttribute
-    -subSave
-    -subCancel
-  }
+class ActorHomeView {
+  -subManageX
+}
+class SearchXView {
+  -inKeyword
+  -subSearch
+  -subAdd
+  -outsubListX
+}
+class CreateXView {
+  -inName
+  -inAttribute
+  -subSave
+  -subCancel
 }
 
-package "Entity" #FFF3CD {
-  class XxxEntity {
-    -id
-    -name
-    -attribute
-    +list()
-    +searchX()
-    +create()
-    +update()
-    +delete()
-  }
-  class RelatedEntity {
-    -id
-    -name
-    +list()
-  }
+class XxxEntity {
+  -id
+  -name
+  -attribute
+  +list()
+  +searchX()
+  +create()
+  +update()
+  +delete()
+}
+class RelatedEntity {
+  -id
+  -name
+  +list()
 }
 
 ActorHomeView --> SearchXView
@@ -142,43 +138,39 @@ skinparam packageStyle rectangle
 
 title Biểu đồ lớp phân tích – UC Quản lý khách hàng
 
-package "Boundary" #DDEEFF {
-  class AdminHomeView {
-    -subManageClient
-  }
-  class ClientPage {
-    -inKeyword
-    -subSearch
-    -outsubClientList
-    -subViewDetail
-    -subLockAccount
-  }
-  class ClientDetailPanel {
-    -outFullName
-    -outPhone
-    -outTier
-    -outHistoryList
-    -subLockAccount
-  }
+class AdminHomeView {
+  -subManageClient
+}
+class ClientPage {
+  -inKeyword
+  -subSearch
+  -outsubClientList
+  -subViewDetail
+  -subLockAccount
+}
+class ClientDetailPanel {
+  -outFullName
+  -outPhone
+  -outTier
+  -outHistoryList
+  -subLockAccount
 }
 
-package "Entity" #FFF3CD {
-  class Client {
-    -id
-    -name
-    -phone
-    -tier
-    -status
-    +list()
-    +searchX()
-    +lock()
-  }
-  class Booking {
-    -clientId
-    -checkIn
-    -checkOut
-    +getBookingHistory()
-  }
+class Client {
+  -id
+  -name
+  -phone
+  -tier
+  -status
+  +list()
+  +searchX()
+  +lock()
+}
+class Booking {
+  -clientId
+  -checkIn
+  -checkOut
+  +getBookingHistory()
 }
 
 AdminHomeView --> ClientPage

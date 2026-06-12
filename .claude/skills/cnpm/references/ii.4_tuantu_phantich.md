@@ -60,53 +60,10 @@ Bên cạnh biểu đồ PlantUML, PHẢI viết thêm **block diễn giải tu�
 ' --- Main flow only — no alt blocks ---
 skinparam shadowing false
 skinparam SequenceMessageAlign left
+skinparam defaultFontName "Dialog"
 
 skinparam SequenceLifeLineBackgroundColor #7AD2FF
 skinparam SequenceLifeLineBorderColor #000000
-
-<style>
-sequenceDiagram {
-  Shadowing 0
-  RoundCorner 0
-  FontName "Arial"
-  FontSize 10
-  FontColor #000000
-
-  participant {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-    LineThickness 1
-  }
-
-  actor {
-    BackgroundColor transparent
-    LineColor #000000
-  }
-  boundary {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  control {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-  entity {
-    BackgroundColor #7AD2FF
-    LineColor #000000
-  }
-
-  lifeline {
-    LineColor #000000
-    LineStyle 5-5
-  }
-
-  arrow {
-    LineColor #000000
-    LineThickness 1
-    FontSize 10
-  }
-}
-</style>
 
 title [UC Name] – Analysis Sequence ([N] steps)
 

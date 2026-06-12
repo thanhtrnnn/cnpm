@@ -56,6 +56,19 @@
 - Control: `<<Control>>` `#E8F5E9`
 - Entity: `<<Entity>>` `#FFF3E0`
 
+**Lưu ý:** Mẫu gold standard dùng **hộp trắng, KHÔNG package colors, KHÔNG stereotype**. BCE tách bằng tên hậu tố + bố cục.
+
+---
+
+### Quan hệ trong class diagram thiết kế
+
+- Boundary — Control: `--` (association thuần, **KHÔNG mũi tên**)
+- Control — Entity: `--` (association thuần, **KHÔNG mũi tên**)
+- Entity — Entity (owned): `*--` (composition), `o--` (aggregation)
+- Entity — Entity (reference): `--` với multiplicity
+- KHÔNG dùng `-->` (directed association) cho Boundary–Control hay Control–Entity
+- KHÔNG dùng `..>` (dependency) trong pha III class diagram
+
 ---
 
 ### Quy trình xác định chữ ký hàm (BẮT BUỘC trình bày reasoning)
@@ -187,103 +200,97 @@ skinparam packageStyle rectangle
 skinparam packageMaxWidth 800
 title Biểu đồ lớp thiết kế – Module [Tên] (React MVC)
 
-package "<<Boundary>>" #E3F2FD {
-  together {
-    class LoginPage {
-      -txtUsername : TextBox
-      -txtPassword : TextBox
-      -btnLogin : Button
-      +btnLoginClick() : void
-      +showMessage(msg : String) : void
-    }
-    class SearchRoomPage {
-      -tblActiveRooms : Table
-      -txtRoomName : TextBox
-      -btnSearchRoom : Button
-      +formLoad() : void
-      +btnSearchRoomClick() : void
-      +displayActiveRooms(rooms : List<Room>) : void
-    }
-    class CreateOrderPage {
-      -lblRoomName : Label
-      -txtProductName : TextBox
-      -btnSearchProduct : Button
-      -tblProducts : Table
-      -btnSaveOrder : Button
-      +formLoad() : void
-      +btnSearchProductClick() : void
-      +btnSaveOrderClick() : void
-      +displayProducts(products : List<Product>) : void
-    }
+together {
+  class LoginPage {
+    -txtUsername : TextBox
+    -txtPassword : TextBox
+    -btnLogin : Button
+    +btnLoginClick() : void
+    +showMessage(msg : String) : void
+  }
+  class SearchRoomPage {
+    -tblActiveRooms : Table
+    -txtRoomName : TextBox
+    -btnSearchRoom : Button
+    +formLoad() : void
+    +btnSearchRoomClick() : void
+    +displayActiveRooms(rooms : List<Room>) : void
+  }
+  class CreateOrderPage {
+    -lblRoomName : Label
+    -txtProductName : TextBox
+    -btnSearchProduct : Button
+    -tblProducts : Table
+    -btnSaveOrder : Button
+    +formLoad() : void
+    +btnSearchProductClick() : void
+    +btnSaveOrderClick() : void
+    +displayProducts(products : List<Product>) : void
   }
 }
 
-package "<<Control>>" #E8F5E9 {
-  class LoginController {
-    +checkLogin(username : String, password : String) : boolean
-  }
-  class RoomController {
-    +getActiveRooms() : List<Room>
-    +searchRoomByName(roomName : String) : List<Room>
-  }
-  class ProductController {
-    +getAllProducts() : List<Product>
-    +searchProductByName(productName : String) : List<Product>
-  }
-  class OrderController {
-    +saveOrder(order : Order) : boolean
-  }
+class LoginController {
+  +checkLogin(username : String, password : String) : boolean
+}
+class RoomController {
+  +getActiveRooms() : List<Room>
+  +searchRoomByName(roomName : String) : List<Room>
+}
+class ProductController {
+  +getAllProducts() : List<Product>
+  +searchProductByName(productName : String) : List<Product>
+}
+class OrderController {
+  +saveOrder(order : Order) : boolean
 }
 
-package "<<Entity>>" #FFF3E0 {
-  class Employee {
-    -id : int
-    -fullName : String
-    -dob : Date
-    -tel : String
-    -role : String
-    -username : String
-    -password : String
-    -status : String
-  }
-  class Room {
-    -id : int
-    -name : String
-    -type : String
-    -price : double
-    -capacity : int
-    -status : String
-  }
-  class Order {
-    -id : int
-    -orderTime : DateTime
-    -totalAmount : double
-    -status : String
-  }
-  class Product {
-    -id : int
-    -name : String
-    -category : String
-    -unit : String
-    -price : double
-    -currentStock : int
-    -safetyStock : int
-  }
-  class Room_receipt {
-    -id : int
-    -checkinTime : DateTime
-    -checkoutTime : DateTime
-    -roomFee : double
-    -serviceFee : double
-    -damageFee : double
-    -totalAmount : double
-    -status : String
-  }
-  class Order_detail {
-    -quantity : int
-    -unitPrice : double
-    -lineTotal : double
-  }
+class Employee {
+  -id : int
+  -fullName : String
+  -dob : Date
+  -tel : String
+  -role : String
+  -username : String
+  -password : String
+  -status : String
+}
+class Room {
+  -id : int
+  -name : String
+  -type : String
+  -price : double
+  -capacity : int
+  -status : String
+}
+class Order {
+  -id : int
+  -orderTime : DateTime
+  -totalAmount : double
+  -status : String
+}
+class Product {
+  -id : int
+  -name : String
+  -category : String
+  -unit : String
+  -price : double
+  -currentStock : int
+  -safetyStock : int
+}
+class Room_receipt {
+  -id : int
+  -checkinTime : DateTime
+  -checkoutTime : DateTime
+  -roomFee : double
+  -serviceFee : double
+  -damageFee : double
+  -totalAmount : double
+  -status : String
+}
+class Order_detail {
+  -quantity : int
+  -unitPrice : double
+  -lineTotal : double
 }
 
 ' Boundary -> Control
