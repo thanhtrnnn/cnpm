@@ -22,6 +22,7 @@ Tạo tài liệu triển khai dự án phần mềm chuẩn **Unified Process (
 
 1. **Hướng Use-case:** Mọi phân tích, thiết kế đều xuất phát từ Use-case.
 2. **BCE:** Luôn phân rã theo Boundary – Control – Entity.
+3. **Entity glossary:** Dùng tên entity chuẩn từ `references/entity_glossary.md` — KHÔNG tự ý đổi tên.
 3. **Phân biệt ngôn ngữ theo pha (NGHIÊM NGẶT):**
    - **Pha Phân tích:** Arrow labels trong PlantUML = tiếng Anh ngắn gọn (`click btnSearch`, `display room list`). Kịch bản phiên bản 2 text = tiếng Việt tự nhiên.
    - **Pha Thiết kế:** Arrow labels = tên hàm tiếng Anh đầy đủ + kiểu dữ liệu (`searchFreeRoom(checkin: Date, checkout: Date): List<Room>`, `actionPerformed(e: ActionEvent)`).
@@ -208,6 +209,7 @@ Sau mỗi pha, hỏi: *"Pha [X] đã hoàn thành. Bạn có muốn điều ch�
 - PlantUML đặt trong code block plantuml.
 - Wireframe dùng ASCII box diagram (xem ví dụ trong `references/module-phases.md`).
 - **Test case PHẢI có CSDL trước/sau** — liệt kê dữ liệu mẫu cụ thể cho MỌI bảng DB liên quan. Kết quả mong đợi PHẢI liệt kê TOÀN BỘ UI elements khi sang giao diện mới. Xem `references/iv_kiemthu.md`.
+- **Google Docs = nguồn chuẩn** — khi audit/review, PHẢI dựa trên export Google Docs, KHÔNG dựa trên bản nháp local (bản nháp có thể lệch/stale).
 
 ### Quy tắc Columns (BẮT BUỘC cho Notion output)
 
