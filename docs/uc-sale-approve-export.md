@@ -290,7 +290,9 @@ InvoicePrintView --> Invoice
 
 ## 5. Biểu đồ trạng thái
 
-> Visual Paradigm MCP chưa có tool vẽ state machine diagram — biểu đồ này hiện chỉ có mã PlantUML, cần vẽ tay trong VP nếu muốn ảnh đồng bộ style.
+![Biểu đồ trạng thái của đơn hàng](images/module2/state_order.png)
+
+*Hình 6.4 — Bản vẽ Visual Paradigm (diagram `STM - Order Lifecycle final`), vẽ qua các tool `createStateDiagram` / `addState` / `addInitialState` / `addFinalState` / `addTransition` bổ sung vào VP MCP plugin (bản 1.28.4-state).*
 
 Đối tượng có trạng thái thay đổi trong module là `Order` (hóa đơn `Invoice` đi theo trạng thái của đơn).
 
