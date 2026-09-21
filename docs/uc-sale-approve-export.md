@@ -70,6 +70,10 @@ Nhân viên bán hàng đăng nhập vào hệ thống rồi chọn chức năng
 
 ### 3.5. Biểu đồ thực thể
 
+![Biểu đồ thực thể module Duyệt và xuất đơn hàng](images/module2/class_entity.png)
+
+*Hình 6.1 — Bản vẽ Visual Paradigm (diagram `Class - Module2 Entity`, project `b23dcat280.vpp`). Mã PlantUML bên dưới giữ lại làm nguồn đối chiếu.*
+
 ```plantuml
 @startuml
 left to right direction
@@ -174,6 +178,10 @@ Order "1" -- "1" Invoice : phát hành
 - Nhân viên bán hàng click `-subPrintInvoice` → giao diện in hóa đơn hiện lên → đề xuất lớp `InvoicePrintView`, có `-outInvoiceInfo`, `-outsubInvoiceItemList`, `-outTotalAmount`, `-subPrint`. Dữ liệu hóa đơn lấy qua `getInvoiceDetail()` của `Invoice`; nhân viên bán hàng click `-subPrint` để nhận bản in và bàn giao cho nhân viên giao hàng.
 
 ### 4.4. Sơ đồ lớp phân tích
+
+![Biểu đồ lớp phân tích BCE](images/module2/class_analysis_bce.png)
+
+*Hình 6.2 — Bản vẽ Visual Paradigm (diagram `Class - Module2 Analysis BCE`).*
 
 ```plantuml
 @startuml
@@ -282,6 +290,8 @@ InvoicePrintView --> Invoice
 
 ## 5. Biểu đồ trạng thái
 
+> Visual Paradigm MCP chưa có tool vẽ state machine diagram — biểu đồ này hiện chỉ có mã PlantUML, cần vẽ tay trong VP nếu muốn ảnh đồng bộ style.
+
 Đối tượng có trạng thái thay đổi trong module là `Order` (hóa đơn `Invoice` đi theo trạng thái của đơn).
 
 ```plantuml
@@ -381,6 +391,10 @@ Cancelled --> [*]
 51. Lớp `InvoicePrintView` hiển thị bản in hóa đơn để nhân viên bán hàng nhận và bàn giao cùng kiện hàng cho nhân viên giao hàng.
 
 ### 6.2. Biểu đồ tuần tự phân tích
+
+![Biểu đồ tuần tự phân tích 51 bước](images/module2/sequence_analysis.png)
+
+*Hình 6.3 — Bản vẽ Visual Paradigm (diagram `SD - Module2 ApproveExportOrder`).*
 
 ```plantuml
 @startuml
