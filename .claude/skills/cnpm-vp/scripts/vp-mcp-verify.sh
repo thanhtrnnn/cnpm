@@ -1,7 +1,7 @@
 #!/bin/bash
 # Verify VP MCP server is running and responsive
 #
-# The server is the Visual Paradigm plugin (starts with VP). Checks: port/SSE, MCP initialize
+# The server is the Visual Paradigm plugin (starts with VP). Checks: POST /mcp, MCP initialize
 # (server version), tool count (121 expected for plugin >= 1.32.6), .mcp.json entry.
 #
 # Usage: ./vp-mcp-verify.sh [port]
@@ -23,22 +23,25 @@ echo "=== VP MCP Server Verification ==="
 echo "Target: ${BASE_URL}"
 echo
 
-# 1. Check if port is open / SSE endpoint answers.
-# /sse is a never-ending event stream, so cap the request time; curl then exits with 28
-# (timeout) after it has already printed the status code, which is fine.
+# 1. Check the streamable HTTP endpoint answers (POST /mcp, ping).
 if command -v curl &>/dev/null; then
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 3 --max-time 2 "${BASE_URL}/sse" 2>/dev/null)
+    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 3 --max-time 5 -X POST \
+        -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":0,"method":"ping"}' \
+        "${BASE_URL}/mcp" 2>/dev/null)
     HTTP_CODE="${HTTP_CODE:-000}"
-    if [[ "$HTTP_CODE" == "200" ]] || [[ "$HTTP_CODE" == "204" ]]; then
-        ok "SSE endpoint reachable (HTTP ${HTTP_CODE})"
+    if [[ "$HTTP_CODE" == "200" ]]; then
+        ok "MCP endpoint ${BASE_URL}/mcp reachable (HTTP ${HTTP_CODE})"
     elif [[ "$HTTP_CODE" == "000" ]]; then
         fail "Cannot connect to ${BASE_URL} - Visual Paradigm not running, or the MCP plugin is not installed/loaded?"
         echo
         echo "Open Visual Paradigm (the plugin starts the server). If the plugin is not installed:"
         echo "  cd visual-paradigm-mcp-plugin && ./run install   # then fully quit and reopen VP"
         exit 1
+    elif [[ "$HTTP_CODE" == "404" ]]; then
+        fail "${BASE_URL}/mcp returned 404 - VP runs a plugin older than 1.32.8 (SSE only); reinstall and fully quit/reopen VP"
+        exit 1
     else
-        warn "SSE endpoint returned HTTP ${HTTP_CODE} (may still work)"
+        warn "MCP endpoint returned HTTP ${HTTP_CODE} (may still work)"
     fi
 else
     # Fallback: check port with nc
@@ -50,19 +53,18 @@ else
     fi
 fi
 
-# 2. Check MCP protocol: initialize + tools/list. Without a sessionId the server answers
-# in the HTTP response body.
+# 2. Check MCP protocol: initialize + tools/list, answered in the HTTP response body.
 echo
 echo "Checking MCP protocol..."
 
-MCP_INIT='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"vp-mcp-verify","version":"1.0"}}}'
+MCP_INIT='{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"vp-mcp-verify","version":"1.0"}}}'
 MCP_LIST='{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}'
 
 if command -v curl &>/dev/null; then
     RESPONSE=$(curl -s --connect-timeout 5 --max-time 10 -X POST \
         -H "Content-Type: application/json" \
         -d "$MCP_INIT" \
-        "${BASE_URL}/mcp/messages" 2>/dev/null)
+        "${BASE_URL}/mcp" 2>/dev/null)
 
     if [[ -n "$RESPONSE" ]]; then
         ok "MCP server responded to initialize"
@@ -78,7 +80,7 @@ if command -v curl &>/dev/null; then
         COUNT=$(curl -s --connect-timeout 5 --max-time 10 -X POST \
             -H "Content-Type: application/json" \
             -d "$MCP_LIST" \
-            "${BASE_URL}/mcp/messages" 2>/dev/null \
+            "${BASE_URL}/mcp" 2>/dev/null \
             | python3 -c "import sys,json; print(len(json.load(sys.stdin).get('result',{}).get('tools',[])))" 2>/dev/null)
         if [[ "$COUNT" =~ ^[0-9]+$ ]] && [[ "$COUNT" -gt 0 ]]; then
             if [[ "$COUNT" -ge "$EXPECTED_TOOLS" ]]; then
@@ -92,7 +94,7 @@ if command -v curl &>/dev/null; then
     fi
 fi
 
-# 3. Check .mcp.json exists and the entry is a remote (sse) server
+# 3. Check .mcp.json exists and the entry is a remote (http) server
 echo
 echo "Checking Claude Code config..."
 PROJECT_ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
@@ -100,10 +102,10 @@ MCP_CONFIG="${PROJECT_ROOT}/.mcp.json"
 
 if [[ -f "$MCP_CONFIG" ]]; then
     if grep -q "visual-paradigm" "$MCP_CONFIG" 2>/dev/null; then
-        if grep -q '"sse"' "$MCP_CONFIG" 2>/dev/null; then
-            ok ".mcp.json has visual-paradigm entry (type sse)"
+        if grep -q '"http"' "$MCP_CONFIG" 2>/dev/null && grep -q '/mcp"' "$MCP_CONFIG" 2>/dev/null; then
+            ok ".mcp.json has visual-paradigm entry (type http, /mcp)"
         else
-            warn ".mcp.json has a visual-paradigm entry without \"type\": \"sse\""
+            warn ".mcp.json visual-paradigm entry is not {\"type\": \"http\", \"url\": \".../mcp\"} (old SSE config?)"
             echo "  Run: .claude/skills/cnpm-vp/scripts/vp-mcp-setup.sh"
         fi
     else
@@ -111,7 +113,7 @@ if [[ -f "$MCP_CONFIG" ]]; then
         echo "  Run: .claude/skills/cnpm-vp/scripts/vp-mcp-setup.sh"
     fi
 else
-    warn ".mcp.json not found at ${MCP_CONFIG} (fine if visual-paradigm is configured user-scope: claude mcp list)"
+    warn ".mcp.json not found at ${MCP_CONFIG} (fine if visual-paradigm is configured user-scope or via the Claude Code/Codex plugin: claude mcp list / codex mcp list)"
     echo "  Otherwise run: .claude/skills/cnpm-vp/scripts/vp-mcp-setup.sh"
 fi
 

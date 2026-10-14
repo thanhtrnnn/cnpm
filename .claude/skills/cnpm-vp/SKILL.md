@@ -22,8 +22,9 @@ Danh mục đầy đủ 121 tool (tên, tham số theo thứ tự, công dụng)
 ## Điều kiện tiên quyết
 
 VP MCP server là **plugin chạy TRONG Visual Paradigm** (không cần Docker): mở VP có cài plugin
-`visual-paradigm-mcp-plugin` thì server tự chạy ở `http://localhost:2026` — SSE `/sse`, JSON-RPC
-`POST /mcp/messages`, gọi thẳng tool `POST /api/execute`. Cần VP đang mở và một project đang mở.
+`visual-paradigm-mcp-plugin` thì server tự chạy ở `http://localhost:2026`: MCP streamable HTTP ở
+`POST /mcp` (plugin >= 1.32.8; `/sse` cũ đã bỏ), gọi thẳng tool `POST /api/execute`. Cần VP đang mở và
+một project đang mở.
 
 **Bước 1 — Mở Visual Paradigm** (plugin tự khởi động server). Chưa cài hoặc vừa đổi plugin:
 ```bash
@@ -31,21 +32,31 @@ cd visual-paradigm-mcp-plugin && ./run install   # rồi Quit HẲN VP và mở 
 ```
 `./run docker-up` chỉ là proxy tuỳ chọn (cổng host 2027 → VP:2026), vẫn cần VP đang chạy — không dùng cho luồng này.
 
-**Bước 2 — Đăng ký MCP server với Claude Code:**
+**Bước 2 — Đăng ký MCP server với Claude Code / Codex.** Cách gọn nhất: cài plugin `visual-paradigm`
+(MCP config + skill tiếng Anh dùng chung) từ marketplace của repo plugin:
+```text
+Claude Code:  /plugin marketplace add thanhtrnnn/vp-mcp
+              /plugin install visual-paradigm@visual-paradigm-mcp
+Codex:        codex plugin marketplace add thanhtrnnn/vp-mcp
+              codex plugin add visual-paradigm@visual-paradigm-mcp
+```
+Hoặc chỉ đăng ký server:
 ```bash
 .claude/skills/cnpm-vp/scripts/vp-mcp-setup.sh
 ```
-Script tạo/cập nhật `.mcp.json` ở project root với `{"type": "sse", "url": "http://localhost:2026/sse"}`
-(hoặc `claude mcp add --transport sse --scope user visual-paradigm http://localhost:2026/sse`; máy này đã có entry user-scope).
+Script tạo/cập nhật `.mcp.json` ở project root với `{"type": "http", "url": "http://localhost:2026/mcp"}` và
+sửa entry SSE cũ (hoặc `claude mcp add --transport http --scope user visual-paradigm http://localhost:2026/mcp`;
+Codex: `codex mcp add visual-paradigm --url http://localhost:2026/mcp`). Codex đọc skill này qua
+`.agents/skills/` (symlink tới `.claude/skills/`).
 
 **Bước 3 — Xác nhận kết nối:**
 ```bash
 .claude/skills/cnpm-vp/scripts/vp-mcp-verify.sh
 ```
-Script kiểm tra: port mở, SSE endpoint reachable, MCP `initialize` (in `serverInfo.version`), số tool từ
+Script kiểm tra: `POST /mcp` trả lời, MCP `initialize` (in `serverInfo.version`), số tool từ
 `tools/list` (đủ 121 với plugin >= 1.32.6), `.mcp.json` đúng cấu hình.
 
-Sau đó restart Claude Code để nhận MCP config mới. **Danh sách tool của một session chốt lúc khởi động:**
+Sau đó restart Claude Code / Codex để nhận MCP config mới. **Danh sách tool của một session chốt lúc khởi động:**
 đổi plugin giữa chừng thì tool mới KHÔNG hiện — gọi qua HTTP `POST /api/execute` (cú pháp ở đầu
 `references/vp-mcp-tools.md`). Trước khi vẽ: `getProjectInfo` để chắc đang mở đúng file `.vpp`.
 

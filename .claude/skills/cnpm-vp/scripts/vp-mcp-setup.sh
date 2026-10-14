@@ -2,7 +2,7 @@
 # Setup VP MCP server config for Claude Code
 #
 # The MCP server is the Visual Paradigm plugin itself: it starts with VP and listens on
-# http://localhost:<port>/sse (default 2026). No Docker needed.
+# http://localhost:<port>/mcp (streamable HTTP, default port 2026). No Docker needed.
 #
 # Usage: ./vp-mcp-setup.sh [port]
 
@@ -11,7 +11,7 @@ set -e
 PORT="${1:-2026}"
 PROJECT_ROOT="$(cd "$(dirname "$0")/../../../.." && pwd)"
 MCP_CONFIG="${PROJECT_ROOT}/.mcp.json"
-URL="http://localhost:${PORT}/sse"
+URL="http://localhost:${PORT}/mcp"
 
 echo "=== VP MCP Setup ==="
 echo "Project root: ${PROJECT_ROOT}"
@@ -20,8 +20,8 @@ echo "Server URL:   ${URL}"
 echo
 
 if command -v python3 &>/dev/null; then
-    # Create .mcp.json, or merge the entry into an existing one. An entry without
-    # "type": "sse" is not recognised by Claude Code as a remote server, so add it.
+    # Create .mcp.json, or merge the entry into an existing one. An old SSE entry
+    # (type "sse", url .../sse) is rewritten: plugin >= 1.32.8 only serves /mcp.
     python3 - "$MCP_CONFIG" "$URL" <<'PY'
 import json, os, sys
 
@@ -34,12 +34,12 @@ if existed:
 servers = cfg.setdefault("mcpServers", {})
 entry = servers.get("visual-paradigm")
 if entry is None:
-    servers["visual-paradigm"] = {"type": "sse", "url": url}
+    servers["visual-paradigm"] = {"type": "http", "url": url}
     action = "Added visual-paradigm to existing .mcp.json" if existed else "Created .mcp.json with visual-paradigm config"
-elif entry.get("type") != "sse":
-    entry["type"] = "sse"
-    entry.setdefault("url", url)
-    action = "Fixed visual-paradigm entry (added \"type\": \"sse\")"
+elif entry.get("type") != "http" or not entry.get("url", "").endswith("/mcp"):
+    entry["type"] = "http"
+    entry["url"] = url
+    action = "Fixed visual-paradigm entry (type http, " + url + ")"
 else:
     action = None
 if action:
@@ -55,7 +55,7 @@ else
     echo "[WARN] python3 not found. Add this to .mcp.json manually:"
     echo
     echo '  "visual-paradigm": {'
-    echo '    "type": "sse",'
+    echo '    "type": "http",'
     echo "    \"url\": \"${URL}\""
     echo '  }'
     exit 1
@@ -71,4 +71,9 @@ echo "  2. Verify connection:    .claude/skills/cnpm-vp/scripts/vp-mcp-verify.sh
 echo "  3. Restart Claude Code to pick up the new MCP config"
 echo
 echo "Alternative (user-scope, no .mcp.json):"
-echo "  claude mcp add --transport sse --scope user visual-paradigm ${URL}"
+echo "  claude mcp add --transport http --scope user visual-paradigm ${URL}"
+echo "  codex mcp add visual-paradigm --url ${URL}"
+echo
+echo "Or install the plugin (MCP config + generic skill) from the marketplace:"
+echo "  Claude Code: /plugin marketplace add thanhtrnnn/vp-mcp, then /plugin install visual-paradigm@visual-paradigm-mcp"
+echo "  Codex:       codex plugin marketplace add thanhtrnnn/vp-mcp && codex plugin add visual-paradigm@visual-paradigm-mcp"
