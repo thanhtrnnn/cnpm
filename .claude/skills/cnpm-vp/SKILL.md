@@ -15,7 +15,7 @@ description: >
 Tạo biểu đồ trực tiếp trong Visual Paradigm qua VP MCP server, xuất ảnh, và nhúng vào
 tài liệu UP. Kết hợp với skill `cnpm` để sinh nội dung tài liệu.
 
-Danh mục đầy đủ 117 tool (tên, tham số theo thứ tự, công dụng): [`references/vp-mcp-tools.md`](references/vp-mcp-tools.md).
+Danh mục đầy đủ 121 tool (tên, tham số theo thứ tự, công dụng): [`references/vp-mcp-tools.md`](references/vp-mcp-tools.md).
 
 ---
 
@@ -43,7 +43,7 @@ Script tạo/cập nhật `.mcp.json` ở project root với `{"type": "sse", "u
 .claude/skills/cnpm-vp/scripts/vp-mcp-verify.sh
 ```
 Script kiểm tra: port mở, SSE endpoint reachable, MCP `initialize` (in `serverInfo.version`), số tool từ
-`tools/list` (đủ 117 với plugin >= 1.32.3), `.mcp.json` đúng cấu hình.
+`tools/list` (đủ 121 với plugin >= 1.32.6), `.mcp.json` đúng cấu hình.
 
 Sau đó restart Claude Code để nhận MCP config mới. **Danh sách tool của một session chốt lúc khởi động:**
 đổi plugin giữa chừng thì tool mới KHÔNG hiện — gọi qua HTTP `POST /api/execute` (cú pháp ở đầu
@@ -56,7 +56,19 @@ Sau đó restart Claude Code để nhận MCP config mới. **Danh sách tool c�
 1. **Skill `cnpm` sinh nội dung, skill `cnpm-vp` vẽ trong VP.** Không tự viết PlantUML khi người dùng muốn dùng VP.
 2. **Thứ tự tạo diagram:** Tạo diagram → thêm elements → thêm relationships → kiểm tra (`getDiagramElements` / `getDiagramGeometry`) → export.
 3. **Ảnh VP ưu tiên hơn PlantUML** khi người dùng yêu cầu hoặc khi diagram quá phức tạp cho code block.
-4. **Tool tự đặt vị trí; toạ độ x/y tường minh là tốt nhất — đừng mặc định gọi `autoLayoutDiagram`.** Mọi `add*` tự đặt shape (cột actor/UC, hàng Boundary/DAO/Entity, lane, lưới…) và nhận `x`,`y` (> 0 = đặt tại đó, 0 = tự đặt). `autoLayoutDiagram` KHÔNG đáng tin cho hầu hết loại: sequence = no-op có chủ đích; communication và flowchart/DFD có layout riêng; UC/class/state (phân tầng) và ERD (organic) đặt lại TOÀN BỘ vị trí, class hay ra một hàng ngang; activity/BPMN/component/deployment/package/object chỉ qua auto layout chung của VP, không xử lý riêng lane/pool/frame nên dễ xô lệch. Quy trình đúng: tool tự đặt hoặc truyền x/y → `getDiagramGeometry` kiểm tra → `setElementBounds` chỉnh (container kéo theo con; lifeline kéo theo message) → `rerouteConnectors` nếu cần. Đã gọi `autoLayoutDiagram` thì LUÔN kiểm tra lại.
+4. **Để layout tự đặt vị trí; chỉ truyền x/y khi thật cần ghim một shape.** Plugin ≥ 1.32.5 dùng ELK (Eclipse Layout Kernel, VP đóng gói sẵn trong `lib02.jar`): sau MỖI lần gọi `add*`, mọi loại diagram trừ sequence và BPMN được xếp lại. Layout tự chia tầng, giảm giao cắt, vẽ đường vuông góc và đặt nhãn cạnh đường. Sequence và BPMN có layout riêng, vốn đã đạt.
+   - Truyền `x`,`y` > 0 (hoặc gọi `setElementBounds`) sẽ **ghim** shape: đường nối đi vòng quanh nó. Ghim nhiều làm layout kém hơn, nên mặc định truyền 0.
+   - `autoLayoutDiagram` bỏ ghim và xếp lại toàn bộ diagram. `rerouteConnectors` chỉ vẽ lại đường, giữ nguyên vị trí shape.
+   - Quy trình: gọi `add*` (x/y = 0) → `getDiagramGeometry` kiểm theo Luật bố cục (mục 5) → `exportDiagramImage` rồi XEM ảnh.
+5. **Luật bố cục (BẮT BUỘC — user yêu cầu 2026-10-14):**
+   - Mọi đoạn đường nối chỉ được nằm **ngang hoặc dọc**, ở mọi loại diagram, kể cả use case và communication. Không có đoạn xiên, không gãy chéo kiểu zigzag, không đi vòng hình chữ V. Vòng tự nối vẽ hình chữ nhật.
+   - **Không hình 3D.** Node, device, execution environment trong deployment là chữ nhật phẳng, giữ stereotype và tên.
+   - **Không chồng/đè:**
+     - shape không chồng nhau;
+     - đường không xuyên qua shape không phải đầu mút của nó;
+     - hai đường không chạy đè lên nhau;
+     - nhãn không đè shape hoặc nhãn khác, và không bị cắt thành `...`.
+   - Kiểm bằng `getDiagramGeometry`: mọi cặp điểm liên tiếp của connector phải cùng x hoặc cùng y. Vi phạm thì gọi `autoLayoutDiagram` (bỏ các ghim) thay vì tự chỉnh toạ độ từng điểm.
 
 ---
 
@@ -81,7 +93,10 @@ Khi tạo biểu đồ trong VP, PHẢI tuân thủ các quy tắc cấu trúc s
    - **Tên method:** Luôn tiếng Anh mọi pha (`checkLogin`, `searchFreeRoom`).
    - **Các loại diagram khác** (state, activity, communication, package…): nhãn theo cùng quy tắc (tiếng Anh ngắn). Chỉ khi user chọn profile giáo trình BG CNPM 2020 mới dùng tiếng Việt KHÔNG DẤU (`Hien thi GD chinh SV`, `goi`, `tra ve`); định danh luôn không dấu, không khoảng trắng.
 5. **UC Decomposition:** Include → Extend → Generalization. UC chính ở giữa, UC con tỏa ra.
-6. **Bố cục:** có tool đặt toạ độ — `x`/`y` ở các `add*`, `setElementBounds`, `moveCommunicationLifeline`. Kiểm tra bằng `getDiagramElements` (x/y từng shape) hoặc `getDiagramGeometry` (bounds lồng nhau, điểm connector, bounds nhãn). Class: hàng Boundary trên → DAO giữa → Entity dưới; UC: actor trái, UC phải.
+6. **Bố cục:** layout tự xếp (xem Nguyên tắc cốt lõi 4–5).
+   - Class: tầng theo chiều quan hệ, giống sách: JSP/Boundary trên → DAO giữa → Entity dưới. Lớp cha/interface nằm trên lớp con.
+   - UC: actor là một cột bên trái, UC nằm trong system boundary.
+   - Muốn chỉnh thì dùng `setElementBounds` / `moveCommunicationLifeline` (sẽ ghim shape), rồi kiểm lại bằng `getDiagramGeometry`.
 7. **Sequence participant order:** Actor → Boundary → [Control] → DAO → Entity
 8. **Công nghệ giao diện:** Phải thống nhất JFrame (Java Swing) hoặc HTML (React) từ đầu. Ảnh hưởng đến Boundary class attributes.
 
@@ -143,9 +158,9 @@ Boundary class pha **phân tích** dùng tiền tố **camelCase tiếng Anh, KH
 
 VP MCP **tự tô màu xanh `#7AD2FF`** cho actor / use case / lifeline / activation bar (biểu đồ UC + tuần tự) — không cần gọi tool tô màu. Hộp lớp (class) và bảng (ERD) giữ **trắng** mặc định. Các loại khác (state, activity, component…) giữ mặc định của VP CE (xanh nhạt/cam nhạt của VP là chấp nhận được); màu không mang ý nghĩa, chỉ cần nhất quán trong một diagram. Đây là quy ước render khớp với biểu đồ mẫu của môn học và theme PlantUML của skill `cnpm`.
 
-## Danh sách MCP Tools (117 tools)
+## Danh sách MCP Tools (121 tools)
 
-Tên, tham số theo thứ tự và công dụng từng tool: [`references/vp-mcp-tools.md`](references/vp-mcp-tools.md). Nhóm: Project (5) · Mọi diagram (11: `listDiagrams`, `getDiagramElements`, `getDiagramGeometry`, `getElementCounts`, `autoLayoutDiagram`, `removeDiagramElement`, `addNote`, `setElementBounds`, `rerouteConnectors`, `layoutConnectorLabels`, `exportDiagramImage`) · Use Case (6) · Class (21) · ERD (11) · Sequence (7) · State (5) · Activity (7) · Communication (5) · Component (8) · Deployment (7) · Package/Object (7) · Flowchart/DFD (8) · BPMN (9).
+Tên, tham số theo thứ tự và công dụng từng tool: [`references/vp-mcp-tools.md`](references/vp-mcp-tools.md). Nhóm: Project (5) · Mọi diagram (12: `listDiagrams`, `getDiagramElements`, `getDiagramGeometry`, `getElementCounts`, `autoLayoutDiagram`, `removeDiagramElement`, `addNote`, `setElementBounds`, `rerouteConnectors`, `layoutConnectorLabels`, `renameElement`, `exportDiagramImage`) · Use Case (6) · Class (23) · ERD (11) · Sequence (7) · State (5) · Activity (7) · Communication (5) · Component (8) · Deployment (7) · Package/Object (8) · Flowchart/DFD (8) · BPMN (9).
 
 **Quy ước gọi:** MCP gọi theo TÊN tham số và schema coi MỌI tham số là bắt buộc → tham số không dùng truyền `""` / `0` / `false` (x, y = 0 → tool tự đặt). Tool trả về CHUỖI: lỗi và từ chối cũng là chuỗi (`Error …`, `… not found`, `… already exists`) — luôn đọc kết quả. Tên là handle (action, state, shape, event, lifeline…) phải unique trên diagram. Ví dụ bên dưới viết dạng positional cho gọn; `d` = tên diagram.
 
@@ -169,7 +184,7 @@ Tên, tham số theo thứ tự và công dụng từng tool: [`references/vp-mc
 2. addActor(actorName, diagramName, x, y)      — cho mỗi actor (x=y=0 → cột trái; actor cha trừu tượng đặt x/y phía trên các actor con)
 3. addUseCase(useCaseName, diagramName, x, y)  — cho mỗi UC (bao gồm UC con generalization), cách nhau 60px
 4. addRelationship(diagramName, source, target, type)   — Association (actor–UC), Include, Extend, Generalization
-5. getDiagramGeometry(diagramName)             — kiểm tra vị trí; chỉnh bằng setElementBounds nếu cần (autoLayoutDiagram chỉ là tuỳ chọn, xem Nguyên tắc 4)
+5. getDiagramGeometry(diagramName)             — kiểm Luật bố cục (đường chỉ ngang/dọc, không chồng/đè); vi phạm thì autoLayoutDiagram (Nguyên tắc 4–5)
 6. addSystemBoundary(diagramName, systemName)  — SAU khi UC đã vào chỗ cuối; bao UC trong hộp module (tên module, VD "Dịch vụ và kho hàng"); actor nằm ngoài; gọi lại = đổi tên/co giãn khung
 7. generateUseCaseReport(diagramName)          — kiểm tra element counts
 ```
@@ -191,7 +206,7 @@ Tên, tham số theo thứ tự và công dụng từng tool: [`references/vp-mc
 - Tên UC = **cụm động từ hành động của actor** (không phải danh từ, không phải hành động của hệ thống); mọi UC phải với tới được từ một actor (UC mồ côi là lỗi).
 - Soi ảnh: nhãn «extend» có hiện không, có mũi tên thừa trên đường actor–UC không, include/extend có đúng chiều không.
 
-**Layout:** UC chính ở giữa, UC include tỏa phải, UC extend tỏa dưới phải, UC generalization tỏa dưới. Tránh xếp dọc — luôn dàn ngang. (Mặc định tool xếp actor thành một cột trái và UC thành MỘT CỘT bên phải; muốn tỏa như trên thì truyền `x`/`y` hoặc `setElementBounds`.)
+**Layout:** UC chính ở giữa, UC include tỏa phải, UC extend tỏa dưới phải, UC generalization tỏa dưới. Tránh xếp dọc — luôn dàn ngang. (Layout ELK tự xếp: actor là một cột bên trái, UC trong boundary theo tầng của include/extend. Mọi đường đều ngang/dọc, kể cả đường actor–UC. Chỉ ghim bằng `x`/`y` khi thật cần.)
 
 **Ví dụ: Module Quản lý Khách hàng**
 ```
@@ -502,7 +517,7 @@ Giáo trình (phân tích, Hình 3.10/3.12/3.14): vẽ **TRƯỚC** từ kịch 
    · "" = số cấp 1 kế tiếp; không gõ "N:" trong nhãn; hỗ trợ "1.2", "2a", "1.1*"
    · entity method = self: addCommunicationMessage(d, "Room", "Room", "4", "searchActiveRoom()")
    · hai chiều trên CÙNG link = hai mũi tên cạnh nhau, đừng tạo link thứ hai
-5. moveCommunicationLifeline(d, name, x, y)                                — chỉnh về bố cục sách nếu auto-layout theo link chưa đúng
+5. moveCommunicationLifeline(d, name, x, y)                                — chỉ khi cần ghim lifeline theo bố cục sách (layout ELK tự xếp; link luôn ngang/dọc)
 ```
 - Soi: link không mũi tên, mũi tên message nằm cạnh link, số liên tục và khớp kịch bản v2, nhãn không đè nhau, mọi object có trong class diagram phân tích. Từ khoá nhãn: `click btnX`, `call`, `return`, `display`.
 
@@ -673,8 +688,8 @@ Sau khi tạo xong diagram, **BẮT BUỘC** chạy verification trước khi ex
    - Mỗi DAO class extends AbstractDAO
    - Relationships: >= 1 Generalization (DAO→AbstractDAO), N Dependencies (Boundary→DAO)
 2. getDiagramGeometry(diagramName) → kiểm tra bố cục x/y:
-   - Layout tốt: theo hàng — Boundary (y nhỏ nhất) < DAO < Entity; trong mỗi hàng x cách nhau >= 200px
-   - Layout xấu: nhiều class cùng x hoặc y, hoặc hộp chồng nhau → setElementBounds chỉnh, rồi rerouteConnectors
+   - Layout tốt: theo tầng — Boundary/JSP (y nhỏ nhất) < DAO < Entity; mọi connector chỉ có đoạn ngang/dọc; hộp không chồng; nhãn multiplicity/role cạnh đường
+   - Layout xấu: đoạn xiên, hộp chồng, đường xuyên hộp hoặc đè nhau → autoLayoutDiagram (bỏ các ghim x/y) rồi kiểm lại
 3. getRelationshipDetails(diagramName) → chiều quan hệ, multiplicity, aggregation kind (kim cương ở toàn thể)
 ```
 
@@ -740,7 +755,7 @@ Các loại không có report: dùng `getElementCounts(diagramName)` so với pl
 
 ## Giới hạn đã chứng minh (đừng thử lại)
 
-Đã thử nhiều cách với VP 18.1 (CE) và plugin 1.32.3.x; đây là giới hạn của VP/API, không phải lỗi gọi tool:
+Đã thử nhiều cách với VP 18.1 (CE) và plugin 1.32.3–1.32.6; đây là giới hạn của VP/API, không phải lỗi gọi tool:
 
 - **Component interface dạng lollipop:** VP không vẽ shape lollipop khi tạo bằng API (thử theo model, shape type, cỡ 24–60px, mở lại diagram: không vẽ gì). Interface luôn là hộp `<<interface>>`; không có assembly/delegation connector.
 - **Sequence actor dạng hình que:** lifeline actor tạo bằng API luôn có đầu hộp; hình que không neo được message (message trôi về x=0). Chấp nhận hộp (UML hợp lệ), hoặc user đổi tay.
@@ -749,7 +764,11 @@ Các loại không có report: dùng `getElementCounts(diagramName)` so với pl
 - **Guard của operand combined fragment:** VP tự vẽ ở góc trên-trái của operand, có thể chạm thanh lifeline đầu tiên — không có caption để dời.
 - **Pseudo-state (initial/final):** VP luôn in tên model dưới hình; không giấu được (đặt tên đẹp).
 - **Chưa có tool/không hỗ trợ:** BPMN boundary event, text annotation, call activity, loop marker; UML composite state / choice / history / internal transition; activity send-signal/accept-event action và pin; sequence found/lost message; `removeRelationship` không liệt kê Usage.
-- **Layout là greedy:** communication, DFD, BPMN, component auto-placement — với diagram lớn dùng x/y tường minh; `rerouteConnectors` trên họ diagram không có routing riêng chỉ nối thẳng tâm–tâm; nhãn của hai connector gần song song có thể đè nhau; nhãn event BPMN có thể chạm viền container; một mẩu 2–3px còn sót ở cuối thanh kích hoạt sequence; link communication di chuyển có thể bị VP vẽ dọc gần góc hộp khi hai hộp chồng nhau theo chiều ngang.
+- **Giới hạn layout còn lại (plugin 1.32.6+):**
+  - Deployment lồng nhiều tầng (máy → server → artifact) ra dải ngang dài khoảng 5:1, vì ELK không xếp chồng tầng ngoài khi giữ các host lồng trên một hàng.
+  - Communication có nhiều shape ghim sát nhau thì nhãn message còn có thể chật.
+  - Ký hiệu database của flowchart là hình trụ phẳng của VP (không bóng, không gradient), API không đổi được.
+  - Một mẩu 2–3px còn sót ở cuối thanh kích hoạt sequence.
 - **`removeDiagramElement` chỉ gỡ view** (model còn trong project, trừ lifeline/link/message); `removeTable`/`removeColumn` xoá thật khỏi project.
 - **Hộp thoại modal của VP** (hỏi lưu, hỏi xoá khỏi repository) chặn `openProject` và việc thoát VP; plugin tự trả lời các hộp xoá, còn hộp lưu thì phải tự xử lý.
 

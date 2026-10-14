@@ -1,6 +1,6 @@
-# Danh mục VP MCP tools (117 tools)
+# Danh mục VP MCP tools (121 tools)
 
-Nguồn: các method `@Tool(name=…)` trong `visual-paradigm-mcp-plugin/src/main/java/com/brunnen/vp/mcp/tools/*.java` (plugin `serverInfo.version` 1.32.3.25). Tên tool và thứ tự tham số lấy từ Java, không từ trí nhớ; khi plugin đổi, sinh lại danh mục từ nguồn.
+Nguồn: các method `@Tool(name=…)` trong `visual-paradigm-mcp-plugin/src/main/java/com/brunnen/vp/mcp/tools/*.java` (plugin `serverInfo.version` 1.32.6+). Tên tool và thứ tự tham số lấy từ Java, không từ trí nhớ; khi plugin đổi, sinh lại danh mục từ nguồn.
 
 **Quy ước gọi:**
 
@@ -23,7 +23,7 @@ Làm việc với file `.vpp` đang mở trong VP. `getProjectInfo` dùng làm c
 | `openProject` | filePath | Mở `.vpp` khác, thay project đang mở (lưu trước; hộp thoại lưu của VP có thể chặn). |
 | `newProject` | (không có) | Đóng project hiện tại, tạo project trống (thay đổi chưa lưu bị bỏ). |
 
-## Dùng cho mọi loại diagram (11)
+## Dùng cho mọi loại diagram (12)
 
 `x`,`y` > 0 mới có tác dụng; `width/height <= 0` = fit theo nội dung.
 
@@ -33,13 +33,14 @@ Làm việc với file `.vpp` đang mở trong VP. `getProjectInfo` dùng làm c
 | `getDiagramElements` | diagramName | Mọi shape + connector: tên, loại, chi tiết, vị trí; connector in dạng `Type <<stereotype>> name: from -> to [guard]`. |
 | `getDiagramGeometry` | diagramName | Dump hình học: bounds mọi shape (lồng nhau thụt vào), điểm của connector, bounds của caption — kiểm bố cục không cần ảnh. |
 | `getElementCounts` | diagramName | Đếm phần tử theo loại. |
-| `autoLayoutDiagram` | diagramName | Auto layout. KHÔNG đáng tin cho hầu hết loại; sequence = no-op có chủ đích (xem SKILL.md). |
+| `autoLayoutDiagram` | diagramName | Xếp lại toàn bộ diagram bằng ELK (layered, đường vuông góc), BỎ mọi ghim x/y. Sequence và BPMN giữ layout riêng của chúng. Các `add*` đã tự xếp lại sau mỗi lần gọi, nên chỉ cần tool này sau khi ghim/dời shape. |
 | `removeDiagramElement` | diagramName, elementName | Gỡ shape/connector khỏi diagram theo tên model; chỉ gỡ VIEW (kèm connector và shape lồng bên trong), model còn trong project — trừ lifeline/link/message (chỉ tồn tại trên diagram). |
 | `addNote` | diagramName, text, attachedTo, x:int, y:int | Thêm ghi chú (hộp góc gấp) vào bất kỳ diagram; `attachedTo` = tên shape để nối đường đứt (`""` = tự do). |
 | `setElementBounds` | diagramName, elementName, x:int, y:int, width:int, height:int | Di chuyển/đổi cỡ shape. Container (package, node, component, lane…) kéo theo shape lồng bên trong và không bao giờ nhỏ hơn nội dung; lifeline kéo theo message + thanh kích hoạt; control node, pseudo-state, symbol BPMN/flowchart/DFD giữ cỡ ký hiệu. |
-| `rerouteConnectors` | diagramName | Neo lại mọi connector vào tâm shape (thẳng tâm–tâm hoặc routing riêng của họ diagram); chạy sau khi dời shape, và mở diagram trong VP trước. |
-| `layoutConnectorLabels` | diagramName, coordinateMode | Đặt nhãn association: multiplicity cạnh hai đầu, tên giữa đường, ẩn role. `coordinateMode` = `absolute` \| `relative`. |
-| `exportDiagramImage` | diagramName, filePath | Mở diagram và ghi ảnh `.png/.jpg/.jpeg` ra đường dẫn TUYỆT ĐỐI. (Skill này giữ quy ước xuất ảnh thủ công — xem mục "Xuất ảnh" trong SKILL.md; tool nêu ở đây cho đủ danh mục.) |
+| `rerouteConnectors` | diagramName | Vẽ lại mọi đường nối bằng router vuông góc (tránh shape, không đè đường khác); giữ nguyên vị trí shape. |
+| `layoutConnectorLabels` | diagramName | Đặt nhãn connector (multiplicity ở hai đầu, tên cạnh đoạn dài nhất) tránh shape, đường và nhãn khác; đường được route lại, shape giữ nguyên chỗ. |
+| `renameElement` | diagramName, elementName, newName | Đổi tên phần tử mà shape hiển thị (class, package, node, state, action, use case, actor, object, lifeline, table…); `newName` phải unique trên diagram; mọi diagram hiện phần tử đó đổi theo, shape fit lại. Không dùng cho connector (thêm lại) hay cột ERD (`renameColumn`). |
+| `exportDiagramImage` | diagramName, filePath | Mở diagram và ghi ảnh `.png/.jpg/.jpeg` ra đường dẫn TUYỆT ĐỐI. Cách xuất ảnh mặc định của skill (xem mục "Xuất ảnh" trong SKILL.md); luôn mở ảnh ra xem lại. |
 
 ## Use Case (6)
 
@@ -54,7 +55,7 @@ Tên actor/use case trùng tên đã có trong project = CÙNG phần tử (dùn
 | `addSystemBoundary` | diagramName, systemName | Khung hệ thống/module bao mọi UC (actor bị đẩy ra ngoài); gọi sau khi UC đã vào chỗ cuối; gọi lại = đổi tên + co giãn khung. |
 | `generateUseCaseReport` | diagramName | Báo cáo phân tích UC. |
 
-## Class (21, chưa tính Project và nhóm chung)
+## Class (23, chưa tính Project và nhóm chung)
 
 Tên lớp là khoá tra cứu. `addClass` dùng lại lớp cùng tên (root, hoặc trong `modelPackage`) thay vì tạo `Class2`. `extendsClass`/`implementsInterfaces` phải ĐÃ có trên diagram.
 
@@ -64,6 +65,8 @@ Tên lớp là khoá tra cứu. `addClass` dùng lại lớp cùng tên (root, h
 | `addClass` | diagramName, className, packageName, packageColor, stereotype, isAbstract:bool, extendsClass, implementsInterfaces, x:int, y:int, modelPackage | Thêm lớp. Hộp trắng: `packageName`, `packageColor`, `stereotype` để `""`. `x/y` > 0 đặt tay, không thì ô trống đầu tiên của hàng theo tầng (tên kết thúc View\|Form\|Screen hoặc bắt đầu Frm\|Page = hàng trên; kết thúc DAO\|Repository\|Mapper = hàng giữa; còn lại, kể cả XxxFrm, XxxPage, XxxController và entity = hàng dưới), khoảng ba lớp một hàng. `modelPackage` = package model (không vẽ khung) để tách lớp cùng tên. `extendsClass` vẽ generalization. |
 | `addAttribute` | className, attributeName, attributeType, visibility, diagramName | Thêm thuộc tính; `attributeType` có thể rỗng (pha phân tích); `visibility` = public\|private\|protected\|package (hoặc + - # ~). Có `diagramName` thì chỉ dùng lớp hiện trên diagram đó. |
 | `addOperation` | className, operationName, returnType, params, visibility, isAbstract:bool, diagramName | Thêm phương thức; `params` = `name: Type, ...`; `visibility`, `isAbstract`; `diagramName` giới hạn tra cứu như addAttribute. |
+| `removeAttribute` | diagramName, className, attributeName | Xoá thuộc tính (theo tên; mọi thuộc tính trùng tên) khỏi lớp hiện trên diagram; hộp fit lại. Sửa thuộc tính sai = removeAttribute + addAttribute. |
+| `removeOperation` | diagramName, className, operationName | Xoá phương thức theo tên (mọi overload) khỏi lớp hiện trên diagram; hộp fit lại. |
 | `addAssociation` | diagramName, fromClass, toClass, fromMultiplicity, toMultiplicity, name | Association; multiplicity chấp nhận số, `*`, `n`, `m`, `a..b`; `name` = tên quan hệ. |
 | `addGeneralization` | diagramName, fromClass, toClass | `fromClass` = lớp CON, `toClass` = lớp CHA; tam giác rỗng ở lớp cha. |
 | `addAggregation` | diagramName, fromClass, toClass, fromMultiplicity, toMultiplicity | Aggregation ◇; `fromClass` = TOÀN THỂ (kim cương ở đầu from), `toClass` = bộ phận. |
@@ -153,7 +156,7 @@ Cần plugin >= 1.28.4. Tên state là handle của `addTransition`. Nhãn/capti
 | `addRequiredInterface` | diagramName, componentName, interfaceName | Component cần interface: mũi tên nét đứt `<<use>>` tới hộp interface; `componentName` có thể là port. |
 | `addComponentDependency` | diagramName, fromComponent, toComponent, stereotype | Dependency nét đứt giữa component/interface/port; `stereotype` (`use`, `call`…) hiện `<<stereotype>>`. |
 | `addPort` | diagramName, componentName, portName | Port (ô vuông nhỏ trên viền); port xen kẽ cạnh trái/phải; component giãn khi không đủ chỗ. |
-| `addComponentPackage` | diagramName, packageName, parentPackage, x:int, y:int, width:int, height:int | Khung layer ("Presentation Layer"…); `parentPackage` lồng khung; component thêm với `packageName` nằm trong và khung tự giãn; cỡ khởi đầu 200x100. |
+| `addComponentPackage` | diagramName, packageName, parentPackage, x:int, y:int, width:int, height:int, backgroundColor | Khung layer ("Presentation Layer"…); `parentPackage` lồng khung; component thêm với `packageName` nằm trong và khung giãn theo. Không x/y thì layout xếp layer trên các layer nó phụ thuộc. `backgroundColor` `#RRGGBB` ("" = xanh mặc định). Package cùng tên có sẵn được dùng lại. |
 
 ## Deployment (7)
 
@@ -169,19 +172,20 @@ Tên node/artifact/component unique trên diagram.
 | `addDeployDependency` | diagramName, artifactName, nodeName | Dependency `<<deploy>>` từ artifact tới node — chỉ cho artifact đứng riêng. |
 | `addDeploymentDependency` | diagramName, fromElement, toElement, label | Dependency nét đứt giữa component/artifact/node (View -> Controller nhãn `submit`); nhãn dạng `<<manifest>>` thành stereotype. |
 
-## Package và Object (7)
+## Package và Object (8)
 
 Thêm con của một package trước package cấp cao kế tiếp để khung tự đặt không chồng.
 
 | Tool | Tham số (theo thứ tự) | Công dụng |
 |------|-----------------------|-----------|
 | `createPackageDiagram` | diagramName | Tạo package diagram. |
-| `addPackageElement` | diagramName, packageName, parentPackage, x:int, y:int, width:int, height:int | Khung package; `parentPackage` lồng (cha giãn theo); package cấp cao tự xếp 3 khung một hàng, con xếp một hàng trong cha; tối thiểu 100x50. Package cùng tên có sẵn được dùng lại. |
+| `addPackageElement` | diagramName, packageName, parentPackage, x:int, y:int, width:int, height:int, backgroundColor | Khung package; `parentPackage` lồng (cha giãn theo). Không x/y thì layout xếp package trên các package nó phụ thuộc, con nằm trong khung; tối thiểu 100x50. `backgroundColor` `#RRGGBB` ("" = xanh mặc định). Package cùng tên có sẵn được dùng lại. |
 | `addPackageDependency` | diagramName, fromPackage, toPackage, kind | `kind` = use \| import \| access \| merge \| line (`""` = use). `line` = đường liền không mũi tên, không từ khoá (view - dao - model của sách); use = `<<use>>` nét đứt mũi tên mở. Đầu có thể là hộp lớp đang nằm trong package. |
 | `addClassInPackage` | diagramName, packageName, className | Hộp lớp (chỉ tên) trong khung package; lớp thuộc package đó trong model. |
 | `createObjectDiagram` | diagramName | Tạo object diagram (hiện slot). |
 | `addObject` | diagramName, objectName, className, slots, x:int, y:int, modelPackage | Instance `objectName : ClassName` gạch chân; `objectName` rỗng + `className` = đối tượng ẩn danh `: ClassName` (handle = tên lớp); `slots` = `attr=value;attr2=value2`, attr phải là thuộc tính của lớp (hoặc lớp cha); không có lớp thì tạo lớp mới; `modelPackage` chọn lớp khi nhiều package có lớp cùng tên. |
 | `addObjectLink` | diagramName, fromObject, toObject, label | Link (đường liền) giữa hai object, `label` rỗng = không nhãn. |
+| `setObjectSlot` | diagramName, objectName, attribute, value | Đặt/đổi/xoá slot của object (`attribute` là thuộc tính của lớp hoặc lớp cha; `value` "" = xoá slot); hộp fit lại. Sửa slot sai bằng tool này thay vì xoá object. |
 
 ## Communication (5)
 

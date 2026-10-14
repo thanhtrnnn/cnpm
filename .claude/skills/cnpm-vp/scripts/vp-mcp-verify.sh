@@ -2,13 +2,13 @@
 # Verify VP MCP server is running and responsive
 #
 # The server is the Visual Paradigm plugin (starts with VP). Checks: port/SSE, MCP initialize
-# (server version), tool count (117 expected for plugin >= 1.32.3), .mcp.json entry.
+# (server version), tool count (121 expected for plugin >= 1.32.6), .mcp.json entry.
 #
 # Usage: ./vp-mcp-verify.sh [port]
 
 PORT="${1:-2026}"
 BASE_URL="http://localhost:${PORT}"
-EXPECTED_TOOLS=117
+EXPECTED_TOOLS=121
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
